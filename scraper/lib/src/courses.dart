@@ -13,7 +13,7 @@ class CourseScraper implements ScraperBase<List<Course>> {
         .map(
           (course) => Course(
             title: course.querySelector('.box_h').text.cleanedText.titleCase,
-            icon: course
+            imageUrl: course
                 .querySelector('img')
                 .attributes['src']
                 .toAbsolute(scraper.currentUrl),

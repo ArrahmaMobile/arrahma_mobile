@@ -4,3 +4,4 @@
 library scraper;
 
 export 'src/scraper_base.dart';
+export 'src/models/index.dart';

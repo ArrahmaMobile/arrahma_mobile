@@ -1,7 +1,7 @@
 class Course {
-  const Course({this.title, this.icon, this.items});
+  const Course({this.title, this.imageUrl, this.items});
   final String title;
-  final String icon;
+  final String imageUrl;
   final List<CourseItem> items;
 }
 

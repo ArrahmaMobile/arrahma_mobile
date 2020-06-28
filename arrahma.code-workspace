@@ -1,14 +1,17 @@
 {
 	"folders": [
 		{
-			"path": "scraper",
+			"path": "scraper"
 		},
 		{
-			"path": "api",
+			"path": "api"
 		},
 		{
-			"path": "app",
+			"path": "app"
 		},
+		{
+			"path": "scraper_cli"
+		}
 	],
 	"settings": {}
 }

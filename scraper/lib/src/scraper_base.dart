@@ -2,6 +2,8 @@ import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/courses.dart';
+import 'package:scraper/src/models/arrahma.dart';
+import 'models/banner.dart';
 import 'models/broadcast_link.dart';
 import 'utils.dart';
 
@@ -42,53 +44,42 @@ class Scraper implements IScraper, IScraperRegistrar {
     return document;
   }
 
-  Future initiate() async {
+  Future<Arrahma> initiate() async {
     await navigateTo('');
-    // Header Image
-    register(AdHocScraper((scraper) => scraper.document
-        .querySelector('.header img')
-        .attributes['src']
-        .toAbsolute(currentUrl)));
-    // Banners
-    register(AdHocScraper((scraper) => scraper.document
-        .querySelectorAll('#slider a')
-        .map((banner) => banner.attributes['href'].toAbsolute(currentUrl))
-        .toList()));
-    // Broadcast links
-    register(AdHocScraper((scraper) =>
-        scraper.document.querySelectorAll('.column6 .box4').map((banner) {
-          final aTag = banner.querySelector('a');
-          final link = aTag != null ? aTag.attributes['href'] : null;
-          final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
-          final type = host != null
-              ? BroadcastType.values.firstWhere(
-                  (type) => type.toString().split('.')[1].toLowerCase() == host,
-                  orElse: () => null)
-              : null;
-          return BroadcastLink(
-              type: type ?? BroadcastType.Other,
-              link: link,
-              image: banner
-                  .querySelector('img')
-                  ?.attributes['src']
-                  ?.toAbsolute(currentUrl));
-        }).toList()));
-
-    register(CourseScraper());
-
-    final results =
-        await Future.wait(_scrapers.map((scraper) => scraper.scrape(this)));
-    // final links = document.querySelectorAll('td.title > a.storylink');
-    // final linkMap = <Map<String, dynamic>>[];
-
-    // for (final link in links) {
-    //   linkMap.add({
-    //     'title': link.text,
-    //     'href': link.attributes['href'],
-    //   });
-    // }
-
-    return results;
+    return Arrahma(
+      logoUrl: document
+          .querySelector('.header img')
+          .attributes['src']
+          .toAbsolute(currentUrl),
+      banners: document
+          .querySelectorAll('#slider a')
+          .map((banner) => Banner(
+                imageUrl: banner
+                    .querySelector('img')
+                    .attributes['src']
+                    .toAbsolute(currentUrl),
+                link: banner.attributes['href'].toAbsolute(currentUrl),
+              ))
+          .toList(),
+      broadcastLinks: document.querySelectorAll('.column6 .box4').map((banner) {
+        final aTag = banner.querySelector('a');
+        final link = aTag != null ? aTag.attributes['href'] : null;
+        final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
+        final type = host != null
+            ? BroadcastType.values.firstWhere(
+                (type) => type.toString().split('.')[1].toLowerCase() == host,
+                orElse: () => null)
+            : null;
+        return BroadcastLink(
+            type: type ?? BroadcastType.Other,
+            link: link,
+            imageUrl: banner
+                .querySelector('img')
+                ?.attributes['src']
+                ?.toAbsolute(currentUrl));
+      }).toList(),
+      courses: await CourseScraper().scrape(this),
+    );
   }
 
   @override
