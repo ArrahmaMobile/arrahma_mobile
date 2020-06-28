@@ -24,15 +24,22 @@ class AboutUs extends StatelessWidget {
               style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
             Text(
-              'ArRahmah started its online journey in 2007 from New Jersey, USA and provided weekly Tarjuma, Tafseer and Tajweed classes. It initially catered to the needs of sisters in the area and neighboring states but by the special blessing of Allah swt we now serve students globally. All our humble efforts are only for seeking the pleasure of Allah SWT so each person in Arrahma whether teacher,administration or helpers are all working Fi Sabil Lillah. Classes here are offered absolutely FREE. We only ask for your time, dedication and duas.',
+              'ArRahmah started its online journey in 2007 from New Jersey, USA and provided weekly Tarjuma, Tafseer and Tajweed classes.'
+              'It initially catered to the needs of sisters in the area and neighboring states but by the special blessing of Allah swt we now serve students globally.'
+              'All our humble efforts are only for seeking the pleasure of Allah SWT so each person in Arrahma whether teacher,administration or helpers are all working Fi Sabil Lillah.'
+              'Classes here are offered absolutely FREE. We only ask for your time, dedication and duas.',
             ),
             SizedBox(height: 10),
             Text(
               "Teacher's Profile",
-              style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
             Text(
-              'ArRahmah started its online journey in 2007 from New Jersey, USA and provided weekly Tarjuma, Tafseer and Tajweed classes. It initially catered to the needs of sisters in the area and neighboring states but by the special blessing of Allah swt we now serve students globally. All our humble efforts are only for seeking the pleasure of Allah SWT so each person in Arrahma whether teacher,administration or helpers are all working Fi Sabil Lillah. Classes here are offered absolutely FREE. We only ask for your time, dedication and duas.',
+              'ArRahmah started its online journey in 2007 from New Jersey,'
+              'USA and provided weekly Tarjuma, Tafseer and Tajweed classes.'
+              'It initially catered to the needs of sisters in the area and neighboring states but by the special blessing of Allah swt we now serve students globally.'
+              'All our humble efforts are only for seeking the pleasure of Allah SWT so each person in Arrahma whether teacher,'
+              'administration or helpers are all working Fi Sabil Lillah. Classes here are offered absolutely FREE. We only ask for your time, dedication and duas.',
             ),
             SizedBox(height: 10),
             Text(
