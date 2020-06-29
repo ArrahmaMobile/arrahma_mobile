@@ -51,7 +51,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +77,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,7 +103,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,7 +129,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,7 +155,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,7 +181,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -207,7 +207,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -233,7 +233,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,7 +259,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -285,7 +285,7 @@ class Lectures extends StatelessWidget {
             );
           },
           child: Container(
-            color: Colors.grey,
+            color: Color(0xffdedbdb),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
