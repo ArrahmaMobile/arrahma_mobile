@@ -7,6 +7,7 @@ class PashtoCourse extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Speical Series',
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),

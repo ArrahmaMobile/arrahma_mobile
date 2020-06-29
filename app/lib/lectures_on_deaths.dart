@@ -11,6 +11,7 @@ class LecturesOnDeath extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Lectures on Deaths',
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),

@@ -7,6 +7,7 @@ class QuranTafseer extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Quran Tafseer',
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),

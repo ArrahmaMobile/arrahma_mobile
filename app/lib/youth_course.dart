@@ -7,6 +7,7 @@ class YouthCourse extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Youth Course',
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),
