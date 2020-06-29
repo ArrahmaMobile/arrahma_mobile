@@ -31,12 +31,7 @@ class QuranTafseer extends StatelessWidget {
       childAspectRatio: 1.9,
       children: <Widget>[
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -57,12 +52,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -83,12 +73,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -109,12 +94,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -135,12 +115,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -161,12 +136,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -187,12 +157,7 @@ class QuranTafseer extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
-            );
-          },
+          onTap: () {},
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(

@@ -3,6 +3,8 @@ import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'contact_us.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 15),
             _broadcast(),
             Spacer(),
-            _socialMedia(),
+            _socialMedia(context),
           ],
         ),
       ),
@@ -138,9 +140,9 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  Widget _socialMedia() {
+  Widget _socialMedia(context) {
     return GridView.count(
-      crossAxisCount: 5,
+      crossAxisCount: 6,
       shrinkWrap: true,
       childAspectRatio: 1.5,
       children: <Widget>[
@@ -159,6 +161,14 @@ class HomePage extends StatelessWidget {
         GestureDetector(
             onTap: _instagram,
             child: Image.asset('assets/images/social_media/instagram.png')),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactUs()),
+              );
+            },
+            child: Image.asset('assets/images/home_page_images/contact.png')),
       ],
     );
   }
