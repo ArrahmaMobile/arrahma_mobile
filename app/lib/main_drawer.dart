@@ -7,6 +7,7 @@ import 'package:arrahma_mobile_app/student_corner.dart';
 import 'package:arrahma_mobile_app/tajweed.dart';
 import 'package:flutter/material.dart';
 import 'about_us.dart';
+import 'our_nabi.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -89,6 +90,20 @@ class MainDrawer extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Tajweed()),
+          );
+        },
+      ),
+      ListTile(
+        title: Text(
+          'Our Nabi',
+          style: new TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OurNabi()),
           );
         },
       ),

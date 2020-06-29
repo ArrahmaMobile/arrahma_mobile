@@ -21,8 +21,10 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             _buildBanner(),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             _broadcast(),
+            Spacer(),
+            _socialMedia(),
           ],
         ),
       ),
@@ -129,6 +131,76 @@ class HomePage extends StatelessWidget {
 
   _launchPhone() async {
     const url = 'tel:+1 712 432 1001#491760789';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _socialMedia() {
+    return GridView.count(
+      crossAxisCount: 5,
+      shrinkWrap: true,
+      childAspectRatio: 1.5,
+      children: <Widget>[
+        GestureDetector(
+            onTap: _youtube,
+            child: Image.asset('assets/images/social_media/youtube.png')),
+        GestureDetector(
+            onTap: _facebook,
+            child: Image.asset('assets/images/social_media/facebook.png')),
+        GestureDetector(
+            onTap: _whatsapp,
+            child: Image.asset('assets/images/social_media/whatsapp.png')),
+        GestureDetector(
+            onTap: _twitter,
+            child: Image.asset('assets/images/social_media/twitter.png')),
+        GestureDetector(
+            onTap: _instagram,
+            child: Image.asset('assets/images/social_media/instagram.png')),
+      ],
+    );
+  }
+
+  _youtube() async {
+    const url = 'https://www.youtube.com/c/arrahmahislamicinstitute';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _facebook() async {
+    const url = 'https://www.facebook.com/arrahmah.islamic.institute/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _whatsapp() async {
+    const url = 'http://arrahma.org/images/whatsapp.png';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _twitter() async {
+    const url = 'https://twitter.com/ArrahmahIslamic';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _instagram() async {
+    const url = 'https://www.instagram.com/arrahmah_islamic_institute/';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
