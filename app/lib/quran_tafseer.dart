@@ -5,9 +5,9 @@ class QuranTafseer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Quran Tafseer',
-          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),

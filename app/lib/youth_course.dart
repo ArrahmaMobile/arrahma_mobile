@@ -5,9 +5,9 @@ class YouthCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Youth Course',
-          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),

@@ -5,9 +5,9 @@ class SpecialSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Speical Series',
-          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black),
         ),
       ),
