@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SpecialSeries extends StatefulWidget {
-  @override
-  _SpecialSeriesState createState() => _SpecialSeriesState();
-}
-
-class _SpecialSeriesState extends State<SpecialSeries> {
-  int _currentIndex = 0;
+class SpecialSeries extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,34 +10,107 @@ class _SpecialSeriesState extends State<SpecialSeries> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Gumnaam Ki Diary'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Medan-Mehshar Me Meri Kahani'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Meri Aakhari Saansain'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Asma ul Husna'),
-              backgroundColor: Colors.blue),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      body: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            _specialSeriesList(context),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _specialSeriesList(BuildContext context) {
+    return GridView.count(
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      childAspectRatio: 1,
+      children: <Widget>[
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Gumnaam Ki Diary',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Medan - Mehshar Mr Meri Kahani',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Meri Aakhari Saansain',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Asma ul Husna',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

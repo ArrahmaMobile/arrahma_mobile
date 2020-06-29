@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
-class QuranTafseer extends StatefulWidget {
-  @override
-  _QuranTafseerState createState() => _QuranTafseerState();
-}
-
-class _QuranTafseerState extends State<QuranTafseer> {
-  int _currentIndex = 0;
-
+class QuranTafseer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,54 +10,209 @@ class _QuranTafseerState extends State<QuranTafseer> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff124570),
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text(
-                '2019 New Courses',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title:
-                  Text('Tafseer-2013', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title:
-                  Text('Tafseer-2007', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title:
-                  Text('Ahsan-ul-Bayan', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Al-Furqan', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title:
-                  Text('llm-yl-Uaqeen', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Al-Misbah', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.blue),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      body: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            _quranList(context),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _quranList(BuildContext context) {
+    return GridView.count(
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      childAspectRatio: 1.9,
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '2019 New Courses',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Tafseer - 2013',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Tafseer - 2007',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Ahsan-ul-Bayan',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Al-Furqan',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'llm-ul-Uaqeen',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QuranTafseer()),
+            );
+          },
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Al-Misbah',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

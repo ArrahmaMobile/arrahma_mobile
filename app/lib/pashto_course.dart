@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PashtoCourse extends StatefulWidget {
-  @override
-  _PashtoCourseState createState() => _PashtoCourseState();
-}
-
-class _PashtoCourseState extends State<PashtoCourse> {
-  int _currentIndex = 0;
-
+class PashtoCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,26 +10,67 @@ class _PashtoCourseState extends State<PashtoCourse> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Quran Tafseer 2019'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Selected Surahs'),
-              backgroundColor: Colors.blue),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      body: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            _pashtoCourseList(context),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _pashtoCourseList(BuildContext context) {
+    return GridView.count(
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      childAspectRatio: 1,
+      children: <Widget>[
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Quran Tafseer 2019',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            color: Color(0xffdedbdb),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Selected Surahs',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                Icon(
+                  Icons.access_alarm,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
