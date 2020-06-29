@@ -5,7 +5,6 @@ class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
       appBar: AppBar(
         //AppBar -- Rending a navigation bae with title
         centerTitle: true,

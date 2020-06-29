@@ -13,9 +13,6 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
         child: ListView(children: [
-      DrawerHeader(
-        child: Text('Hello'),
-      ),
       ListTile(
         title: Text(
           'Home',
@@ -63,7 +60,7 @@ class MainDrawer extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Letures()),
+            MaterialPageRoute(builder: (context) => Lectures()),
           );
         },
       ),
