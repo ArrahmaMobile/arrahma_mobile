@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'adv_taleemmul_quran.dart';
 import 'models/course.dart';
 
 class AllCourses extends StatelessWidget {
@@ -16,7 +16,14 @@ class AllCourses extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
-        child: GridView.count(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdvTaleemmulQuran()),
+            );
+          },
+          child: GridView.count(
             crossAxisCount: 3,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
@@ -28,7 +35,9 @@ class AllCourses extends StatelessWidget {
                 title: 'Adv Taleemul Quran',
                 imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
               ),
-            ).map(_buildCourse).toList()),
+            ).map(_buildCourse).toList(),
+          ),
+        ),
       ),
     );
   }

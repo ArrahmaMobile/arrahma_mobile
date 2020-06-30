@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:arrahma_mobile_app/all_courses.dart';
 import 'package:arrahma_mobile_app/grammar.dart';
+import 'package:arrahma_mobile_app/home_page.dart';
 import 'package:arrahma_mobile_app/letures.dart';
 import 'package:arrahma_mobile_app/reading_material.dart';
 import 'package:arrahma_mobile_app/student_corner.dart';
@@ -21,7 +22,12 @@ class MainDrawer extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        },
       ),
       ListTile(
         title: Text(
