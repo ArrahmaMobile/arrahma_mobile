@@ -1,3 +1,4 @@
+import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
 
 class AdvTaleemmulQuran extends StatefulWidget {
@@ -7,6 +8,31 @@ class AdvTaleemmulQuran extends StatefulWidget {
 
 class _AdvTaleemmulQuranState extends State<AdvTaleemmulQuran> {
   int _currentIndex = 2;
+
+  Widget _headingTitle = Container(
+    margin: const EdgeInsets.all(20.0),
+    decoration: BoxDecoration(
+      border: Border(
+        top: BorderSide(color: Colors.black),
+        bottom: BorderSide(color: Colors.black),
+      ),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            'Tafseer',
+            style: TextStyle(
+                color: Color(0xff808080),
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0),
+          ),
+        )
+      ],
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +43,26 @@ class _AdvTaleemmulQuranState extends State<AdvTaleemmulQuran> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(),
+      body: ListView(
+        children: <Widget>[
+          _headingTitle,
+          SizedBox(
+            height: 20.0,
+          ),
+          Text('hello'),
+          DropDownField(
+            controller: juzSlected,
+            hintText: 'Select a Juzs',
+            enabled: true,
+            items: juzs,
+            onValueChanged: (value) {
+              setState(() {
+                selectJuz = value;
+              });
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -52,3 +97,14 @@ class _AdvTaleemmulQuranState extends State<AdvTaleemmulQuran> {
     );
   }
 }
+
+String selectJuz = "";
+
+final juzSlected = TextEditingController();
+
+List<String> juzs = [
+  "juz1",
+  "juz2",
+  "juz3",
+  "juz4",
+];
