@@ -16,9 +16,9 @@ final _arrahmaMapper = JsonObjectMapper(
   ),
   (CustomJsonMapper mapper, Arrahma instance) => <String, dynamic>{
     'logoUrl': mapper.applyFromInstanceConverter(instance.logoUrl),
-    'banners': instance.banners.map((item) => mapper.serializeToMap(item)).toList(),
-    'broadcastLinks': instance.broadcastLinks.map((item) => mapper.serializeToMap(item)).toList(),
-    'courses': instance.courses.map((item) => mapper.serializeToMap(item)).toList(),
+    'banners': instance.banners.map((item) => mapper.serializeToMap<Banner>(item)).toList(),
+    'broadcastLinks': instance.broadcastLinks.map((item) => mapper.serializeToMap<BroadcastLink>(item)).toList(),
+    'courses': instance.courses.map((item) => mapper.serializeToMap<Course>(item)).toList(),
   },
 );
 
@@ -60,7 +60,7 @@ final _courseMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Course instance) => <String, dynamic>{
     'title': mapper.applyFromInstanceConverter(instance.title),
     'imageUrl': mapper.applyFromInstanceConverter(instance.imageUrl),
-    'items': instance.items.map((item) => mapper.serializeToMap(item)).toList(),
+    'items': instance.items.map((item) => mapper.serializeToMap<CourseItem>(item)).toList(),
   },
 );
 

@@ -7,10 +7,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  simple_json_mapper: ^0.2.2
+  simple_json_mapper: ^0.3.0
   scraper:
     path: ../scraper
 
 dev_dependencies:
   build_runner: ^1.10.0
-  simple_json: ^0.2.6
+  simple_json: ^0.3.0
