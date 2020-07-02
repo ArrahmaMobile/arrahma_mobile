@@ -1,5 +1,6 @@
+import 'package:arrahma_mobile_app/taleemmul_quran.dart';
 import 'package:flutter/material.dart';
-import 'adv_taleemmul_quran.dart';
+// import 'adv_taleemmul_quran.dart';
 import 'models/course.dart';
 
 class AllCourses extends StatelessWidget {
@@ -20,7 +21,7 @@ class AllCourses extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AdvTaleemmulQuran()),
+              MaterialPageRoute(builder: (context) => TaleemmulQuran()),
             );
           },
           child: GridView.count(
