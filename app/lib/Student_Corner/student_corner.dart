@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'al_fauz_pdf.dart';
+import 'Al_Fauz_PDF/al_fauz_pdf.dart';
 
 class StudentCorner extends StatelessWidget {
   @override

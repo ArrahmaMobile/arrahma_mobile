@@ -1,15 +1,14 @@
-import 'package:arrahma_mobile_app/pashto_course.dart';
-import 'package:arrahma_mobile_app/quran_tafseer.dart';
-import 'package:arrahma_mobile_app/ramadan_special.dart';
-import 'package:arrahma_mobile_app/special_series.dart';
-import 'package:arrahma_mobile_app/tazkeer.dart';
-import 'package:arrahma_mobile_app/weekly_gems.dart';
-import 'package:arrahma_mobile_app/wirasat_course.dart';
-import 'package:arrahma_mobile_app/youth_course.dart';
 import 'package:flutter/material.dart';
-
-import 'assorted_lectures.dart';
-import 'lectures_on_deaths.dart';
+import 'Assorted_Lectures/assorted_lectures.dart';
+import 'Lectures_on_Death/lectures_on_deaths.dart';
+import 'Pashto_Course/pashto_course.dart';
+import 'Quran_Tafseer/quran_tafseer.dart';
+import 'Ramadan_Speical/ramadan_special.dart';
+import 'Speical_Series/special_series.dart';
+import 'Tazkeer/tazkeer.dart';
+import 'Weekly_Gems/weekly_gems.dart';
+import 'Wirasat_Course/wirasat_course.dart';
+import 'Youth_Course/youth_course.dart';
 
 class Lectures extends StatelessWidget {
   @override
@@ -47,7 +46,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => QuranTafseer()),
+              MaterialPageRoute(
+                builder: (context) => QuranTafseer(),
+              ),
             );
           },
           child: Container(
@@ -73,7 +74,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => YouthCourse()),
+              MaterialPageRoute(
+                builder: (context) => YouthCourse(),
+              ),
             );
           },
           child: Container(
@@ -99,7 +102,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Tazkeer()),
+              MaterialPageRoute(
+                builder: (context) => Tazkeer(),
+              ),
             );
           },
           child: Container(
@@ -125,7 +130,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => WirasatCourse()),
+              MaterialPageRoute(
+                builder: (context) => WirasatCourse(),
+              ),
             );
           },
           child: Container(
@@ -151,7 +158,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => WeeklyGems()),
+              MaterialPageRoute(
+                builder: (context) => WeeklyGems(),
+              ),
             );
           },
           child: Container(
@@ -177,7 +186,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AssortedLectures()),
+              MaterialPageRoute(
+                builder: (context) => AssortedLectures(),
+              ),
             );
           },
           child: Container(
@@ -203,7 +214,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RamadanSpecial()),
+              MaterialPageRoute(
+                builder: (context) => RamadanSpecial(),
+              ),
             );
           },
           child: Container(
@@ -229,7 +242,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SpecialSeries()),
+              MaterialPageRoute(
+                builder: (context) => SpecialSeries(),
+              ),
             );
           },
           child: Container(
@@ -255,7 +270,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PashtoCourse()),
+              MaterialPageRoute(
+                builder: (context) => PashtoCourse(),
+              ),
             );
           },
           child: Container(
@@ -281,7 +298,9 @@ class Lectures extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LecturesOnDeath()),
+              MaterialPageRoute(
+                builder: (context) => LecturesOnDeath(),
+              ),
             );
           },
           child: Container(

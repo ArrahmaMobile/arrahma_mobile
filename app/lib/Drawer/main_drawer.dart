@@ -1,14 +1,14 @@
 import 'dart:ui';
-import 'package:arrahma_mobile_app/all_courses.dart';
-import 'package:arrahma_mobile_app/grammar.dart';
-import 'package:arrahma_mobile_app/home_page.dart';
-import 'package:arrahma_mobile_app/letures.dart';
-import 'package:arrahma_mobile_app/reading_material.dart';
-import 'package:arrahma_mobile_app/student_corner.dart';
-import 'package:arrahma_mobile_app/tajweed.dart';
+import 'package:arrahma_mobile_app/About_Us/about_us.dart';
+import 'package:arrahma_mobile_app/All_Courses/all_courses.dart';
+import 'package:arrahma_mobile_app/Grammer/grammar.dart';
+import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
+import 'package:arrahma_mobile_app/Lectures/letures.dart';
+import 'package:arrahma_mobile_app/Our_Nabi/our_nabi.dart';
+import 'package:arrahma_mobile_app/Reading_Material/reading_material.dart';
+import 'package:arrahma_mobile_app/Student_Corner/student_corner.dart';
+import 'package:arrahma_mobile_app/Tajweed/tajweed.dart';
 import 'package:flutter/material.dart';
-import 'about_us.dart';
-import 'our_nabi.dart';
 
 class MainDrawer extends StatelessWidget {
   @override

@@ -1,8 +1,7 @@
-import 'package:arrahma_mobile_app/riaz_us_saliheen.dart';
-import 'package:arrahma_mobile_app/seerah.dart';
 import 'package:flutter/material.dart';
-
-import 'hadith.dart';
+import 'Hadith/hadith.dart';
+import 'Riaz_us_Saliheen/riaz_us_saliheen.dart';
+import 'Seerah/seerah.dart';
 
 class OurNabi extends StatelessWidget {
   @override

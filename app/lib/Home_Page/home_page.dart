@@ -1,9 +1,8 @@
-import 'package:arrahma_mobile_app/main_drawer.dart';
+import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
+import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'contact_us.dart';
 
 class HomePage extends StatelessWidget {
   @override

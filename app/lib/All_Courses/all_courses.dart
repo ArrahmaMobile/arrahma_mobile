@@ -1,6 +1,5 @@
-import 'package:arrahma_mobile_app/taleemmul_quran.dart';
 import 'package:flutter/material.dart';
-// import 'adv_taleemmul_quran.dart';
+import 'Adv_Taleemul_Quran/taleemmul_quran.dart';
 import 'models/course.dart';
 
 class AllCourses extends StatelessWidget {
