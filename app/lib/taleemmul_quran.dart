@@ -30,41 +30,6 @@ class _TaleemmulQuranState extends State<TaleemmulQuran> {
         length: 2,
         child: Scaffold(
           drawer: MainDrawer(),
-          resizeToAvoidBottomPadding: false,
-          appBar: AppBar(
-            centerTitle: false,
-            title: Text(
-              'Adv Taleemmul Quran',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.star_border),
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TaleemmulQuranFavorite(),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.search),
-                color: Colors.white,
-                onPressed: () {},
-              ),
-            ],
-            bottom: TabBar(tabs: [
-              Tab(
-                text: 'Juz',
-              ),
-              Tab(
-                text: 'Surah',
-              ),
-            ]),
-          ),
           body: _pageSelected[_tabSelected],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _tabSelected,
