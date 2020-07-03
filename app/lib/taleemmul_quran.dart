@@ -1,4 +1,11 @@
+import 'package:arrahma_mobile_app/registration_page.dart';
+import 'package:arrahma_mobile_app/tafseer_page.dart';
+import 'package:arrahma_mobile_app/tajweed_page.dart';
+import 'package:arrahma_mobile_app/taleemmul_quran_favorite.dart';
 import 'package:flutter/material.dart';
+import 'details_page.dart';
+import 'main_drawer.dart';
+import 'tests_page.dart';
 
 class TaleemmulQuran extends StatefulWidget {
   @override
@@ -6,7 +13,15 @@ class TaleemmulQuran extends StatefulWidget {
 }
 
 class _TaleemmulQuranState extends State<TaleemmulQuran> {
-  int _currentIndex = 2;
+  int _tabSelected = 2;
+
+  final _pageSelected = [
+    DetailsPage(),
+    RegistrationPage(),
+    TafseerPage(),
+    TajweedPage(),
+    TestsPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +29,34 @@ class _TaleemmulQuranState extends State<TaleemmulQuran> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
+          drawer: MainDrawer(),
           resizeToAvoidBottomPadding: false,
           appBar: AppBar(
-            centerTitle: true,
+            centerTitle: false,
             title: Text(
               'Adv Taleemmul Quran',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            bottom: TabBar(tabs: <Widget>[
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.star_border),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaleemmulQuranFavorite(),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.search),
+                color: Colors.white,
+                onPressed: () {},
+              ),
+            ],
+            bottom: TabBar(tabs: [
               Tab(
                 text: 'Juz',
               ),
@@ -30,16 +65,9 @@ class _TaleemmulQuranState extends State<TaleemmulQuran> {
               ),
             ]),
           ),
-          body: TabBarView(children: <Widget>[
-            Center(
-              child: Icon(Icons.access_alarms),
-            ),
-            Center(
-              child: Icon(Icons.accessible),
-            )
-          ]),
+          body: _pageSelected[_tabSelected],
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
+            currentIndex: _tabSelected,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
@@ -65,7 +93,7 @@ class _TaleemmulQuranState extends State<TaleemmulQuran> {
             ],
             onTap: (index) {
               setState(() {
-                _currentIndex = index;
+                _tabSelected = index;
               });
             },
           ),
