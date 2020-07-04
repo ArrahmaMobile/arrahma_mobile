@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MediaPlayerScreen extends StatefulWidget {
@@ -23,7 +24,12 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               child: IconButton(
                 iconSize: 40,
                 icon: Icon(Icons.arrow_drop_down),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
               ),
             ),
             SizedBox(height: 20),
