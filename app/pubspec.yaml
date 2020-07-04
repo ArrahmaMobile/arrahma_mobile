@@ -56,6 +56,7 @@ flutter:
     - assets/images/lectures_on_deaths/
     - assets/images/social_media/
     - assets/images/contact_us/
+    - assets/images/media_player/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,9 +1,17 @@
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
-
+import 'Juz_Detail_Page/juz_detail_page.dart';
+import 'Surah_Detail_page/surah_detail_page.dart';
 import 'taleemmul_quran_favorite.dart';
 
-class TafseerPage extends StatelessWidget {
+class TafseerPage extends StatefulWidget {
+  @override
+  _TafseerPageState createState() => _TafseerPageState();
+}
+
+bool _isFav = false;
+
+class _TafseerPageState extends State<TafseerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,12 +72,23 @@ class TafseerPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         IconButton(
-                          icon: Icon(Icons.star_border),
-                          onPressed: () {},
+                          icon: Icon(_isFav ? Icons.star : Icons.star_border),
+                          onPressed: () {
+                            setState(() {
+                              _isFav = !_isFav;
+                            });
+                          },
                         ),
                       ],
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JuzDetailPage(),
+                        ),
+                      );
+                    },
                   ),
                   separatorBuilder: (_, __) => const Divider(thickness: 2),
                 ),
@@ -93,7 +112,14 @@ class TafseerPage extends StatelessWidget {
                     title: const Text('Surah Al-Fatiha  الفاتحۃ'),
                     subtitle: const Text('Lesson 1: Ayah 1-3'),
                     trailing: Icon(Icons.star_border),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SurahDetailPage(),
+                        ),
+                      );
+                    },
                   ),
                   separatorBuilder: (_, __) => const Divider(thickness: 2),
                 ),

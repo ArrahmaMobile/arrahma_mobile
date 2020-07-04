@@ -1,10 +1,11 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/registration_page.dart';
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/tafseer_page.dart';
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/tajweed_page.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
-import 'details_page.dart';
-import 'tests_page.dart';
+
+import 'Detail_Tab/details_page.dart';
+import 'Registration_Tab/registration_page.dart';
+import 'Tafseer_Tab/tafseer_page.dart';
+import 'Tajweed_Tab/tajweed_page.dart';
+import 'Tests_Tab/tests_page.dart';
 
 class TaleemmulQuran extends StatefulWidget {
   @override
