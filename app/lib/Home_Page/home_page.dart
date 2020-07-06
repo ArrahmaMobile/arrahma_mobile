@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Text(
                     'Talemul Quran - Lesson name',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   Row(
                     children: <Widget>[
