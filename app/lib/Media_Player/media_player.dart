@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 class MediaPlayerScreen extends StatefulWidget {
@@ -75,20 +76,23 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.fast_rewind),
                   onPressed: () {},
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Icon(_isPlaying ? Icons.play_arrow : Icons.pause),
+                  icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
                   onPressed: () {
-                    setState(() {
-                      _isPlaying = !_isPlaying;
-                    });
+                    onPlayAudio();
+                    setState(
+                      () {
+                        _isPlaying = !_isPlaying;
+                      },
+                    );
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward),
+                  icon: Icon(Icons.fast_forward),
                   onPressed: () {},
                 ),
               ],
@@ -98,4 +102,13 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
       ),
     );
   }
+}
+
+void onPlayAudio() async {
+  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  assetsAudioPlayer.open(
+    Audio(
+      'assets/audio/introduction.mp3',
+    ),
+  );
 }

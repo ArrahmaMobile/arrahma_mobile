@@ -26,6 +26,7 @@ dependencies:
 
   carousel_slider: ^2.2.1
   url_launcher:
+  assets_audio_player: ^2.0.7+8
 
 
 
@@ -57,6 +58,7 @@ flutter:
     - assets/images/social_media/
     - assets/images/contact_us/
     - assets/images/media_player/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,10 +1,19 @@
 import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+bool _isPlaying = false;
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +35,59 @@ class HomePage extends StatelessWidget {
             _broadcast(),
             Spacer(),
             _socialMedia(context),
+            const SizedBox(height: 15),
+            SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.black, width: 2),
+                ),
+              ),
+            ),
+            GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Talemul Quran - Lesson name',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        iconSize: 40,
+                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                        onPressed: () {
+                          onPlayAudio();
+                          setState(
+                            () {
+                              _isPlaying = !_isPlaying;
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MediaPlayerScreen()),
+                );
+              },
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  void onPlayAudio() async {
+    AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+    assetsAudioPlayer.open(
+      Audio(
+        'assets/audio/introduction.mp3',
       ),
     );
   }

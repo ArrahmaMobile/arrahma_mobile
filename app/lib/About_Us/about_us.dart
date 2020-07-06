@@ -1,6 +1,15 @@
+import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
-class AboutUs extends StatelessWidget {
+class AboutUs extends StatefulWidget {
+  @override
+  _AboutUsState createState() => _AboutUsState();
+}
+
+bool _isPlaying = false;
+
+class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,11 +99,63 @@ class AboutUs extends StatelessWidget {
                     "softening their hearts. Quran is taught in such a way that it becomes easy for anyone joining at"
                     "any stage of the journey. Tafseer course specially aims on ultimately developing the deepest love"
                     "for The Almighty, who is truly the one worthy of being loved"),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Colors.black, width: 2),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Talemul Quran - Lesson name',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            iconSize: 40,
+                            icon: Icon(
+                                _isPlaying ? Icons.pause : Icons.play_arrow),
+                            onPressed: () {
+                              onPlayAudio();
+                              setState(
+                                () {
+                                  _isPlaying = !_isPlaying;
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MediaPlayerScreen()),
+                    );
+                  },
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void onPlayAudio() async {
+    AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+    assetsAudioPlayer.open(
+      Audio(
+        'assets/audio/introduction.mp3',
       ),
     );
   }

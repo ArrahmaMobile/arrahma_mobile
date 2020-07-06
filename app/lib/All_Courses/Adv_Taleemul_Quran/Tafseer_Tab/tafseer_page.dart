@@ -1,6 +1,6 @@
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
 import 'package:flutter/material.dart';
-import 'Juz_Detail_Page/juz_detail_page.dart';
 import 'Surah_Detail_page/surah_detail_page.dart';
 import 'taleemmul_quran_favorite.dart';
 
@@ -85,7 +85,7 @@ class _TafseerPageState extends State<TafseerPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => JuzDetailPage(),
+                          builder: (context) => MediaPlayerScreen(),
                         ),
                       );
                     },
