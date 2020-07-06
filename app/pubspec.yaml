@@ -59,6 +59,7 @@ flutter:
     - assets/images/contact_us/
     - assets/images/media_player/
     - assets/audio/
+    - assets/images/social_media_share/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

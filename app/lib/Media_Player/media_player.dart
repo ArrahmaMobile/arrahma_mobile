@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
+import 'package:arrahma_mobile_app/Media_Player/share.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               min: 0,
             ),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,6 +98,22 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 ),
               ],
             ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Share(),
+                        ),
+                      );
+                    }),
+              ],
+            )
           ],
         )),
       ),
