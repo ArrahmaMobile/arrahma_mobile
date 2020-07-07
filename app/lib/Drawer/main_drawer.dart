@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:arrahma_mobile_app/About_Us/about_us.dart';
 import 'package:arrahma_mobile_app/All_Courses/all_courses.dart';
+import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/Grammer/grammar.dart';
 import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
 import 'package:arrahma_mobile_app/Lectures/letures.dart';
@@ -153,6 +154,20 @@ class MainDrawer extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MediaPlayerScreen()),
+          );
+        },
+      ),
+      ListTile(
+        title: Text(
+          'Contact Us',
+          style: new TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ContactUs()),
           );
         },
       ),

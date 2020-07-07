@@ -14,6 +14,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF212121),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -26,6 +27,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               child: IconButton(
                 iconSize: 40,
                 icon: Icon(Icons.arrow_drop_down),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -61,7 +63,10 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
             SizedBox(height: 50),
             Text(
               'Now Playing: Tafseer - "Lesson Name"',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.white),
             ),
             SizedBox(height: 25),
             Slider(
@@ -77,12 +82,18 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.fast_rewind),
+                  icon: Icon(
+                    Icons.fast_rewind,
+                    color: Colors.white,
+                  ),
                   onPressed: () {},
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                  icon: Icon(
+                    _isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     onPlayAudio();
                     setState(
@@ -93,7 +104,10 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.fast_forward),
+                  icon: Icon(
+                    Icons.fast_forward,
+                    color: Colors.white,
+                  ),
                   onPressed: () {},
                 ),
               ],
@@ -103,7 +117,10 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 IconButton(
-                    icon: Icon(Icons.share),
+                    icon: Icon(
+                      Icons.file_upload,
+                      color: Colors.white,
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,

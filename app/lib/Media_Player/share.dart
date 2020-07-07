@@ -103,13 +103,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -135,13 +135,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -167,13 +167,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -199,13 +199,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -231,13 +231,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -263,13 +263,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -287,6 +287,7 @@ class _ShareState extends State<Share> {
                       child: Image.asset(
                         'assets/images/social_media_share/copy_link.png',
                         height: 25,
+                        color: Colors.grey,
                       ),
                     ),
                     Text(
@@ -295,13 +296,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -328,13 +329,13 @@ class _ShareState extends State<Share> {
                     ),
                     Row(
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 30,
-                          icon: Icon(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
                             Icons.keyboard_arrow_right,
                             color: Colors.white,
+                            size: 30,
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
