@@ -128,11 +128,11 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                           builder: (context) => Share(),
                         ),
                       );
-                    }),
+                    },),
               ],
-            )
+            ),
           ],
-        )),
+        ),),
       ),
     );
   }

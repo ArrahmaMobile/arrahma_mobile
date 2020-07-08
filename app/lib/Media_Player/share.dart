@@ -90,28 +90,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/message.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Messages',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/message.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Messages',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -122,28 +123,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/facebook.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Facebook',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/facebook.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Facebook',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -154,28 +156,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/snapchat.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Snapchat',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/snapchat.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Snapchat',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -186,28 +189,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/twitter.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Twitter',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/twitter.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Twitter',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -218,28 +222,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/whatsapp.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Whatsapp',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/whatsapp.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Whatsapp',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -250,28 +255,29 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/instagram.png',
-                        height: 25,
-                      ),
-                    ),
-                    Text(
-                      'Instagram',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/instagram.png',
+                            height: 25,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Instagram',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -282,29 +288,30 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/copy_link.png',
-                        height: 25,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      'Copy Link',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/copy_link.png',
+                            height: 25,
+                            color: Colors.grey,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'Copy Link',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -315,29 +322,30 @@ class _ShareState extends State<Share> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Image.asset(
-                        'assets/images/social_media_share/three_dots.png',
-                        height: 25,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      'More',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            'assets/images/social_media_share/three_dots.png',
+                            height: 25,
+                            color: Colors.grey,
                           ),
                         ),
+                        SizedBox(width: 15),
+                        Text(
+                          'More',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
