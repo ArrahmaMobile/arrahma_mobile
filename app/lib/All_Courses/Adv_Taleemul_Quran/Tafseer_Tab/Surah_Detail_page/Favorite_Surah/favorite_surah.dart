@@ -6,25 +6,51 @@ class FavoriteSurah extends StatefulWidget {
 }
 
 class _FavoriteSurahState extends State<FavoriteSurah> {
+  bool _isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Favorite Surah',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              color: Colors.white,
-              onPressed: () {},
-            ),
-          ],
-        ),
+        appBar: !_isSearching
+            ? AppBar(
+                centerTitle: true,
+                title: Text(
+                  'Favorite Surah',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = true;
+                      });
+                    },
+                  ),
+                ],
+              )
+            : AppBar(
+                title: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Colors.white)),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = false;
+                      });
+                    },
+                  ),
+                ],
+              ),
         body: TabBarView(
           children: [
             Column(

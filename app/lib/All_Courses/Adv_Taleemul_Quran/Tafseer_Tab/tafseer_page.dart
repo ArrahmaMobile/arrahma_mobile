@@ -8,41 +8,66 @@ class TafseerPage extends StatefulWidget {
   _TafseerPageState createState() => _TafseerPageState();
 }
 
-bool _isFav = false;
-
 class _TafseerPageState extends State<TafseerPage> {
+  bool _isFav = false;
+  bool _isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        drawer: MainDrawer(),
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text(
-            'Adv Taleemmul Quran',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.star_border),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FavoriteSurah(),
+        drawer: !_isSearching ? MainDrawer() : null,
+        appBar: !_isSearching
+            ? AppBar(
+                centerTitle: false,
+                title: Text(
+                  'Adv Taleemmul Quran',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.star_border),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FavoriteSurah(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.search),
-              color: Colors.white,
-              onPressed: () {},
-            ),
-          ],
-        ),
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = true;
+                      });
+                    },
+                  ),
+                ],
+              )
+            : AppBar(
+                title: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Colors.white)),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = false;
+                      });
+                    },
+                  ),
+                ],
+              ),
         body: TabBarView(
           children: [
             Column(

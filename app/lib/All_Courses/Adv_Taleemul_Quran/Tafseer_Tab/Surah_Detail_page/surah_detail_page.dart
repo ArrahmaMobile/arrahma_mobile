@@ -8,40 +8,65 @@ class SurahDetailPage extends StatefulWidget {
   _SurahDetailPageState createState() => _SurahDetailPageState();
 }
 
-bool _isFav = false;
-
 class _SurahDetailPageState extends State<SurahDetailPage> {
+  bool _isFav = false;
+  bool _isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Surah Detail',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.star_border),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FavoriteJuz(),
+        appBar: !_isSearching
+            ? AppBar(
+                centerTitle: true,
+                title: Text(
+                  'Surah Detail',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.star_border),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FavoriteJuz(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.search),
-              color: Colors.white,
-              onPressed: () {},
-            ),
-          ],
-        ),
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = true;
+                      });
+                    },
+                  ),
+                ],
+              )
+            : AppBar(
+                title: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Colors.white)),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = false;
+                      });
+                    },
+                  ),
+                ],
+              ),
         body: TabBarView(
           children: [
             Column(
@@ -74,11 +99,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => JuzDetailPage(),
-                          ),
+                        Navigator.of(context).push(
+                          _juzRouteAnimation(),
                         );
                       },
                     ),
@@ -90,6 +112,25 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Route _juzRouteAnimation() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => JuzDetailPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

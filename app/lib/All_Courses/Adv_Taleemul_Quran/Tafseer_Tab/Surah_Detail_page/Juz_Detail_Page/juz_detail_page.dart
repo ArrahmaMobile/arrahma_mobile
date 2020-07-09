@@ -86,11 +86,20 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.access_alarms),
+                          color: Colors.grey,
+                          onPressed: () {},
+                        )
+                      ],
+                    )
                   ],
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,11 +123,20 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.access_alarms),
+                          color: Colors.grey,
+                          onPressed: () {},
+                        )
+                      ],
+                    )
                   ],
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,11 +160,25 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.access_alarms),
+                          color: Colors.grey,
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.access_alarms),
+                          color: Colors.grey,
+                          onPressed: () {},
+                        )
+                      ],
+                    )
                   ],
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,6 +202,15 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.access_alarms),
+                          color: Colors.grey,
+                          onPressed: () {},
+                        )
+                      ],
+                    )
                   ],
                 ),
                 onTap: () {},
