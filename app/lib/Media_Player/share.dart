@@ -161,39 +161,6 @@ class _ShareState extends State<Share> {
                         Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Image.asset(
-                            'assets/images/social_media_share/snapchat.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Snapchat',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {},
-              ),
-              SizedBox(height: 5),
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Image.asset(
                             'assets/images/social_media_share/twitter.png',
                             height: 25,
                           ),
