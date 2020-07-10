@@ -1,14 +1,12 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Favorite_Juz/favorite_juz.dart';
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/juz_detail_page.dart';
-import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/Lesson_Detail_Page/lesson_detail_page.dart';
 import 'package:flutter/material.dart';
 
-class TafseerPage extends StatefulWidget {
+class SurahDetailPage extends StatefulWidget {
   @override
-  _TafseerPageState createState() => _TafseerPageState();
+  _SurahDetailPageState createState() => _SurahDetailPageState();
 }
 
-class _TafseerPageState extends State<TafseerPage> {
+class _SurahDetailPageState extends State<SurahDetailPage> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -17,26 +15,18 @@ class _TafseerPageState extends State<TafseerPage> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        drawer: !_isSearching ? MainDrawer() : null,
         appBar: !_isSearching
             ? AppBar(
-                centerTitle: false,
+                centerTitle: true,
                 title: Text(
-                  'Adv Taleemmul Quran',
+                  'Lessons',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
                     color: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FavoriteJuz(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
@@ -87,16 +77,17 @@ class _TafseerPageState extends State<TafseerPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: const Text(
-                    "Continue to last Juz",
+                    "Continue to last Lesson",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: 30,
+                    itemCount: 5,
                     itemBuilder: (_, index) => ListTile(
                       leading: Icon(Icons.branding_watermark),
-                      title: const Text('Juz 1    الم'),
+                      title: const Text('Lesson 1:'),
+                      subtitle: const Text('Ayah 1-3'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -111,8 +102,11 @@ class _TafseerPageState extends State<TafseerPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.of(context).push(
-                          _surahRouteAnimation(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonDetailPage(),
+                          ),
                         );
                       },
                     ),
@@ -124,25 +118,6 @@ class _TafseerPageState extends State<TafseerPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Route _surahRouteAnimation() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => JuzDetailPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class JuzDetailPage extends StatefulWidget {
+class LessonDetailPage extends StatefulWidget {
   @override
-  _JuzDetailPageState createState() => _JuzDetailPageState();
+  _LessonDetailPageState createState() => _LessonDetailPageState();
 }
 
-class _JuzDetailPageState extends State<JuzDetailPage> {
+class _LessonDetailPageState extends State<LessonDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

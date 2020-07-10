@@ -1,14 +1,13 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Surah_Detail_page/Juz_Detail_Page/juz_detail_page.dart';
+import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/Favorite_Surah/favorite_surah.dart';
 import 'package:flutter/material.dart';
+import 'Surah_Detail_Page/surah_detail_page.dart';
 
-import 'Favorite_Juz/favorite_juz.dart';
-
-class SurahDetailPage extends StatefulWidget {
+class JuzDetailPage extends StatefulWidget {
   @override
-  _SurahDetailPageState createState() => _SurahDetailPageState();
+  _JuzDetailPageState createState() => _JuzDetailPageState();
 }
 
-class _SurahDetailPageState extends State<SurahDetailPage> {
+class _JuzDetailPageState extends State<JuzDetailPage> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -32,7 +31,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FavoriteJuz(),
+                          builder: (context) => FavoriteSurah(),
                         ),
                       );
                     },
@@ -86,7 +85,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: const Text(
-                    "Continue to last Juz",
+                    "Continue to last Surah'",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -95,8 +94,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                     itemCount: 5,
                     itemBuilder: (_, index) => ListTile(
                       leading: Icon(Icons.branding_watermark),
-                      title: const Text('Juz 1    الم'),
-                      subtitle: const Text('Lesson 1: Ayah 1-3 '),
+                      title: const Text('Surah Al-Fatiha  الفاتحۃ'),
+                      subtitle: const Text('The Opening'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -111,8 +110,11 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.of(context).push(
-                          _juzRouteAnimation(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SurahDetailPage(),
+                          ),
                         );
                       },
                     ),
@@ -124,25 +126,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Route _juzRouteAnimation() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => JuzDetailPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }

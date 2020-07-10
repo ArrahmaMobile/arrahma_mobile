@@ -73,7 +73,6 @@ class _FavoriteJuzState extends State<FavoriteJuz> {
                     itemBuilder: (_, index) => ListTile(
                       leading: Icon(Icons.branding_watermark),
                       title: const Text('Juz 1    الم'),
-                      subtitle: const Text('Lesson 1: Ayah 1-3 '),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                       ),
