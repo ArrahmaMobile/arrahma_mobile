@@ -33,11 +33,23 @@ class _FavoriteSurahState extends State<FavoriteSurah> {
                 ],
               )
             : AppBar(
-                title: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Colors.white)),
+                title: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(22.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: TextField(
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                          hintText: 'Search',
+                          hintStyle: TextStyle(color: Colors.black)),
+                    ),
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(
