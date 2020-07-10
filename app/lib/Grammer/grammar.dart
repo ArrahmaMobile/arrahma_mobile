@@ -74,9 +74,6 @@ class Grammer extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () {},
-        ),
       ],
     );
   }

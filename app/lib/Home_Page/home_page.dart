@@ -1,5 +1,8 @@
 import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/Home_Page/models/broadcast_item.dart';
+import 'package:arrahma_mobile_app/Home_Page/models/heading_banner.dart';
+import 'package:arrahma_mobile_app/Home_Page/models/social_media_item.dart';
 import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -30,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            _buildBanner(),
+            _buildBanners(),
             const SizedBox(height: 15),
             _broadcast(),
             Spacer(),
@@ -92,79 +95,68 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBanner() {
+  final _banners = [
+    HeadingBanner(
+      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
+      linkUrl: 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3',
+    ),
+    HeadingBanner(
+      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
+      linkUrl: 'http://www.arrahma.org/tazkeer_n/tazkeer.php',
+    ),
+    HeadingBanner(
+      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
+      linkUrl:
+          'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3',
+    ),
+  ];
+
+  Widget _buildBanners() {
     return CarouselIndicator(
-      items: [
-        GestureDetector(
-            onTap: _latestFridayLecture,
-            child: Image.asset(
-                'assets/images/home_page_images/front_page_banner1.jpg')),
-        GestureDetector(
-            onTap: _launchTazkeer,
-            child: Image.asset(
-                'assets/images/home_page_images/front_page_banner2.jpg')),
-        GestureDetector(
-            onTap: _launchShawaal,
-            child: Image.asset(
-                'assets/images/home_page_images/front_page_banner3.jpg')),
-      ],
+      items: _banners
+          .map((banner) => _buildImageLink(banner.linkUrl, banner.imageUrl))
+          .toList(),
     );
   }
 
-  _latestFridayLecture() async {
-    const url = 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchTazkeer() async {
-    const url = 'http://www.arrahma.org/tazkeer_n/tazkeer.php';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchShawaal() async {
-    const url =
-        'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  final _broadcasts = [
+    BroadcastItem(
+      imageUrl: 'assets/images/home_page_images/facebook.png',
+      linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute/',
+    ),
+    BroadcastItem(
+      imageUrl: 'assets/images/home_page_images/mixlr_logo.png',
+      linkUrl: 'https://mixlr.com/arrahma-live/',
+    ),
+    BroadcastItem(
+      imageUrl: 'assets/images/home_page_images/youtube.png',
+      linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+    ),
+    BroadcastItem(
+      imageUrl: 'assets/images/home_page_images/contact_information.png',
+      linkUrl: 'tel:+1 712 432 1001#491760789',
+    ),
+  ];
 
   Widget _broadcast() {
     return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      childAspectRatio: 2.3,
-      children: <Widget>[
-        GestureDetector(
-            onTap: _launchFacebook,
-            child: Image.asset('assets/images/home_page_images/facebook.png')),
-        GestureDetector(
-            onTap: _launchMixlr,
-            child:
-                Image.asset('assets/images/home_page_images/mixlr_logo.png')),
-        GestureDetector(
-            onTap: _launchPhone,
-            child: Image.asset(
-                'assets/images/home_page_images/contact_information.png')),
-        GestureDetector(
-            onTap: _launchYoutube,
-            child: Image.asset('assets/images/home_page_images/youtube.png')),
-      ],
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        childAspectRatio: 2.3,
+        children: _broadcasts
+            .map((broadcast) =>
+                _buildImageLink(broadcast.linkUrl, broadcast.imageUrl))
+            .toList());
+  }
+
+  Widget _buildImageLink(String linkUrl, String imageUrl) {
+    return GestureDetector(
+      onTap: () => _launchLink(linkUrl),
+      child: Image.asset(imageUrl),
     );
   }
 
-  _launchMixlr() async {
-    const url = 'https://mixlr.com/arrahma-live/';
+  _launchLink(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -172,32 +164,28 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _launchFacebook() async {
-    const url = 'https://www.facebook.com/arrahmah.islamic.institute/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchYoutube() async {
-    const url = 'https://www.youtube.com/c/arrahmahislamicinstitute';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchPhone() async {
-    const url = 'tel:+1 712 432 1001#491760789';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  final _socialMediaList = [
+    SocialMediaItem(
+      imageUrl: 'assets/images/social_media/youtube.png',
+      linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+    ),
+    SocialMediaItem(
+      imageUrl: 'assets/images/social_media/facebook.png',
+      linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute',
+    ),
+    SocialMediaItem(
+      imageUrl: 'assets/images/social_media/whatsapp.png',
+      linkUrl: 'http://arrahma.org/images/whatsapp.png',
+    ),
+    SocialMediaItem(
+      imageUrl: 'assets/images/social_media/twitter.png',
+      linkUrl: 'https://twitter.com/ArrahmahIslamic',
+    ),
+    SocialMediaItem(
+      imageUrl: 'assets/images/social_media/instagram.png',
+      linkUrl: 'https://www.instagram.com/arrahmah_islamic_institute',
+    ),
+  ];
 
   Widget _socialMedia(context) {
     return GridView.count(
@@ -205,21 +193,10 @@ class _HomePageState extends State<HomePage> {
       shrinkWrap: true,
       childAspectRatio: 1.5,
       children: <Widget>[
-        GestureDetector(
-            onTap: _youtube,
-            child: Image.asset('assets/images/social_media/youtube.png')),
-        GestureDetector(
-            onTap: _facebook,
-            child: Image.asset('assets/images/social_media/facebook.png')),
-        GestureDetector(
-            onTap: _whatsapp,
-            child: Image.asset('assets/images/social_media/whatsapp.png')),
-        GestureDetector(
-            onTap: _twitter,
-            child: Image.asset('assets/images/social_media/twitter.png')),
-        GestureDetector(
-            onTap: _instagram,
-            child: Image.asset('assets/images/social_media/instagram.png')),
+        ..._socialMediaList
+            .map((socialMedia) =>
+                _buildImageLink(socialMedia.linkUrl, socialMedia.imageUrl))
+            .toList(),
         GestureDetector(
             onTap: () {
               Navigator.push(
@@ -230,50 +207,5 @@ class _HomePageState extends State<HomePage> {
             child: Image.asset('assets/images/home_page_images/contact.png')),
       ],
     );
-  }
-
-  _youtube() async {
-    const url = 'https://www.youtube.com/c/arrahmahislamicinstitute';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _facebook() async {
-    const url = 'https://www.facebook.com/arrahmah.islamic.institute/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _whatsapp() async {
-    const url = 'http://arrahma.org/images/whatsapp.png';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _twitter() async {
-    const url = 'https://twitter.com/ArrahmahIslamic';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _instagram() async {
-    const url = 'https://www.instagram.com/arrahmah_islamic_institute/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }
