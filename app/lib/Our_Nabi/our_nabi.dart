@@ -56,10 +56,7 @@ class OurNabi extends StatelessWidget {
   Widget _buildOurNabiItem(context, OurNabiItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Hadith()),
-        );
+        Navigator.pushNamed(context, '/hadith');
       },
       child: Container(
         color: Color(0xffdedbdb),

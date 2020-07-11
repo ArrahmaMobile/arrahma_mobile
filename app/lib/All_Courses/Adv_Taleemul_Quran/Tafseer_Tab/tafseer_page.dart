@@ -1,4 +1,3 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Favorite_Juz/favorite_juz.dart';
 import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/juz_detail_page.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +29,7 @@ class _TafseerPageState extends State<TafseerPage> {
                     icon: Icon(Icons.star_border),
                     color: Colors.white,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FavoriteJuz(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/favorite_juz');
                     },
                   ),
                   IconButton(

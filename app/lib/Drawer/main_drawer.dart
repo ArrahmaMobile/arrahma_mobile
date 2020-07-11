@@ -25,10 +25,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
+          Navigator.pushNamed(context, '/home');
         },
       ),
       ListTile(
@@ -39,10 +36,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AboutUs()),
-          );
+          Navigator.pushNamed(context, '/about_us');
         },
       ),
       ListTile(
@@ -53,10 +47,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AllCourses()),
-          );
+          Navigator.pushNamed(context, '/all_courses');
         },
       ),
       ListTile(
@@ -67,24 +58,18 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Lectures()),
-          );
+          Navigator.pushNamed(context, '/lectures');
         },
       ),
       ListTile(
         title: Text(
-          'Grammar',
+          'Grammer',
           style: new TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Grammer()),
-          );
+          Navigator.pushNamed(context, '/grammer');
         },
       ),
       ListTile(
@@ -95,10 +80,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Tajweed()),
-          );
+          Navigator.pushNamed(context, '/tajweed');
         },
       ),
       ListTile(
@@ -109,10 +91,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OurNabi()),
-          );
+          Navigator.pushNamed(context, '/our_nabi');
         },
       ),
       ListTile(
@@ -123,10 +102,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => StudentCorner()),
-          );
+          Navigator.pushNamed(context, '/student_corner');
         },
       ),
       ListTile(
@@ -137,10 +113,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ReadingMaterial()),
-          );
+          Navigator.pushNamed(context, '/reading_material');
         },
       ),
       ListTile(
@@ -151,10 +124,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MediaPlayerScreen()),
-          );
+          Navigator.pushNamed(context, '/media_player_screen');
         },
       ),
       ListTile(
@@ -165,10 +135,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ContactUs()),
-          );
+          Navigator.pushNamed(context, '/contact_us');
         },
       ),
     ]));

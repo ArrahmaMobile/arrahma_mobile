@@ -1,6 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/Favorite_Surah/favorite_surah.dart';
 import 'package:flutter/material.dart';
-import 'Surah_Detail_Page/surah_detail_page.dart';
 
 class JuzDetailPage extends StatefulWidget {
   @override
@@ -28,12 +26,7 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                     icon: Icon(Icons.star_border),
                     color: Colors.white,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FavoriteSurah(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/favorite_surah');
                     },
                   ),
                   IconButton(
@@ -110,12 +103,7 @@ class _JuzDetailPageState extends State<JuzDetailPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SurahDetailPage(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/media_player_screen');
                       },
                     ),
                     separatorBuilder: (_, __) => const Divider(thickness: 2),

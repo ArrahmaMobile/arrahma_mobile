@@ -102,12 +102,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonDetailPage(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/lesson_detail_page');
                       },
                     ),
                     separatorBuilder: (_, __) => const Divider(thickness: 2),

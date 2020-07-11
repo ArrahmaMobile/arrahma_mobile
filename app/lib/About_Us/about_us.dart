@@ -136,11 +136,7 @@ class _AboutUsState extends State<AboutUs> {
                     ],
                   ),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MediaPlayerScreen()),
-                    );
+                    Navigator.pushNamed(context, '/media_player_screen');
                   },
                 ),
               ],

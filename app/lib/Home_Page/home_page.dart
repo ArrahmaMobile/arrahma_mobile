@@ -74,10 +74,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MediaPlayerScreen()),
-                );
+                Navigator.pushNamed(context, '/media_player_screen');
               },
             ),
           ],
@@ -199,10 +196,7 @@ class _HomePageState extends State<HomePage> {
             .toList(),
         GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContactUs()),
-              );
+              Navigator.pushNamed(context, '/contact_us');
             },
             child: Image.asset('assets/images/home_page_images/contact.png')),
       ],

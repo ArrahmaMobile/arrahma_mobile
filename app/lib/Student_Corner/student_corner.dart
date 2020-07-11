@@ -82,12 +82,7 @@ class StudentCorner extends StatelessWidget {
   Widget _buildStudentCornerList(context, StudentCornerItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AlFauzPDF(),
-          ),
-        );
+        Navigator.pushNamed(context, '/fauz_pdf');
       },
       child: Container(
         color: Color(0xffdedbdb),

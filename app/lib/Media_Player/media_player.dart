@@ -1,5 +1,4 @@
 import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
-import 'package:arrahma_mobile_app/Media_Player/share.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +28,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   icon: Icon(Icons.arrow_drop_down),
                   color: Colors.white,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
+                    Navigator.pushNamed(context, '/home');
                   },
                 ),
               ),
@@ -122,12 +118,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Share(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/share');
                     },
                   ),
                 ],
