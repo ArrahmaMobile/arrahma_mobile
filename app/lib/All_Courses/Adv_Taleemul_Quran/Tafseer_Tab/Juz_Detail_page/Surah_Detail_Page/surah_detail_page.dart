@@ -1,4 +1,3 @@
-import 'package:arrahma_mobile_app/All_Courses/Adv_Taleemul_Quran/Tafseer_Tab/Juz_Detail_page/Lesson_Detail_Page/lesson_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SurahDetailPage extends StatefulWidget {

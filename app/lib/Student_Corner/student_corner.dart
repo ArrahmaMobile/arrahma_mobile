@@ -1,8 +1,6 @@
 import 'package:arrahma_mobile_app/Student_Corner/models/student_corner.dart';
 import 'package:flutter/material.dart';
 
-import 'Al_Fauz_PDF/al_fauz_pdf.dart';
-
 class StudentCorner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

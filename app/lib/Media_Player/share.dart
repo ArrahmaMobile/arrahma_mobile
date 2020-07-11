@@ -1,4 +1,3 @@
-import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
 import 'package:flutter/material.dart';
 
 class Share extends StatefulWidget {

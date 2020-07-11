@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Hadith/hadith.dart';
 import 'model/our_nabi.dart';
 
 class OurNabi extends StatelessWidget {
