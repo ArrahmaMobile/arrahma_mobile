@@ -1,6 +1,5 @@
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
-
 import 'Detail_Tab/details_page.dart';
 import 'Registration_Tab/registration_page.dart';
 import 'Tafseer_Tab/tafseer_page.dart';
@@ -20,7 +19,7 @@ class _TaleemmulQuranState extends State<TaleemmulQuran> {
     RegistrationPage(),
     TafseerPage(),
     TajweedPage(),
-    TestsPage()
+    TestsPage(),
   ];
 
   @override

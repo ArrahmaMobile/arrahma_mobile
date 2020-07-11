@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Adv_Taleemul_Quran/taleemmul_quran.dart';
 import 'models/course.dart';
 
 class AllCourses extends StatelessWidget {
@@ -16,21 +15,14 @@ class AllCourses extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TaleemmulQuran()),
-            );
-          },
-          child: GridView.count(
-            crossAxisCount: 3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            shrinkWrap: true,
-            childAspectRatio: .90,
-            children: _courses.map((course) => _buildCourse(course)).toList(),
-          ),
+        child: GridView.count(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          shrinkWrap: true,
+          childAspectRatio: .90,
+          children:
+              _courses.map((course) => _buildCourse(context, course)).toList(),
         ),
       ),
     );
@@ -39,41 +31,55 @@ class AllCourses extends StatelessWidget {
   final _courses = [
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
     Course(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+        pageRoute: '/taleemmul-quran'),
   ];
 
-  Widget _buildCourse(Course course) {
+  Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, course.pageRoute);
+      },
       child: Column(
         children: <Widget>[
           Image.asset(

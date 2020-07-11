@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'models/grammer.dart';
 
 class Grammer extends StatelessWidget {
@@ -30,6 +29,7 @@ class Grammer extends StatelessWidget {
     GrammerItem(
       title: 'Basic Grammar',
       icon: Icons.access_alarm,
+      pageRoute: '',
     ),
     GrammerItem(
       title: 'Arabic',
@@ -44,13 +44,17 @@ class Grammer extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.9,
-      children: _grammer.map((course) => _buildGrammerItem(course)).toList(),
+      children: _grammer
+          .map((course) => _buildGrammerItem(course, course.pageRoute))
+          .toList(),
     );
   }
 
-  Widget _buildGrammerItem(GrammerItem item) {
+  Widget _buildGrammerItem(item, pageRoute) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(item, item.pageRoute);
+      },
       child: Container(
         color: Color(0xffdedbdb),
         child: Column(

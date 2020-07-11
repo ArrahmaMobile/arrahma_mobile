@@ -47,58 +47,58 @@ class Lectures extends StatelessWidget {
       shrinkWrap: true,
       childAspectRatio: 1.9,
       children:
-          _lectures.map((lecture) => _buildLeture(context, lecture)).toList(),
+          _lectures.map((lecture) => _buildLecture(context, lecture)).toList(),
     );
   }
 
   final _lectures = [
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
-    Leture(
+    Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
     ),
   ];
 
-  Widget _buildLeture(BuildContext context, Leture lecture) {
+  Widget _buildLecture(BuildContext context, Lecture lecture) {
     return GestureDetector(
       onTap: () {},
       child: Container(
