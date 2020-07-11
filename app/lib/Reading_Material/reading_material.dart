@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'model/reading_material.dart';
+
 class ReadingMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,128 +33,60 @@ class ReadingMaterial extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.3,
-      children: <Widget>[
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Dua',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+      children: _readingMaterialItem
+          .map(
+            (item) => _buildReadingMaterial(item),
+          )
+          .toList(),
+    );
+  }
+
+  final _readingMaterialItem = [
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+    ReadingMaterialItem(
+      title: 'Dua',
+      icon: Icons.access_alarm,
+    ),
+  ];
+
+  Widget _buildReadingMaterial(item) {
+    return GestureDetector(
+      child: Container(
+        color: Color(0xffdedbdb),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
             ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Juz Translation',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+            Icon(
+              item.icon,
+              size: 50,
             ),
-          ),
+          ],
         ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Quran Dictionary',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Assorted Topics',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Imp Vocabulary',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Worksheet by Ustazah',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

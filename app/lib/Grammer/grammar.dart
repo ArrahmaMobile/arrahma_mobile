@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'models/grammer.dart';
+
 class Grammer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,17 @@ class Grammer extends StatelessWidget {
     );
   }
 
+  final _grammer = [
+    GrammerItem(
+      title: 'Basic Grammar',
+      icon: Icons.access_alarm,
+    ),
+    GrammerItem(
+      title: 'Arabic',
+      icon: Icons.access_alarm,
+    )
+  ];
+
   Widget _grammarList(BuildContext context) {
     return GridView.count(
       crossAxisSpacing: 8,
@@ -31,50 +44,30 @@ class Grammer extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.9,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Basic Grammar',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+      children: _grammer.map((course) => _buildGrammerItem(course)).toList(),
+    );
+  }
+
+  Widget _buildGrammerItem(GrammerItem item) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        color: Color(0xffdedbdb),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
             ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Arabic',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+            Icon(
+              item.icon,
+              size: 50,
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

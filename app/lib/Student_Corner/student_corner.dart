@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Student_Corner/models/student_corner.dart';
 import 'package:flutter/material.dart';
 
 import 'Al_Fauz_PDF/al_fauz_pdf.dart';
@@ -33,194 +34,78 @@ class StudentCorner extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.9,
-      children: <Widget>[
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Weekly Update',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
+      children: _studentCornerItem
+          .map((item) => _buildStudentCornerList(context, item))
+          .toList(),
+    );
+  }
+
+  final _studentCornerItem = [
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    ),
+    StudentCornerItem(
+      title: 'Al-Fauz PDF',
+      icon: Icons.access_alarm,
+    )
+  ];
+
+  Widget _buildStudentCornerList(context, StudentCornerItem item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlFauzPDF(),
           ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'FQ & TQ Tests',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+        );
+      },
+      child: Container(
+        color: Color(0xffdedbdb),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
             ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'ATQ Tests & Assignments',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+            Icon(
+              item.icon,
+              size: 50,
             ),
-          ),
+          ],
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AlFauzPDF()),
-            );
-          },
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Al-Fauz PDF',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Sisters Support',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Phone attendance req. form',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Chnage of Course req. form',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Change of Group req. form',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Tafseer Attendance',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

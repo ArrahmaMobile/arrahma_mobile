@@ -29,18 +29,48 @@ class AllCourses extends StatelessWidget {
             mainAxisSpacing: 8,
             shrinkWrap: true,
             childAspectRatio: .90,
-            children: List<Course>.filled(
-              12,
-              Course(
-                title: 'Adv Taleemul Quran',
-                imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-              ),
-            ).map(_buildCourse).toList(),
+            children: _courses.map((course) => _buildCourse(course)).toList(),
           ),
         ),
       ),
     );
   }
+
+  final _courses = [
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+    Course(
+        title: 'Adv Taleemul Quran',
+        imageUrl: 'assets/images/courses/adv_taleemul_quran.png'),
+  ];
 
   Widget _buildCourse(Course course) {
     return GestureDetector(

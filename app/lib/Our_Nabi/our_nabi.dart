@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Hadith/hadith.dart';
-import 'Riaz_us_Saliheen/riaz_us_saliheen.dart';
-import 'Seerah/seerah.dart';
+import 'model/our_nabi.dart';
 
 class OurNabi extends StatelessWidget {
   @override
@@ -27,6 +26,21 @@ class OurNabi extends StatelessWidget {
     );
   }
 
+  final _ourNabi = [
+    OurNabiItem(
+      title: 'Hadith',
+      icon: Icons.access_alarm,
+    ),
+    OurNabiItem(
+      title: 'Seerah',
+      icon: Icons.access_alarm,
+    ),
+    OurNabiItem(
+      title: 'Raiz us Saliheen',
+      icon: Icons.access_alarm,
+    ),
+  ];
+
   Widget _ourNabiList(BuildContext context) {
     return GridView.count(
       crossAxisSpacing: 8,
@@ -34,86 +48,36 @@ class OurNabi extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Hadith()),
-            );
-          },
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Hadith',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+      children:
+          _ourNabi.map((item) => _buildOurNabiItem(context, item)).toList(),
+    );
+  }
+
+  Widget _buildOurNabiItem(context, OurNabiItem item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Hadith()),
+        );
+      },
+      child: Container(
+        color: Color(0xffdedbdb),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
             ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Seerah()),
-            );
-          },
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Seerah',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+            Icon(
+              item.icon,
+              size: 50,
             ),
-          ),
+          ],
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RiazUsSaliheen()),
-            );
-          },
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Riaz us Saliheen',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

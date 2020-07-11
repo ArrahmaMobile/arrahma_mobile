@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Tajweed/model/tajweed.dart';
 import 'package:flutter/material.dart';
 
 class Tajweed extends StatelessWidget {
@@ -31,148 +32,64 @@ class Tajweed extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.9,
-      children: <Widget>[
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Adv Taleem ul Quran',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+      children: _tajweedItem
+          .map(
+            (item) => _buildTajweedItem(context, item),
+          )
+          .toList(),
+    );
+  }
+
+  final _tajweedItem = [
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    ),
+    TajweedItem(
+      title: 'Juz 30 Hifz',
+      icon: Icons.access_alarm,
+    )
+  ];
+
+  Widget _buildTajweedItem(context, item) {
+    return GestureDetector(
+      child: Container(
+        color: Color(0xffdedbdb),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
             ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Taleem ul Quran',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
+            Icon(
+              item.icon,
+              size: 50,
             ),
-          ),
+          ],
         ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Fehm ul Quran',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'English Qaida',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Noorani Qaida',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Juz 30 Hifz',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Taleem ul Quran 2013',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
