@@ -27,7 +27,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   icon: Icon(Icons.arrow_drop_down),
                   color: Colors.white,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pop(context);
                   },
                 ),
               ),

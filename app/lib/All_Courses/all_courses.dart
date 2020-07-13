@@ -6,18 +6,18 @@ class AllCourses extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //AppBar -- Rending a navigation bae with title
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
           'All Courses',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: GridView.count(
           crossAxisCount: 3,
-          crossAxisSpacing: 8,
+          crossAxisSpacing: 20,
           mainAxisSpacing: 8,
           shrinkWrap: true,
           childAspectRatio: .90,
@@ -32,47 +32,55 @@ class AllCourses extends StatelessWidget {
     Course(
         title: 'Adv Taleemul Quran',
         imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        pageRoute: '/adv_taleemmul_quran'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Taleem Quran',
+        imageUrl: 'assets/images/courses/taleemul_quran.png',
+        pageRoute: '/taleemul_quran'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Fehmul Quran',
+        imageUrl: 'assets/images/courses/fehmul_quran.png',
+        pageRoute: '/fehmul_quran'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Course In Pashtu',
+        imageUrl: 'assets/images/courses/course_in_pashtu.png',
+        pageRoute: '/course_in_pashtu'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Ilmul Yaqeen',
+        imageUrl: 'assets/images/courses/ilmul_yaqeen.png',
+        pageRoute: '/ilmul_taqeen'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Ahsanul Bayan',
+        imageUrl: 'assets/images/courses/ahsanul_bayan.png',
+        pageRoute: '/ahsanul_bayan'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Al Furqan',
+        imageUrl: 'assets/images/courses/al_furqan.png',
+        pageRoute: '/al_furqan'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Seerah',
+        imageUrl: 'assets/images/courses/seerah.png',
+        pageRoute: '/seerah_course'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Al Misbah (Whatsapp Program)',
+        imageUrl: 'assets/images/courses/al_misbah.png',
+        pageRoute: '/al_misbah'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Weekly Gems',
+        imageUrl: 'assets/images/courses/weekly_gems.png',
+        pageRoute: '/weekly_gems_course'),
     Course(
-        title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/taleemmul-quran'),
+        title: 'Assorted Lectures',
+        imageUrl: 'assets/images/courses/assorted_letures.png',
+        pageRoute: '/assorted_lectures_course'),
+    Course(
+        title: 'Tazkeer',
+        imageUrl: 'assets/images/courses/tazkeer.png',
+        pageRoute: '/tazkeer'),
+    Course(
+        title: 'Weekly Dua, Sunnah & Zikr',
+        imageUrl: 'assets/images/courses/weekly_dua_sunnat_zikr.png',
+        pageRoute: '/dua_sunnah_zikr'),
   ];
 
   Widget _buildCourse(BuildContext context, Course course) {
@@ -84,12 +92,13 @@ class AllCourses extends StatelessWidget {
         children: <Widget>[
           Image.asset(
             course.imageUrl,
-            width: 100,
-            height: 100,
+            width: 80,
+            height: 80,
           ),
           Text(
             course.title,
             textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),

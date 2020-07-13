@@ -18,11 +18,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //scafford -- presents a screen to the user
       drawer: MainDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        //AppBar -- Rending a navigation bae with title
         title: Image.asset(
             'assets/images/home_page_images/aarhman_mainImage.png',
             fit: BoxFit.cover),

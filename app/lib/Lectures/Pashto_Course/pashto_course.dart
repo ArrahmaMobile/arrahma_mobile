@@ -5,10 +5,11 @@ class PashtoCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
-          'Speical Series',
-          style: TextStyle(color: Colors.black),
+          'Pashto Course',
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Padding(

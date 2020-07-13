@@ -1,0 +1,84 @@
+import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/details_tab/adv_taleemul_details_tab.dart';
+import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/registration_tab/adv_taleemul_registration_tab.dart';
+import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/tafseer_tab/adv_taleemul_tafseer_tab.dart';
+import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/tests_tab/adv_taleemul_tests_tab.dart';
+import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:flutter/material.dart';
+
+import 'fehmul_tajweed_tab/fehmul_tajweed_tab.dart';
+
+class FehmulQuran extends StatefulWidget {
+  @override
+  _FehmulQuranState createState() => _FehmulQuranState();
+}
+
+class _FehmulQuranState extends State<FehmulQuran> {
+  int _tabSelected = 2;
+
+  final _pageSelected = [
+    AdvTaleemmulQuranDetailsTab(),
+    AdvTaleemmulQuranRegistrationTab(),
+    AdvTaleemmulTafseerTab(),
+    FemulTajweedTab(),
+    AdvTaleemmulTestsTab()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: MainDrawer(),
+      body: _pageSelected[_tabSelected],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabSelected,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            title: Text(
+              'Details',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            title: Text(
+              'Registration',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text(
+              'Tafseer',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text(
+              'Tajweed',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text(
+              'Tests',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _tabSelected = index;
+          });
+        },
+      ),
+    );
+  }
+}

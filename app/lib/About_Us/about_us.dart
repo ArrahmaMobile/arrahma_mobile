@@ -13,11 +13,11 @@ class _AboutUsState extends State<AboutUs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //AppBar -- Rending a navigation bae with title
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
           'About us',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(

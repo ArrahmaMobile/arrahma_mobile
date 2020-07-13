@@ -7,11 +7,11 @@ class Hadith extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //AppBar -- Rending a navigation bae with title
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
           'Hadith',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Padding(

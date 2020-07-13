@@ -5,11 +5,11 @@ class RiazUsSaliheen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //AppBar -- Rending a navigation bae with title
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
           'Tajalliyat-e-Nabuwat تجليات نبوت',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );

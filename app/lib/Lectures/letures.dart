@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'models/leture_list.dart';
-// import 'Assorted_Lectures/assorted_lectures.dart';
-// import 'Lectures_on_Death/lectures_on_deaths.dart';
-// import 'Quran_Tafseer/quran_tafseer.dart';
-// import 'Ramadan_Speical/ramadan_special.dart';
-// import 'Speical_Series/special_series.dart';
-// import 'Tazkeer/tazkeer.dart';
-// import 'Weekly_Gems/weekly_gems.dart';
-// import 'Wirasat_Course/wirasat_course.dart';
-// import 'Youth_Course/youth_course.dart';
-// import 'Pashto_Course/pashto_course.dart';
 
 class Lectures extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //AppBar -- Rending a navigation bae with title
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
           'Lectures',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: ListView(
@@ -53,54 +43,67 @@ class Lectures extends StatelessWidget {
 
   final _lectures = [
     Lecture(
-      text: 'Pashto Course',
+      text: 'Quranic Tafseer',
       icon: Icons.access_alarm,
+      pageRoute: '/quran_tafseer',
+    ),
+    Lecture(
+      text: 'Youth Courses',
+      icon: Icons.access_alarm,
+      pageRoute: '/youth_course',
+    ),
+    Lecture(
+      text: 'Tazkeer',
+      icon: Icons.access_alarm,
+      pageRoute: '/tazkeer',
+    ),
+    Lecture(
+      text: 'Wirasat Course',
+      icon: Icons.access_alarm,
+      pageRoute: '/wirasat_course',
+    ),
+    Lecture(
+      text: 'Weekly Gems',
+      icon: Icons.access_alarm,
+      pageRoute: '/weekly_gems',
+    ),
+    Lecture(
+      text: 'Assorted Lectures',
+      icon: Icons.access_alarm,
+      pageRoute: '/assorted_lectures',
+    ),
+    Lecture(
+      text: 'Ramadan Special',
+      icon: Icons.access_alarm,
+      pageRoute: '/ramadan_special',
+    ),
+    Lecture(
+      text: 'Special Series',
+      icon: Icons.access_alarm,
+      pageRoute: '/speical_series',
     ),
     Lecture(
       text: 'Pashto Course',
       icon: Icons.access_alarm,
+      pageRoute: '/pashto_course',
     ),
     Lecture(
-      text: 'Pashto Course',
+      text: 'Lectures on Death',
       icon: Icons.access_alarm,
+      pageRoute: '/lectures_on_death',
     ),
     Lecture(
-      text: 'Pashto Course',
+      text: 'Lectures on Namaz',
       icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
-    ),
-    Lecture(
-      text: 'Pashto Course',
-      icon: Icons.access_alarm,
+      pageRoute: '/lecture_on_namaz',
     ),
   ];
 
   Widget _buildLecture(BuildContext context, Lecture lecture) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, lecture.pageRoute);
+      },
       child: Container(
         color: Color(0xffdedbdb),
         child: Column(
