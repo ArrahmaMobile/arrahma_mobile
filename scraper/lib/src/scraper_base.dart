@@ -2,7 +2,7 @@ import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/courses.dart';
-import 'package:scraper/src/models/arrahma.dart';
+import 'package:scraper/src/models/app_metadata.dart';
 import 'models/banner.dart';
 import 'models/broadcast_link.dart';
 import 'utils.dart';
@@ -44,9 +44,9 @@ class Scraper implements IScraper, IScraperRegistrar {
     return document;
   }
 
-  Future<Arrahma> initiate() async {
+  Future<AppMetadata> initiate() async {
     await navigateTo('');
-    return Arrahma(
+    return AppMetadata(
       logoUrl: document
           .querySelector('.header img')
           .attributes['src']

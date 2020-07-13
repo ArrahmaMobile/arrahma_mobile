@@ -1,32 +1,13 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_hot/angel_hot.dart';
-import 'package:logging/logging.dart';
-import 'package:hn/src/pretty_logging.dart' as hn;
-import 'package:hn/hn.dart' as hn;
+import 'package:arrahma_web_api/api.dart';
 
 Future main() async {
-  Logger logger;
+  final app = Application<ArrahmaChannel>()
+    ..options.configurationFilePath = 'config.yaml'
+    ..options.port = 8888;
 
-  Future<Angel> createServer() async {
-    var app = new Angel()..lazyParseBodies = true;
-    app.logger =
-        logger ??= new Logger('hacker_news')..onRecord.listen(hn.prettyLog);
-    await app.configure(hn.configureServer);
-    return app;
-  }
+  final count = Platform.numberOfProcessors ~/ 2;
+  await app.start(numberOfInstances: count > 0 ? count : 1);
 
-  var hot = new HotReloader(createServer, [
-    // We can listen for changes at a multitude of paths.
-    new Directory('bin'),
-    new Directory('config'),
-    new Directory('lib'),
-    new File('pubspec.lock')
-  ]);
-
-  var server = await hot.startServer('127.0.0.1', 3000);
-  server.defaultResponseHeaders.clear();
-
-  print('Listening at http://${server.address.address}:${server.port}');
+  print('Application started on port: ${app.options.port}.');
+  print('Use Ctrl-C (SIGINT) to stop running the application.');
 }

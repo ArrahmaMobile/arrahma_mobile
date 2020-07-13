@@ -10,7 +10,7 @@
 			"path": "app"
 		},
 		{
-			"path": "scraper_cli"
+			"path": "scraper_service"
 		}
 	],
 	"settings": {}
