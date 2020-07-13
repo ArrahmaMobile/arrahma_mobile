@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:scraper/scraper.dart';
 import 'package:scraper_service/scraper_runner.dart';
