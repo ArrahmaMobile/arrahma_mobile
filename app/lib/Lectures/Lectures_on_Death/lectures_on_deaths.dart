@@ -7,11 +7,11 @@ class LecturesOnDeath extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Lectures on Deaths',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -22,19 +22,46 @@ class LecturesOnDeath extends StatelessWidget {
             mainAxisSpacing: 8,
             shrinkWrap: true,
             childAspectRatio: .90,
-            children: List<LectureOnDeaths>.filled(
-              5,
-              LectureOnDeaths(
-                title: 'Will form',
-                imageUrl: 'assets/images/lectures_on_deaths/will_form.jpg',
-              ),
-            ).map(_buildCourse).toList()),
+            children: _course
+                .map((course) => _buildCourse(context, course))
+                .toList()),
       ),
     );
   }
 
-  Widget _buildCourse(LectureOnDeaths course) {
+  final _course = [
+    LectureOnDeaths(
+      title: 'Will Form',
+      imageUrl: 'assets/images/lectures_on_deaths/will_form.jpg',
+      pageRoute: '',
+    ),
+    LectureOnDeaths(
+      title: 'Dua For Janaza',
+      imageUrl: 'assets/images/lectures_on_deaths/dua_for_janaza.jpg',
+      pageRoute: '',
+    ),
+    LectureOnDeaths(
+      title: 'Audio Lecture',
+      imageUrl: 'assets/images/lectures_on_deaths/audio_lecture.jpeg',
+      pageRoute: '',
+    ),
+    LectureOnDeaths(
+      title: 'Ghusl After Death',
+      imageUrl: 'assets/images/lectures_on_deaths/ghusl_after_death.jpg',
+      pageRoute: '',
+    ),
+    LectureOnDeaths(
+      title: 'Kafan',
+      imageUrl: 'assets/images/lectures_on_deaths/kafan.jpg',
+      pageRoute: '',
+    ),
+  ];
+
+  Widget _buildCourse(BuildContext context, LectureOnDeaths course) {
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, course.pageRoute);
+      },
       child: Column(
         children: <Widget>[
           Image.asset(
@@ -45,6 +72,10 @@ class LecturesOnDeath extends StatelessWidget {
           Text(
             course.title,
             textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
           ),
         ],
       ),

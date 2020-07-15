@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
 class ReadingMaterialItem {
-  const ReadingMaterialItem({this.title, this.icon});
+  const ReadingMaterialItem({this.title});
   final String title;
-  final IconData icon;
 }

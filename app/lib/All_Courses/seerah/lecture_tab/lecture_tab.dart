@@ -16,7 +16,7 @@ class _LectureTabState extends State<LectureTab> {
           title: Text(
             'Lectures',
           ),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.white,
         ),
         body: TabBarView(
           children: [

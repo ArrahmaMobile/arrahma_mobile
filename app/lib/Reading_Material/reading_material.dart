@@ -7,11 +7,11 @@ class ReadingMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Reading Material',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -44,49 +44,36 @@ class ReadingMaterial extends StatelessWidget {
   final _readingMaterialItem = [
     ReadingMaterialItem(
       title: 'Dua',
-      icon: Icons.access_alarm,
     ),
     ReadingMaterialItem(
       title: 'Juz Transaltion',
-      icon: Icons.access_alarm,
     ),
     ReadingMaterialItem(
       title: 'Quran Dictionary',
-      icon: Icons.access_alarm,
     ),
     ReadingMaterialItem(
       title: 'Assorted Topic',
-      icon: Icons.access_alarm,
     ),
     ReadingMaterialItem(
       title: 'Imp Vocabulary words',
-      icon: Icons.access_alarm,
     ),
     ReadingMaterialItem(
       title: 'Worksheet by Ustazah',
-      icon: Icons.access_alarm,
     ),
   ];
 
   Widget _buildReadingMaterial(item) {
     return GestureDetector(
       onTap: () {},
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

@@ -7,11 +7,11 @@ class Hadith extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Hadith',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -39,36 +39,26 @@ class Hadith extends StatelessWidget {
   final _hadithItem = [
     HadithItem(
       title: 'Hadith Lessons',
-      icon: Icons.access_alarm,
     ),
     HadithItem(
       title: 'Hadith Lessons',
-      icon: Icons.access_alarm,
     ),
     HadithItem(
       title: 'Hadith Lessons',
-      icon: Icons.access_alarm,
     ),
   ];
 
   Widget _buildHadithItem(item) {
     return GestureDetector(
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

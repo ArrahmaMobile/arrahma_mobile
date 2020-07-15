@@ -6,11 +6,11 @@ class OurNabi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Our Nabi',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -28,15 +28,12 @@ class OurNabi extends StatelessWidget {
   final _ourNabi = [
     OurNabiItem(
       title: 'Hadith',
-      icon: Icons.access_alarm,
     ),
     OurNabiItem(
       title: 'Seerah',
-      icon: Icons.access_alarm,
     ),
     OurNabiItem(
       title: 'Raiz us Saliheen',
-      icon: Icons.access_alarm,
     ),
   ];
 
@@ -57,22 +54,15 @@ class OurNabi extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, '/hadith');
       },
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

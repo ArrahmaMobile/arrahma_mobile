@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:arrahma_mobile_app/Drawer/model/drawer.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -6,108 +7,62 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: [
-          ListTile(
-            title: Text(
-              'Home',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/home');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'About Us',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/about_us');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'All Courses',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/all_courses');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Letures',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/lectures');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Grammer',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/grammer');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Tajweed',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/tajweed');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Our Nabi',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/our_nabi');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Student Corner',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/student_corner');
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Reading Material',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/reading_material');
-            },
-          ),
-        ],
+          children:
+              _drawer.map((list) => _buildDrawer(context, list)).toList()),
+    );
+  }
+
+  final _drawer = [
+    DrawerList(
+      title: 'Home',
+      pageRoute: '/home',
+    ),
+    DrawerList(
+      title: 'About Us',
+      pageRoute: '/about_us',
+    ),
+    DrawerList(
+      title: 'All Courses',
+      pageRoute: '/all_courses',
+    ),
+    DrawerList(
+      title: 'Lectures',
+      pageRoute: '/lectures',
+    ),
+    DrawerList(
+      title: 'Grammer',
+      pageRoute: '/grammer',
+    ),
+    DrawerList(
+      title: 'Tajweed',
+      pageRoute: '/tajweed',
+    ),
+    DrawerList(
+      title: 'Our Nabi',
+      pageRoute: '/our_nabi',
+    ),
+    DrawerList(
+      title: 'Student Corner',
+      pageRoute: '/student_corner',
+    ),
+    DrawerList(
+      title: 'Reading Material',
+      pageRoute: '/reading_material',
+    ),
+  ];
+
+  Widget _buildDrawer(BuildContext context, DrawerList list) {
+    return ListTile(
+      title: Text(
+        list.title,
+        style: new TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
       ),
+      onTap: () {
+        Navigator.pushNamed(context, list.pageRoute);
+      },
     );
   }
 }

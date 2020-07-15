@@ -6,11 +6,11 @@ class Lectures extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Lectures',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: ListView(
@@ -44,57 +44,46 @@ class Lectures extends StatelessWidget {
   final _lectures = [
     Lecture(
       text: 'Quranic Tafseer',
-      icon: Icons.access_alarm,
       pageRoute: '/quran_tafseer',
     ),
     Lecture(
       text: 'Youth Courses',
-      icon: Icons.access_alarm,
       pageRoute: '/youth_course',
     ),
     Lecture(
       text: 'Tazkeer',
-      icon: Icons.access_alarm,
       pageRoute: '/tazkeer',
     ),
     Lecture(
       text: 'Wirasat Course',
-      icon: Icons.access_alarm,
       pageRoute: '/wirasat_course',
     ),
     Lecture(
       text: 'Weekly Gems',
-      icon: Icons.access_alarm,
       pageRoute: '/weekly_gems',
     ),
     Lecture(
       text: 'Assorted Lectures',
-      icon: Icons.access_alarm,
       pageRoute: '/assorted_lectures',
     ),
     Lecture(
       text: 'Ramadan Special',
-      icon: Icons.access_alarm,
       pageRoute: '/ramadan_special',
     ),
     Lecture(
       text: 'Special Series',
-      icon: Icons.access_alarm,
       pageRoute: '/speical_series',
     ),
     Lecture(
       text: 'Pashto Course',
-      icon: Icons.access_alarm,
       pageRoute: '/pashto_course',
     ),
     Lecture(
       text: 'Lectures on Death',
-      icon: Icons.access_alarm,
       pageRoute: '/lectures_on_death',
     ),
     Lecture(
       text: 'Lectures on Namaz',
-      icon: Icons.access_alarm,
       pageRoute: '/lecture_on_namaz',
     ),
   ];
@@ -112,11 +101,10 @@ class Lectures extends StatelessWidget {
           children: <Widget>[
             Text(
               lecture.text,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              lecture.icon,
-              size: 50,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                  fontSize: 20),
             ),
           ],
         ),

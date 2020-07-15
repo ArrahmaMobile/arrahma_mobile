@@ -20,7 +20,7 @@ class _AdvTaleemmulLessonDetailPageState
               SizedBox(height: 50),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10, top: 10),
+                margin: EdgeInsets.only(left: 10),
                 child: Column(),
               ),
               Column(
@@ -29,9 +29,9 @@ class _AdvTaleemmulLessonDetailPageState
                   Container(
                     child: ClipRRect(
                       child: Image.asset(
-                        'assets/images/media_player/media_player_icon.PNG',
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.width * 0.3,
+                        'assets/images/media_player/arrahmah_logo.jpeg',
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.width * 0.2,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -208,7 +208,7 @@ class _AdvTaleemmulLessonDetailPageState
                       children: <Widget>[
                         IconButton(
                           icon: Icon(Icons.access_alarms),
-                          color: Colors.grey,
+                          color: Colors.blue,
                           onPressed: () {},
                         )
                       ],
@@ -217,7 +217,7 @@ class _AdvTaleemmulLessonDetailPageState
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 80),
+              SizedBox(height: 120),
               GestureDetector(
                 child: Text(
                   'Close',

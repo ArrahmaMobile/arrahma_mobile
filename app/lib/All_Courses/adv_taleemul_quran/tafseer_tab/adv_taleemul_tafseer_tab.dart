@@ -18,22 +18,22 @@ class _AdvTaleemmulTafseerTabState extends State<AdvTaleemmulTafseerTab> {
         appBar: !_isSearching
             ? AppBar(
                 centerTitle: false,
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.white,
                 title: Text(
                   'Adv Taleemmul Quran',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       Navigator.pushNamed(context, '/favorite_juz');
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -43,7 +43,7 @@ class _AdvTaleemmulTafseerTabState extends State<AdvTaleemmulTafseerTab> {
                 ],
               )
             : AppBar(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.white,
                 title: Container(
                   margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class _AdvTaleemmulTafseerTabState extends State<AdvTaleemmulTafseerTab> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;

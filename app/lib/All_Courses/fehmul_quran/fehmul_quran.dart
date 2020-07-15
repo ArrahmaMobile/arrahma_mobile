@@ -33,7 +33,10 @@ class _FehmulQuranState extends State<FehmulQuran> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: Icon(
+              Icons.library_books,
+              color: Colors.black,
+            ),
             title: Text(
               'Details',
               style:
@@ -41,7 +44,10 @@ class _FehmulQuranState extends State<FehmulQuran> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(
+              Icons.book,
+              color: Colors.black,
+            ),
             title: Text(
               'Registration',
               style:
@@ -49,7 +55,10 @@ class _FehmulQuranState extends State<FehmulQuran> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
             title: Text(
               'Tafseer',
               style:
@@ -57,7 +66,10 @@ class _FehmulQuranState extends State<FehmulQuran> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
             title: Text(
               'Tajweed',
               style:
@@ -65,7 +77,10 @@ class _FehmulQuranState extends State<FehmulQuran> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
             title: Text(
               'Tests',
               style:

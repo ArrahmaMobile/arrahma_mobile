@@ -32,9 +32,11 @@ import 'package:arrahma_mobile_app/Student_Corner/student_corner.dart';
 import 'package:arrahma_mobile_app/Tajweed/tajweed.dart';
 import 'package:flutter/material.dart';
 import 'All_Courses/adv_taleemul_quran/tafseer_tab/adv_taleemul_juz_detail_page/adv_taleemul_lesson_detail_page/adv_taleemul_lesson_detail_page.dart';
+import 'All_Courses/adv_taleemul_quran/tajweed_tab/adv_taleemul_tajweed_tab.dart';
 import 'All_Courses/al_misbah/al_misbah.dart';
 import 'All_Courses/assorted_lectures/assorted_lectures.dart';
 import 'All_Courses/dua_sunnah_zirk/dua_sunnah_zirk.dart';
+import 'All_Courses/fehmul_quran/fehmul_tajweed_tab/fehmul_tajweed_tab.dart';
 import 'All_Courses/seerah/lecture_tab/lecture_detail/lecture_detail.dart';
 import 'All_Courses/taleemul_quran/tajweed_tab/introduction/introduction.dart';
 import 'All_Courses/taleemul_quran/tajweed_tab/letter_practice/letter_practice.dart';
@@ -113,6 +115,8 @@ class App extends StatelessWidget {
         '/asma_ul_husna': (context) => AsmaUlHusna(),
         '/medan_mehshar_me_meriahani': (context) => MedanMehsharMeMeriahani(),
         '/meri_aakhri': (context) => MeriAakhri(),
+        '/adv_talemmul_tajweed_tab': (context) => AdvTaleemmulTajweedTab(),
+        '/femul_tajweed_tab': (context) => FemulTajweedTab(),
         '/gumnaam_ki_diary': (context) => GumnaamKiDiary(),
       },
       theme: ThemeData(

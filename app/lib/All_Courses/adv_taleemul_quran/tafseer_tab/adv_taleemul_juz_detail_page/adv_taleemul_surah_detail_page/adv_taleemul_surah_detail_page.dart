@@ -21,17 +21,17 @@ class _AdvTaleemmulSurahDetailPageState
                 centerTitle: true,
                 title: Text(
                   'Lessons',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {},
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -55,14 +55,14 @@ class _AdvTaleemmulSurahDetailPageState
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                           hintText: 'Search',
-                          hintStyle: TextStyle(color: Colors.white)),
+                          hintStyle: TextStyle(color: Colors.black)),
                     ),
                   ),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;

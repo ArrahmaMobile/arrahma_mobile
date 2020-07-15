@@ -10,7 +10,7 @@ class _GumnaamKiDiaryState extends State<GumnaamKiDiary> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Gumnaam Ki Diary',

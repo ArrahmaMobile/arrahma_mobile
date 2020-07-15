@@ -26,7 +26,10 @@ class _AhsanulBayanState extends State<AhsanulBayan> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: Icon(
+              Icons.library_books,
+              color: Colors.black,
+            ),
             title: Text(
               'Details',
               style:
@@ -34,7 +37,10 @@ class _AhsanulBayanState extends State<AhsanulBayan> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(
+              Icons.book,
+              color: Colors.black,
+            ),
             title: Text(
               'Lectures',
               style:

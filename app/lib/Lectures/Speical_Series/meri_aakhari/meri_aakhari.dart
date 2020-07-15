@@ -10,7 +10,7 @@ class _MeriAakhriState extends State<MeriAakhri> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Meri Aakhri',

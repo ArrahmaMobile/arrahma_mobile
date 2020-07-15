@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
-import 'package:flutter/material.dart';
-
 class StudentCornerItem {
-  const StudentCornerItem({this.title, this.icon});
+  const StudentCornerItem({this.title, this.pageRoute});
   final String title;
-  final IconData icon;
+  final String pageRoute;
 }

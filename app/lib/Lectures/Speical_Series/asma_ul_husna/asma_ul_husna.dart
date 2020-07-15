@@ -10,7 +10,7 @@ class AasmUlHusnaState extends State<AsmaUlHusna> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Asma ul Husna',

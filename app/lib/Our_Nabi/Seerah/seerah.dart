@@ -5,11 +5,11 @@ class Seerah extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Seerah',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -41,8 +41,8 @@ class Seerah extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'Seerah Lessons',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Icon(
                   Icons.access_alarm,
@@ -61,8 +61,8 @@ class Seerah extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'Tajalliyate Nabawi PED',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Icon(
                   Icons.access_alarm,

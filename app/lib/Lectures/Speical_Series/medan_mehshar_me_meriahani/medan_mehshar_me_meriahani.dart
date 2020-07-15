@@ -11,7 +11,7 @@ class _MedanMehsharMeMeriahaniState extends State<MedanMehsharMeMeriahani> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Medan Mehshar Me Meriahani',

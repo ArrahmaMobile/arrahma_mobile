@@ -6,11 +6,11 @@ class Grammer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Grammer',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -27,13 +27,7 @@ class Grammer extends StatelessWidget {
 
   final _grammer = [
     GrammerItem(
-      title: 'Basic Grammar',
-      icon: Icons.access_alarm,
-      pageRoute: '',
-    ),
-    GrammerItem(
       title: 'Arabic',
-      icon: Icons.access_alarm,
     )
   ];
 
@@ -55,22 +49,15 @@ class Grammer extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(item, item.pageRoute);
       },
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

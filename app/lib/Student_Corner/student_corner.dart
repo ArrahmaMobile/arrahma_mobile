@@ -6,11 +6,11 @@ class StudentCorner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Student Corner',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -41,63 +41,47 @@ class StudentCorner extends StatelessWidget {
   final _studentCornerItem = [
     StudentCornerItem(
       title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      pageRoute: '',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'FQ & TQ Tests',
+      pageRoute: '',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'ATQ Tests & Assignments',
+      pageRoute: '',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'Al-Fauz Pdf',
+      pageRoute: '/fauz_pdf',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'Sisters Support',
+      pageRoute: '',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'Phone Attendance Req. Form',
     ),
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
+      title: 'Tafseer Attendance',
+      pageRoute: '',
     ),
-    StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
-    ),
-    StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      icon: Icons.access_alarm,
-    )
   ];
 
   Widget _buildStudentCornerList(context, StudentCornerItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/fauz_pdf');
+        Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
 class HadithItem {
-  const HadithItem({this.title, this.icon});
+  const HadithItem({this.title});
   final String title;
-  final IconData icon;
 }

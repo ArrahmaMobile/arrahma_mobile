@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Lectures/Pashto_Course/model/pashto_course.dart';
 import 'package:flutter/material.dart';
 
 class PashtoCourse extends StatelessWidget {
@@ -5,11 +6,11 @@ class PashtoCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Pashto Course',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -31,48 +32,38 @@ class PashtoCourse extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1,
-      children: <Widget>[
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Quran Tafseer 2019',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
+      children: _pashtoCourse
+          .map((item) => _buildPashtoCourse(context, item))
+          .toList(),
+    );
+  }
+
+  final _pashtoCourse = [
+    PashtoCourseItem(
+      title: 'Quran Tafseer 2019',
+      pageRoute: '',
+    ),
+    PashtoCourseItem(
+      title: 'Selected Surahs',
+      pageRoute: '',
+    )
+  ];
+
+  Widget _buildPashtoCourse(BuildContext context, PashtoCourseItem item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, item.pageRoute);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
-        ),
-        GestureDetector(
-          child: Container(
-            color: Color(0xffdedbdb),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Selected Surahs',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-                Icon(
-                  Icons.access_alarm,
-                  size: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

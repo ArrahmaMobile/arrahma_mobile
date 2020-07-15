@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
-import 'package:flutter/material.dart';
-
 class TajweedItem {
-  const TajweedItem({this.title, this.icon});
+  const TajweedItem({this.title, this.pageRoute});
   final String title;
-  final IconData icon;
+  final String pageRoute;
 }

@@ -8,11 +8,11 @@ class AlFauzPDF extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Al-Fauz',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -42,52 +42,42 @@ class AlFauzPDF extends StatelessWidget {
   final _fauzPDF = [
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
     FauzPDF(
       title: 'Juz 1',
-      icon: Icons.access_alarm,
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
   ];
@@ -95,22 +85,15 @@ class AlFauzPDF extends StatelessWidget {
   Widget _biildFauzPDF(item, pdfUrl) {
     return GestureDetector(
       onTap: () => _launchLink(pdfUrl),
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

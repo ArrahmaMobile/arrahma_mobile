@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
 class OurNabiItem {
-  const OurNabiItem({this.title, this.icon});
+  const OurNabiItem({this.title});
   final String title;
-  final IconData icon;
 }

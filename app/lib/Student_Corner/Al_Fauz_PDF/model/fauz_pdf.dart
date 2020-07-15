@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-
 class FauzPDF {
-  const FauzPDF({this.title, this.icon, this.pdfUrl});
+  const FauzPDF({this.title, this.pdfUrl});
   final String title;
-  final IconData icon;
+
   final String pdfUrl;
 }

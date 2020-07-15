@@ -26,7 +26,10 @@ class _AlMisbahState extends State<AlMisbah> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: Icon(
+              Icons.library_books,
+              color: Colors.black,
+            ),
             title: Text(
               'Details',
               style:
@@ -34,7 +37,10 @@ class _AlMisbahState extends State<AlMisbah> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(
+              Icons.book,
+              color: Colors.black,
+            ),
             title: Text(
               'Lectures',
               style:

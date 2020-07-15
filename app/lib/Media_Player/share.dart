@@ -43,8 +43,7 @@ class _ShareState extends State<Share> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/media_player_screen');
+                                Navigator.pushNamed(context, '/home');
                               },
                             ),
                           ),
@@ -97,7 +96,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Messages',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -106,7 +105,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -130,7 +129,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Facebook',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -139,7 +138,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -163,7 +162,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Twitter',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -172,7 +171,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -196,7 +195,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Whatsapp',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -205,7 +204,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -229,7 +228,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Instagram',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -238,7 +237,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -263,7 +262,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Copy Link',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -272,7 +271,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -297,7 +296,7 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'More',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -306,7 +305,7 @@ class _ShareState extends State<Share> {
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
-                        size: 30,
+                        size: 20,
                       ),
                     ),
                   ],

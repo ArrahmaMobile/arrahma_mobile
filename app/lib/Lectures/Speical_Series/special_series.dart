@@ -7,11 +7,11 @@ class SpecialSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Speical Series',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -29,22 +29,18 @@ class SpecialSeries extends StatelessWidget {
   final _speicalSeries = [
     SpecialSeriesItem(
       title: 'Gumnaam Ki Diary',
-      icon: Icons.access_alarm,
       pageRoute: '/gumnaam_ki_diary',
     ),
     SpecialSeriesItem(
       title: 'Medan-Mehshar Me Meri Kahani',
-      icon: Icons.access_alarm,
       pageRoute: '/medan_mehshar_me_meriahani',
     ),
     SpecialSeriesItem(
       title: 'Meri Aakhari',
-      icon: Icons.access_alarm,
       pageRoute: '/meri_aakhri',
     ),
     SpecialSeriesItem(
       title: 'Asma ul Husna',
-      icon: Icons.access_alarm,
       pageRoute: '/asma_ul_husna',
     ),
   ];
@@ -54,22 +50,15 @@ class SpecialSeries extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

@@ -6,11 +6,11 @@ class Tajweed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Tajweed',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -42,53 +42,49 @@ class Tajweed extends StatelessWidget {
 
   final _tajweedItem = [
     TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
+      title: 'Adv Taleem Ul Quran',
+      pageRoute: '/adv_talemmul_tajweed_tab',
+    ),
+    TajweedItem(
+      title: 'Taleem Ul Quran',
+      pageRoute: '/taleemul_tajweed_tab',
+    ),
+    TajweedItem(
+      title: 'Fehm Ul Quran',
+      pageRoute: '/femul_tajweed_tab',
+    ),
+    TajweedItem(
+      title: 'English Qaida',
+      pageRoute: '/',
+    ),
+    TajweedItem(
+      title: 'Noorani Qaida',
+      pageRoute: '/',
     ),
     TajweedItem(
       title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
+      pageRoute: '/',
     ),
     TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
-    ),
-    TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
-    ),
-    TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
-    ),
-    TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
-    ),
-    TajweedItem(
-      title: 'Juz 30 Hifz',
-      icon: Icons.access_alarm,
+      title: 'Taleem Ul Quran 2013',
+      pageRoute: '/',
     )
   ];
 
   Widget _buildTajweedItem(context, item) {
     return GestureDetector(
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              item.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              item.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      onTap: () {
+        Navigator.pushNamed(context, item.pageRoute);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

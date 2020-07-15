@@ -10,7 +10,7 @@ class _LecturesOnNamazState extends State<LecturesOnNamaz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Lectures on Namaz',

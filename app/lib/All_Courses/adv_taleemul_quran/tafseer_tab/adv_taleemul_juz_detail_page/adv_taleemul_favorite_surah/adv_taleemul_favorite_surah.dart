@@ -16,16 +16,16 @@ class _AdvTaleemmulFavoriteSurahState extends State<AdvTaleemmulFavoriteSurah> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.white,
                 centerTitle: true,
                 title: Text(
                   'Favorite Surah',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -49,14 +49,14 @@ class _AdvTaleemmulFavoriteSurahState extends State<AdvTaleemmulFavoriteSurah> {
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                           hintText: 'Search',
-                          hintStyle: TextStyle(color: Colors.white)),
+                          hintStyle: TextStyle(color: Colors.black)),
                     ),
                   ),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.white,
+                    color: Colors.black,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;

@@ -6,11 +6,11 @@ class AssortedLecturesCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Lecstures',
-          style: TextStyle(color: Colors.white),
+          'Lectures',
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: ListView(
@@ -45,62 +45,50 @@ class AssortedLecturesCourse extends StatelessWidget {
   final _assortedLectures = [
     AssortedLectureItem(
       title: 'New Lectures',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Marriage',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Akhirah',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Months and Events',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Padaab-e-Zindagi',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: "Rubb Se Taa'luk",
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Imaan',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Humare Rasool ﷺ',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Duniya ki zindagi',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Quran/ilm',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Humare Aamal',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
     AssortedLectureItem(
       title: 'Miscellaneous',
-      icon: Icons.access_alarm,
       pageRoute: '/',
     ),
   ];
@@ -111,22 +99,15 @@ class AssortedLecturesCourse extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, lecture.pageRoute);
       },
-      child: Container(
-        color: Color(0xffdedbdb),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              lecture.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Icon(
-              lecture.icon,
-              size: 50,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            lecture.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ],
       ),
     );
   }

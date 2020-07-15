@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-
 class AssortedLectureItem {
-  const AssortedLectureItem({this.title, this.icon, this.pageRoute});
+  const AssortedLectureItem({this.title, this.pageRoute});
   final String title;
-  final IconData icon;
   final String pageRoute;
 }
