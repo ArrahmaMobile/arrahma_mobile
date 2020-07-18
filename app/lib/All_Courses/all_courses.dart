@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/quran_course.dart';
 import 'package:flutter/material.dart';
 import 'models/course.dart';
 
@@ -30,21 +31,38 @@ class AllCourses extends StatelessWidget {
 
   final _courses = [
     Course(
+      title: 'Adv Taleemul Quran',
+      imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
         title: 'Adv Taleemul Quran',
-        imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        pageRoute: '/adv_taleemmul_quran'),
+        courseDetailPdfUrl: '',
+      ),
+    ),
     Course(
+      title: 'Taleem Quran',
+      imageUrl: 'assets/images/courses/taleemul_quran.png',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
         title: 'Taleem Quran',
-        imageUrl: 'assets/images/courses/taleemul_quran.png',
-        pageRoute: '/taleemul_quran'),
+        courseDetailPdfUrl: '',
+      ),
+    ),
     Course(
+      title: 'Fehmul Quran',
+      imageUrl: 'assets/images/courses/fehmul_quran.png',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
         title: 'Fehmul Quran',
-        imageUrl: 'assets/images/courses/fehmul_quran.png',
-        pageRoute: '/fehmul_quran'),
+        courseDetailPdfUrl: '',
+      ),
+    ),
     Course(
-        title: 'Course In Pashtu',
-        imageUrl: 'assets/images/courses/course_in_pashtu.png',
-        pageRoute: '/course_in_pashtu'),
+      title: 'Course In Pashtu',
+      imageUrl: 'assets/images/courses/course_in_pashtu.png',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(title: 'Course In Pashtu'),
+    ),
     Course(
         title: 'Ilmul Yaqeen',
         imageUrl: 'assets/images/courses/ilmul_yaqeen.png',
@@ -86,7 +104,7 @@ class AllCourses extends StatelessWidget {
   Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, course.pageRoute);
+        Navigator.pushNamed(context, course.pageRoute, arguments: course.data);
       },
       child: Column(
         children: <Widget>[
@@ -98,7 +116,7 @@ class AllCourses extends StatelessWidget {
           Text(
             course.title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ],
       ),

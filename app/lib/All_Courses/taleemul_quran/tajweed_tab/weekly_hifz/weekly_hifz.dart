@@ -15,7 +15,7 @@ class _WeeklyHifzState extends State<WeeklyHifz> {
         backgroundColor: Colors.white,
         title: Text(
           'Weekly Hifz',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
       body: Column(

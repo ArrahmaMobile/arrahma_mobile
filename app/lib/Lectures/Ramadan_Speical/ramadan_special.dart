@@ -9,7 +9,7 @@ class RamadanSpecial extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Ramadan Speical',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

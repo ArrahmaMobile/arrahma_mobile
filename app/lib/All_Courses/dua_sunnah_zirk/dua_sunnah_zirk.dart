@@ -16,7 +16,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
         backgroundColor: Colors.white,
         title: Text(
           'Weekly Reminder',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
       body: Column(

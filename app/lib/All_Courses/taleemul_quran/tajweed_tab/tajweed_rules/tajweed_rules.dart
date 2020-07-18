@@ -15,7 +15,7 @@ class _TajweedRulesState extends State<TajweedRules> {
         backgroundColor: Colors.white,
         title: Text(
           'Tajweed Rules',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
       body: Column(

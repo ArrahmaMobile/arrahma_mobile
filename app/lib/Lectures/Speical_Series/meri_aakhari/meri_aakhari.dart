@@ -14,7 +14,7 @@ class _MeriAakhriState extends State<MeriAakhri> {
         centerTitle: true,
         title: Text(
           'Meri Aakhri',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

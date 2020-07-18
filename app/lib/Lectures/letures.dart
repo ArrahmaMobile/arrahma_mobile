@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'models/leture_list.dart';
 
@@ -5,6 +6,7 @@ class Lectures extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,

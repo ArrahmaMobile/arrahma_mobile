@@ -45,7 +45,8 @@ class Seerah extends StatelessWidget {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Icon(
-                  Icons.access_alarm,
+                  Icons.volume_up,
+                  color: Colors.lightBlue,
                   size: 50,
                 ),
               ],
@@ -65,7 +66,8 @@ class Seerah extends StatelessWidget {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Icon(
-                  Icons.access_alarm,
+                  Icons.volume_up,
+                  color: Colors.lightBlue,
                   size: 50,
                 ),
               ],

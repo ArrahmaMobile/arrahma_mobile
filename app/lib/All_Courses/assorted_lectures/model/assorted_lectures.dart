@@ -1,5 +1,7 @@
-class AssortedLectureItem {
-  const AssortedLectureItem({this.title, this.pageRoute});
+import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/assorted_lecture.dart';
+
+class AssortedLectureCategoryItem {
+  const AssortedLectureCategoryItem({this.title, this.lectures});
   final String title;
-  final String pageRoute;
+  final List<AssortedLecture> lectures;
 }

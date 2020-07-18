@@ -14,7 +14,7 @@ class _GumnaamKiDiaryState extends State<GumnaamKiDiary> {
         centerTitle: true,
         title: Text(
           'Gumnaam Ki Diary',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

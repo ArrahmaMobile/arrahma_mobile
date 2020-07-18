@@ -9,7 +9,7 @@ class AssortedLectures extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Assorted Lectures',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

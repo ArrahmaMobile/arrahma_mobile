@@ -147,7 +147,10 @@ class _LectureDetailState extends State<LectureDetail> {
                   GestureDetector(
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.access_alarm),
+                      icon: Icon(
+                        Icons.volume_up,
+                        color: Colors.lightBlue,
+                      ),
                       onPressed: () {},
                     ),
                     onTap: () {
@@ -157,7 +160,10 @@ class _LectureDetailState extends State<LectureDetail> {
                   GestureDetector(
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.access_alarm),
+                      icon: Icon(
+                        Icons.volume_up,
+                        color: Colors.lightBlue,
+                      ),
                       onPressed: () {},
                     ),
                     onTap: () {

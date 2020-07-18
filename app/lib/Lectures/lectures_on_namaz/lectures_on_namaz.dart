@@ -14,7 +14,7 @@ class _LecturesOnNamazState extends State<LecturesOnNamaz> {
         centerTitle: true,
         title: Text(
           'Lectures on Namaz',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

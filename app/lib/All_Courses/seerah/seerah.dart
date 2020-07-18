@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/details_tab/adv_taleemul_details_tab.dart';
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class _SeerahCourseState extends State<SeerahCourse> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    AdvTaleemmulQuranDetailsTab(),
+    QuranDetailsTab(),
     LectureTab(),
   ];
 

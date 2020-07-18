@@ -14,7 +14,7 @@ class AasmUlHusnaState extends State<AsmaUlHusna> {
         centerTitle: true,
         title: Text(
           'Asma ul Husna',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

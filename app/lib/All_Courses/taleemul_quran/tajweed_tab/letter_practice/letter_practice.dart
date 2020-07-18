@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'model/letter_practice.dart';
 
 class LetterPractice extends StatefulWidget {
+  const LetterPractice({Key key, this.practiceItems, this.title})
+      : super(key: key);
+  final List<LetterPracticeItem> practiceItems;
+  final String title;
+
   @override
   _LetterPracticeState createState() => _LetterPracticeState();
 }
@@ -15,8 +20,8 @@ class _LetterPracticeState extends State<LetterPractice> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'Letter Practice',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          widget.title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
       body: Column(
@@ -56,34 +61,13 @@ class _LetterPracticeState extends State<LetterPractice> {
               ),
             ),
           ),
-          ..._letterPractice
+          ...widget.practiceItems
               .map((item) => _buildLetterPractice(context, item))
               .toList(),
         ],
       ),
     );
   }
-
-  final _letterPractice = [
-    LetterPracticeItem(
-      title: 'Letter ء',
-      pageRoute: '',
-      lessonRoute: '',
-      practiceRoute: '',
-    ),
-    LetterPracticeItem(
-      title: 'Letter ب',
-      pageRoute: '',
-      lessonRoute: '',
-      practiceRoute: '',
-    ),
-    LetterPracticeItem(
-      title: 'Letter ت',
-      pageRoute: '',
-      lessonRoute: '',
-      practiceRoute: '',
-    )
-  ];
 
   Widget _buildLetterPractice(BuildContext context, LetterPracticeItem item) {
     return Padding(

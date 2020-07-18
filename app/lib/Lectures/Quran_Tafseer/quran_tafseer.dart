@@ -40,7 +40,7 @@ class QuranTafseer extends StatelessWidget {
   final _quranTafseer = [
     QuranTafseerItem(
       title: '2019 New Courses',
-      pageRoute: '',
+      pageRoute: '/home',
     ),
     QuranTafseerItem(
       title: 'Tafseer - 2013',
@@ -52,15 +52,15 @@ class QuranTafseer extends StatelessWidget {
     ),
     QuranTafseerItem(
       title: 'Ahsan-Ul-Bayan',
-      pageRoute: '',
+      pageRoute: '/quran_tafseer_tab',
     ),
     QuranTafseerItem(
       title: 'Al-Furqan',
-      pageRoute: '',
+      pageRoute: '/quran_tafseer_tab',
     ),
     QuranTafseerItem(
       title: 'llm-ul-Uaqeen',
-      pageRoute: '',
+      pageRoute: '/quran_tafseer_tab',
     ),
     QuranTafseerItem(
       title: 'Al-Misbah',

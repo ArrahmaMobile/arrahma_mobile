@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/details_tab/adv_taleemul_details_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/adv_taleemul_quran/tafseer_tab/adv_taleemul_juz_detail_page/adv_taleemul_juz_detail_page.dart';
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_juz_detail_page/quran_juz_detail_page.dart';
 import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +12,8 @@ class _IlmulTaqeenState extends State<IlmulTaqeen> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    AdvTaleemmulQuranDetailsTab(),
-    AdvTaleemmulJuzDetailPage(),
+    QuranDetailsTab(),
+    QuranJuzDetailPage(),
   ];
 
   @override

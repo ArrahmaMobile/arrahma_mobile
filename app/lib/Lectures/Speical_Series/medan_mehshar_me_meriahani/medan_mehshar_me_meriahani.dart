@@ -15,7 +15,7 @@ class _MedanMehsharMeMeriahaniState extends State<MedanMehsharMeMeriahani> {
         centerTitle: true,
         title: Text(
           'Medan Mehshar Me Meriahani',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );
