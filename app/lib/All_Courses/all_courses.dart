@@ -90,7 +90,7 @@ class AllCourses extends StatelessWidget {
     Course(
         title: 'Assorted Lectures',
         imageUrl: 'assets/images/courses/assorted_letures.png',
-        pageRoute: '/assorted_lectures_course'),
+        pageRoute: '/assorted_lectures'),
     Course(
         title: 'Tazkeer',
         imageUrl: 'assets/images/courses/tazkeer.png',

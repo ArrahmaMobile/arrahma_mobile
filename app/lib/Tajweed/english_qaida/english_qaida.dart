@@ -1,18 +1,7 @@
+import 'package:arrahma_mobile_app/Tajweed/english_qaida/model/english_qaidas.dart';
 import 'package:flutter/material.dart';
 
-import 'model/letter_practice.dart';
-
-class LetterPractice extends StatefulWidget {
-  const LetterPractice({Key key, this.practiceItems, this.title})
-      : super(key: key);
-  final List<LetterPracticeItem> practiceItems;
-  final String title;
-
-  @override
-  _LetterPracticeState createState() => _LetterPracticeState();
-}
-
-class _LetterPracticeState extends State<LetterPractice> {
+class EnglishQaida extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +9,7 @@ class _LetterPracticeState extends State<LetterPractice> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.title,
+          'English Audio',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
@@ -40,7 +29,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'Lesson',
+                      'Letter',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -50,7 +39,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                       width: 20,
                     ),
                     Text(
-                      'Practice',
+                      'Surah',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -61,7 +50,7 @@ class _LetterPracticeState extends State<LetterPractice> {
               ),
             ),
           ),
-          ...widget.practiceItems
+          ..._englishQaida
               .map((item) => _buildLetterPractice(context, item))
               .toList(),
         ],
@@ -69,7 +58,25 @@ class _LetterPracticeState extends State<LetterPractice> {
     );
   }
 
-  Widget _buildLetterPractice(BuildContext context, LetterPracticeItem item) {
+  final _englishQaida = [
+    EnglishQaidaList(
+      title: 'Lesson 1: Letters ا to ش',
+      letterAudio: '',
+      surahAudio: '',
+    ),
+    EnglishQaidaList(
+      title: 'Lesson 2: Letters ص to ی',
+      letterAudio: '',
+      surahAudio: '',
+    ),
+    EnglishQaidaList(
+      title: 'Lesson 3: Fatah sound ا to ش',
+      letterAudio: '',
+      surahAudio: '',
+    ),
+  ];
+
+  Widget _buildLetterPractice(BuildContext context, EnglishQaidaList item) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Row(
@@ -88,21 +95,21 @@ class _LetterPracticeState extends State<LetterPractice> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, item.lessonRoute);
+                  Navigator.pushNamed(context, item.letterAudio);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),
               ),
-              SizedBox(width: 80),
+              SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, item.practiceRoute);
+                  Navigator.pushNamed(context, item.surahAudio);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),

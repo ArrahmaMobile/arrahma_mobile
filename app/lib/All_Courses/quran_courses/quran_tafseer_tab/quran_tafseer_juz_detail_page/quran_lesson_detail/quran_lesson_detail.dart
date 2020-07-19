@@ -221,7 +221,7 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
                             Icons.volume_up,
                             color: Colors.lightBlue,
                           ),
-                          color: Colors.blue,
+                          color: Colors.black,
                           onPressed: () {},
                         )
                       ],

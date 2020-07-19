@@ -43,19 +43,19 @@ class Tajweed extends StatelessWidget {
   final _tajweedItem = [
     TajweedItem(
       title: 'Adv Taleem Ul Quran',
-      pageRoute: '/adv_talemmul_tajweed_tab',
+      pageRoute: '/',
     ),
     TajweedItem(
       title: 'Taleem Ul Quran',
-      pageRoute: '/taleemul_tajweed_tab',
+      pageRoute: '/',
     ),
     TajweedItem(
       title: 'Fehm Ul Quran',
-      pageRoute: '/femul_tajweed_tab',
+      pageRoute: '/',
     ),
     TajweedItem(
       title: 'English Qaida',
-      pageRoute: '/',
+      pageRoute: '/english_qaida',
     ),
     TajweedItem(
       title: 'Noorani Qaida',

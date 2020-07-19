@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'model/letter_practice.dart';
+import 'models/arabic_grammer.dart';
 
-class LetterPractice extends StatefulWidget {
-  const LetterPractice({Key key, this.practiceItems, this.title})
-      : super(key: key);
-  final List<LetterPracticeItem> practiceItems;
-  final String title;
-
-  @override
-  _LetterPracticeState createState() => _LetterPracticeState();
-}
-
-class _LetterPracticeState extends State<LetterPractice> {
+class ArabicGrammer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +10,7 @@ class _LetterPracticeState extends State<LetterPractice> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.title,
+          'Arabic Grammer',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
@@ -40,7 +30,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'Lesson',
+                      'Sheets',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -50,7 +40,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                       width: 20,
                     ),
                     Text(
-                      'Practice',
+                      'Audio',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -61,7 +51,7 @@ class _LetterPracticeState extends State<LetterPractice> {
               ),
             ),
           ),
-          ...widget.practiceItems
+          ..._arabicGrammer
               .map((item) => _buildLetterPractice(context, item))
               .toList(),
         ],
@@ -69,7 +59,25 @@ class _LetterPracticeState extends State<LetterPractice> {
     );
   }
 
-  Widget _buildLetterPractice(BuildContext context, LetterPracticeItem item) {
+  final _arabicGrammer = [
+    GrammerItem(
+      title: 'Arabic Grammar Terminologies and Signs of Ism',
+      sheetsPdf: '',
+      audio: '',
+    ),
+    GrammerItem(
+      title: 'Types of Ism Marfaa Part 1',
+      sheetsPdf: '',
+      audio: '',
+    ),
+    GrammerItem(
+      title: 'Types of Ism Marfaa Part 2 (incomplete)',
+      sheetsPdf: '',
+      audio: '',
+    ),
+  ];
+
+  Widget _buildLetterPractice(BuildContext context, GrammerItem item) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Row(
@@ -87,22 +95,20 @@ class _LetterPracticeState extends State<LetterPractice> {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, item.lessonRoute);
-                },
-                child: Icon(
-                  Icons.audiotrack,
-                  color: Colors.black,
-                  size: 25,
-                ),
-              ),
-              SizedBox(width: 80),
+                  onTap: () {
+                    Navigator.pushNamed(context, item.sheetsPdf);
+                  },
+                  child: Image.asset(
+                    'assets/images/multi_page_icons/arrow_down.png',
+                    width: 20,
+                  )),
+              SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, item.practiceRoute);
+                  Navigator.pushNamed(context, item.audio);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),

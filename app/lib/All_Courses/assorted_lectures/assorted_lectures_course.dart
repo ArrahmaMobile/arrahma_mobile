@@ -2,7 +2,7 @@ import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/assorted_lectur
 import 'package:flutter/material.dart';
 import 'model/assorted_lectures.dart';
 
-class AssortedLecturesCourse extends StatelessWidget {
+class AssortedLectures extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

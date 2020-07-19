@@ -31,7 +31,7 @@ class MainDrawer extends StatelessWidget {
     ),
     DrawerList(
       title: 'Grammer',
-      pageRoute: '/grammer',
+      pageRoute: '/arabic_grammer',
     ),
     DrawerList(
       title: 'Tajweed',

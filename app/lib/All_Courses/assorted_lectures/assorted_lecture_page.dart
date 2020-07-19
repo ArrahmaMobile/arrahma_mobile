@@ -60,7 +60,7 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
                               },
                               child: Icon(
                                 Icons.volume_up,
-                                color: Colors.lightBlue,
+                                color: Colors.black,
                               ),
                             ),
                             SizedBox(width: 2),

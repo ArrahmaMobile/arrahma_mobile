@@ -54,7 +54,7 @@ class _AkhirahState extends State<Akhirah> {
                             },
                             child: Icon(
                               Icons.volume_up,
-                              color: Colors.lightBlue,
+                              color: Colors.black,
                             ),
                           ),
                           SizedBox(width: 2),

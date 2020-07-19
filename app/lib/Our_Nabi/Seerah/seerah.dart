@@ -46,7 +46,7 @@ class Seerah extends StatelessWidget {
                 ),
                 Icon(
                   Icons.volume_up,
-                  color: Colors.lightBlue,
+                  color: Colors.black,
                   size: 50,
                 ),
               ],
@@ -67,7 +67,7 @@ class Seerah extends StatelessWidget {
                 ),
                 Icon(
                   Icons.volume_up,
-                  color: Colors.lightBlue,
+                  color: Colors.black,
                   size: 50,
                 ),
               ],

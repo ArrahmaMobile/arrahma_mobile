@@ -105,7 +105,7 @@ class Lectures extends StatelessWidget {
               lecture.text,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontSize: 20),
             ),
           ],
