@@ -1,6 +1,7 @@
 import 'dart:ui';
-import 'package:arrahma_mobile_app/Drawer/model/drawer.dart';
 import 'package:flutter/material.dart';
+
+import 'model/drawer.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -30,7 +31,7 @@ class MainDrawer extends StatelessWidget {
       pageRoute: '/lectures',
     ),
     DrawerList(
-      title: 'Grammer',
+      title: 'Arabic Grammer',
       pageRoute: '/arabic_grammer',
     ),
     DrawerList(

@@ -2,8 +2,8 @@ import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/q
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_tab/quran_test_tab.dart';
-import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_page/quran_test_page.dart';
+import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class CourseInPashtu extends StatefulWidget {
@@ -19,7 +19,7 @@ class _CourseInPashtuState extends State<CourseInPashtu> {
     QuranRegistrationTab(),
     QuranTafseerTab(),
     QuranTajweedTab(),
-    QuranTestsTab()
+    QuranTestsPage()
   ];
 
   @override
@@ -28,62 +28,65 @@ class _CourseInPashtuState extends State<CourseInPashtu> {
       drawer: MainDrawer(),
       body: _pageSelected[_tabSelected],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.library_books,
-              color: Colors.black,
             ),
             title: Text(
               'Details',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.book,
-              color: Colors.black,
             ),
             title: Text(
               'Registration',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tafseer',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tajweed',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tests',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

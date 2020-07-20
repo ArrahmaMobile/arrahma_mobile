@@ -41,7 +41,7 @@ class PashtoCourse extends StatelessWidget {
   final _pashtoCourse = [
     PashtoCourseItem(
       title: 'Quran Tafseer 2019',
-      pageRoute: '',
+      pageRoute: '/quran_tafseer_tab',
     ),
     PashtoCourseItem(
       title: 'Selected Surahs',

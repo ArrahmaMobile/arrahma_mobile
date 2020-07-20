@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'model/quran_lesson_detail_item.dart';
+
 class QuranLessonDetailPage extends StatefulWidget {
   @override
   _QuranLessonDetailPageState createState() => _QuranLessonDetailPageState();
@@ -62,174 +64,9 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Image.asset(
-                            'assets/images/social_media_share/message.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Root words',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.lightBlue,
-                          ),
-                          color: Colors.grey,
-                          onPressed: () {},
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                onTap: () {},
-              ),
-              SizedBox(height: 30),
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Image.asset(
-                            'assets/images/social_media_share/facebook.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Translation',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.lightBlue,
-                          ),
-                          color: Colors.grey,
-                          onPressed: () {},
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                onTap: () {},
-              ),
-              SizedBox(height: 30),
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Image.asset(
-                            'assets/images/social_media_share/twitter.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Tafseer',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.lightBlue,
-                          ),
-                          color: Colors.grey,
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.lightBlue,
-                          ),
-                          color: Colors.grey,
-                          onPressed: () {},
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                onTap: () {},
-              ),
-              SizedBox(height: 30),
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Image.asset(
-                            'assets/images/social_media_share/whatsapp.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Ref. Material',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.lightBlue,
-                          ),
-                          color: Colors.black,
-                          onPressed: () {},
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                onTap: () {},
-              ),
+              ..._quranLessonDetail
+                  .map((item) => _buildQuranLessonDetail(context, item))
+                  .toList(),
               SizedBox(height: 120),
               GestureDetector(
                 child: Text(
@@ -245,6 +82,76 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  final _quranLessonDetail = [
+    QuranLessonDetailItem(
+      title: 'Root',
+      rootWordPdf: '',
+      translationAudio: '',
+      tafseerAudio: '',
+      refMaterialAudio: '',
+    ),
+    QuranLessonDetailItem(
+      title: 'Translation',
+      rootWordPdf: '',
+      translationAudio: '',
+      tafseerAudio: '',
+      refMaterialAudio: '',
+    ),
+    QuranLessonDetailItem(
+      title: 'Tafseer',
+      rootWordPdf: '',
+      translationAudio: '',
+      tafseerAudio: '',
+      refMaterialAudio: '',
+    ),
+    QuranLessonDetailItem(
+      title: 'Ref. Material',
+      rootWordPdf: '',
+      translationAudio: '',
+      tafseerAudio: '',
+      refMaterialAudio: '',
+    ),
+  ];
+
+  Widget _buildQuranLessonDetail(
+      BuildContext context, QuranLessonDetailItem item) {
+    return GestureDetector(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 20),
+              ),
+              SizedBox(width: 15),
+              Text(
+                item.title,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.volume_up,
+                  color: Colors.white,
+                ),
+                color: Colors.black,
+                onPressed: () {},
+              )
+            ],
+          )
+        ],
+      ),
+      onTap: () {},
     );
   }
 }

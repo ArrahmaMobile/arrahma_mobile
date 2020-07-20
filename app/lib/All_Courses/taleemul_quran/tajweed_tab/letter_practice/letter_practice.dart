@@ -91,7 +91,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                   Navigator.pushNamed(context, item.lessonRoute);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),
@@ -102,7 +102,7 @@ class _LetterPracticeState extends State<LetterPractice> {
                   Navigator.pushNamed(context, item.practiceRoute);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),

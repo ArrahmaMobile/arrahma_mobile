@@ -15,7 +15,7 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'Surah',
+          'Surah {{ NAME }}',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),

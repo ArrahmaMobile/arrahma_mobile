@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/quran_course.dart';
 import 'package:arrahma_mobile_app/Tajweed/model/tajweed.dart';
 import 'package:flutter/material.dart';
 
@@ -43,15 +44,27 @@ class Tajweed extends StatelessWidget {
   final _tajweedItem = [
     TajweedItem(
       title: 'Adv Taleem Ul Quran',
-      pageRoute: '/',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
+        title: 'Adv Taleemul Quran',
+        courseDetailPdfUrl: '',
+      ),
     ),
     TajweedItem(
       title: 'Taleem Ul Quran',
-      pageRoute: '/',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
+        title: 'Taleem Quran',
+        courseDetailPdfUrl: '',
+      ),
     ),
     TajweedItem(
       title: 'Fehm Ul Quran',
-      pageRoute: '/',
+      pageRoute: '/quran_course_page',
+      data: QuranCourse(
+        title: 'Fehm Ul Quran',
+        courseDetailPdfUrl: '',
+      ),
     ),
     TajweedItem(
       title: 'English Qaida',
@@ -63,18 +76,18 @@ class Tajweed extends StatelessWidget {
     ),
     TajweedItem(
       title: 'Juz 30 Hifz',
-      pageRoute: '/',
+      pageRoute: '/juz_30_hifz',
     ),
     TajweedItem(
       title: 'Taleem Ul Quran 2013',
-      pageRoute: '/',
+      pageRoute: '/taleem_quran_2013',
     )
   ];
 
-  Widget _buildTajweedItem(context, item) {
+  Widget _buildTajweedItem(BuildContext context, TajweedItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, item.pageRoute);
+        Navigator.pushNamed(context, item.pageRoute, arguments: item.data);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

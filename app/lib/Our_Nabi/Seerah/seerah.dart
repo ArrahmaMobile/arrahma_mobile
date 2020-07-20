@@ -33,6 +33,9 @@ class Seerah extends StatelessWidget {
       childAspectRatio: 1.5,
       children: <Widget>[
         GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/lecture_tab');
+          },
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -44,16 +47,14 @@ class Seerah extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
-                Icon(
-                  Icons.volume_up,
-                  color: Colors.black,
-                  size: 50,
-                ),
               ],
             ),
           ),
         ),
         GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/home');
+          },
           child: Container(
             color: Color(0xffdedbdb),
             child: Column(
@@ -64,11 +65,6 @@ class Seerah extends StatelessWidget {
                   'Tajalliyate Nabawi PED',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                Icon(
-                  Icons.volume_up,
-                  color: Colors.black,
-                  size: 50,
                 ),
               ],
             ),

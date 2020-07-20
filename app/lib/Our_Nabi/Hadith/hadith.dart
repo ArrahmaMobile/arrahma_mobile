@@ -33,23 +33,31 @@ class Hadith extends StatelessWidget {
         crossAxisCount: 2,
         shrinkWrap: true,
         childAspectRatio: 1,
-        children: _hadithItem.map((item) => _buildHadithItem(item)).toList());
+        children: _hadithItem
+            .map((item) => _buildHadithItem(context, item))
+            .toList());
   }
 
   final _hadithItem = [
     HadithItem(
       title: 'Hadith Lessons',
+      pageRoute: '/hadith_lesson_details',
     ),
     HadithItem(
-      title: 'Hadith Lessons',
+      title: 'Lulu wal Marjaan - 1',
+      pageRoute: '/home',
     ),
     HadithItem(
-      title: 'Hadith Lessons',
+      title: 'Lulu wal Marjaan - 2',
+      pageRoute: '/home',
     ),
   ];
 
-  Widget _buildHadithItem(item) {
+  Widget _buildHadithItem(BuildContext context, item) {
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, item.pageRoute);
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

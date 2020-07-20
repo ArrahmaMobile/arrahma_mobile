@@ -1,8 +1,7 @@
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
-import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/Our_Nabi/Seerah/seerah.dart';
+import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
-
-import 'lecture_tab/lecture_tab.dart';
 
 class SeerahCourse extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _SeerahCourseState extends State<SeerahCourse> {
 
   final _pageSelected = [
     QuranDetailsTab(),
-    LectureTab(),
+    Seerah(),
   ];
 
   @override
@@ -23,13 +22,13 @@ class _SeerahCourseState extends State<SeerahCourse> {
       drawer: MainDrawer(),
       body: _pageSelected[_tabSelected],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.library_books,
-              color: Colors.black,
             ),
             title: Text(
               'Details',
@@ -40,7 +39,6 @@ class _SeerahCourseState extends State<SeerahCourse> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.book,
-              color: Colors.black,
             ),
             title: Text(
               'Lectures',

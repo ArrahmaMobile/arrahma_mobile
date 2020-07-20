@@ -40,16 +40,16 @@ class StudentCorner extends StatelessWidget {
 
   final _studentCornerItem = [
     StudentCornerItem(
-      title: 'Al-Fauz PDF',
-      pageRoute: '',
+      title: 'Weekly Updates',
+      pageRoute: '/home',
     ),
     StudentCornerItem(
       title: 'FQ & TQ Tests',
-      pageRoute: '',
+      pageRoute: '/quran_test_page',
     ),
     StudentCornerItem(
       title: 'ATQ Tests & Assignments',
-      pageRoute: '',
+      pageRoute: '/quran_test_page',
     ),
     StudentCornerItem(
       title: 'Al-Fauz Pdf',
@@ -57,14 +57,15 @@ class StudentCorner extends StatelessWidget {
     ),
     StudentCornerItem(
       title: 'Sisters Support',
-      pageRoute: '',
+      pageRoute: '/home',
     ),
     StudentCornerItem(
       title: 'Phone Attendance Req. Form',
+      pageRoute: '/home',
     ),
     StudentCornerItem(
       title: 'Tafseer Attendance',
-      pageRoute: '',
+      pageRoute: '/home',
     ),
   ];
 

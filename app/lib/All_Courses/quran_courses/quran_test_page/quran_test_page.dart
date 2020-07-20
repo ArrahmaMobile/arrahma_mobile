@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class QuranTestsTab extends StatelessWidget {
-  const QuranTestsTab({Key key, this.title}) : super(key: key);
+class QuranTestsPage extends StatelessWidget {
+  const QuranTestsPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -12,7 +12,7 @@ class QuranTestsTab extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          title,
+          'Tests & Assignments',
           style: TextStyle(color: Colors.black),
         ),
       ),

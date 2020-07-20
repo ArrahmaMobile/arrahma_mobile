@@ -10,7 +10,7 @@ class AssortedLectures extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Lectures',
+          'Assorted Lectures',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -57,47 +57,124 @@ class AssortedLectures extends StatelessWidget {
     ),
     AssortedLectureCategoryItem(
       title: 'Marriage',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Kamyab Shadi Ke Sunehre Asool',
+          subtitle: 'کامیاب شادی کے سنہرے اصول',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Akhirah',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Ya Allah Mera Nur Mukammal Karde',
+          subtitle: 'یا اللہ میرا نور مکمّل کر دے',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Months and Events',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Lecture on Zakat By Ustadh Abu Saif (2019)',
+          subtitle: '',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
-      title: 'Padaab-e-Zindagi',
-      lectures: [],
+      title: 'Adaab-e-Zindagi',
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Ghar ke sukoon ka raaz',
+          subtitle: 'سورہٴ الروم آیت ٢١  گھر کے سکون کا را',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: "Rubb Se Taa'luk",
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Qabuliyate amal ki lazmi shart ',
+          subtitle: 'سورہٴ الزمر آیت ٢  قبولیتِ عمل کی لازمی شرط',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Imaan',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Qulb-e-Saleem',
+          subtitle: 'قلبِ سلیم',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Humare Rasool ﷺ',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Sifate Mustufa(saw){New}',
+          subtitle: 'صفات مصطفی',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Duniya ki zindagi',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Depression Aur Uska Ilaaj  ',
+          subtitle: '',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Quran/ilm',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Quran mai kya parde ka hukum hai?',
+          subtitle: ' سورہٴ الاحزاب آیت ٥٩  قرآن می کیا پردے کا حکم ہے؟',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Humare Aamal',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Laanat Ke Mustahiq Log ',
+          subtitle: 'لعنت کے مستحق لوگ',
+          audioLength: '12:14',
+        ),
+      ),
     ),
     AssortedLectureCategoryItem(
       title: 'Miscellaneous',
-      lectures: [],
+      lectures: List.generate(
+        10,
+        (index) => AssortedLecture(
+          title: 'Na Shukre na Bano ',
+          subtitle: 'نا شکرے نہ بنو',
+          audioLength: '12:14',
+        ),
+      ),
     ),
   ];
 

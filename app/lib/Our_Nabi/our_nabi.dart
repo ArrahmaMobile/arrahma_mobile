@@ -28,12 +28,15 @@ class OurNabi extends StatelessWidget {
   final _ourNabi = [
     OurNabiItem(
       title: 'Hadith',
+      pageRoute: '/hadith',
     ),
     OurNabiItem(
       title: 'Seerah',
+      pageRoute: '/seerah',
     ),
     OurNabiItem(
       title: 'Raiz us Saliheen',
+      pageRoute: '/riza_us_saliheen',
     ),
   ];
 
@@ -52,7 +55,7 @@ class OurNabi extends StatelessWidget {
   Widget _buildOurNabiItem(context, OurNabiItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/hadith');
+        Navigator.pushNamed(context, item.pageRoute);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

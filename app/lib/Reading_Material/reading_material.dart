@@ -35,7 +35,7 @@ class ReadingMaterial extends StatelessWidget {
       childAspectRatio: 1.3,
       children: _readingMaterialItem
           .map(
-            (item) => _buildReadingMaterial(item),
+            (item) => _buildReadingMaterial(context, item),
           )
           .toList(),
     );
@@ -44,27 +44,35 @@ class ReadingMaterial extends StatelessWidget {
   final _readingMaterialItem = [
     ReadingMaterialItem(
       title: 'Dua',
+      pageRoute: '/dua',
     ),
     ReadingMaterialItem(
-      title: 'Juz Transaltion',
+      title: 'Juz Translation',
+      pageRoute: '/juz_Translation',
     ),
     ReadingMaterialItem(
       title: 'Quran Dictionary',
+      pageRoute: '/quran_dictionary',
     ),
     ReadingMaterialItem(
       title: 'Assorted Topic',
+      pageRoute: '/assorted_topic',
     ),
     ReadingMaterialItem(
       title: 'Imp Vocabulary words',
+      pageRoute: '/imp_vocabulary_words',
     ),
     ReadingMaterialItem(
       title: 'Worksheet by Ustazah',
+      pageRoute: '/worksheet',
     ),
   ];
 
-  Widget _buildReadingMaterial(item) {
+  Widget _buildReadingMaterial(BuildContext context, ReadingMaterialItem item) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, item.pageRoute);
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

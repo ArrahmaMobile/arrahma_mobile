@@ -1,8 +1,8 @@
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
 import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_tab/quran_test_tab.dart';
-import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_page/quran_test_page.dart';
+import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'fehmul_tajweed_tab/fehmul_tajweed_tab.dart';
@@ -20,7 +20,7 @@ class _FehmulQuranState extends State<FehmulQuran> {
     QuranRegistrationTab(),
     QuranTafseerTab(),
     FemulTajweedTab(),
-    QuranTestsTab()
+    QuranTestsPage()
   ];
 
   @override
@@ -29,13 +29,13 @@ class _FehmulQuranState extends State<FehmulQuran> {
       drawer: MainDrawer(),
       body: _pageSelected[_tabSelected],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.library_books,
-              color: Colors.black,
             ),
             title: Text(
               'Details',
@@ -46,7 +46,6 @@ class _FehmulQuranState extends State<FehmulQuran> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.book,
-              color: Colors.black,
             ),
             title: Text(
               'Registration',
@@ -57,7 +56,6 @@ class _FehmulQuranState extends State<FehmulQuran> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tafseer',
@@ -68,7 +66,6 @@ class _FehmulQuranState extends State<FehmulQuran> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tajweed',
@@ -79,7 +76,6 @@ class _FehmulQuranState extends State<FehmulQuran> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tests',

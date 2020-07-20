@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+
+class TaleemQuran2013 extends StatefulWidget {
+  @override
+  TaleemQuran2013State createState() => TaleemQuran2013State();
+}
+
+class TaleemQuran2013State extends State<TaleemQuran2013> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Surah',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: 10,
+                    itemBuilder: (_, index) => ListTile(
+                      title: const Text(
+                        'Surah An-Naba النبإ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('Tajweedc 1-40'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(width: 5),
+                          IconButton(
+                            icon: Icon(
+                              Icons.volume_up,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                    ),
+                    separatorBuilder: (_, __) => const Divider(thickness: 2),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

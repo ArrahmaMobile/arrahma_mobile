@@ -100,13 +100,16 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          SizedBox(width: 15),
+          SizedBox(
+            width: 15,
+            height: 40,
+          ),
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, item.pageRoute);
             },
             child: Icon(
-              Icons.audiotrack,
+              Icons.volume_up,
               color: Colors.black,
               size: 20,
             ),
@@ -117,7 +120,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
               Navigator.pushNamed(context, item.pageRoute);
             },
             child: Icon(
-              Icons.audiotrack,
+              Icons.volume_up,
               color: Colors.black,
               size: 20,
             ),
@@ -130,7 +133,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                 Navigator.pushNamed(context, item.pageRoute);
               },
               child: Icon(
-                Icons.audiotrack,
+                Icons.volume_up,
                 color: Colors.black,
                 size: 20,
               ),

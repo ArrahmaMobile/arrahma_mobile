@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/Drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'models/leture_list.dart';
 
@@ -45,47 +45,47 @@ class Lectures extends StatelessWidget {
 
   final _lectures = [
     Lecture(
-      text: 'Quranic Tafseer',
+      title: 'Quranic Tafseer',
       pageRoute: '/quran_tafseer',
     ),
     Lecture(
-      text: 'Youth Courses',
+      title: 'Youth Courses',
       pageRoute: '/youth_course',
     ),
     Lecture(
-      text: 'Tazkeer',
+      title: 'Tazkeer',
       pageRoute: '/tazkeer',
     ),
     Lecture(
-      text: 'Wirasat Course',
+      title: 'Wirasat Course',
       pageRoute: '/wirasat_course',
     ),
     Lecture(
-      text: 'Weekly Gems',
+      title: 'Weekly Gems',
       pageRoute: '/weekly_gems',
     ),
     Lecture(
-      text: 'Assorted Lectures',
+      title: 'Assorted Lectures',
       pageRoute: '/assorted_lectures',
     ),
     Lecture(
-      text: 'Ramadan Special',
+      title: 'Ramadan Special',
       pageRoute: '/ramadan_special',
     ),
     Lecture(
-      text: 'Special Series',
+      title: 'Special Series',
       pageRoute: '/speical_series',
     ),
     Lecture(
-      text: 'Pashto Course',
+      title: 'Pashto Course',
       pageRoute: '/pashto_course',
     ),
     Lecture(
-      text: 'Lectures on Death',
+      title: 'Lectures on Death',
       pageRoute: '/lectures_on_death',
     ),
     Lecture(
-      text: 'Lectures on Namaz',
+      title: 'Lectures on Namaz',
       pageRoute: '/lecture_on_namaz',
     ),
   ];
@@ -102,7 +102,7 @@ class Lectures extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              lecture.text,
+              lecture.title,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

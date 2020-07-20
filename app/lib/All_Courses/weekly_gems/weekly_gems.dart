@@ -13,7 +13,7 @@ class _WeeklyGemsCourseState extends State<WeeklyGemsCourse> {
   Widget build(BuildContext context) {
     return AssortedLecturePage(
       item: AssortedLectureCategoryItem(
-        title: 'Quran ki kirnein',
+        title: 'Weekly Gems',
         lectures: [
           AssortedLecture(
             title: 'Ek Naik aurat ki anokhi nazar',

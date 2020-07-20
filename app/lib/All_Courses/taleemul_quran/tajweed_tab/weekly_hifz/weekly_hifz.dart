@@ -100,7 +100,7 @@ class _WeeklyHifzState extends State<WeeklyHifz> {
                   Navigator.pushNamed(context, item.pageRoute);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),
@@ -111,7 +111,7 @@ class _WeeklyHifzState extends State<WeeklyHifz> {
                   Navigator.pushNamed(context, item.pageRoute);
                 },
                 child: Icon(
-                  Icons.audiotrack,
+                  Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),
