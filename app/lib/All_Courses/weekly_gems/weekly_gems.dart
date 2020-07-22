@@ -1,6 +1,6 @@
-import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/assorted_lecture.dart';
-import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/assorted_lecture_page.dart';
-import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/model/assorted_lectures.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture_page.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lectures.dart';
 import 'package:flutter/material.dart';
 
 class WeeklyGemsCourse extends StatefulWidget {

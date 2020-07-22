@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-class QuranSurahDetailPage extends StatefulWidget {
+class QuranFavoriteSurah extends StatefulWidget {
   @override
-  _QuranSurahDetailPageState createState() => _QuranSurahDetailPageState();
+  _QuranFavoriteSurahState createState() => _QuranFavoriteSurahState();
 }
 
-class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
-  bool _isFav = false;
+class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
   bool _isSearching = false;
 
   @override
@@ -16,17 +15,16 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
+                backgroundColor: Colors.white,
                 centerTitle: true,
                 title: Text(
-                  'Lessons',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  'Favorite Surah',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.star_border),
-                    color: Colors.black,
-                    onPressed: () {},
-                  ),
                   IconButton(
                     icon: Icon(Icons.search),
                     color: Colors.black,
@@ -50,7 +48,8 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: TextField(
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           hintText: 'Search',
                           hintStyle: TextStyle(color: Colors.black)),
@@ -73,36 +72,16 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
           children: [
             Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: const Text(
-                    "Continue to last Lesson",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: 5,
                     itemBuilder: (_, index) => ListTile(
                       leading: Icon(Icons.branding_watermark),
-                      title: const Text('Lesson 1:'),
-                      subtitle: const Text('Ayah 1-3'),
+                      title: const Text('Surah Al-Fatiha  الفاتحۃ'),
+                      subtitle: const Text('The Opening'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(_isFav ? Icons.star : Icons.star_border),
-                            onPressed: () {
-                              setState(() {
-                                _isFav = !_isFav;
-                              });
-                            },
-                          ),
-                        ],
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/lesson_detail_page');
-                      },
                     ),
                     separatorBuilder: (_, __) => const Divider(thickness: 2),
                   ),

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'model/letter_practice.dart';
 
 class LetterPractice extends StatefulWidget {
-  const LetterPractice({Key key, this.practiceItems, this.title})
+  const LetterPractice(
+      {Key key, @required this.practiceItems, @required this.title})
       : super(key: key);
   final List<LetterPracticeItem> practiceItems;
   final String title;

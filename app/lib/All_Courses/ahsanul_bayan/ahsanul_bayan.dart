@@ -1,9 +1,12 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_juz_detail_page/quran_juz_detail_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class AhsanulBayan extends StatefulWidget {
+  const AhsanulBayan({Key key, @required this.course}) : super(key: key);
+  final QuranCourse course;
   @override
   _AhsanulBayanState createState() => _AhsanulBayanState();
 }
@@ -12,8 +15,11 @@ class _AhsanulBayanState extends State<AhsanulBayan> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(),
-    QuranJuzDetailPage(),
+    QuranDetailsTab(
+      title: '',
+      pdfUrl: '',
+    ),
+    QuranJuzDetailPage(surahs: []),
   ];
 
   @override

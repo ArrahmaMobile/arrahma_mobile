@@ -1,7 +1,8 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_page/quran_test_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/course_registration.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_juz_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +17,21 @@ class _FehmulQuranState extends State<FehmulQuran> {
   int _tabSelected = 2;
 
   final _pageSelected = [
-    QuranDetailsTab(),
-    QuranRegistrationTab(),
-    QuranTafseerTab(),
+    QuranDetailsTab(
+      title: '',
+      pdfUrl: '',
+    ),
+    QuranRegistrationTab(
+      title: '',
+      registration: CourseRegistration(),
+    ),
+    QuranTafseerTab(
+      title: '',
+    ),
     FemulTajweedTab(),
-    QuranTestsPage()
+    QuranTestsPage(
+      title: '',
+    )
   ];
 
   @override

@@ -16,7 +16,7 @@ class _HadithLessonsState extends State<HadithLessons> {
           centerTitle: true,
           title: Text(
             'Hadith Review',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(

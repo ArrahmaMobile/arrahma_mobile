@@ -1,15 +1,16 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_juz_detail_page/quran_juz_detail_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_surah_detail_page.dart';
 import 'package:flutter/material.dart';
 
-class QuranTafseerTab extends StatefulWidget {
-  const QuranTafseerTab({Key key, this.title}) : super(key: key);
-  final String title;
+class QuranJuzDetailPage extends StatefulWidget {
+  const QuranJuzDetailPage({Key key, @required this.surahs}) : super(key: key);
+  final List<Surah> surahs;
 
   @override
-  _QuranTafseerTabState createState() => _QuranTafseerTabState();
+  _QuranJuzDetailPageState createState() => _QuranJuzDetailPageState();
 }
 
-class _QuranTafseerTabState extends State<QuranTafseerTab> {
+class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -20,18 +21,21 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                centerTitle: true,
                 backgroundColor: Colors.white,
+                centerTitle: true,
                 title: Text(
-                  widget.title,
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  'Surah Detail',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
                     color: Colors.black,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/favorite_juz');
+                      Navigator.pushNamed(context, '/favorite_surah');
                     },
                   ),
                   IconButton(
@@ -58,7 +62,8 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: TextField(
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           hintText: 'Search',
                           hintStyle: TextStyle(color: Colors.black)),
@@ -84,38 +89,45 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: const Text(
-                    "Continue to last Juz",
+                    "Continue to last Surah",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: 30,
-                    itemBuilder: (_, index) => ListTile(
-                      leading: Icon(Icons.branding_watermark),
-                      title: const Text('Juz 1    الم'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              _isFav ? Icons.star : Icons.star_border,
-                              color: Colors.black,
+                    itemCount: widget.surahs.length,
+                    itemBuilder: (_, index) {
+                      final surah = widget.surahs[index];
+                      return ListTile(
+                        leading: Icon(Icons.branding_watermark),
+                        title: Text('${surah.name} ${surah.arabicName}'),
+                        subtitle: Text(surah.description),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(
+                                _isFav ? Icons.star : Icons.star_border,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isFav = !_isFav;
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isFav = !_isFav;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          _surahRouteAnimation(),
-                        );
-                      },
-                    ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => QuranSurahDetailPage(
+                                        lessons: [],
+                                      )));
+                        },
+                      );
+                    },
                     separatorBuilder: (_, __) => const Divider(thickness: 2),
                   ),
                 ),
@@ -124,26 +136,6 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
           ],
         ),
       ),
-    );
-  }
-
-  Route _surahRouteAnimation() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          QuranJuzDetailPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }

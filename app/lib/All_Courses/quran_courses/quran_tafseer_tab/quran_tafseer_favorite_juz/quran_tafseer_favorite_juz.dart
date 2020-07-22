@@ -20,7 +20,10 @@ class _AdvTaleemmulFavoriteJuzState extends State<AdvTaleemmulFavoriteJuz> {
                 centerTitle: true,
                 title: Text(
                   'Favorite Juz',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
@@ -46,7 +49,8 @@ class _AdvTaleemmulFavoriteJuzState extends State<AdvTaleemmulFavoriteJuz> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: TextField(
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           hintText: 'Search',
                           hintStyle: TextStyle(color: Colors.black)),

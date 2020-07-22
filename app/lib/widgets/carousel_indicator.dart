@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CarouselIndicator extends StatefulWidget {
-  const CarouselIndicator({Key key, this.items}) : super(key: key);
+  const CarouselIndicator({Key key, @required this.items}) : super(key: key);
   final List<Widget> items;
 
   @override

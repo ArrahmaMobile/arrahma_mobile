@@ -17,7 +17,7 @@ class _AboutUsState extends State<AboutUs> {
         centerTitle: true,
         title: Text(
           'About us',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(

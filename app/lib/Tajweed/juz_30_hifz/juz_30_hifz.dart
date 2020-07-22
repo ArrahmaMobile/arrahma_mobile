@@ -16,7 +16,7 @@ class _Juz30HifzState extends State<Juz30Hifz> {
           centerTitle: true,
           title: Text(
             'Juz 30 عمّ',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(

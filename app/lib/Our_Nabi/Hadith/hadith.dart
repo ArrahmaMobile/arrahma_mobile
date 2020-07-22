@@ -11,7 +11,7 @@ class Hadith extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Hadith',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

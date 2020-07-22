@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/fehmul_quran/fehmul_tajweed_tab/model/fehmul_tajweed_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/fehmul_quran/fehmul_tajweed_tab/model/fehmul_tajweed_tab.dart';
 import 'package:flutter/material.dart';
 
 class FemulTajweedTab extends StatefulWidget {

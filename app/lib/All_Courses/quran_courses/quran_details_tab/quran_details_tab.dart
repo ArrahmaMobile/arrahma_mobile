@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class QuranDetailsTab extends StatefulWidget {
-  const QuranDetailsTab({Key key, this.pdfUrl, this.title}) : super(key: key);
+  const QuranDetailsTab({Key key, @required this.pdfUrl, @required this.title})
+      : super(key: key);
   final String title;
   final String pdfUrl;
 
@@ -17,8 +18,8 @@ class _QuranDetailsTabState extends State<QuranDetailsTab> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'sss',
-          style: TextStyle(color: Colors.black),
+          widget.title,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );

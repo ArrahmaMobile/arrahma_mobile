@@ -9,7 +9,7 @@ class Seerah extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Seerah',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

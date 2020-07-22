@@ -10,7 +10,7 @@ class OurNabi extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Our Nabi',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

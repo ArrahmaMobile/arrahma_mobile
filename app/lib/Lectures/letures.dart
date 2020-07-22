@@ -12,7 +12,7 @@ class Lectures extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Lectures',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(

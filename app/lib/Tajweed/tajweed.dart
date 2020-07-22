@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/quran_course.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
 import 'package:arrahma_mobile_app/Tajweed/model/tajweed.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class Tajweed extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Tajweed',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

@@ -1,11 +1,15 @@
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:flutter/material.dart';
 
-class MisbahLecturesTab extends StatefulWidget {
+class QuranTafseerTab extends StatefulWidget {
+  const QuranTafseerTab({Key key, @required this.title}) : super(key: key);
+  final String title;
+
   @override
-  _MisbahLecturesTabState createState() => _MisbahLecturesTabState();
+  _QuranTafseerTabState createState() => _QuranTafseerTabState();
 }
 
-class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
+class _QuranTafseerTabState extends State<QuranTafseerTab> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -16,10 +20,10 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                backgroundColor: Colors.white,
                 centerTitle: true,
+                backgroundColor: Colors.white,
                 title: Text(
-                  'Surah Detail',
+                  widget.title,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -30,7 +34,7 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
                     icon: Icon(Icons.star_border),
                     color: Colors.black,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/misbah_fav_surah');
+                      Navigator.pushNamed(context, '/favorite_juz');
                     },
                   ),
                   IconButton(
@@ -83,18 +87,25 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 10),
+                  child: const Text(
+                    "Continue to last Juz",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: 10,
+                    itemCount: 30,
                     itemBuilder: (_, index) => ListTile(
                       leading: Icon(Icons.branding_watermark),
-                      title: const Text('Surah Al Fatiha'),
+                      title: const Text('Juz 1    الم'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(_isFav ? Icons.star : Icons.star_border),
+                            icon: Icon(
+                              _isFav ? Icons.star : Icons.star_border,
+                              color: Colors.black,
+                            ),
                             onPressed: () {
                               setState(() {
                                 _isFav = !_isFav;
@@ -104,7 +115,9 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/misbah_surah_selected');
+                        Navigator.of(context).push(
+                          _surahRouteAnimation(),
+                        );
                       },
                     ),
                     separatorBuilder: (_, __) => const Divider(thickness: 2),
@@ -115,6 +128,28 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
           ],
         ),
       ),
+    );
+  }
+
+  Route _surahRouteAnimation() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          QuranJuzDetailPage(
+        surahs: [],
+      ),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

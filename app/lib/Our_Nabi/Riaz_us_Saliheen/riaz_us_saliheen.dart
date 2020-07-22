@@ -9,7 +9,7 @@ class RiazUsSaliheen extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Tajalliyat-e-Nabuwat تجليات نبوت',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );

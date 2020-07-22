@@ -96,7 +96,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Messages',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -129,7 +130,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Facebook',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -162,7 +164,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Twitter',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -195,7 +198,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Whatsapp',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -228,7 +232,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Instagram',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -262,7 +267,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'Copy Link',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -296,7 +302,8 @@ class _ShareState extends State<Share> {
                         SizedBox(width: 15),
                         Text(
                           'More',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

@@ -15,7 +15,7 @@ class _LectureTabState extends State<LectureTab> {
           centerTitle: true,
           title: Text(
             'Lectures',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.white,
         ),

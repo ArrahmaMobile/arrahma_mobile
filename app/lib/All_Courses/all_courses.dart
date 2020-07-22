@@ -1,4 +1,6 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/quran_course.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/model/quran_course_tajweed.dart';
 import 'package:flutter/material.dart';
 import 'models/course.dart';
 
@@ -11,7 +13,7 @@ class AllCourses extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'All Courses',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -37,6 +39,30 @@ class AllCourses extends StatelessWidget {
       data: QuranCourse(
         title: 'Adv Taleemul Quran',
         courseDetailPdfUrl: '',
+        tajweed: QuranCourseTajweed(
+          introductionUrl: '',
+          items: [
+            QuranCourseTajweedItem(
+              title: 'Surah Al-Baqarah',
+              surahs: [
+                Surah(
+                  name: 'Surah Al-Baqarah',
+                  arabicName: 'الفاتحۃ',
+                  description: 'The Opening',
+                  lessons: [
+                    Lesson(
+                      title: '',
+                      rootWordPdfUrls: [''],
+                      translationAudioUrls: [''],
+                      tafseerAudioUrls: [''],
+                      refMaterials: [''],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
     Course(
@@ -46,6 +72,22 @@ class AllCourses extends StatelessWidget {
       data: QuranCourse(
         title: 'Taleem Quran',
         courseDetailPdfUrl: '',
+        tafseer: [],
+        tajweed: QuranCourseTajweed(
+          introductionUrl: '',
+          items: [
+            QuranCourseTajweedItem(
+              title: 'Surah Al-Baqarah',
+              surahs: [
+                Surah(
+                  name: 'hi',
+                  arabicName: 'hi',
+                  description: 'hh',
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     ),
     Course(
@@ -55,13 +97,57 @@ class AllCourses extends StatelessWidget {
       data: QuranCourse(
         title: 'Fehmul Quran',
         courseDetailPdfUrl: '',
+        tajweed: QuranCourseTajweed(
+          introductionUrl: '',
+          items: [
+            QuranCourseTajweedItem(
+              title: 'Surah Al-Baqarah',
+              surahs: [
+                Surah(
+                  name: 'hi',
+                  arabicName: 'hi',
+                  description: 'hh',
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     ),
     Course(
       title: 'Course In Pashtu',
       imageUrl: 'assets/images/courses/course_in_pashtu.png',
       pageRoute: '/quran_course_page',
-      data: QuranCourse(title: 'Course In Pashtu'),
+      data: QuranCourse(
+        title: 'Course In Pashtu',
+        tajweed: QuranCourseTajweed(
+          introductionUrl: '',
+          items: [
+            QuranCourseTajweedItem(
+              title: 'Surah Al-Baqarah',
+              surahs: [
+                Surah(
+                  name: 'Surah Al-Fatiha ',
+                  arabicName: 'الفاتحۃ',
+                  description: 'The Opening',
+                  lessons: [
+                    Lesson(
+                      lessonNum: 'Lesson 1: ',
+                      lessonName: 'Surah Al-Baqarah',
+                      lessonAyah: 'Ayah 1-5',
+                      title: 'hiii',
+                      rootWordPdfUrls: ['hii'],
+                      translationAudioUrls: ['hii'],
+                      tafseerAudioUrls: ['hii'],
+                      refMaterials: ['hiii'],
+                    )
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     ),
     Course(
         title: 'Ilmul Yaqeen',

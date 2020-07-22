@@ -10,7 +10,7 @@ class StudentCorner extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Student Corner',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

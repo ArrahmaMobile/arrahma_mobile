@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,10 @@ class _AlMisbahState extends State<AlMisbah> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(),
+    QuranDetailsTab(
+      title: '',
+      pdfUrl: '',
+    ),
     MisbahLecturesTab(),
   ];
 

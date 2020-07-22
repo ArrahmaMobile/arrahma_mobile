@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/assorted_lectures/assorted_lecture.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture.dart';
 import 'package:flutter/material.dart';
 import 'model/assorted_lectures.dart';
 
@@ -11,7 +11,7 @@ class AssortedLectures extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Assorted Lectures',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(

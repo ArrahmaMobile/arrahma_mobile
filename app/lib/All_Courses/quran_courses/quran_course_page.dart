@@ -1,14 +1,14 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_details_tab/quran_details_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/quran_test_page/quran_test_page.dart';
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/quran_course.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_juz_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class QuranCoursePage extends StatefulWidget {
-  const QuranCoursePage({Key key, this.course}) : super(key: key);
+  const QuranCoursePage({Key key, @required this.course}) : super(key: key);
   final QuranCourse course;
 
   @override
@@ -29,7 +29,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       QuranTafseerTab(title: widget.course.title),
       QuranTajweedTab(
         title: widget.course.title,
-        items: widget.course.tajweed,
+        tajweed: widget.course.tajweed,
       ),
       QuranTestsPage(
         title: widget.course.title,
@@ -91,7 +91,6 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
             title: Text(
               'Tests',

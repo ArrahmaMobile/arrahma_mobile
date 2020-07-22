@@ -16,7 +16,8 @@ class _DuaDetailPageState extends State<DuaDetailPage> {
           backgroundColor: Colors.white,
           title: Text(
             'Dua Name',
-            style: TextStyle(color: Colors.black, fontSize: 20),
+            style: TextStyle(
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(

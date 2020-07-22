@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class QuranTestsPage extends StatelessWidget {
-  const QuranTestsPage({Key key, this.title}) : super(key: key);
+  const QuranTestsPage({Key key, @required this.title}) : super(key: key);
 
   final String title;
 
@@ -12,8 +12,8 @@ class QuranTestsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Tests & Assignments',
-          style: TextStyle(color: Colors.black),
+          title,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(

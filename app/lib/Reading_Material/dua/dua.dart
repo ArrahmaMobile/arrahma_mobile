@@ -16,7 +16,7 @@ class _DuaState extends State<Dua> {
           centerTitle: true,
           title: Text(
             'Reading Material',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(

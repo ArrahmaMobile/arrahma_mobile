@@ -1,14 +1,16 @@
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
+import 'package:arrahma_mobile_app/media_player/media_player.dart';
 import 'package:flutter/material.dart';
 import 'model/quran_course_tajweed.dart';
 
 class QuranTajweedTab extends StatelessWidget {
   QuranTajweedTab({
     Key key,
-    this.title,
-    this.items,
+    @required this.title,
+    @required this.tajweed,
   }) : super(key: key);
   final String title;
-  final List<QuranCourseTajweed> items;
+  final QuranCourseTajweed tajweed;
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +28,29 @@ class QuranTajweedTab extends StatelessWidget {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: items
-                .map((item) => _buildAdvTajweedTab(context, item))
-                .toList()),
+            children: [
+              _buildRawItem(
+                context,
+                'Introduction',
+                () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => MediaPlayerScreen()));
+                },
+              ),
+              ...tajweed.items.map((item) => _buildItem(context, item)).toList()
+            ]),
       ),
     );
   }
 
-  Widget _buildAdvTajweedTab(BuildContext context, QuranCourseTajweed item) {
+  Widget _buildRawItem(BuildContext context, String title, VoidCallback onTap) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, item.pageRoute, arguments: item.data);
-      },
+      onTap: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            item.title,
+            title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           Padding(
@@ -56,5 +64,16 @@ class QuranTajweedTab extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildItem(BuildContext context, QuranCourseTajweedItem item) {
+    return _buildRawItem(context, item.title, () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => QuranJuzDetailPage(
+                    surahs: item.surahs,
+                  )));
+    });
   }
 }

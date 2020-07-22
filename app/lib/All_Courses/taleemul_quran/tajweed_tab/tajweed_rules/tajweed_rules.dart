@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/All_Courses/taleemul_quran/tajweed_tab/tajweed_rules/model/tajweed_rules.dart';
+import 'package:arrahma_mobile_app/all_courses/taleemul_quran/tajweed_tab/tajweed_rules/model/tajweed_rules.dart';
 import 'package:flutter/material.dart';
 
 class TajweedRules extends StatefulWidget {

@@ -1,8 +1,9 @@
-import 'package:arrahma_mobile_app/All_Courses/quran_courses/models/course_registration.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/models/course_registration.dart';
 import 'package:flutter/material.dart';
 
 class QuranRegistrationTab extends StatelessWidget {
-  const QuranRegistrationTab({Key key, this.registration, this.title})
+  const QuranRegistrationTab(
+      {Key key, @required this.registration, @required this.title})
       : super(key: key);
   final CourseRegistration registration;
   final String title;
@@ -15,7 +16,7 @@ class QuranRegistrationTab extends StatelessWidget {
         centerTitle: true,
         title: Text(
           title,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
