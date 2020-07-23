@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
+import 'surah.dart';
 
 class QuranCourseTajweed {
   const QuranCourseTajweed({this.introductionUrl, this.items});

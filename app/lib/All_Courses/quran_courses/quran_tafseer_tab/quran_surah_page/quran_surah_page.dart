@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_surah_detail_page.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranJuzDetailPage extends StatefulWidget {

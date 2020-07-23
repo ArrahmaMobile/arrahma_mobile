@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/course_registration.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranRegistrationTab extends StatelessWidget {

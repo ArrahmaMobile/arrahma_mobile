@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
 import 'package:arrahma_mobile_app/media_player/media_player.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranSurahDetailPage extends StatefulWidget {

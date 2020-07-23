@@ -1,8 +1,6 @@
-import 'package:arrahma_mobile_app/Home_Page/models/broadcast_item.dart';
-import 'package:arrahma_mobile_app/Home_Page/models/heading_banner.dart';
-import 'package:arrahma_mobile_app/Home_Page/models/social_media_item.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

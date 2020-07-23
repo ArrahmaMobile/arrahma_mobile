@@ -1,7 +1,7 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class AhsanulBayan extends StatefulWidget {

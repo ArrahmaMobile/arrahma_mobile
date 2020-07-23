@@ -3,8 +3,8 @@ import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_juz_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranCoursePage extends StatefulWidget {

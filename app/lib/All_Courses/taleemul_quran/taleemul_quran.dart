@@ -1,10 +1,10 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/course_registration.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_juz_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
 import 'package:arrahma_mobile_app/all_courses/taleemul_quran/tajweed_tab/tajweed_tab.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class TaleemmulQuran extends StatefulWidget {

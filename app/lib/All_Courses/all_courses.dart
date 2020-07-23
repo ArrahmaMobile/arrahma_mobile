@@ -1,6 +1,4 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/quran_course.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/models/surah.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/model/quran_course_tajweed.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 import 'models/course.dart';
 
