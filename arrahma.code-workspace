@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "scraper_service"
+		},
+		{
+			"path": "models"
 		}
 	],
 	"settings": {}

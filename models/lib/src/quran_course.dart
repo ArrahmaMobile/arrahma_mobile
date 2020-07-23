@@ -5,6 +5,11 @@ import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/m
 
 // import 'course_tafseer.dart';
 
+import 'course_registration.dart';
+import 'quran_course_tafseer.dart';
+import 'quran_course_tajweed.dart';
+import 'quran_course_test.dart';
+
 class QuranCourse {
   const QuranCourse(
       {this.title,

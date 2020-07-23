@@ -1,7 +1,6 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/media_player/media_player.dart';
 import 'package:flutter/material.dart';
-import 'model/quran_course_tajweed.dart';
 
 class QuranTajweedTab extends StatelessWidget {
   QuranTajweedTab({
