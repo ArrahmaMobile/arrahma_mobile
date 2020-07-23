@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Get Packages",
+            "type": "shell",
+            "command": "pub get",
+            "problemMatcher": [
+                "$dart-pub-build_runner"
+            ],
+            "isBackground": true
+        },
+        {
+            "label": "Run Scraper Service JSON Generator",
+            "type": "shell",
+            "command": "pub run build_runner watch --delete-conflicting-outputs",
+            "dependsOn": [
+                "Get Packages",
+            ],
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "problemMatcher": [
+                "$dart-pub-build_runner"
+            ],
+            "isBackground": true
+        }
+    ]
+}

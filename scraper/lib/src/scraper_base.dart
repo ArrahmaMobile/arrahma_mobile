@@ -1,10 +1,9 @@
+import 'package:arrahma_models/models.dart';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/courses.dart';
 import 'package:scraper/src/models/app_metadata.dart';
-import 'models/banner.dart';
-import 'models/broadcast_link.dart';
 import 'utils.dart';
 
 abstract class IScraper {
@@ -53,12 +52,12 @@ class Scraper implements IScraper, IScraperRegistrar {
           .toAbsolute(currentUrl),
       banners: document
           .querySelectorAll('#slider a')
-          .map((banner) => Banner(
+          .map((banner) => HeadingBanner(
                 imageUrl: banner
                     .querySelector('img')
                     .attributes['src']
                     .toAbsolute(currentUrl),
-                link: banner.attributes['href'].toAbsolute(currentUrl),
+                linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
               ))
           .toList(),
       broadcastLinks: document.querySelectorAll('.column6 .box4').map((banner) {
@@ -70,9 +69,9 @@ class Scraper implements IScraper, IScraperRegistrar {
                 (type) => type.toString().split('.')[1].toLowerCase() == host,
                 orElse: () => null)
             : null;
-        return BroadcastLink(
+        return BroadcastItem(
             type: type ?? BroadcastType.Other,
-            link: link,
+            linkUrl: link,
             imageUrl: banner
                 .querySelector('img')
                 ?.attributes['src']

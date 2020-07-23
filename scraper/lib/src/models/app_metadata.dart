@@ -1,12 +1,11 @@
-import 'package:scraper/src/models/banner.dart';
-import 'package:scraper/src/models/broadcast_link.dart';
-import 'package:scraper/src/models/course.dart';
+import 'package:arrahma_models/models.dart';
+import 'package:arrahma_models/src/course_item.dart';
 
 class AppMetadata {
   const AppMetadata(
       {this.logoUrl, this.banners, this.broadcastLinks, this.courses});
   final String logoUrl;
-  final List<Banner> banners;
-  final List<BroadcastLink> broadcastLinks;
-  final List<Course> courses;
+  final List<HeadingBanner> banners;
+  final List<BroadcastItem> broadcastLinks;
+  final List<CourseItem> courses;
 }
