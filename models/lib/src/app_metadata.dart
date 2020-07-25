@@ -1,5 +1,4 @@
-import 'package:arrahma_models/models.dart';
-import 'package:arrahma_models/src/course_item.dart';
+import '../models.dart';
 
 class AppMetadata {
   const AppMetadata(

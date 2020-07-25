@@ -42,7 +42,7 @@ class Tajweed extends StatelessWidget {
   }
 
   final _tajweedItem = [
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Adv Taleem Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -50,7 +50,7 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Taleem Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -58,7 +58,7 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Fehm Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -66,19 +66,19 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'English Qaida',
       pageRoute: '/english_qaida',
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Noorani Qaida',
       pageRoute: '/',
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Juz 30 Hifz',
       pageRoute: '/juz_30_hifz',
     ),
-    TajweedItem(
+    TajweedItem<dynamic>(
       title: 'Taleem Ul Quran 2013',
       pageRoute: '/taleem_quran_2013',
     )

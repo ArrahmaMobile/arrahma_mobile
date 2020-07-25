@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class PageRoute extends PageRouteBuilder {
+class PageRoute<T> extends PageRouteBuilder<T> {
   final Widget widget;
 
   PageRoute({this.widget})

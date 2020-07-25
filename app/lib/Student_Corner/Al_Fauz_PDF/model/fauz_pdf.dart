@@ -1,5 +1,5 @@
-class FauzPDF {
-  const FauzPDF({this.title, this.pdfUrl});
+class FauzPdf {
+  const FauzPdf({this.title, this.pdfUrl});
   final String title;
 
   final String pdfUrl;

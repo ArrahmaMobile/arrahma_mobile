@@ -34,57 +34,56 @@ class AlFauzPDF extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       childAspectRatio: 1.9,
-      children:
-          _fauzPDF.map((item) => _biildFauzPDF(item, item.pdfUrl)).toList(),
+      children: _fauzPDF.map((item) => _biildFauzPDF(item)).toList(),
     );
   }
 
   final _fauzPDF = [
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
-    FauzPDF(
+    FauzPdf(
       title: 'Juz 1',
       pdfUrl: 'http://arrahma.org/alfauz/juz1.pdf',
     ),
   ];
 
-  Widget _biildFauzPDF(item, pdfUrl) {
+  Widget _biildFauzPDF(FauzPdf item) {
     return GestureDetector(
-      onTap: () => _launchLink(pdfUrl),
+      onTap: () => _launchLink(item.pdfUrl),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +97,7 @@ class AlFauzPDF extends StatelessWidget {
     );
   }
 
-  _launchLink(String pdfUrl) async {
+  Future _launchLink(String pdfUrl) async {
     if (await canLaunch(pdfUrl)) {
       await launch(pdfUrl);
     } else {

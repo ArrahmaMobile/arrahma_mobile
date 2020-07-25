@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:scraper/scraper.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:scraper_service/scraper_runner.dart';
 
 class ScraperService {

@@ -33,8 +33,10 @@ class QuranTajweedTab extends StatelessWidget {
                 context,
                 'Introduction',
                 () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MediaPlayerScreen()));
+                  Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                          builder: (_) => MediaPlayerScreen()));
                 },
               ),
               ...tajweed.items.map((item) => _buildItem(context, item)).toList()
@@ -68,9 +70,9 @@ class QuranTajweedTab extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, QuranCourseTajweedItem item) {
     return _buildRawItem(context, item.title, () {
-      Navigator.push(
+      Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(
+          MaterialPageRoute<dynamic>(
               builder: (_) => QuranJuzDetailPage(
                     surahs: item.surahs,
                   )));

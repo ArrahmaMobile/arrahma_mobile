@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/courses.dart';
-import 'package:scraper/src/models/app_metadata.dart';
+import 'package:arrahma_models/src/app_metadata.dart';
 import 'utils.dart';
 
 abstract class IScraper {

@@ -115,7 +115,7 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.of(context).push(
+                        Navigator.of(context).push<dynamic>(
                           _surahRouteAnimation(),
                         );
                       },
@@ -132,7 +132,7 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
   }
 
   Route _surahRouteAnimation() {
-    return PageRouteBuilder(
+    return PageRouteBuilder<dynamic>(
       pageBuilder: (context, animation, secondaryAnimation) =>
           QuranJuzDetailPage(
         surahs: [],

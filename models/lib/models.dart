@@ -3,6 +3,7 @@
 /// Used by the mobile app and the scraper projects.
 library models;
 
+export 'src/app_metadata.dart';
 export 'src/course_item.dart';
 export 'src/quran_course.dart';
 export 'src/broadcast_item.dart';

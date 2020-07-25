@@ -119,9 +119,9 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
                           ],
                         ),
                         onTap: () {
-                          Navigator.push(
+                          Navigator.push<dynamic>(
                               context,
-                              MaterialPageRoute(
+                              MaterialPageRoute<dynamic>(
                                   builder: (_) => QuranSurahDetailPage(
                                         lessons: [],
                                       )));

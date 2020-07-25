@@ -69,7 +69,7 @@ class StudentCorner extends StatelessWidget {
     ),
   ];
 
-  Widget _buildStudentCornerList(context, StudentCornerItem item) {
+  Widget _buildStudentCornerList(BuildContext context, StudentCornerItem item) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);

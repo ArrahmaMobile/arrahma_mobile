@@ -115,9 +115,9 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                           ],
                         ),
                         onTap: () {
-                          Navigator.push(
+                          Navigator.push<dynamic>(
                               context,
-                              MaterialPageRoute(
+                              MaterialPageRoute<dynamic>(
                                   builder: (_) => MediaPlayerScreen()));
                         },
                       );

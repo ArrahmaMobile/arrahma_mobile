@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _launchLink(String url) async {
+  void _launchLink(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  Widget _socialMedia(context) {
+  Widget _socialMedia(BuildContext context) {
     return GridView.count(
       crossAxisCount: 6,
       shrinkWrap: true,

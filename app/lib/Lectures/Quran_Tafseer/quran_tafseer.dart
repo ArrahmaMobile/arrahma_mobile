@@ -38,31 +38,31 @@ class QuranTafseer extends StatelessWidget {
   }
 
   final _quranTafseer = [
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: '2019 New Courses',
       pageRoute: '/quran_tafseer_tab',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'Tafseer - 2013',
       pageRoute: '/quran_tafseer_tab',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'Tafseer - 2007',
       pageRoute: '/quran_tafseer_tab',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'Ahsan-Ul-Bayan',
       pageRoute: '/juz_detail_page',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'Al-Furqan',
       pageRoute: '/juz_detail_page',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'llm-ul-Uaqeen',
       pageRoute: '/juz_detail_page',
     ),
-    QuranTafseerItem(
+    QuranTafseerItem<dynamic>(
       title: 'Al-Misbah',
       pageRoute: '/misbah_lectures_tab',
     )

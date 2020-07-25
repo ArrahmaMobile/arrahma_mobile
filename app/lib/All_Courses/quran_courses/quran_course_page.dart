@@ -48,56 +48,72 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.library_books,
+          if (widget.course.courseDetailPdfUrl != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.library_books,
+              ),
+              title: Text(
+                'Details',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-            title: Text(
-              'Details',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          if (widget.course.courseDetailPdfUrl != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.library_books,
+              ),
+              title: Text(
+                'Details',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.book,
+          if (widget.course.registration != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.book,
+              ),
+              title: Text(
+                'Registration',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-            title: Text(
-              'Registration',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          if (widget.course.tafseer != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              title: Text(
+                'Tafseer',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+          if (widget.course.tajweed != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              title: Text(
+                'Tajweed',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-            title: Text(
-              'Tafseer',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          if (widget.course.tests != null)
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              title: Text(
+                'Tests',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            title: Text(
-              'Tajweed',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            title: Text(
-              'Tests',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-          ),
         ],
         onTap: (index) {
           setState(() {

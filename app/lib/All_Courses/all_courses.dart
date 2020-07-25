@@ -1,6 +1,5 @@
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
-import 'models/course.dart';
 
 class AllCourses extends StatelessWidget {
   @override
@@ -29,122 +28,110 @@ class AllCourses extends StatelessWidget {
     );
   }
 
-  final _courses = [
-    Course(
+  final _courses = <Course>[
+    QuranCourse(
       title: 'Adv Taleemul Quran',
       imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
       pageRoute: '/quran_course_page',
-      data: QuranCourse(
-        title: 'Adv Taleemul Quran',
-        courseDetailPdfUrl: '',
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Baqarah',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Opening',
-                  lessons: [
-                    Lesson(
-                      title: '',
-                      rootWordPdfUrls: [''],
-                      translationAudioUrls: [''],
-                      tafseerAudioUrls: [''],
-                      refMaterials: [''],
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+      courseDetailPdfUrl: '',
+      tajweed: QuranCourseTajweed(
+        introductionUrl: '',
+        items: [
+          QuranCourseTajweedItem(
+            title: 'Surah Al-Baqarah',
+            surahs: [
+              Surah(
+                name: 'Surah Al-Baqarah',
+                arabicName: 'الفاتحۃ',
+                description: 'The Opening',
+                lessons: [
+                  Lesson(
+                    title: '',
+                    rootWordPdfUrls: [''],
+                    translationAudioUrls: [''],
+                    tafseerAudioUrls: [''],
+                    refMaterials: [''],
+                  )
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     ),
-    Course(
+    QuranCourse(
       title: 'Taleem Quran',
       imageUrl: 'assets/images/courses/taleemul_quran.png',
       pageRoute: '/quran_course_page',
-      data: QuranCourse(
-        title: 'Taleem Quran',
-        courseDetailPdfUrl: '',
-        tafseer: [],
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'hi',
-                  arabicName: 'hi',
-                  description: 'hh',
-                )
-              ],
-            ),
-          ],
-        ),
+      courseDetailPdfUrl: '',
+      tafseer: [],
+      tajweed: QuranCourseTajweed(
+        introductionUrl: '',
+        items: [
+          QuranCourseTajweedItem(
+            title: 'Surah Al-Baqarah',
+            surahs: [
+              Surah(
+                name: 'hi',
+                arabicName: 'hi',
+                description: 'hh',
+              )
+            ],
+          ),
+        ],
       ),
     ),
-    Course(
+    QuranCourse(
       title: 'Fehmul Quran',
       imageUrl: 'assets/images/courses/fehmul_quran.png',
       pageRoute: '/quran_course_page',
-      data: QuranCourse(
-        title: 'Fehmul Quran',
-        courseDetailPdfUrl: '',
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'hi',
-                  arabicName: 'hi',
-                  description: 'hh',
-                )
-              ],
-            ),
-          ],
-        ),
+      courseDetailPdfUrl: '',
+      tajweed: QuranCourseTajweed(
+        introductionUrl: '',
+        items: [
+          QuranCourseTajweedItem(
+            title: 'Surah Al-Baqarah',
+            surahs: [
+              Surah(
+                name: 'hi',
+                arabicName: 'hi',
+                description: 'hh',
+              )
+            ],
+          ),
+        ],
       ),
     ),
-    Course(
+    QuranCourse(
       title: 'Course In Pashtu',
       imageUrl: 'assets/images/courses/course_in_pashtu.png',
       pageRoute: '/quran_course_page',
-      data: QuranCourse(
-        title: 'Course In Pashtu',
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Fatiha ',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Opening',
-                  lessons: [
-                    Lesson(
-                      lessonNum: 'Lesson 1: ',
-                      lessonName: 'Surah Al-Baqarah',
-                      lessonAyah: 'Ayah 1-5',
-                      title: 'hiii',
-                      rootWordPdfUrls: ['hii'],
-                      translationAudioUrls: ['hii'],
-                      tafseerAudioUrls: ['hii'],
-                      refMaterials: ['hiii'],
-                    )
-                  ],
-                ),
-              ],
-            )
-          ],
-        ),
+      tajweed: QuranCourseTajweed(
+        introductionUrl: '',
+        items: [
+          QuranCourseTajweedItem(
+            title: 'Surah Al-Baqarah',
+            surahs: [
+              Surah(
+                name: 'Surah Al-Fatiha ',
+                arabicName: 'الفاتحۃ',
+                description: 'The Opening',
+                lessons: [
+                  Lesson(
+                    lessonNum: 'Lesson 1: ',
+                    lessonName: 'Surah Al-Baqarah',
+                    lessonAyah: 'Ayah 1-5',
+                    title: 'hiii',
+                    rootWordPdfUrls: ['hii'],
+                    translationAudioUrls: ['hii'],
+                    tafseerAudioUrls: ['hii'],
+                    refMaterials: ['hiii'],
+                  )
+                ],
+              ),
+            ],
+          )
+        ],
       ),
     ),
     Course(
@@ -188,7 +175,7 @@ class AllCourses extends StatelessWidget {
   Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, course.pageRoute, arguments: course.data);
+        Navigator.pushNamed(context, course.pageRoute, arguments: course);
       },
       child: Column(
         children: <Widget>[

@@ -1,1 +1,224 @@
-{"logoUrl":"https://arrahma.org/images_n/header_img.png","banners":[{"imageUrl":"https://arrahma.org/images_n/banner4.jpg","link":"http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3"},{"imageUrl":"https://arrahma.org/images_n/banner-sunnah.jpg","link":"http://www.arrahma.org/sunnah/sunnah.php"},{"imageUrl":"https://arrahma.org/images_n/tazkeer.jpg","link":"http://www.arrahma.org/tazkeer_n/tazkeer.php"}],"broadcastLinks":[],"courses":[{"title":"Adv Taleemul Quran","imageUrl":"https://arrahma.org/images_n/201.png","items":[{"name":"Course Detail","link":"http://arrahma.org/TQ_adv/atq_detail.pdf"},{"name":"Registration","link":"http://arrahma.org/TQ_adv_n/form.php"},{"name":"Tafseer Link","link":"http://arrahma.org/quran2019_n/juz1.php"},{"name":"Tajweed Link","link":"http://arrahma.org/atq_taj_n/atq.php"},{"name":"Tests","link":"http://arrahma.org/tests2_n.php"}]},{"title":"Taleemul Quran","imageUrl":"https://arrahma.org/images_n/203.png","items":[{"name":"Course Detail","link":"http://arrahma.org/TQ_19/tq_detail.pdf"},{"name":"Registration","link":"http://arrahma.org/fq_tq_n/form.php"},{"name":"Tafseer Link","link":"http://arrahma.org/quran2019_n/juz1.php"},{"name":"Tajweed Link","link":"http://arrahma.org/tq_taj_n/tq.php"},{"name":"Tests","link":"http://arrahma.org/tests_n.php"}]},{"title":"Fehmul Quran","imageUrl":"https://arrahma.org/images_n/204.png","items":[{"name":"Course Detail","link":"http://arrahma.org/fq_19/fq_detail.pdf"},{"name":"Registration","link":"http://arrahma.org/fq_tq_n/form.php"},{"name":"Tafseer Link","link":"http://arrahma.org/quran2019_n/juz1.php"},{"name":"Tajweed Link","link":"http://arrahma.org/fq_taj_n/fq.php"},{"name":"Tests","link":"http://arrahma.org/tests_n.php"}]},{"title":"Course In Pashtu","imageUrl":"https://arrahma.org/images_n/202.png","items":[{"name":"Course Detail","link":"http://www.arrahma.org/courses_details/pashto_detail.pdf"},{"name":"Registration","link":"http://arrahma.org/pashtu_reg_form_n/form.php"},{"name":"Tafseer Link","link":"http://arrahma.org/pashtu_2019_n/juz3.php"},{"name":"Tajweed Link","link":"http://arrahma.org/pashtu_taj_n/pashtu.php"},{"name":"Tests","link":"http://arrahma.org/testsp_n.php"}]},{"title":"Ilmul Yaqeen","imageUrl":"https://arrahma.org/images_n/91a.png","items":[{"name":"Course Detail","link":"http://www.arrahma.org/courses_details/ilm.php"},{"name":"Lectures","link":"http://arrahma.org/iq_n/juz3.php"}]},{"title":"Ahsanul Bayan","imageUrl":"https://arrahma.org/images_n/211.png","items":[{"name":"Course Detail","link":"http://www.arrahma.org/courses_details/ahsan.php"},{"name":"Lectures","link":"http://arrahma.org/ab_n/juz1.php"}]},{"title":"Al Furqan","imageUrl":"https://arrahma.org/images_n/205.png","items":[{"name":"Course Detail","link":"http://www.arrahma.org/courses_details/furqan.php"},{"name":"Lectures","link":"http://arrahma.org/af_n/juz1.php"}]},{"title":"Seerah","imageUrl":"https://arrahma.org/images_n/75.png","items":[{"name":"Course Detail","link":"http://www.arrahma.org/courses_details/seerah.php"},{"name":"Lectures","link":"http://arrahma.org/seerah_course_n/seerahlessons.php"}]},{"title":"A L M I S B A H ( Whatsapp Program)","imageUrl":"https://arrahma.org/images_n/93a.png","items":[{"name":"Program Detail","link":"http://www.arrahma.org/courses_details/misbah.php"},{"name":"Lectures","link":"http://arrahma.org/almisbah_n/al-misbah.php"}]},{"title":"Weekly Gems","imageUrl":"https://arrahma.org/images_n/72.png","items":[{"name":"Lectures","link":"http://arrahma.org/weekly_gems_n.php"}]},{"title":"Assorted Lectures","imageUrl":"https://arrahma.org/images_n/209.png","items":[{"name":"Lectures","link":"http://arrahma.org/assorted_lectures_n.php"}]},{"title":"Tazkeer","imageUrl":"https://arrahma.org/images_n/210.png","items":[{"name":"Lectures","link":"http://arrahma.org/tazkeer_n/tazkeer.php"}]}]}
+{
+    "logoUrl": "https://arrahma.org/images_n/header_img.png",
+    "banners": [
+        {
+            "imageUrl": "https://arrahma.org/images_n/banner4.jpg",
+            "link": "http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3"
+        },
+        {
+            "imageUrl": "https://arrahma.org/images_n/banner-sunnah.jpg",
+            "link": "http://www.arrahma.org/sunnah/sunnah.php"
+        },
+        {
+            "imageUrl": "https://arrahma.org/images_n/tazkeer.jpg",
+            "link": "http://www.arrahma.org/tazkeer_n/tazkeer.php"
+        }
+    ],
+    "broadcastLinks": [],
+    "courses": [
+        {
+            "title": "Adv Taleemul Quran",
+            "imageUrl": "https://arrahma.org/images_n/201.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://arrahma.org/TQ_adv/atq_detail.pdf"
+                },
+                {
+                    "name": "Registration",
+                    "link": "http://arrahma.org/TQ_adv_n/form.php"
+                },
+                {
+                    "name": "Tafseer Link",
+                    "link": "http://arrahma.org/quran2019_n/juz1.php"
+                },
+                {
+                    "name": "Tajweed Link",
+                    "link": "http://arrahma.org/atq_taj_n/atq.php"
+                },
+                {
+                    "name": "Tests",
+                    "link": "http://arrahma.org/tests2_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Taleemul Quran",
+            "imageUrl": "https://arrahma.org/images_n/203.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://arrahma.org/TQ_19/tq_detail.pdf"
+                },
+                {
+                    "name": "Registration",
+                    "link": "http://arrahma.org/fq_tq_n/form.php"
+                },
+                {
+                    "name": "Tafseer Link",
+                    "link": "http://arrahma.org/quran2019_n/juz1.php"
+                },
+                {
+                    "name": "Tajweed Link",
+                    "link": "http://arrahma.org/tq_taj_n/tq.php"
+                },
+                {
+                    "name": "Tests",
+                    "link": "http://arrahma.org/tests_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Fehmul Quran",
+            "imageUrl": "https://arrahma.org/images_n/204.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://arrahma.org/fq_19/fq_detail.pdf"
+                },
+                {
+                    "name": "Registration",
+                    "link": "http://arrahma.org/fq_tq_n/form.php"
+                },
+                {
+                    "name": "Tafseer Link",
+                    "link": "http://arrahma.org/quran2019_n/juz1.php"
+                },
+                {
+                    "name": "Tajweed Link",
+                    "link": "http://arrahma.org/fq_taj_n/fq.php"
+                },
+                {
+                    "name": "Tests",
+                    "link": "http://arrahma.org/tests_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Course In Pashtu",
+            "imageUrl": "https://arrahma.org/images_n/202.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://www.arrahma.org/courses_details/pashto_detail.pdf"
+                },
+                {
+                    "name": "Registration",
+                    "link": "http://arrahma.org/pashtu_reg_form_n/form.php"
+                },
+                {
+                    "name": "Tafseer Link",
+                    "link": "http://arrahma.org/pashtu_2019_n/juz3.php"
+                },
+                {
+                    "name": "Tajweed Link",
+                    "link": "http://arrahma.org/pashtu_taj_n/pashtu.php"
+                },
+                {
+                    "name": "Tests",
+                    "link": "http://arrahma.org/testsp_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Ilmul Yaqeen",
+            "imageUrl": "https://arrahma.org/images_n/91a.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://www.arrahma.org/courses_details/ilm.php"
+                },
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/iq_n/juz3.php"
+                }
+            ]
+        },
+        {
+            "title": "Ahsanul Bayan",
+            "imageUrl": "https://arrahma.org/images_n/211.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://www.arrahma.org/courses_details/ahsan.php"
+                },
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/ab_n/juz1.php"
+                }
+            ]
+        },
+        {
+            "title": "Al Furqan",
+            "imageUrl": "https://arrahma.org/images_n/205.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://www.arrahma.org/courses_details/furqan.php"
+                },
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/af_n/juz1.php"
+                }
+            ]
+        },
+        {
+            "title": "Seerah",
+            "imageUrl": "https://arrahma.org/images_n/75.png",
+            "items": [
+                {
+                    "name": "Course Detail",
+                    "link": "http://www.arrahma.org/courses_details/seerah.php"
+                },
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/seerah_course_n/seerahlessons.php"
+                }
+            ]
+        },
+        {
+            "title": "A L M I S B A H ( Whatsapp Program)",
+            "imageUrl": "https://arrahma.org/images_n/93a.png",
+            "items": [
+                {
+                    "name": "Program Detail",
+                    "link": "http://www.arrahma.org/courses_details/misbah.php"
+                },
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/almisbah_n/al-misbah.php"
+                }
+            ]
+        },
+        {
+            "title": "Weekly Gems",
+            "imageUrl": "https://arrahma.org/images_n/72.png",
+            "items": [
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/weekly_gems_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Assorted Lectures",
+            "imageUrl": "https://arrahma.org/images_n/209.png",
+            "items": [
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/assorted_lectures_n.php"
+                }
+            ]
+        },
+        {
+            "title": "Tazkeer",
+            "imageUrl": "https://arrahma.org/images_n/210.png",
+            "items": [
+                {
+                    "name": "Lectures",
+                    "link": "http://arrahma.org/tazkeer_n/tazkeer.php"
+                }
+            ]
+        }
+    ]
+}

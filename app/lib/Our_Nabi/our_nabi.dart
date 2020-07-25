@@ -52,7 +52,7 @@ class OurNabi extends StatelessWidget {
     );
   }
 
-  Widget _buildOurNabiItem(context, OurNabiItem item) {
+  Widget _buildOurNabiItem(BuildContext context, OurNabiItem item) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);

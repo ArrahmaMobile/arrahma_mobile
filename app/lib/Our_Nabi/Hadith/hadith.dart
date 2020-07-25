@@ -53,7 +53,7 @@ class Hadith extends StatelessWidget {
     ),
   ];
 
-  Widget _buildHadithItem(BuildContext context, item) {
+  Widget _buildHadithItem(BuildContext context, HadithItem item) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
