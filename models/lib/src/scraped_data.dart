@@ -1,6 +1,6 @@
-import 'package:arrahma_models/models.dart';
-import 'package:scraper_service/src/models/run_metadata.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
+
+import '../models.dart';
 
 @JObj()
 class ScrapedData {

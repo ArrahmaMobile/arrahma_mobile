@@ -7,13 +7,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  simple_json_mapper: ^1.1.1
   scraper:
     path: ../scraper
   arrahma_models:
     path: ../models
-
-
-dev_dependencies:
-  build_runner: ^1.10.0
-  simple_json: ^1.1.0
