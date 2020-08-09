@@ -3,9 +3,10 @@ import 'package:flutter/widgets.dart';
 class PageRoute<T> extends PageRouteBuilder<T> {
   final Widget widget;
 
+  // ignore: sort_constructors_first
   PageRoute({this.widget})
       : super(
-            transitionDuration: Duration(seconds: 1),
+            transitionDuration: const Duration(seconds: 1),
             transitionsBuilder: (BuildContext context,
                 Animation<double> animation,
                 Animation<double> secAnimation,

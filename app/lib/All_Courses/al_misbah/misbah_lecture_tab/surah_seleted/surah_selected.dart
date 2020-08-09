@@ -13,10 +13,11 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'Surah {{ NAME }}',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -38,14 +39,14 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
                       'assets/images/al_misbah_icons/youtube.png',
                       width: 40,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 35,
                     ),
                     Image.asset(
                       'assets/images/al_misbah_icons/facebook.png',
                       width: 25,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                   ],
@@ -62,22 +63,22 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
   }
 
   final _surahSelected = [
-    SurahSelectedItem(
+    const SurahSelectedItem(
       title: 'Lesson 1: Quran ki Fazilat (part1)',
       youtubeRoute: '',
       facebookRoute: '',
     ),
-    SurahSelectedItem(
+    const SurahSelectedItem(
       title: 'Lesson 2: Quran ki Fazilat (part2)',
       youtubeRoute: '',
       facebookRoute: '',
     ),
-    SurahSelectedItem(
+    const SurahSelectedItem(
       title: "Lesson 3: Impotance of Surah Fatiha & Ta'ooz",
       youtubeRoute: '',
       facebookRoute: '',
     ),
-    SurahSelectedItem(
+    const SurahSelectedItem(
       title: 'Lesson 4: Tafseer Of Tasmia & Alhamdullilah',
       youtubeRoute: '',
       facebookRoute: '',
@@ -110,7 +111,7 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
                   width: 20,
                 ),
               ),
-              SizedBox(width: 40),
+              const SizedBox(width: 40),
               GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, item.facebookRoute);
@@ -119,7 +120,7 @@ class _MisbahSurahSelectedState extends State<MisbahSurahSelected> {
                     'assets/images/al_misbah_icons/facebook_playbutton.png',
                     width: 30,
                   )),
-              SizedBox(width: 30, height: 50),
+              const SizedBox(width: 30, height: 50),
             ],
           ),
         ],

@@ -6,15 +6,16 @@ class PashtoCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: Text(
           'Pashto Course',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _pashtoCourseList(context),
@@ -31,7 +32,7 @@ class PashtoCourse extends StatelessWidget {
       mainAxisSpacing: 8,
       crossAxisCount: 2,
       shrinkWrap: true,
-      childAspectRatio: 1,
+      childAspectRatio: 1.5,
       children: _pashtoCourse
           .map((item) => _buildPashtoCourse(context, item))
           .toList(),
@@ -39,11 +40,11 @@ class PashtoCourse extends StatelessWidget {
   }
 
   final _pashtoCourse = [
-    PashtoCourseItem(
+    const PashtoCourseItem(
       title: 'Quran Tafseer 2019',
       pageRoute: '/quran_tafseer_tab',
     ),
-    PashtoCourseItem(
+    const PashtoCourseItem(
       title: 'Selected Surahs',
       pageRoute: '',
     )
@@ -54,15 +55,21 @@ class PashtoCourse extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15),
+            ),
+          ],
+        ),
       ),
     );
   }

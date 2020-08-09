@@ -12,10 +12,11 @@ class _AssortedTopicState extends State<AssortedTopic> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'Assorted Topics',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -40,15 +41,15 @@ class _AssortedTopicState extends State<AssortedTopic> {
   }
 
   final _assortedTopic = [
-    AssortedTopicItems(
+    const AssortedTopicItems(
       title: '**NEW** Important things about Hajj',
       topicPdf: '',
     ),
-    AssortedTopicItems(
+    const AssortedTopicItems(
       title: 'Masnoon Darood',
       topicPdf: '',
     ),
-    AssortedTopicItems(
+    const AssortedTopicItems(
       title: 'Blindness of Heart',
       topicPdf: '',
     ),
@@ -78,9 +79,10 @@ class _AssortedTopicState extends State<AssortedTopic> {
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
                   width: 20,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

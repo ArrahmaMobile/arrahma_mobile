@@ -7,10 +7,11 @@ class EnglishQaida extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'English Audio',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -35,7 +36,7 @@ class EnglishQaida extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Text(
@@ -59,17 +60,17 @@ class EnglishQaida extends StatelessWidget {
   }
 
   final _englishQaida = [
-    EnglishQaidaList(
+    const EnglishQaidaList(
       title: 'Lesson 1: Letters ا to ش',
       letterAudio: '',
       surahAudio: '',
     ),
-    EnglishQaidaList(
+    const EnglishQaidaList(
       title: 'Lesson 2: Letters ص to ی',
       letterAudio: '',
       surahAudio: '',
     ),
-    EnglishQaidaList(
+    const EnglishQaidaList(
       title: 'Lesson 3: Fatah sound ا to ش',
       letterAudio: '',
       surahAudio: '',
@@ -103,7 +104,7 @@ class EnglishQaida extends StatelessWidget {
                   size: 25,
                 ),
               ),
-              SizedBox(width: 60),
+              const SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, item.surahAudio);
@@ -114,7 +115,7 @@ class EnglishQaida extends StatelessWidget {
                   size: 25,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

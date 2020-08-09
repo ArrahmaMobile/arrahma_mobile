@@ -9,18 +9,19 @@ class RamadanSpecial extends StatelessWidget {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'Ramadan Speical',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -35,7 +36,7 @@ class RamadanSpecial extends StatelessWidget {
                         'ہ رمضان .. تبدیلی کا رمضان',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('Yeh Ramadan Change ka Ramadan'),
+                      subtitle: const Text('Yeh Ramadan Change ka Ramadan'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -47,9 +48,10 @@ class RamadanSpecial extends StatelessWidget {
                             child: Image.asset(
                               'assets/images/multi_page_icons/arrow_down.png',
                               width: 15,
+                              color: Colors.black,
                             ),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           IconButton(
                             icon: Icon(Icons.volume_up, color: Colors.black),
                             onPressed: () {},

@@ -12,18 +12,19 @@ class TaleemQuran2013State extends State<TaleemQuran2013> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'Surah',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -34,11 +35,11 @@ class TaleemQuran2013State extends State<TaleemQuran2013> {
                         'Surah An-Naba النبإ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('Tajweedc 1-40'),
+                      subtitle: const Text('Tajweedc 1-40'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           IconButton(
                             icon: Icon(
                               Icons.volume_up,

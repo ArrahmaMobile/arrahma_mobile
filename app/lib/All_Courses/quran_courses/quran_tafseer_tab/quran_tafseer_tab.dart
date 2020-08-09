@@ -21,25 +21,26 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
         appBar: !_isSearching
             ? AppBar(
                 centerTitle: true,
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Text(
                   widget.title,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/favorite_juz');
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -49,12 +50,14 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
                 ],
               )
             : AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
@@ -72,7 +75,7 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;
@@ -85,10 +88,10 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: const Text(
-                    "Continue to last Juz",
+                  child: Text(
+                    'Continue to last Juz',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -134,15 +137,15 @@ class _QuranTafseerTabState extends State<QuranTafseerTab> {
   Route _surahRouteAnimation() {
     return PageRouteBuilder<dynamic>(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          QuranJuzDetailPage(
+          const QuranJuzDetailPage(
         surahs: [],
       ),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
+        const begin = Offset(0.0, 1.0);
+        final end = Offset.zero;
+        final curve = Curves.ease;
 
-        var tween =
+        final tween =
             Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(

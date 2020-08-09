@@ -14,16 +14,17 @@ class _LectureTabState extends State<LectureTab> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Lectures',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            'Tajalliyate Nabawi PED',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 15),
                 ),
                 Expanded(
@@ -38,7 +39,7 @@ class _LectureTabState extends State<LectureTab> {
                         mainAxisSize: MainAxisSize.min,
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/lecture_detail');
+                        Navigator.pushNamed(context, '/seerah_detail');
                       },
                     ),
                     separatorBuilder: (_, __) => const Divider(thickness: 2),

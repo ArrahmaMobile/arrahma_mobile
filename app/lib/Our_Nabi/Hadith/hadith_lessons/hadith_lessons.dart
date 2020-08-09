@@ -23,7 +23,7 @@ class _HadithLessonsState extends State<HadithLessons> {
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -32,13 +32,14 @@ class _HadithLessonsState extends State<HadithLessons> {
                     itemBuilder: (_, index) => GestureDetector(
                       child: ListTile(
                         title: const Text('Usool-e-Hadith '),
-                        subtitle: Text('اصول حدیث'),
+                        subtitle: const Text('اصول حدیث'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/multi_page_icons/arrow_down.png',
                               width: 15,
+                              color: Colors.black,
                             ),
                           ],
                         ),

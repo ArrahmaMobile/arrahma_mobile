@@ -4,7 +4,7 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranTajweedTab extends StatelessWidget {
-  QuranTajweedTab({
+  const QuranTajweedTab({
     Key key,
     @required this.title,
     @required this.tajweed,

@@ -12,10 +12,11 @@ class _QuranDictionaryState extends State<QuranDictionary> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'Quran Dictionary',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -40,19 +41,19 @@ class _QuranDictionaryState extends State<QuranDictionary> {
   }
 
   final _quranDictionary = [
-    QuranDictionaryItem(
+    const QuranDictionaryItem(
       title: 'Urdu Easy Dictionary',
       dictionaryPdf: '',
     ),
-    QuranDictionaryItem(
+    const QuranDictionaryItem(
       title: 'Urdu Concise Dictionary',
       dictionaryPdf: '',
     ),
-    QuranDictionaryItem(
+    const QuranDictionaryItem(
       title: 'English Easy Dictionary',
       dictionaryPdf: '',
     ),
-    QuranDictionaryItem(
+    const QuranDictionaryItem(
       title: 'English Concise Dictionary',
       dictionaryPdf: '',
     ),
@@ -82,9 +83,10 @@ class _QuranDictionaryState extends State<QuranDictionary> {
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
                   width: 20,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

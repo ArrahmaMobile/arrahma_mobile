@@ -15,12 +15,13 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 centerTitle: true,
                 title: Text(
                   'Favorite Surah',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
@@ -37,11 +38,14 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 ],
               )
             : AppBar(
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
@@ -59,7 +63,7 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;

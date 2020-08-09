@@ -21,26 +21,27 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 centerTitle: true,
                 title: Text(
                   'Surah Detail',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/favorite_surah');
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -50,12 +51,14 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
                 ],
               )
             : AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
@@ -73,7 +76,7 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;
@@ -86,10 +89,10 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: const Text(
-                    "Continue to last Surah",
+                  child: Text(
+                    'Continue to last Surah',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -122,7 +125,7 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
                           Navigator.push<dynamic>(
                               context,
                               MaterialPageRoute<dynamic>(
-                                  builder: (_) => QuranSurahDetailPage(
+                                  builder: (_) => const QuranSurahDetailPage(
                                         lessons: [],
                                       )));
                         },

@@ -13,18 +13,19 @@ class _MedanMehsharMeMeriahaniState extends State<MedanMehsharMeMeriahani> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'Medan Mehshar Me Meriahani',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -38,7 +39,7 @@ class _MedanMehsharMeMeriahaniState extends State<MedanMehsharMeMeriahani> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           IconButton(
                             icon: Icon(
                               Icons.volume_up,

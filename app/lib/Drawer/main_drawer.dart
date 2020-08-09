@@ -14,39 +14,39 @@ class MainDrawer extends StatelessWidget {
   }
 
   final _drawer = [
-    DrawerList(
+    const DrawerList(
       title: 'Home',
       pageRoute: '/home',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'About Us',
       pageRoute: '/about_us',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'All Courses',
       pageRoute: '/all_courses',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Lectures',
       pageRoute: '/lectures',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Arabic Grammer',
       pageRoute: '/arabic_grammer',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Tajweed',
       pageRoute: '/tajweed',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Our Nabi',
       pageRoute: '/our_nabi',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Student Corner',
       pageRoute: '/student_corner',
     ),
-    DrawerList(
+    const DrawerList(
       title: 'Reading Material',
       pageRoute: '/reading_material',
     ),
@@ -56,7 +56,7 @@ class MainDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         list.title,
-        style: new TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),

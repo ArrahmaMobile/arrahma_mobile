@@ -8,10 +8,11 @@ class ArabicGrammer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'Arabic Grammer',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -36,7 +37,7 @@ class ArabicGrammer extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Text(
@@ -60,17 +61,17 @@ class ArabicGrammer extends StatelessWidget {
   }
 
   final _arabicGrammer = [
-    GrammerItem(
+    const GrammerItem(
       title: 'Arabic Grammar Terminologies and Signs of Ism',
       sheetsPdf: '',
       audio: '',
     ),
-    GrammerItem(
+    const GrammerItem(
       title: 'Types of Ism Marfaa Part 1',
       sheetsPdf: '',
       audio: '',
     ),
-    GrammerItem(
+    const GrammerItem(
       title: 'Types of Ism Marfaa Part 2 (incomplete)',
       sheetsPdf: '',
       audio: '',
@@ -101,8 +102,9 @@ class ArabicGrammer extends StatelessWidget {
                   child: Image.asset(
                     'assets/images/multi_page_icons/arrow_down.png',
                     width: 20,
+                    color: Colors.black,
                   )),
-              SizedBox(width: 60),
+              const SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, item.audio);
@@ -113,7 +115,7 @@ class ArabicGrammer extends StatelessWidget {
                   size: 25,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

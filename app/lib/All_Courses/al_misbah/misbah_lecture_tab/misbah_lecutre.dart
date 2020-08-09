@@ -16,26 +16,27 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 centerTitle: true,
                 title: Text(
                   'Surah Detail',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.star_border),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/misbah_fav_surah');
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -45,12 +46,14 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
                 ],
               )
             : AppBar(
-                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
@@ -61,14 +64,14 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
                           color: Colors.black, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           hintText: 'Search',
-                          hintStyle: TextStyle(color: Colors.black)),
+                          hintStyle: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.cancel),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;
@@ -81,7 +84,7 @@ class _MisbahLecturesTabState extends State<MisbahLecturesTab> {
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(

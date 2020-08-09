@@ -13,10 +13,11 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           'Weekly Reminder',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -41,7 +42,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
                     Text(
@@ -51,7 +52,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
                     Text(
@@ -75,17 +76,23 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
   }
 
   final _duaSunnahZikr = [
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 1',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '',
     ),
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 2',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '',
     ),
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 3',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '/lesson_detail_page',
     ),
   ];
 
@@ -100,13 +107,13 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             width: 15,
             height: 40,
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, item.pageRoute);
+              Navigator.pushNamed(context, item.sunnahRoute);
             },
             child: Icon(
               Icons.volume_up,
@@ -114,10 +121,10 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
               size: 20,
             ),
           ),
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, item.pageRoute);
+              Navigator.pushNamed(context, item.duaRoute);
             },
             child: Icon(
               Icons.volume_up,
@@ -125,12 +132,12 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
               size: 20,
             ),
           ),
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           Padding(
             padding: const EdgeInsets.only(right: 30.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, item.pageRoute);
+                Navigator.pushNamed(context, item.zikrRoute);
               },
               child: Icon(
                 Icons.volume_up,

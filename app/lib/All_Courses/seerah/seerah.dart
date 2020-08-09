@@ -12,9 +12,8 @@ class _SeerahCourseState extends State<SeerahCourse> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(
-      pdfUrl: '',
-      title: '',
+    const QuranDetailsTab(
+      title: 'Course Detail',
     ),
     Seerah(),
   ];

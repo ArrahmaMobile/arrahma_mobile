@@ -7,15 +7,16 @@ class Tajweed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: Text(
           'Tajweed',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _tajweedList(context),
@@ -42,7 +43,7 @@ class Tajweed extends StatelessWidget {
   }
 
   final _tajweedItem = [
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Adv Taleem Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -50,7 +51,7 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Taleem Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -58,7 +59,7 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Fehm Ul Quran',
       pageRoute: '/quran_course_page',
       data: QuranCourse(
@@ -66,19 +67,19 @@ class Tajweed extends StatelessWidget {
         courseDetailPdfUrl: '',
       ),
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'English Qaida',
       pageRoute: '/english_qaida',
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Noorani Qaida',
       pageRoute: '/',
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Juz 30 Hifz',
       pageRoute: '/juz_30_hifz',
     ),
-    TajweedItem<dynamic>(
+    const TajweedItem<dynamic>(
       title: 'Taleem Ul Quran 2013',
       pageRoute: '/taleem_quran_2013',
     )
@@ -89,15 +90,19 @@ class Tajweed extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute, arguments: item.data);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }

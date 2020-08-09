@@ -12,18 +12,19 @@ class _HadithLessonDetailsState extends State<HadithLessonDetails> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'Hadith Lessons',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -36,6 +37,7 @@ class _HadithLessonDetailsState extends State<HadithLessonDetails> {
                         children: <Widget>[
                           IconButton(
                             icon: Icon(Icons.volume_up),
+                            color: Colors.black,
                             onPressed: () {
                               Navigator.pushNamed(
                                   context, '/media_player_screen');

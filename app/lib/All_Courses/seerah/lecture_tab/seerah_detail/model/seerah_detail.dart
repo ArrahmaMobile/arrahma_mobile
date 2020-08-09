@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class LectureTextDetailItem {
-  const LectureTextDetailItem({this.englishTitle, this.arabicTitle});
+class SeerahTextDetailItem {
+  const SeerahTextDetailItem({this.englishTitle, this.arabicTitle});
   final String englishTitle;
   final String arabicTitle;
 }

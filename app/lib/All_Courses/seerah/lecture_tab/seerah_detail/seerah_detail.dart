@@ -1,31 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LectureDetail extends StatefulWidget {
+class SeerahDetail extends StatefulWidget {
   @override
-  _LectureDetailState createState() => _LectureDetailState();
+  _SeerahDetailState createState() => _SeerahDetailState();
 }
 
-class _LectureDetailState extends State<LectureDetail> {
+class _SeerahDetailState extends State<SeerahDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: const Color(0xFF212121),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10, top: 10),
+                margin: const EdgeInsets.only(left: 10, top: 10),
                 child: Column(),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Column(
@@ -39,18 +39,18 @@ class _LectureDetailState extends State<LectureDetail> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                 ],
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
-                        "The History of Arabs",
+                        'The History of Arabs',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -60,11 +60,11 @@ class _LectureDetailState extends State<LectureDetail> {
                   ),
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "عربوں کی تاریخ",
+                          'عربوں کی تاریخ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -75,13 +75,13 @@ class _LectureDetailState extends State<LectureDetail> {
                   )
                 ],
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         "The Prophet's Ancestors",
                         style: TextStyle(
@@ -93,11 +93,11 @@ class _LectureDetailState extends State<LectureDetail> {
                   ),
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          "نسب نامہ مبارک",
+                          'نسب نامہ مبارک',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -108,13 +108,13 @@ class _LectureDetailState extends State<LectureDetail> {
                   )
                 ],
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         "The Prophet's tribe",
                         style: TextStyle(
@@ -126,11 +126,11 @@ class _LectureDetailState extends State<LectureDetail> {
                   ),
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          "قبیلہ",
+                          'قبیلہ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -145,13 +145,10 @@ class _LectureDetailState extends State<LectureDetail> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
-                    child: IconButton(
+                    child: Image.asset(
+                      'assets/images/multi_page_icons/arrow_down.png',
+                      width: 20,
                       color: Colors.white,
-                      icon: Icon(
-                        Icons.volume_up,
-                        color: Colors.lightBlue,
-                      ),
-                      onPressed: () {},
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -162,7 +159,8 @@ class _LectureDetailState extends State<LectureDetail> {
                       color: Colors.white,
                       icon: Icon(
                         Icons.volume_up,
-                        color: Colors.lightBlue,
+                        size: 25,
+                        color: Colors.white,
                       ),
                       onPressed: () {},
                     ),
@@ -172,10 +170,10 @@ class _LectureDetailState extends State<LectureDetail> {
                   ),
                 ],
               ),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               GestureDetector(
                 child: Text(
-                  'Close',
+                  'Closse',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.grey),
                 ),

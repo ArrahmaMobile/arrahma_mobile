@@ -11,16 +11,16 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: const Color(0xFF212121),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 child: Column(),
               ),
               Column(
@@ -36,7 +36,7 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Column(
@@ -50,7 +50,7 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Column(
                     children: <Widget>[
                       Text(
@@ -67,7 +67,7 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
               ..._quranLessonDetail
                   .map((item) => _buildQuranLessonDetail(context, item))
                   .toList(),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               GestureDetector(
                 child: Text(
                   'Close',
@@ -86,28 +86,28 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
   }
 
   final _quranLessonDetail = [
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Root',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Translation',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Tafseer',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Ref. Material',
       rootWordPdf: '',
       translationAudio: '',
@@ -124,10 +124,10 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 20),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               Text(
                 item.title,
                 style: TextStyle(

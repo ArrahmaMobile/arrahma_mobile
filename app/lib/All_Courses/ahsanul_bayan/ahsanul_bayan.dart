@@ -15,11 +15,10 @@ class _AhsanulBayanState extends State<AhsanulBayan> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(
-      title: '',
-      pdfUrl: '',
+    const QuranDetailsTab(
+      title: 'Course Detail',
     ),
-    QuranJuzDetailPage(surahs: []),
+    const QuranJuzDetailPage(surahs: []),
   ];
 
   @override

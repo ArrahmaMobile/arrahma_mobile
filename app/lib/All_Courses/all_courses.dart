@@ -6,15 +6,16 @@ class AllCourses extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: Text(
           'All Courses',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: GridView.count(
           crossAxisCount: 3,
           crossAxisSpacing: 20,
@@ -29,7 +30,7 @@ class AllCourses extends StatelessWidget {
   }
 
   final _courses = <Course>[
-    QuranCourse(
+    const QuranCourse(
       title: 'Adv Taleemul Quran',
       imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
       pageRoute: '/quran_course_page',
@@ -59,12 +60,11 @@ class AllCourses extends StatelessWidget {
         ],
       ),
     ),
-    QuranCourse(
+    const QuranCourse(
       title: 'Taleem Quran',
       imageUrl: 'assets/images/courses/taleemul_quran.png',
       pageRoute: '/quran_course_page',
       courseDetailPdfUrl: '',
-      tafseer: [],
       tajweed: QuranCourseTajweed(
         introductionUrl: '',
         items: [
@@ -75,13 +75,13 @@ class AllCourses extends StatelessWidget {
                 name: 'hi',
                 arabicName: 'hi',
                 description: 'hh',
-              )
+              ),
             ],
           ),
         ],
       ),
     ),
-    QuranCourse(
+    const QuranCourse(
       title: 'Fehmul Quran',
       imageUrl: 'assets/images/courses/fehmul_quran.png',
       pageRoute: '/quran_course_page',
@@ -102,7 +102,7 @@ class AllCourses extends StatelessWidget {
         ],
       ),
     ),
-    QuranCourse(
+    const QuranCourse(
       title: 'Course In Pashtu',
       imageUrl: 'assets/images/courses/course_in_pashtu.png',
       pageRoute: '/quran_course_page',
@@ -134,39 +134,39 @@ class AllCourses extends StatelessWidget {
         ],
       ),
     ),
-    Course(
+    const Course(
         title: 'Ilmul Yaqeen',
         imageUrl: 'assets/images/courses/ilmul_yaqeen.png',
         pageRoute: '/ilmul_taqeen'),
-    Course(
+    const Course(
         title: 'Ahsanul Bayan',
         imageUrl: 'assets/images/courses/ahsanul_bayan.png',
         pageRoute: '/ahsanul_bayan'),
-    Course(
+    const Course(
         title: 'Al Furqan',
         imageUrl: 'assets/images/courses/al_furqan.png',
         pageRoute: '/al_furqan'),
-    Course(
+    const Course(
         title: 'Seerah',
         imageUrl: 'assets/images/courses/seerah.png',
         pageRoute: '/seerah_course'),
-    Course(
+    const Course(
         title: 'Al Misbah (Whatsapp Program)',
         imageUrl: 'assets/images/courses/al_misbah.png',
         pageRoute: '/al_misbah'),
-    Course(
+    const Course(
         title: 'Weekly Gems',
         imageUrl: 'assets/images/courses/weekly_gems.png',
         pageRoute: '/weekly_gems_course'),
-    Course(
+    const Course(
         title: 'Assorted Lectures',
         imageUrl: 'assets/images/courses/assorted_letures.png',
         pageRoute: '/assorted_lectures'),
-    Course(
+    const Course(
         title: 'Tazkeer',
         imageUrl: 'assets/images/courses/tazkeer.png',
         pageRoute: '/tazkeer'),
-    Course(
+    const Course(
         title: 'Weekly Dua, Sunnah & Zikr',
         imageUrl: 'assets/images/courses/weekly_dua_sunnat_zikr.png',
         pageRoute: '/dua_sunnah_zikr'),

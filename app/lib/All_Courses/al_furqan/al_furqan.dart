@@ -12,11 +12,10 @@ class _AlFurqanState extends State<AlFurqan> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(
-      title: '',
-      pdfUrl: '',
+    const QuranDetailsTab(
+      title: 'Course Detail',
     ),
-    QuranJuzDetailPage(
+    const QuranJuzDetailPage(
       surahs: [],
     ),
   ];

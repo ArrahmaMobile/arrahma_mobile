@@ -12,16 +12,16 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: const Color(0xFF212121),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 child: IconButton(
                   iconSize: 40,
                   icon: Icon(Icons.arrow_drop_down),
@@ -31,14 +31,15 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
+                  // ignore: prefer_const_literals_to_create_immutables
                   boxShadow: [
-                    BoxShadow(
-                      color: Color(0xFF00000),
+                    const BoxShadow(
+                      color: Color(0x0ff00000),
                       offset: Offset(0, 10),
                       spreadRadius: 0,
                       blurRadius: 30,
@@ -55,7 +56,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Text(
                 'Now Playing: Tafseer - "Lesson Name"',
                 style: TextStyle(
@@ -63,14 +64,14 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                     fontSize: 20,
                     color: Colors.white),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Slider(
                 onChanged: (v) {},
                 value: 10,
                 max: 100,
                 min: 0,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -107,7 +108,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -130,8 +131,9 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
   }
 }
 
+// ignore: avoid_void_async
 void onPlayAudio() async {
-  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   assetsAudioPlayer.open(
     Audio(
       'assets/audio/introduction.mp3',

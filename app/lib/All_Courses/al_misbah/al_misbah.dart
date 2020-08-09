@@ -13,9 +13,8 @@ class _AlMisbahState extends State<AlMisbah> {
   int _tabSelected = 0;
 
   final _pageSelected = [
-    QuranDetailsTab(
-      title: '',
-      pdfUrl: '',
+    const QuranDetailsTab(
+      title: 'Course Detail',
     ),
     MisbahLecturesTab(),
   ];

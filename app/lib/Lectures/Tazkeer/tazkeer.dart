@@ -7,18 +7,19 @@ class Tazkeer extends StatelessWidget {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'Tazkeed تذکیر',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -33,7 +34,7 @@ class Tazkeer extends StatelessWidget {
                         'Tazkeer 103',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(
+                      subtitle: const Text(
                           'ہم سب کے لئے لمحہ فکریہ    Hum sab kai liye Lamha-e-Fikriya'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -47,7 +48,7 @@ class Tazkeer extends StatelessWidget {
                                 'assets/images/multi_page_icons/play_icon.png',
                                 width: 30,
                               )),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             '12:14',
                             style: TextStyle(

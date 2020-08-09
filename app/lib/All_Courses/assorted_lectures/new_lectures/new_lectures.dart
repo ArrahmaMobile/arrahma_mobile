@@ -12,18 +12,19 @@ class _NewLecturesState extends State<NewLectures> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             'New Lectures',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -35,13 +36,13 @@ class _NewLecturesState extends State<NewLectures> {
                         color: Colors.black,
                       ),
                       title: const Text(
-                        'Lecture on Zakat By Ustadh Abu Saif (2019)',
+                        'Lecture on Zakat By Ustadhsss Abu Saif (2019)',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: const Text(
                         'زکوٰۃ ـ استاد ابو سیف',
                         style: TextStyle(
-                            color: Colors.lightBlue,
+                            color: Color(0xff124570),
                             fontWeight: FontWeight.bold),
                       ),
                       trailing: Row(
@@ -57,7 +58,7 @@ class _NewLecturesState extends State<NewLectures> {
                               color: Colors.black,
                             ),
                           ),
-                          SizedBox(width: 2),
+                          const SizedBox(width: 2),
                           Text(
                             '12:14',
                             style: TextStyle(

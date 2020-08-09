@@ -16,18 +16,19 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             widget.item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Expanded(
@@ -63,7 +64,7 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
                                 color: Colors.black,
                               ),
                             ),
-                            SizedBox(width: 2),
+                            const SizedBox(width: 2),
                             Text(
                               item.audioLength,
                               style: TextStyle(
