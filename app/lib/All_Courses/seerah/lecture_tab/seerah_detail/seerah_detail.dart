@@ -173,7 +173,7 @@ class _SeerahDetailState extends State<SeerahDetail> {
               const SizedBox(height: 120),
               GestureDetector(
                 child: Text(
-                  'Closse',
+                  'Close',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.grey),
                 ),
