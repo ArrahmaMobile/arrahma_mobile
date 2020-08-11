@@ -40,7 +40,7 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;

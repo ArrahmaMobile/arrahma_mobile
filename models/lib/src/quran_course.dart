@@ -19,8 +19,8 @@ class QuranCourse extends Course {
       String imageUrl,
       String pageRoute,
       this.courseDetailPdfUrl,
-      this.registration,
       this.lectures,
+      this.registration,
       this.tafseer,
       this.tajweed,
       this.tests})

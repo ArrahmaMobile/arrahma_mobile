@@ -29,6 +29,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       ),
       QuranTafseerTab(
         title: widget.course.title,
+        tafseer: const QuranCourseTafseer(),
       ),
       QuranTajweedTab(
         title: widget.course.title,
@@ -47,7 +48,8 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       drawer: MainDrawer(),
       body: _getTab(_tabSelected),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
+        selectedItemColor: const Color(0xff124570),
+        unselectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [

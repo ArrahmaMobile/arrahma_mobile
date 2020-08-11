@@ -1,14 +1,18 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
-class IlmulTaqeen extends StatefulWidget {
+class SupplementaryCourse extends StatefulWidget {
+  const SupplementaryCourse({Key key, @required this.course}) : super(key: key);
+  final QuranCourse course;
+
   @override
-  _IlmulTaqeenState createState() => _IlmulTaqeenState();
+  _SupplementaryCourseState createState() => _SupplementaryCourseState();
 }
 
-class _IlmulTaqeenState extends State<IlmulTaqeen> {
+class _SupplementaryCourseState extends State<SupplementaryCourse> {
   int _tabSelected = 0;
 
   final _pageSelected = [

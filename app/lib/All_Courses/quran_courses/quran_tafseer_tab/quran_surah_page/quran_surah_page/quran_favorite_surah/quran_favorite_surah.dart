@@ -28,7 +28,7 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.search),
-                    color: Colors.black,
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;

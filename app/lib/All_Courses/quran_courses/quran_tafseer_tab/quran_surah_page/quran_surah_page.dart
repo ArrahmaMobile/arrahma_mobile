@@ -3,7 +3,10 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranJuzDetailPage extends StatefulWidget {
-  const QuranJuzDetailPage({Key key, @required this.surahs}) : super(key: key);
+  const QuranJuzDetailPage({
+    Key key,
+    @required this.surahs,
+  }) : super(key: key);
   final List<Surah> surahs;
 
   @override

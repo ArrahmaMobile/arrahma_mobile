@@ -2,9 +2,11 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranRegistrationTab extends StatelessWidget {
-  const QuranRegistrationTab(
-      {Key key, @required this.registration, @required this.title})
-      : super(key: key);
+  const QuranRegistrationTab({
+    Key key,
+    @required this.registration,
+    @required this.title,
+  }) : super(key: key);
   final CourseRegistration registration;
   final String title;
 

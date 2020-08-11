@@ -17,10 +17,11 @@ class QuranTajweedTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Padding(
