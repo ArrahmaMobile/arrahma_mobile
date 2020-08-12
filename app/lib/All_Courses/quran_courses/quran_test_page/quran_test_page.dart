@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class QuranTestsPage extends StatelessWidget {
-  const QuranTestsPage({Key key, @required this.title}) : super(key: key);
+  const QuranTestsPage({
+    Key key,
+    @required this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -25,7 +28,7 @@ class QuranTestsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'IMPORTANT INSTRUCTIONS:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -36,7 +39,7 @@ class QuranTestsPage extends StatelessWidget {
                   '4. Passing marks for Juz test is 16. If you score less than that you have to re-attempt the test. \n',
                 ),
                 const SizedBox(height: 10),
-                Text(
+                const Text(
                   'DIRECTIONS',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),

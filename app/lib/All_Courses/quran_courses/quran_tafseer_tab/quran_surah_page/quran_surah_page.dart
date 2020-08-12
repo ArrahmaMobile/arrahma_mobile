@@ -1,19 +1,19 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_surah_detail_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
-class QuranJuzDetailPage extends StatefulWidget {
-  const QuranJuzDetailPage({
+class QuranSurahPage extends StatefulWidget {
+  const QuranSurahPage({
     Key key,
     @required this.surahs,
   }) : super(key: key);
   final List<Surah> surahs;
 
   @override
-  _QuranJuzDetailPageState createState() => _QuranJuzDetailPageState();
+  _QuranSurahPageState createState() => _QuranSurahPageState();
 }
 
-class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
+class _QuranSurahPageState extends State<QuranSurahPage> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -128,8 +128,8 @@ class _QuranJuzDetailPageState extends State<QuranJuzDetailPage> {
                           Navigator.push<dynamic>(
                               context,
                               MaterialPageRoute<dynamic>(
-                                  builder: (_) => const QuranSurahDetailPage(
-                                        lessons: [],
+                                  builder: (_) => QuranLessonPage(
+                                        lessons: surah.lessons,
                                       )));
                         },
                       );

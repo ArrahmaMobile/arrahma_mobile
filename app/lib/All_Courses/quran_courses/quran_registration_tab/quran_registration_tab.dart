@@ -37,14 +37,14 @@ class QuranRegistrationTab extends StatelessWidget {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Prerequisites:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Have you completed Taleem ul Quran course?',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

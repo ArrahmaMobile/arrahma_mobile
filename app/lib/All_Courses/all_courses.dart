@@ -47,10 +47,13 @@ class AllCourses extends StatelessWidget {
               Surah(
                 name: 'Surah Al-Baqarah',
                 arabicName: 'الفاتحۃ',
-                description: 'The Opening',
+                description: 'The Openisssng',
                 lessons: [
                   Lesson(
-                    title: 'Surah Al-Baqarah',
+                    title: 'Lessssson',
+                    lessonNum: '1',
+                    ayahNum: '1-3',
+                    uploadDate: '08/17/2020',
                     rootWordPdfUrls: ['hee'],
                     translationAudioUrls: ['hee'],
                     tafseerAudioUrls: ['hee'],
@@ -62,27 +65,27 @@ class AllCourses extends StatelessWidget {
           ),
         ],
       ),
-      tafseer: [
-        QuranCourseTafseer(
-          title: 'Surah Al-Baqarah',
-          surah: [
-            Surah(
-              name: 'Surah Al-Baqarah',
-              arabicName: 'الفاتحۃ',
-              description: 'The Opening',
-              lessons: [
-                Lesson(
-                  title: '',
-                  rootWordPdfUrls: [''],
-                  translationAudioUrls: [''],
-                  tafseerAudioUrls: [''],
-                  refMaterials: [''],
-                )
-              ],
-            )
-          ],
-        )
-      ],
+      tafseer: QuranCourseTafseer(
+        title: 'Surah Al-Bassssssqarah',
+        surahs: [
+          Surah(
+            name: 'Surah Al-Baqarah',
+            arabicName: 'الفاتحۃ',
+            description: 'The Opening',
+            lessons: [
+              Lesson(
+                lessonNum: '1',
+                ayahNum: '1-3',
+                uploadDate: '08/17/2020',
+                rootWordPdfUrls: [''],
+                translationAudioUrls: [''],
+                tafseerAudioUrls: [''],
+                refMaterials: [''],
+              )
+            ],
+          )
+        ],
+      ),
       tests: [
         QuranCourseTest(
           title: '',
@@ -121,7 +124,7 @@ class AllCourses extends StatelessWidget {
           ),
         ],
       ),
-      tafseer: [],
+      tafseer: null,
       tests: [
         QuranCourseTest(
           title: '',
@@ -160,7 +163,7 @@ class AllCourses extends StatelessWidget {
           ),
         ],
       ),
-      tafseer: [],
+      tafseer: null,
       tests: [
         QuranCourseTest(
           title: '',

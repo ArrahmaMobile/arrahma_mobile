@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Talemul Quran - Lesson name',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),

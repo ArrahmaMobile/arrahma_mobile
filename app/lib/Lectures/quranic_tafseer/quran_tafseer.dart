@@ -42,7 +42,7 @@ class QuranTafseer extends StatelessWidget {
     const QuranTafseerItem<dynamic>(
       title: '2019 New Courses',
       pageRoute: '/quran_tafseer_tab',
-      data: 'ssss',
+      data: '',
     ),
     const QuranTafseerItem<dynamic>(
       title: 'Tafseer - 2013',
@@ -71,7 +71,7 @@ class QuranTafseer extends StatelessWidget {
     ),
     const QuranTafseerItem<dynamic>(
       title: 'Al-Misbah',
-      pageRoute: '/misbah_lectures_tab',
+      pageRoute: '/supplementary_course',
     )
   ];
 

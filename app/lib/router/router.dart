@@ -1,11 +1,9 @@
 import 'package:arrahma_mobile_app/About_Us/about_us.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lectures.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_surah_detail_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_favorite_surah/quran_favorite_surah.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_favorite_surah/quran_favorite_surah.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_tafseer_favorite_juz/quran_tafseer_favorite_juz.dart';
 import 'package:arrahma_mobile_app/all_courses/all_courses.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
@@ -75,21 +73,23 @@ class Router {
     '/contact_us': (context, args) => ContactUs(),
     '/drawer': (context, args) => MainDrawer(),
     '/share': (context, args) => Share(),
-    '/favorite_juz': (context, args) => AdvTaleemmulFavoriteJuz(),
-    '/favorite_surah': (context, args) => QuranFavoriteSurah(),
-    '/juz_detail_page': (context, args) => const QuranJuzDetailPage(
+    '/juz_detail_page': (context, args) => const QuranSurahPage(
           surahs: [],
         ),
-    '/lesson_detail_page': (context, args) => QuranLessonDetailPage(),
+    '/lesson_audio_page': (context, args) => QuranLessonAudioPage(),
     '/hadith': (context, args) => Hadith(),
+    '/favorite_surah': (context, args) => QuranFavoriteSurah(),
+
     '/fauz_pdf': (context, args) => AlFauzPDF(),
-    '/quran_course_page': (context, args) =>
-        QuranCoursePage(course: args as QuranCourse),
+    '/quran_course_page': (context, args) => QuranCoursePage(
+          course: args as QuranCourse,
+          title: '',
+        ),
     '/supplementary_course': (context, args) =>
         SupplementaryCourse(course: args as QuranCourse),
     // '/ilmul_taqeen': (context, args) => IlmulTaqeen(),
     '/tazkeer': (context, args) => Tazkeer(),
-    '/surah_detail_page': (context, args) => const QuranSurahDetailPage(
+    '/surah_detail_page': (context, args) => const QuranLessonPage(
           lessons: [],
         ),
     '/seerah': (context, args) => Seerah(),

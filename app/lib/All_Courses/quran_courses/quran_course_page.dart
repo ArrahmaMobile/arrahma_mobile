@@ -1,6 +1,6 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_tafseer_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
@@ -8,7 +8,9 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranCoursePage extends StatefulWidget {
-  const QuranCoursePage({Key key, @required this.course}) : super(key: key);
+  const QuranCoursePage({Key key, @required this.title, @required this.course})
+      : super(key: key);
+  final String title;
   final QuranCourse course;
 
   @override
@@ -27,9 +29,8 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
         registration: widget.course.registration,
         title: widget.course.title,
       ),
-      QuranTafseerTab(
-        title: widget.course.title,
-        tafseer: const QuranCourseTafseer(),
+      QuranSurahPage(
+        surahs: widget.course.tafseer.surahs,
       ),
       QuranTajweedTab(
         title: widget.course.title,
@@ -78,7 +79,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
           if (widget.course.tafseer != null)
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
+                Icons.book,
               ),
               title: Text(
                 'Tafseer',

@@ -28,7 +28,7 @@ class QuranCourse extends Course {
   final String courseDetailPdfUrl;
   final QuranCourseLectures lectures;
   final CourseRegistration registration;
-  final List<QuranCourseTafseer> tafseer;
+  final QuranCourseTafseer tafseer;
   final QuranCourseTajweed tajweed;
   final List<QuranCourseTest> tests;
   // final CourseTafseer tafseer;

@@ -12,7 +12,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: Colors.white,
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -25,13 +25,13 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 child: IconButton(
                   iconSize: 40,
                   icon: Icon(Icons.arrow_drop_down),
-                  color: Colors.white,
+                  color: Colors.black,
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
@@ -50,9 +50,8 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/media_player/media_player_icon.PNG',
-                    width: MediaQuery.of(context).size.width * 0.70,
-                    height: MediaQuery.of(context).size.width * 0.7,
-                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.4,
                   ),
                 ),
               ),
@@ -62,7 +61,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
               const SizedBox(height: 25),
               Slider(
@@ -80,7 +79,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.fast_rewind,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     onPressed: () {},
                   ),
@@ -88,7 +87,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                     iconSize: 50,
                     icon: Icon(
                       _isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     onPressed: () {
                       onPlayAudio();
@@ -102,20 +101,20 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.fast_forward,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     onPressed: () {},
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
-                      Icons.file_upload,
-                      color: Colors.white,
+                      Icons.share,
+                      color: Colors.black,
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/share');

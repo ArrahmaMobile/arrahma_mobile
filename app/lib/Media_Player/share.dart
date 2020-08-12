@@ -9,50 +9,48 @@ class _ShareState extends State<Share> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: Colors.white,
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 10, top: 10),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Text(
-                              'Share',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white),
+                    Row(
+                      children: <Widget>[
+                        Positioned(
+                          child: IconButton(
+                            iconSize: 25,
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.black,
                             ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
-                          Positioned(
-                            child: IconButton(
-                              iconSize: 25,
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/home');
-                              },
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 140),
+                          child: Text(
+                            'Share',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Row(
@@ -64,7 +62,6 @@ class _ShareState extends State<Share> {
                           'assets/images/media_player/media_player_icon.PNG',
                           width: MediaQuery.of(context).size.width * 0.2,
                           height: MediaQuery.of(context).size.width * 0.2,
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -74,7 +71,7 @@ class _ShareState extends State<Share> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
-                          color: Colors.white),
+                          color: Colors.black),
                     ),
                   ],
                 ),
@@ -97,7 +94,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Messages',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -105,7 +102,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -131,7 +128,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Facebook',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -139,7 +136,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -165,7 +162,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Twitter',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -173,7 +170,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -199,7 +196,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Whatsapp',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -207,7 +204,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -233,7 +230,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Instagram',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -241,7 +238,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -268,7 +265,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'Copy Link',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -276,7 +273,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -303,7 +300,7 @@ class _ShareState extends State<Share> {
                         Text(
                           'More',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -311,7 +308,7 @@ class _ShareState extends State<Share> {
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),

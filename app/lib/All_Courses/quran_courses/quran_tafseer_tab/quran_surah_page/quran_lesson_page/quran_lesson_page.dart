@@ -1,12 +1,21 @@
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
+import 'package:arrahma_mobile_app/media_player/media_player.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
-class AdvTaleemmulFavoriteJuz extends StatefulWidget {
+class QuranLessonPage extends StatefulWidget {
+  const QuranLessonPage({
+    Key key,
+    @required this.lessons,
+  }) : super(key: key);
+  final List<Lesson> lessons;
+
   @override
-  _AdvTaleemmulFavoriteJuzState createState() =>
-      _AdvTaleemmulFavoriteJuzState();
+  _QuranLessonPageState createState() => _QuranLessonPageState();
 }
 
-class _AdvTaleemmulFavoriteJuzState extends State<AdvTaleemmulFavoriteJuz> {
+class _QuranLessonPageState extends State<QuranLessonPage> {
+  bool _isFav = false;
   bool _isSearching = false;
 
   @override
@@ -20,13 +29,18 @@ class _AdvTaleemmulFavoriteJuzState extends State<AdvTaleemmulFavoriteJuz> {
                 backgroundColor: const Color(0xff124570),
                 centerTitle: true,
                 title: Text(
-                  'Favorite Juz',
+                  'Lessons',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.star_border),
+                    color: Colors.white,
+                    onPressed: () {},
+                  ),
                   IconButton(
                     icon: Icon(Icons.search),
                     color: Colors.white,
@@ -77,16 +91,45 @@ class _AdvTaleemmulFavoriteJuzState extends State<AdvTaleemmulFavoriteJuz> {
           children: [
             Column(
               children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(
+                    'Continue to last Lesson',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: 5,
-                    itemBuilder: (_, index) => ListTile(
-                      leading: Icon(Icons.branding_watermark),
-                      title: const Text('Juz 1    الم'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                      ),
-                    ),
+                    itemCount: widget.lessons.length,
+                    itemBuilder: (_, index) {
+                      final lessons = widget.lessons[index];
+                      return ListTile(
+                        leading: Icon(Icons.branding_watermark),
+                        title: Text(
+                            'Lesson ${lessons.lessonNum}: Ayah ${lessons.ayahNum}'),
+                        subtitle: Text(lessons.uploadDate),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon:
+                                  Icon(_isFav ? Icons.star : Icons.star_border),
+                              onPressed: () {
+                                setState(() {
+                                  _isFav = !_isFav;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                  builder: (_) => QuranLessonAudioPage()));
+                        },
+                      );
+                    },
                     separatorBuilder: (_, __) => const Divider(thickness: 2),
                   ),
                 ),

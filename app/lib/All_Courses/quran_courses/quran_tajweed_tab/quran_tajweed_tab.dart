@@ -54,7 +54,7 @@ class QuranTajweedTab extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -74,7 +74,7 @@ class QuranTajweedTab extends StatelessWidget {
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (_) => QuranJuzDetailPage(
+              builder: (_) => QuranSurahPage(
                     surahs: item.surahs,
                   )));
     });

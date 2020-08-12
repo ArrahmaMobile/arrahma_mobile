@@ -19,7 +19,7 @@ class _SupplementaryCourseState extends State<SupplementaryCourse> {
     const QuranDetailsTab(
       title: 'Course Detail',
     ),
-    const QuranJuzDetailPage(
+    const QuranSurahPage(
       surahs: [],
     ),
   ];
