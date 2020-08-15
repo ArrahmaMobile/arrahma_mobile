@@ -12,10 +12,10 @@ class TaleemQuran2013State extends State<TaleemQuran2013> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Surah',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -41,7 +41,7 @@ class TaleemQuran2013State extends State<TaleemQuran2013> {
                         children: <Widget>[
                           const SizedBox(width: 5),
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.volume_up,
                               color: Colors.black,
                             ),

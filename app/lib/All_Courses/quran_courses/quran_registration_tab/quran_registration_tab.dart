@@ -14,12 +14,13 @@ class QuranRegistrationTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: Text(
           title,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -30,7 +31,7 @@ class QuranRegistrationTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'IMP: After you submit the form, you should receive a confirmation email. If you do not receive it,'
                   'please check your junk email or re-register with correct email address.',
                   style: TextStyle(

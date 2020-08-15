@@ -12,9 +12,9 @@ class _VocabularyWordsState extends State<VocabularyWords> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Word Meaning Of Common Words In Quran',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class _VocabularyWordsState extends State<VocabularyWords> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),

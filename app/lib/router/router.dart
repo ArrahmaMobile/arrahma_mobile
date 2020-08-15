@@ -85,8 +85,10 @@ class Router {
           course: args as QuranCourse,
           title: '',
         ),
-    '/supplementary_course': (context, args) =>
-        SupplementaryCourse(course: args as QuranCourse),
+    '/supplementary_course': (context, args) => SupplementaryCourse(
+          course: args as QuranCourse,
+          title: args as String,
+        ),
     // '/ilmul_taqeen': (context, args) => IlmulTaqeen(),
     '/tazkeer': (context, args) => Tazkeer(),
     '/surah_detail_page': (context, args) => const QuranLessonPage(

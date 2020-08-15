@@ -12,9 +12,9 @@ class _AssortedTopicState extends State<AssortedTopic> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Assorted Topics',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -64,7 +64,7 @@ class _AssortedTopicState extends State<AssortedTopic> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 15),
             const SizedBox(height: 20),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.black, width: 2),
                 ),

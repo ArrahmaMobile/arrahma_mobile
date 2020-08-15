@@ -13,10 +13,10 @@ class _AboutUsState extends State<AboutUs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'About us',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -95,7 +95,7 @@ class _AboutUsState extends State<AboutUs> {
                     'for The Almighty, who is truly the one worthy of being loved'),
                 const SizedBox(height: 20),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(color: Colors.black, width: 2),
                     ),

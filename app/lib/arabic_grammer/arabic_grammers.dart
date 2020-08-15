@@ -8,9 +8,9 @@ class ArabicGrammer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Arabic Grammer',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -20,7 +20,7 @@ class ArabicGrammer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -30,7 +30,7 @@ class ArabicGrammer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Sheets',
                       style: TextStyle(
                           color: Colors.black,
@@ -40,7 +40,7 @@ class ArabicGrammer extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    Text(
+                    const Text(
                       'Audio',
                       style: TextStyle(
                           color: Colors.black,
@@ -87,7 +87,7 @@ class ArabicGrammer extends StatelessWidget {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -109,7 +109,7 @@ class ArabicGrammer extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, item.audio);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.volume_up,
                   color: Colors.black,
                   size: 25,

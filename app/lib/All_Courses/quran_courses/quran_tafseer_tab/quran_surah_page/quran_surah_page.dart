@@ -24,10 +24,10 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   'Surah Detail',
                   style: TextStyle(
                       color: Colors.white,
@@ -36,14 +36,14 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.star_border),
+                    icon: const Icon(Icons.star_border),
                     color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/favorite_surah');
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -54,19 +54,19 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                 ],
               )
             : AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 title: Container(
                   margin: const EdgeInsets.symmetric(
                       horizontal: 5.0, vertical: 8.0),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
                     child: TextField(
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
@@ -78,7 +78,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -105,7 +105,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                     itemBuilder: (_, index) {
                       final surah = widget.surahs[index];
                       return ListTile(
-                        leading: Icon(Icons.branding_watermark),
+                        leading: const Icon(Icons.branding_watermark),
                         title: Text('${surah.name} ${surah.arabicName}'),
                         subtitle: Text(surah.description),
                         trailing: Row(

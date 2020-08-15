@@ -26,7 +26,7 @@ class _ShareState extends State<Share> {
                         Positioned(
                           child: IconButton(
                             iconSize: 25,
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
                               color: Colors.black,
                             ),
@@ -35,8 +35,8 @@ class _ShareState extends State<Share> {
                             },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 140),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 140),
                           child: Text(
                             'Share',
                             style: TextStyle(
@@ -66,7 +66,7 @@ class _ShareState extends State<Share> {
                       ),
                     ),
                     const SizedBox(height: 50),
-                    Text(
+                    const Text(
                       'Tafseer - "Lesson Name"',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -91,15 +91,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Messages',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -125,15 +125,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Facebook',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -159,15 +159,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Twitter',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -193,15 +193,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Whatsapp',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -227,15 +227,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Instagram',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -262,15 +262,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Copy Link',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,
@@ -297,15 +297,15 @@ class _ShareState extends State<Share> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'More',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.black,

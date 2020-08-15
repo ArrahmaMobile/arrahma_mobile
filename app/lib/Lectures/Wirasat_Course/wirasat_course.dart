@@ -12,9 +12,9 @@ class _WirasatCourseState extends State<WirasatCourse> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Wirasat Course',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -72,7 +72,7 @@ class _WirasatCourseState extends State<WirasatCourse> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),

@@ -17,11 +17,21 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 10),
-                child: Column(),
+                child: IconButton(
+                  iconSize: 25,
+                  icon: const Icon(Icons.arrow_back),
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -40,7 +50,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Surah Al-Fatiha  الفاتحۃ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -53,7 +63,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
                   const SizedBox(height: 5),
                   Column(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Lesson 1: Ayah 1-3',
                         style: TextStyle(
                           fontSize: 15,
@@ -69,21 +79,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
               ),
               ..._quranLessonDetail
                   .map((item) => _buildQuranLessonDetail(context, item))
-                  .toList(),
-              const SizedBox(height: 120),
-              GestureDetector(
-                child: Text(
-                  'Close',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 15,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              )
+                  .toList()
             ],
           ),
         ),
@@ -136,7 +132,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
               const SizedBox(width: 15),
               Text(
                 item.title,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
@@ -146,7 +142,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
           Row(
             children: <Widget>[
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.volume_up,
                   color: Colors.black,
                 ),

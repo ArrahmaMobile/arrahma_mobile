@@ -8,10 +8,10 @@ class AlFauzPDF extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Al-Fauz',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -93,8 +93,8 @@ class AlFauzPDF extends StatelessWidget {
           children: <Widget>[
             Text(
               item.title,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ],
         ),

@@ -14,7 +14,7 @@ class _HadithLessonsState extends State<HadithLessons> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Hadith Review',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),

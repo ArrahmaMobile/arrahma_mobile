@@ -7,10 +7,10 @@ class TazkeerState extends StatelessWidget {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Tazkeed تذکیر',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -26,7 +26,7 @@ class TazkeerState extends StatelessWidget {
                   child: ListView.separated(
                     itemCount: 10,
                     itemBuilder: (_, index) => ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.branding_watermark,
                         color: Colors.black,
                       ),
@@ -49,7 +49,7 @@ class TazkeerState extends StatelessWidget {
                                 width: 30,
                               )),
                           const SizedBox(width: 10),
-                          Text(
+                          const Text(
                             '12:14',
                             style: TextStyle(
                                 color: Colors.black,

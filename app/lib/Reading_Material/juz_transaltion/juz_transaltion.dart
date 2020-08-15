@@ -12,9 +12,9 @@ class _JuzTranslationState extends State<JuzTranslation> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Juz Translation',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -24,7 +24,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -34,7 +34,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Urdu',
                       style: TextStyle(
                           color: Colors.black,
@@ -44,7 +44,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
                     const SizedBox(
                       width: 30,
                     ),
-                    Text(
+                    const Text(
                       'English',
                       style: TextStyle(
                           color: Colors.black,
@@ -91,7 +91,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),

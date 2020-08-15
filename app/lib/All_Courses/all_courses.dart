@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +7,10 @@ class AllCourses extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'All Courses',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -33,7 +34,6 @@ class AllCourses extends StatelessWidget {
     const QuranCourse(
       title: 'Adv Taleemul Quran',
       imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-      pageRoute: '/quran_course_page',
       courseDetailPdfUrl: '',
       registration: CourseRegistration(
         courseRegistration: '',
@@ -93,9 +93,8 @@ class AllCourses extends StatelessWidget {
       ],
     ),
     const QuranCourse(
-      title: 'Taleem Quran',
+      title: 'Taleemul Quran',
       imageUrl: 'assets/images/courses/taleemul_quran.png',
-      pageRoute: '/quran_course_page',
       courseDetailPdfUrl: '',
       registration: CourseRegistration(
         courseRegistration: '',
@@ -109,14 +108,17 @@ class AllCourses extends StatelessWidget {
               Surah(
                 name: 'Surah Al-Baqarah',
                 arabicName: 'الفاتحۃ',
-                description: 'The Opening',
+                description: 'The Openisssng',
                 lessons: [
                   Lesson(
-                    title: 'Surah Al-Baqarah',
-                    rootWordPdfUrls: [''],
-                    translationAudioUrls: [''],
-                    tafseerAudioUrls: [''],
-                    refMaterials: [''],
+                    title: 'Lessssson',
+                    lessonNum: '1',
+                    ayahNum: '1-3',
+                    uploadDate: '08/17/2020',
+                    rootWordPdfUrls: ['hee'],
+                    translationAudioUrls: ['hee'],
+                    tafseerAudioUrls: ['hee'],
+                    refMaterials: ['hee'],
                   )
                 ],
               ),
@@ -124,7 +126,88 @@ class AllCourses extends StatelessWidget {
           ),
         ],
       ),
-      tafseer: null,
+      tafseer: QuranCourseTafseer(
+        title: 'Surah Al-Bassssssqarah',
+        surahs: [
+          Surah(
+            name: 'Surah Al-Baqarah',
+            arabicName: 'الفاتحۃ',
+            description: 'The Opening',
+            lessons: [
+              Lesson(
+                lessonNum: '1',
+                ayahNum: '1-3',
+                uploadDate: '08/17/2020',
+                rootWordPdfUrls: [''],
+                translationAudioUrls: [''],
+                tafseerAudioUrls: [''],
+                refMaterials: [''],
+              )
+            ],
+          )
+        ],
+      ),
+      tests: [
+        QuranCourseTest(
+          title: 'asd',
+        )
+      ],
+    ),
+    const QuranCourse(
+      title: 'Fehmul Quran',
+      imageUrl: 'assets/images/courses/fehmul_quran.png',
+      courseDetailPdfUrl: '',
+      registration: CourseRegistration(
+        courseRegistration: '',
+      ),
+      tajweed: QuranCourseTajweed(
+        introductionUrl: '',
+        items: [
+          QuranCourseTajweedItem(
+            title: 'Surah Al-Baqarah',
+            surahs: [
+              Surah(
+                name: 'Surah Al-Baqarah',
+                arabicName: 'الفاتحۃ',
+                description: 'The Openisssng',
+                lessons: [
+                  Lesson(
+                    title: 'Lessssson',
+                    lessonNum: '1',
+                    ayahNum: '1-3',
+                    uploadDate: '08/17/2020',
+                    rootWordPdfUrls: ['hee'],
+                    translationAudioUrls: ['hee'],
+                    tafseerAudioUrls: ['hee'],
+                    refMaterials: ['hee'],
+                  )
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      tafseer: QuranCourseTafseer(
+        title: 'Surah Al-Bassssssqarah',
+        surahs: [
+          Surah(
+            name: 'Surah Al-Baqarah',
+            arabicName: 'الفاتحۃ',
+            description: 'The Opening',
+            lessons: [
+              Lesson(
+                lessonNum: '1',
+                ayahNum: '1-3',
+                uploadDate: '08/17/2020',
+                rootWordPdfUrls: [''],
+                translationAudioUrls: [''],
+                tafseerAudioUrls: [''],
+                refMaterials: [''],
+              )
+            ],
+          )
+        ],
+      ),
       tests: [
         QuranCourseTest(
           title: '',
@@ -132,9 +215,8 @@ class AllCourses extends StatelessWidget {
       ],
     ),
     const QuranCourse(
-      title: 'Course In Pashtu',
+      title: 'Course In Pashtu ',
       imageUrl: 'assets/images/courses/course_in_pashtu.png',
-      pageRoute: '/quran_course_page',
       courseDetailPdfUrl: '',
       registration: CourseRegistration(
         courseRegistration: '',
@@ -148,14 +230,17 @@ class AllCourses extends StatelessWidget {
               Surah(
                 name: 'Surah Al-Baqarah',
                 arabicName: 'الفاتحۃ',
-                description: 'The Opening',
+                description: 'The Openisssng',
                 lessons: [
                   Lesson(
-                    title: '',
-                    rootWordPdfUrls: [''],
-                    translationAudioUrls: [''],
-                    tafseerAudioUrls: [''],
-                    refMaterials: [''],
+                    title: 'Lessssson',
+                    lessonNum: '1',
+                    ayahNum: '1-3',
+                    uploadDate: '08/17/2020',
+                    rootWordPdfUrls: ['hee'],
+                    translationAudioUrls: ['hee'],
+                    tafseerAudioUrls: ['hee'],
+                    refMaterials: ['hee'],
                   )
                 ],
               ),
@@ -163,7 +248,27 @@ class AllCourses extends StatelessWidget {
           ),
         ],
       ),
-      tafseer: null,
+      tafseer: QuranCourseTafseer(
+        title: 'Surah Al-Bassssssqarah',
+        surahs: [
+          Surah(
+            name: 'Surah Al-Baqarah',
+            arabicName: 'الفاتحۃ',
+            description: 'The Opening',
+            lessons: [
+              Lesson(
+                lessonNum: '1',
+                ayahNum: '1-3',
+                uploadDate: '08/17/2020',
+                rootWordPdfUrls: [''],
+                translationAudioUrls: [''],
+                tafseerAudioUrls: [''],
+                refMaterials: [''],
+              )
+            ],
+          )
+        ],
+      ),
       tests: [
         QuranCourseTest(
           title: '',
@@ -173,49 +278,55 @@ class AllCourses extends StatelessWidget {
     const QuranCourse(
       title: 'Ilmul Yaqeen',
       imageUrl: 'assets/images/courses/ilmul_yaqeen.png',
-      pageRoute: '/supplementary_course',
     ),
     const QuranCourse(
       title: 'Ahsanul Bayan',
       imageUrl: 'assets/images/courses/ahsanul_bayan.png',
-      pageRoute: '/supplementary_course',
+      courseDetailPdfUrl: '',
     ),
     const QuranCourse(
       title: 'Al Furqan',
       imageUrl: 'assets/images/courses/fehmul_quran.png',
-      pageRoute: '/supplementary_course',
       courseDetailPdfUrl: '',
     ),
     const QuranCourse(
-        title: 'Seerah',
-        imageUrl: 'assets/images/courses/seerah.png',
-        pageRoute: '/supplementary_course'),
+      title: 'Seerah',
+      imageUrl: 'assets/images/courses/seerah.png',
+      courseDetailPdfUrl: '',
+    ),
     const QuranCourse(
-        title: 'Al Misbah (Whatsapp Program)',
-        imageUrl: 'assets/images/courses/al_misbah.png',
-        pageRoute: '/supplementary_course'),
+      title: 'Al Misbah (Whatsapp Program)',
+      imageUrl: 'assets/images/courses/al_misbah.png',
+      courseDetailPdfUrl: '',
+    ),
     const QuranCourse(
-        title: 'Weekly Gems',
-        imageUrl: 'assets/images/courses/weekly_gems.png',
-        pageRoute: '/weekly_gems_course'),
+      title: 'Weekly Gems',
+      imageUrl: 'assets/images/courses/weekly_gems.png',
+    ),
     const QuranCourse(
-        title: 'Assorted Lectures',
-        imageUrl: 'assets/images/courses/assorted_letures.png',
-        pageRoute: '/assorted_lectures'),
+      title: 'Assorted Lectures',
+      imageUrl: 'assets/images/courses/assorted_letures.png',
+    ),
     const QuranCourse(
-        title: 'Tazkeer',
-        imageUrl: 'assets/images/courses/tazkeer.png',
-        pageRoute: '/tazkeer'),
+      title: 'Tazkeer',
+      imageUrl: 'assets/images/courses/tazkeer.png',
+    ),
     const QuranCourse(
-        title: 'Weekly Dua, Sunnah & Zikr',
-        imageUrl: 'assets/images/courses/weekly_dua_sunnat_zikr.png',
-        pageRoute: '/dua_sunnah_zikr'),
+      title: 'Weekly Dua, Sunnah & Zikr',
+      imageUrl: 'assets/images/courses/weekly_dua_sunnat_zikr.png',
+    ),
   ];
 
   Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, course.pageRoute, arguments: course);
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (_) => const QuranCoursePage(
+                      title: '',
+                      course: QuranCourse(),
+                    )));
       },
       child: Column(
         children: <Widget>[
@@ -227,7 +338,8 @@ class AllCourses extends StatelessWidget {
           Text(
             course.title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ],
       ),

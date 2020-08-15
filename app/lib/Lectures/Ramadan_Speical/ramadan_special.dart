@@ -9,10 +9,10 @@ class RamadanSpecial extends StatelessWidget {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Ramadan Speical',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -28,7 +28,7 @@ class RamadanSpecial extends StatelessWidget {
                   child: ListView.separated(
                     itemCount: 10,
                     itemBuilder: (_, index) => ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.branding_watermark,
                         color: Colors.black,
                       ),
@@ -53,7 +53,8 @@ class RamadanSpecial extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           IconButton(
-                            icon: Icon(Icons.volume_up, color: Colors.black),
+                            icon: const Icon(Icons.volume_up,
+                                color: Colors.black),
                             onPressed: () {},
                           )
                         ],

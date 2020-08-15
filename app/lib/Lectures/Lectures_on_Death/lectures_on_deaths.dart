@@ -7,10 +7,10 @@ class LecturesOnDeath extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Lectures on Deaths',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -78,7 +78,7 @@ class LecturesOnDeath extends StatelessWidget {
             Text(
               course.title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                   color: Colors.white),

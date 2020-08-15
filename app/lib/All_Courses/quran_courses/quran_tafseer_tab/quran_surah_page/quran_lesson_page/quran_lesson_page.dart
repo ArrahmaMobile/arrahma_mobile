@@ -1,5 +1,4 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
-import 'package:arrahma_mobile_app/media_player/media_player.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -25,10 +24,10 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   'Lessons',
                   style: TextStyle(
                       color: Colors.white,
@@ -37,12 +36,12 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.star_border),
+                    icon: const Icon(Icons.star_border),
                     color: Colors.white,
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -53,19 +52,19 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
                 ],
               )
             : AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 title: Container(
                   margin: const EdgeInsets.symmetric(
                       horizontal: 5.0, vertical: 8.0),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
                     child: TextField(
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
@@ -77,7 +76,7 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -104,7 +103,7 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
                     itemBuilder: (_, index) {
                       final lessons = widget.lessons[index];
                       return ListTile(
-                        leading: Icon(Icons.branding_watermark),
+                        leading: const Icon(Icons.branding_watermark),
                         title: Text(
                             'Lesson ${lessons.lessonNum}: Ayah ${lessons.ayahNum}'),
                         subtitle: Text(lessons.uploadDate),

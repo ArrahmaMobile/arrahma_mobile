@@ -23,8 +23,8 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 10),
                 child: IconButton(
-                  iconSize: 40,
-                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 25,
+                  icon: const Icon(Icons.arrow_back),
                   color: Colors.black,
                   onPressed: () {
                     Navigator.pop(context);
@@ -56,7 +56,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 ),
               ),
               const SizedBox(height: 50),
-              Text(
+              const Text(
                 'Now Playing: Tafseer - "Lesson Name"',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.fast_rewind,
                       color: Colors.black,
                     ),
@@ -99,7 +99,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.fast_forward,
                       color: Colors.black,
                     ),
@@ -112,7 +112,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.share,
                       color: Colors.black,
                     ),

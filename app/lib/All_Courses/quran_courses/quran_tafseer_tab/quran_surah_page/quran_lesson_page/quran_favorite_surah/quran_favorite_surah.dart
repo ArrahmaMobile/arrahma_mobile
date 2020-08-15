@@ -15,10 +15,10 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   'Favorite Surah',
                   style: TextStyle(
                       color: Colors.white,
@@ -27,7 +27,7 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -38,19 +38,19 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 ],
               )
             : AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: const Color(0xff124570),
                 title: Container(
                   margin: const EdgeInsets.symmetric(
                       horizontal: 5.0, vertical: 8.0),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
                     child: TextField(
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
@@ -62,7 +62,7 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -77,17 +77,20 @@ class _QuranFavoriteSurahState extends State<QuranFavoriteSurah> {
             Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: 5,
-                    itemBuilder: (_, index) => ListTile(
-                      leading: Icon(Icons.branding_watermark),
-                      title: const Text('Surah Al-Fatiha  الفاتحۃ'),
-                      subtitle: const Text('The Opening'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
+                  child: GestureDetector(
+                    child: ListView.separated(
+                      itemCount: 5,
+                      itemBuilder: (_, index) => ListTile(
+                        leading: const Icon(Icons.branding_watermark),
+                        title: const Text('Surah Al-Fatiha  الفاتحۃ'),
+                        subtitle: const Text('The Opening'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                        ),
                       ),
+                      separatorBuilder: (_, __) => const Divider(thickness: 2),
                     ),
-                    separatorBuilder: (_, __) => const Divider(thickness: 2),
+                    onTap: () {},
                   ),
                 ),
               ],

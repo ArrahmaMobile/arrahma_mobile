@@ -12,9 +12,9 @@ class _WorkSheetState extends State<WorkSheet> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Worksheets',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -62,7 +62,7 @@ class _WorkSheetState extends State<WorkSheet> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),

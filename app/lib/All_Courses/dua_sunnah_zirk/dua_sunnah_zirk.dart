@@ -13,9 +13,9 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'Weekly Reminder',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -25,7 +25,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -35,7 +35,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Sunnah',
                       style: TextStyle(
                           color: Colors.black,
@@ -45,7 +45,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                     const SizedBox(
                       width: 50,
                     ),
-                    Text(
+                    const Text(
                       'Dua',
                       style: TextStyle(
                           color: Colors.black,
@@ -55,7 +55,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                     const SizedBox(
                       width: 50,
                     ),
-                    Text(
+                    const Text(
                       'Zikr',
                       style: TextStyle(
                           color: Colors.black,
@@ -104,7 +104,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
         children: <Widget>[
           Text(
             item.title,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(
@@ -115,7 +115,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
             onTap: () {
               Navigator.pushNamed(context, item.sunnahRoute);
             },
-            child: Icon(
+            child: const Icon(
               Icons.volume_up,
               color: Colors.black,
               size: 20,
@@ -126,7 +126,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
             onTap: () {
               Navigator.pushNamed(context, item.duaRoute);
             },
-            child: Icon(
+            child: const Icon(
               Icons.volume_up,
               color: Colors.black,
               size: 20,
@@ -139,7 +139,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
               onTap: () {
                 Navigator.pushNamed(context, item.zikrRoute);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.volume_up,
                 color: Colors.black,
                 size: 20,

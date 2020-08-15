@@ -5,8 +5,13 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class SupplementaryCourse extends StatefulWidget {
-  const SupplementaryCourse({Key key, @required this.course}) : super(key: key);
+  const SupplementaryCourse({
+    Key key,
+    @required this.course,
+    @required this.title,
+  }) : super(key: key);
   final QuranCourse course;
+  final String title;
 
   @override
   _SupplementaryCourseState createState() => _SupplementaryCourseState();
@@ -15,26 +20,27 @@ class SupplementaryCourse extends StatefulWidget {
 class _SupplementaryCourseState extends State<SupplementaryCourse> {
   int _tabSelected = 0;
 
-  final _pageSelected = [
-    const QuranDetailsTab(
-      title: 'Course Detail',
-    ),
-    const QuranSurahPage(
-      surahs: [],
-    ),
-  ];
+  Widget _getTab(int tabIndex) {
+    final tabs = [
+      const QuranDetailsTab(
+        title: 'widget.course.title',
+      ),
+      const QuranSurahPage(surahs: []),
+    ];
+    return tabs[tabIndex];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainDrawer(),
-      body: _pageSelected[_tabSelected],
+      body: _getTab(_tabSelected),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.library_books,
             ),
@@ -44,7 +50,7 @@ class _SupplementaryCourseState extends State<SupplementaryCourse> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.book,
             ),

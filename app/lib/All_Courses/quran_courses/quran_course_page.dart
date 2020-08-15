@@ -8,10 +8,13 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranCoursePage extends StatefulWidget {
-  const QuranCoursePage({Key key, @required this.title, @required this.course})
-      : super(key: key);
-  final String title;
+  const QuranCoursePage({
+    Key key,
+    @required this.title,
+    @required this.course,
+  }) : super(key: key);
   final QuranCourse course;
+  final String title;
 
   @override
   _QuranCoursePageState createState() => _QuranCoursePageState();
@@ -55,7 +58,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
         type: BottomNavigationBarType.fixed,
         items: [
           if (widget.course.courseDetailPdfUrl != null)
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.library_books,
               ),
@@ -66,7 +69,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
               ),
             ),
           if (widget.course.registration != null)
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.book,
               ),
@@ -77,7 +80,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
               ),
             ),
           if (widget.course.tafseer != null)
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.book,
               ),
@@ -88,7 +91,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
               ),
             ),
           if (widget.course.tajweed != null)
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
               ),
@@ -99,7 +102,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
               ),
             ),
           if (widget.course.tests != null)
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
               ),

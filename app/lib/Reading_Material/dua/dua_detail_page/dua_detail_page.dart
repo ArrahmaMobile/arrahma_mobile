@@ -13,9 +13,9 @@ class _DuaDetailPageState extends State<DuaDetailPage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
-          title: Text(
+          title: const Text(
             'Dua Name',
             style: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -31,7 +31,7 @@ class _DuaDetailPageState extends State<DuaDetailPage> {
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {},
                       child: ListTile(
-                        leading: Icon(Icons.branding_watermark),
+                        leading: const Icon(Icons.branding_watermark),
                         title: const Text('Supplications for travel'),
                         subtitle: const Text('گھروالوں کی مسافر کے ليے دعائيں'),
                         trailing: Row(

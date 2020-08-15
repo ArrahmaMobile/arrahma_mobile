@@ -56,7 +56,7 @@ class MainDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         list.title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),

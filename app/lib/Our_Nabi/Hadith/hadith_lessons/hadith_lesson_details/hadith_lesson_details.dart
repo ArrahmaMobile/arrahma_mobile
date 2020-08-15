@@ -12,10 +12,10 @@ class _HadithLessonDetailsState extends State<HadithLessonDetails> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Hadith Lessons',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -36,7 +36,7 @@ class _HadithLessonDetailsState extends State<HadithLessonDetails> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.volume_up),
+                            icon: const Icon(Icons.volume_up),
                             color: Colors.black,
                             onPressed: () {
                               Navigator.pushNamed(

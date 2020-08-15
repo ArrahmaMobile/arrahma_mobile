@@ -7,9 +7,9 @@ class EnglishQaida extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xff124570),
-        title: Text(
+        title: const Text(
           'English Audio',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -19,7 +19,7 @@ class EnglishQaida extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -29,7 +29,7 @@ class EnglishQaida extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Letter',
                       style: TextStyle(
                           color: Colors.black,
@@ -39,7 +39,7 @@ class EnglishQaida extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    Text(
+                    const Text(
                       'Surah',
                       style: TextStyle(
                           color: Colors.black,
@@ -86,7 +86,7 @@ class EnglishQaida extends StatelessWidget {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -98,7 +98,7 @@ class EnglishQaida extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, item.letterAudio);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.volume_up,
                   color: Colors.black,
                   size: 25,
@@ -109,7 +109,7 @@ class EnglishQaida extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, item.surahAudio);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.volume_up,
                   color: Colors.black,
                   size: 25,

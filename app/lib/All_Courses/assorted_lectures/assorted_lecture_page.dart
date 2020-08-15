@@ -16,12 +16,13 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xff124570),
           centerTitle: true,
           title: Text(
             widget.item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
@@ -37,17 +38,17 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
                     itemBuilder: (_, index) {
                       final item = widget.item.lectures[index];
                       return ListTile(
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.branding_watermark,
                           color: Colors.black,
                         ),
                         title: Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
                           item.subtitle,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.lightBlue,
                               fontWeight: FontWeight.bold),
                         ),
@@ -59,7 +60,7 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
                                 Navigator.pushNamed(
                                     context, '/media_player_screen');
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.volume_up,
                                 color: Colors.black,
                               ),
@@ -67,7 +68,7 @@ class _AssortedLecturePageState extends State<AssortedLecturePage> {
                             const SizedBox(width: 2),
                             Text(
                               item.audioLength,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
                             ),
