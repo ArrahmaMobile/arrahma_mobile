@@ -1,8 +1,10 @@
 import 'package:arrahma_mobile_app/utils/models/device_config.dart';
 import 'package:arrahma_models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'logger.dart';
+import 'models/app_config.dart';
 import 'storage/storage_provider.dart';
 
 class DeviceStorageService {
@@ -10,23 +12,12 @@ class DeviceStorageService {
 
   final IStorageService _storage;
 
-  // Future<AppConfig> loadAppConfigPreferences(FlavorConfig initialConfig) async {
-  //   ThemeMode themeMode;
-  //   final String themeModeStr =
-  //       await _storage.getString(AppConfig.THEME_MODE_STORAGE_KEY);
-
-  //   if (themeModeStr != null)
-  //     themeMode = EnumUtils.enumFromString(ThemeMode.values, themeModeStr);
-  //   final bool isBannerVisible =
-  //       await _storage.getBool(AppConfig.BANNER_STORAGE_KEY);
-  //   final String environmentName =
-  //       await _storage.getString(AppConfig.ENVIRONMENT_STORAGE_KEY);
-  //   final bool inDevicePreview =
-  //       await _storage.getBool(AppConfig.DEVICE_PREVIEW);
-
-  //   return AppConfig(this, initialConfig, themeMode, isBannerVisible,
-  //       environmentName, inDevicePreview);
-  // }
+  Future<AppConfig> loadAppConfigPreferences() async {
+    return _storage.get<AppConfig>(
+      defaultFn: () =>
+          const AppConfig(themeMode: ThemeMode.system, environmentName: null),
+    );
+  }
 
   Future<AppData> loadAppData() async {
     const banners = [
@@ -417,8 +408,7 @@ class DeviceStorageService {
   //   return _storage.setBool(AppConfig.BANNER_STORAGE_KEY, isVisible);
   // }
 
-  // Future<bool> saveEnvironmentName(String environmentName) {
-  //   return _storage.setString(
-  //       AppConfig.ENVIRONMENT_STORAGE_KEY, environmentName);
-  // }
+  Future<bool> saveAppConfig(AppConfig appConfig) {
+    return _storage.set<AppConfig>(appConfig);
+  }
 }

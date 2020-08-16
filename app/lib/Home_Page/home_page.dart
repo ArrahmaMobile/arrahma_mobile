@@ -1,4 +1,8 @@
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/services/device_storage.dart';
+import 'package:arrahma_mobile_app/services/environment_service.dart';
+import 'package:arrahma_mobile_app/services/models/app_config.dart';
+import 'package:arrahma_mobile_app/services/models/environment_config.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -11,9 +15,16 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-bool _isPlaying = false;
-
 class _HomePageState extends State<HomePage> {
+  bool _isPlaying = false;
+  int tapCount;
+
+  @override
+  void initState() {
+    super.initState();
+    tapCount = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final appData = context.on<AppData>();
@@ -21,11 +32,29 @@ class _HomePageState extends State<HomePage> {
       drawer: MainDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        title: appData?.logoUrl != null
-            ? Image.network(appData.logoUrl)
-            : Image.asset(
-                'assets/images/home_page_images/aarhman_mainImage.png',
-                fit: BoxFit.cover),
+        title: GestureDetector(
+          onTap: () {
+            tapCount++;
+            if (tapCount > 2) {
+              tapCount = 0;
+              final currentEnv = context.once<EnvironmentConfig>();
+              final envs = SL.get<EnvironmentService>().getEnvironments();
+              final nextEnv =
+                  envs[(envs.indexOf(currentEnv) + 1) % envs.length];
+              RS.set<EnvironmentConfig>(context, (_) => nextEnv);
+              final appConfig = context.once<AppConfig>();
+              SL.get<DeviceStorageService>().saveAppConfig(AppConfig(
+                  environmentName: nextEnv.name,
+                  themeMode: appConfig.themeMode));
+              print('Switched env to ${nextEnv.name}');
+            }
+          },
+          child: (appData?.logoUrl?.startsWith('http') ?? false)
+              ? Image.network(appData.logoUrl)
+              : Image.asset(
+                  'assets/images/home_page_images/aarhman_mainImage.png',
+                  fit: BoxFit.cover),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -112,7 +141,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildImageLink(String linkUrl, String imageUrl) {
     return GestureDetector(
       onTap: () => _launchLink(linkUrl),
-      child: Image.network(imageUrl),
+      child: imageUrl.startsWith('http')
+          ? Image.network(imageUrl)
+          : Image.asset(imageUrl),
     );
   }
 

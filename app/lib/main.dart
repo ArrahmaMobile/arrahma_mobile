@@ -41,7 +41,12 @@ Future main() async {
   final window = WidgetsBinding.instance.window;
   final deviceSize = window.physicalSize / window.devicePixelRatio;
   final envService = EnvironmentService();
-  final envConfig = envService.getDefaultEnvironment();
+  final appConfig = await deviceStorageService.loadAppConfigPreferences();
+  final envConfig = appConfig?.environmentName != null
+      ? envService
+          .getEnvironments()
+          .singleWhere((env) => env.name == appConfig.environmentName)
+      : envService.getDefaultEnvironment();
   final connectivityService = ConnectivityService();
 
   final apiService = ApiService(connectivityService, deviceConfig,
@@ -66,6 +71,7 @@ Future main() async {
     Inject<AppData>(() => appData),
   );
 
+  SL.register(() => deviceStorageService);
   SL.register(() => storageService);
   SL.register(() => deviceConfig);
   SL.register(() => envService);
