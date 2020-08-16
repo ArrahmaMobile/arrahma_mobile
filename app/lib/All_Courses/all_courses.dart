@@ -46,11 +46,18 @@ class AllCourses extends StatelessWidget {
       },
       child: Column(
         children: <Widget>[
-          Image.asset(
-            course.imageUrl,
-            width: 80,
-            height: 80,
-          ),
+          if (course.imageUrl.startsWith('http'))
+            Image.network(
+              course.imageUrl,
+              width: 80,
+              height: 80,
+            )
+          else
+            Image.asset(
+              course.imageUrl,
+              width: 80,
+              height: 80,
+            ),
           Text(
             course.title,
             textAlign: TextAlign.center,

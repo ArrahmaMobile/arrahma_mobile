@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/app.dart';
+import 'package:arrahma_mobile_app/services/models/app_config.dart';
 import 'package:arrahma_mobile_app/services/storage/storage_provider.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:arrahma_models/models.dart' as models;
@@ -12,6 +13,7 @@ import 'services/api.dart';
 import 'services/connectivity.dart';
 import 'services/device_storage.dart';
 import 'services/environment_service.dart';
+import 'services/models/environment_config.dart';
 import 'services/storage/storage_service.dart';
 import 'utils/app_utils.dart';
 import 'utils/platform_utils.dart';
@@ -67,9 +69,11 @@ Future main() async {
 
   appData ??= await deviceStorageService.loadAppData();
 
-  dependencies.add(
+  dependencies.addAll([
+    Inject<EnvironmentConfig>(() => envConfig),
+    Inject<AppConfig>(() => appConfig),
     Inject<AppData>(() => appData),
-  );
+  ]);
 
   SL.register(() => deviceStorageService);
   SL.register(() => storageService);

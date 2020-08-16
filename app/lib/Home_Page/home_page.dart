@@ -33,20 +33,23 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: GestureDetector(
-          onTap: () {
+          onTap: () async {
             tapCount++;
             if (tapCount > 2) {
               tapCount = 0;
               final currentEnv = context.once<EnvironmentConfig>();
               final envs = SL.get<EnvironmentService>().getEnvironments();
+              final envNames = envs.map((e) => e.name).toList();
               final nextEnv =
-                  envs[(envs.indexOf(currentEnv) + 1) % envs.length];
+                  envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
               RS.set<EnvironmentConfig>(context, (_) => nextEnv);
-              final appConfig = context.once<AppConfig>();
-              SL.get<DeviceStorageService>().saveAppConfig(AppConfig(
-                  environmentName: nextEnv.name,
-                  themeMode: appConfig.themeMode));
-              print('Switched env to ${nextEnv.name}');
+              final appConfig = context
+                  .once<AppConfig>()
+                  .copyWith(environmentName: nextEnv.name);
+              RS.set<AppConfig>(context, (_) => appConfig);
+              final success =
+                  await SL.get<DeviceStorageService>().saveAppConfig(appConfig);
+              if (success) print('Switched env to ${nextEnv.name}');
             }
           },
           child: (appData?.logoUrl?.startsWith('http') ?? false)

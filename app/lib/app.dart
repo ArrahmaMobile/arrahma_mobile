@@ -14,8 +14,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return InheritedState(
       states: [
-        Inject<EnvironmentConfig>(
-            () => SL.get<EnvironmentService>().getDefaultEnvironment()),
         if (dependencies != null) ...dependencies,
       ],
       builder: (_) => MaterialApp(
