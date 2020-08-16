@@ -12,36 +12,37 @@ class _NewLecturesState extends State<NewLectures> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'New Lectures',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: 10,
                     itemBuilder: (_, index) => ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.branding_watermark,
                         color: Colors.black,
                       ),
                       title: const Text(
-                        'Lecture on Zakat By Ustadh Abu Saif (2019)',
+                        'Lecture on Zakat By Ustadhsss Abu Saif (2019)',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: const Text(
                         'زکوٰۃ ـ استاد ابو سیف',
                         style: TextStyle(
-                            color: Colors.lightBlue,
+                            color: Color(0xff124570),
                             fontWeight: FontWeight.bold),
                       ),
                       trailing: Row(
@@ -52,13 +53,13 @@ class _NewLecturesState extends State<NewLectures> {
                               Navigator.pushNamed(
                                   context, '/media_player_screen');
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.volume_up,
                               color: Colors.black,
                             ),
                           ),
-                          SizedBox(width: 2),
-                          Text(
+                          const SizedBox(width: 2),
+                          const Text(
                             '12:14',
                             style: TextStyle(
                                 color: Colors.black,

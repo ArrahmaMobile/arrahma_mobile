@@ -12,25 +12,26 @@ class _GumnaamKiDiaryState extends State<GumnaamKiDiary> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Gumnaam Ki Diary',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: 10,
                     itemBuilder: (_, index) => ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.branding_watermark,
                         color: Colors.black,
                       ),
@@ -38,13 +39,14 @@ class _GumnaamKiDiaryState extends State<GumnaamKiDiary> {
                         'یری ترجیحات .. حصہ اول ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('Meri tarjeehat-Part 1'),
+                      subtitle: const Text('Meri tarjeehat-Part 1'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           IconButton(
-                            icon: Icon(Icons.volume_up, color: Colors.black),
+                            icon: const Icon(Icons.volume_up,
+                                color: Colors.black),
                             onPressed: () {},
                           )
                         ],

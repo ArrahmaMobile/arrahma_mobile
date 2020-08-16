@@ -12,10 +12,11 @@ class _WirasatCourseState extends State<WirasatCourse> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Wirasat Course',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -40,24 +41,25 @@ class _WirasatCourseState extends State<WirasatCourse> {
   }
 
   final _wirasatCourse = [
-    WirasatCourseItem(
+    const WirasatCourseItem(
       title: 'Introduction',
-      videoRoute: '',
+      videoRoute: '/media_player_screen',
+      pdfRoute: '/wirasat_course',
     ),
-    WirasatCourseItem(
+    const WirasatCourseItem(
       title: 'Lesson 1',
-      videoRoute: '',
-      pdfRoute: '',
+      videoRoute: '/media_player_screen',
+      pdfRoute: '/wirasat_course',
     ),
-    WirasatCourseItem(
+    const WirasatCourseItem(
       title: 'Lesson 2',
-      videoRoute: '',
-      pdfRoute: '',
+      videoRoute: '/media_player_screen',
+      pdfRoute: '/wirasat_course',
     ),
-    WirasatCourseItem(
+    const WirasatCourseItem(
       title: 'Lesson 3',
-      videoRoute: '',
-      pdfRoute: '',
+      videoRoute: '/media_player_screen',
+      pdfRoute: '/wirasat_course',
     )
   ];
 
@@ -70,7 +72,7 @@ class _WirasatCourseState extends State<WirasatCourse> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -87,7 +89,7 @@ class _WirasatCourseState extends State<WirasatCourse> {
                   width: 30,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, item.pdfRoute);
@@ -95,9 +97,10 @@ class _WirasatCourseState extends State<WirasatCourse> {
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
                   width: 20,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

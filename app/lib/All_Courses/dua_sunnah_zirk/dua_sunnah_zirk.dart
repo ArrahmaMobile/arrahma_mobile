@@ -13,10 +13,11 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Weekly Reminder',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -24,7 +25,7 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -34,27 +35,27 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Sunnah',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
-                    Text(
+                    const Text(
                       'Dua',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
-                    Text(
+                    const Text(
                       'Zikr',
                       style: TextStyle(
                           color: Colors.black,
@@ -75,17 +76,23 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
   }
 
   final _duaSunnahZikr = [
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 1',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '',
     ),
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 2',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '',
     ),
-    DuaSunnahZirkItem(
+    const DuaSunnahZirkItem(
       title: 'Week 3',
-      pageRoute: '',
+      sunnahRoute: '',
+      duaRoute: '',
+      zikrRoute: '/lesson_detail_page',
     ),
   ];
 
@@ -97,42 +104,42 @@ class _WeeklyDuaSunnahZikrState extends State<WeeklyDuaSunnahZikr> {
         children: <Widget>[
           Text(
             item.title,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             width: 15,
             height: 40,
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, item.pageRoute);
+              Navigator.pushNamed(context, item.sunnahRoute);
             },
-            child: Icon(
+            child: const Icon(
               Icons.volume_up,
               color: Colors.black,
               size: 20,
             ),
           ),
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, item.pageRoute);
+              Navigator.pushNamed(context, item.duaRoute);
             },
-            child: Icon(
+            child: const Icon(
               Icons.volume_up,
               color: Colors.black,
               size: 20,
             ),
           ),
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           Padding(
             padding: const EdgeInsets.only(right: 30.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, item.pageRoute);
+                Navigator.pushNamed(context, item.zikrRoute);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.volume_up,
                 color: Colors.black,
                 size: 20,

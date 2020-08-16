@@ -8,17 +8,18 @@ class Lectures extends StatelessWidget {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Lectures',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 _lecturesList(context),
@@ -44,47 +45,47 @@ class Lectures extends StatelessWidget {
   }
 
   final _lectures = [
-    Lecture(
+    const Lecture(
       title: 'Quranic Tafseer',
       pageRoute: '/quran_tafseer',
     ),
-    Lecture(
+    const Lecture(
       title: 'Youth Courses',
       pageRoute: '/youth_course',
     ),
-    Lecture(
+    const Lecture(
       title: 'Tazkeer',
       pageRoute: '/tazkeer',
     ),
-    Lecture(
+    const Lecture(
       title: 'Wirasat Course',
       pageRoute: '/wirasat_course',
     ),
-    Lecture(
+    const Lecture(
       title: 'Weekly Gems',
       pageRoute: '/weekly_gems',
     ),
-    Lecture(
+    const Lecture(
       title: 'Assorted Lectures',
       pageRoute: '/assorted_lectures',
     ),
-    Lecture(
+    const Lecture(
       title: 'Ramadan Special',
       pageRoute: '/ramadan_special',
     ),
-    Lecture(
+    const Lecture(
       title: 'Special Series',
       pageRoute: '/speical_series',
     ),
-    Lecture(
+    const Lecture(
       title: 'Pashto Course',
       pageRoute: '/pashto_course',
     ),
-    Lecture(
+    const Lecture(
       title: 'Lectures on Death',
       pageRoute: '/lectures_on_death',
     ),
-    Lecture(
+    const Lecture(
       title: 'Lectures on Namaz',
       pageRoute: '/lecture_on_namaz',
     ),
@@ -96,16 +97,16 @@ class Lectures extends StatelessWidget {
         Navigator.pushNamed(context, lecture.pageRoute);
       },
       child: Container(
-        color: Color(0xffdedbdb),
+        color: const Color(0xff124570),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               lecture.title,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 20),
             ),
           ],

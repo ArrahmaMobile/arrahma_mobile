@@ -12,18 +12,19 @@ class _DuaState extends State<Dua> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Reading Material',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -35,13 +36,14 @@ class _DuaState extends State<Dua> {
                       },
                       child: ListTile(
                         title: const Text('Supplications for Traveling'),
-                        subtitle: Text('سفر کی دعائيں'),
+                        subtitle: const Text('سفر کی دعائيں'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/multi_page_icons/arrow_down.png',
                               width: 15,
+                              color: Colors.black,
                             )
                           ],
                         ),

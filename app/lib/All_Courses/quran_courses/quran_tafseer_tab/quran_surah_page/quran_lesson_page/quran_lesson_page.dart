@@ -1,17 +1,19 @@
-import 'package:arrahma_mobile_app/media_player/media_player.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
-class QuranSurahDetailPage extends StatefulWidget {
-  const QuranSurahDetailPage({Key key, @required this.lessons})
-      : super(key: key);
+class QuranLessonPage extends StatefulWidget {
+  const QuranLessonPage({
+    Key key,
+    @required this.lessons,
+  }) : super(key: key);
   final List<Lesson> lessons;
 
   @override
-  _QuranSurahDetailPageState createState() => _QuranSurahDetailPageState();
+  _QuranLessonPageState createState() => _QuranLessonPageState();
 }
 
-class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
+class _QuranLessonPageState extends State<QuranLessonPage> {
   bool _isFav = false;
   bool _isSearching = false;
 
@@ -22,23 +24,25 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
       child: Scaffold(
         appBar: !_isSearching
             ? AppBar(
+                iconTheme: const IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   'Lessons',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.star_border),
-                    color: Colors.black,
+                    icon: const Icon(Icons.star_border),
+                    color: Colors.white,
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.search),
-                    color: Colors.black,
+                    icon: const Icon(Icons.search),
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = true;
@@ -48,16 +52,19 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                 ],
               )
             : AppBar(
+                iconTheme: const IconThemeData(color: Colors.white),
+                backgroundColor: const Color(0xff124570),
                 title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 8.0),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(
                       Radius.circular(22.0),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
                     child: TextField(
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
@@ -69,8 +76,8 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.cancel),
-                    color: Colors.black,
+                    icon: const Icon(Icons.cancel),
+                    color: Colors.white,
                     onPressed: () {
                       setState(() {
                         _isSearching = false;
@@ -83,10 +90,10 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: const Text(
-                    "Continue to last Lesson",
+                  child: Text(
+                    'Continue to last Lesson',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -96,10 +103,10 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                     itemBuilder: (_, index) {
                       final lessons = widget.lessons[index];
                       return ListTile(
-                        leading: Icon(Icons.branding_watermark),
-                        title:
-                            Text('${lessons.lessonNum} ${lessons.lessonName}'),
-                        subtitle: Text(lessons.lessonAyah),
+                        leading: const Icon(Icons.branding_watermark),
+                        title: Text(
+                            'Lesson ${lessons.lessonNum}: Ayah ${lessons.ayahNum}'),
+                        subtitle: Text(lessons.uploadDate),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -118,7 +125,7 @@ class _QuranSurahDetailPageState extends State<QuranSurahDetailPage> {
                           Navigator.push<dynamic>(
                               context,
                               MaterialPageRoute<dynamic>(
-                                  builder: (_) => MediaPlayerScreen()));
+                                  builder: (_) => QuranLessonAudioPage()));
                         },
                       );
                     },

@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -8,15 +9,16 @@ class AllCourses extends StatelessWidget {
     final appData = context.on<AppData>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'All Courses',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: GridView.count(
           crossAxisCount: 3,
           crossAxisSpacing: 20,
@@ -34,7 +36,13 @@ class AllCourses extends StatelessWidget {
   Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, course.pageRoute, arguments: course);
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (_) => const QuranCoursePage(
+                      title: '',
+                      course: QuranCourse(),
+                    )));
       },
       child: Column(
         children: <Widget>[
@@ -46,7 +54,8 @@ class AllCourses extends StatelessWidget {
           Text(
             course.title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ],
       ),

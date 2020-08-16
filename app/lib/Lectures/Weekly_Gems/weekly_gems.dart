@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture_page.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lecture.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lectures.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class WeeklyGems extends StatefulWidget {
 class _WeeklyGemsState extends State<WeeklyGems> {
   @override
   Widget build(BuildContext context) {
-    return AssortedLecturePage(
+    return const AssortedLecturePage(
       item: AssortedLectureCategoryItem(
         title: 'Weekly Gems',
         lectures: [

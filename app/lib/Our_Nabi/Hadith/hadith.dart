@@ -7,15 +7,16 @@ class Hadith extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Hadith',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _ourNabiList(context),
@@ -39,17 +40,17 @@ class Hadith extends StatelessWidget {
   }
 
   final _hadithItem = [
-    HadithItem(
+    const HadithItem(
       title: 'Hadith Lessons',
       pageRoute: '/hadith_lesson_details',
     ),
-    HadithItem(
+    const HadithItem(
       title: 'Lulu wal Marjaan - 1',
-      pageRoute: '/home',
+      pageRoute: '/hadith',
     ),
-    HadithItem(
+    const HadithItem(
       title: 'Lulu wal Marjaan - 2',
-      pageRoute: '/home',
+      pageRoute: '/hadith',
     ),
   ];
 
@@ -58,15 +59,22 @@ class Hadith extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

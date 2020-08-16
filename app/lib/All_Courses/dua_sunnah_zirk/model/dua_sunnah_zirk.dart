@@ -1,5 +1,8 @@
 class DuaSunnahZirkItem {
-  const DuaSunnahZirkItem({this.title, this.pageRoute});
+  const DuaSunnahZirkItem(
+      {this.title, this.sunnahRoute, this.duaRoute, this.zikrRoute});
   final String title;
-  final String pageRoute;
+  final String sunnahRoute;
+  final String duaRoute;
+  final String zikrRoute;
 }

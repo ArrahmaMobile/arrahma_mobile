@@ -2,9 +2,11 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranRegistrationTab extends StatelessWidget {
-  const QuranRegistrationTab(
-      {Key key, @required this.registration, @required this.title})
-      : super(key: key);
+  const QuranRegistrationTab({
+    Key key,
+    @required this.registration,
+    @required this.title,
+  }) : super(key: key);
   final CourseRegistration registration;
   final String title;
 
@@ -12,38 +14,40 @@ class QuranRegistrationTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: Text(
           title,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ConstrainedBox(
-            constraints: BoxConstraints(),
+            constraints: const BoxConstraints(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'IMP: After you submit the form, you should receive a confirmation email. If you do not receive it,'
                   'please check your junk email or re-register with correct email address.',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "Prerequisites:",
-                  style: new TextStyle(
+                const SizedBox(height: 20),
+                const Text(
+                  'Prerequisites:',
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Have you completed Taleem ul Quran course?',
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -1,36 +1,46 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
-import 'misbah_lecture_tab/misbah_lecutre.dart';
+class SupplementaryCourse extends StatefulWidget {
+  const SupplementaryCourse({
+    Key key,
+    @required this.course,
+    @required this.title,
+  }) : super(key: key);
+  final QuranCourse course;
+  final String title;
 
-class AlMisbah extends StatefulWidget {
   @override
-  _AlMisbahState createState() => _AlMisbahState();
+  _SupplementaryCourseState createState() => _SupplementaryCourseState();
 }
 
-class _AlMisbahState extends State<AlMisbah> {
+class _SupplementaryCourseState extends State<SupplementaryCourse> {
   int _tabSelected = 0;
 
-  final _pageSelected = [
-    QuranDetailsTab(
-      title: '',
-      pdfUrl: '',
-    ),
-    MisbahLecturesTab(),
-  ];
+  Widget _getTab(int tabIndex) {
+    final tabs = [
+      const QuranDetailsTab(
+        title: 'widget.course.title',
+      ),
+      const QuranSurahPage(surahs: []),
+    ];
+    return tabs[tabIndex];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainDrawer(),
-      body: _pageSelected[_tabSelected],
+      body: _getTab(_tabSelected),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.library_books,
             ),
@@ -40,7 +50,7 @@ class _AlMisbahState extends State<AlMisbah> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.book,
             ),

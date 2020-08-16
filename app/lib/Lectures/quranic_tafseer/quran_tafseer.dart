@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/Lectures/Quran_Tafseer/model/quran_tafseer.dart';
+import 'package:arrahma_mobile_app/lectures/quranic_tafseer/model/quran_tafseer.dart';
 import 'package:flutter/material.dart';
 
 class QuranTafseer extends StatelessWidget {
@@ -6,15 +6,16 @@ class QuranTafseer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Quran Tafseer',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _quranList(context),
@@ -38,33 +39,39 @@ class QuranTafseer extends StatelessWidget {
   }
 
   final _quranTafseer = [
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: '2019 New Courses',
       pageRoute: '/quran_tafseer_tab',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'Tafseer - 2013',
       pageRoute: '/quran_tafseer_tab',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'Tafseer - 2007',
       pageRoute: '/quran_tafseer_tab',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'Ahsan-Ul-Bayan',
       pageRoute: '/juz_detail_page',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'Al-Furqan',
       pageRoute: '/juz_detail_page',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'llm-ul-Uaqeen',
       pageRoute: '/juz_detail_page',
+      data: '',
     ),
-    QuranTafseerItem<dynamic>(
+    const QuranTafseerItem<dynamic>(
       title: 'Al-Misbah',
-      pageRoute: '/misbah_lectures_tab',
+      pageRoute: '/supplementary_course',
     )
   ];
 
@@ -73,15 +80,21 @@ class QuranTafseer extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15),
+            ),
+          ],
+        ),
       ),
     );
   }

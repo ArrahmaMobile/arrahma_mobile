@@ -6,15 +6,16 @@ class YouthCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Youth Course',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _lecturesList(context),
@@ -31,29 +32,21 @@ class YouthCourse extends StatelessWidget {
       mainAxisSpacing: 8,
       crossAxisCount: 2,
       shrinkWrap: true,
-      childAspectRatio: 1,
+      childAspectRatio: 1.9,
       children:
           _youthCourse.map((item) => _buildYouthCourse(context, item)).toList(),
     );
   }
 
   final _youthCourse = [
-    YouthCourseItem(
+    const YouthCourseItem(
       title: 'Dawra e Quran Eng.2019',
-      pageRoute: '',
+      pageRoute: '/youth_course',
     ),
-    YouthCourseItem(
-      title: 'Ten Youth Issues',
-      pageRoute: '',
-    ),
-    YouthCourseItem(
-      title: 'Fiqh of Marriage',
-      pageRoute: '',
-    ),
-    YouthCourseItem(
+    const YouthCourseItem(
       title: 'Vision Series',
-      pageRoute: '',
-    )
+      pageRoute: '/youth_course',
+    ),
   ];
 
   Widget _buildYouthCourse(BuildContext context, YouthCourseItem item) {
@@ -61,15 +54,21 @@ class YouthCourse extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15),
+            ),
+          ],
+        ),
       ),
     );
   }

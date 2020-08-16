@@ -12,18 +12,19 @@ class _Juz30HifzState extends State<Juz30Hifz> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Juz 30 عمّ',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -31,7 +32,7 @@ class _Juz30HifzState extends State<Juz30Hifz> {
                     itemCount: 30,
                     itemBuilder: (_, index) => ListTile(
                       title: const Text('An-Naba'),
-                      subtitle: Text('The Great News'),
+                      subtitle: const Text('The Great News'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -39,11 +40,13 @@ class _Juz30HifzState extends State<Juz30Hifz> {
                             child: Image.asset(
                               'assets/images/multi_page_icons/arrow_down.png',
                               width: 15,
+                              color: Colors.black,
                             ),
                           ),
                           GestureDetector(
                             child: IconButton(
-                              icon: Icon(Icons.volume_up),
+                              icon: const Icon(Icons.volume_up),
+                              color: Colors.black,
                               onPressed: () {},
                             ),
                           )

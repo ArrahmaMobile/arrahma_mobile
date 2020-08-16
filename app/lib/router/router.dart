@@ -1,19 +1,13 @@
 import 'package:arrahma_mobile_app/About_Us/about_us.dart';
-import 'package:arrahma_mobile_app/all_courses/al_misbah/misbah_lecture_tab/misbah_lecutre.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lectures.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_juz_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_favorite_surah/quran_favorite_surah.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page/quran_favorite_surah/quran_favorite_surah.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_tafseer_favorite_juz/quran_tafseer_favorite_juz.dart';
-import 'package:arrahma_mobile_app/all_courses/ahsanul_bayan/ahsanul_bayan.dart';
-import 'package:arrahma_mobile_app/all_courses/al_furqan/al_furqan.dart';
 import 'package:arrahma_mobile_app/all_courses/all_courses.dart';
-import 'package:arrahma_mobile_app/all_courses/ilmul_taqeen/ilmul_taqeen.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
-import 'package:arrahma_mobile_app/all_courses/seerah/lecture_tab/lecture_tab.dart';
-import 'package:arrahma_mobile_app/all_courses/seerah/seerah.dart';
+import 'package:arrahma_mobile_app/all_courses/supplementary_courses/supplementary_course.dart';
 import 'package:arrahma_mobile_app/all_courses/weekly_gems/weekly_gems.dart';
 import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/Lectures/Pashto_Course/pashto_course.dart';
@@ -44,19 +38,15 @@ import 'package:arrahma_mobile_app/Tajweed/tajweed.dart';
 import 'package:arrahma_mobile_app/Tajweed/taleem_quran_2013/taleem_quran_2013.dart';
 import 'package:arrahma_mobile_app/arabic_grammer/arabic_grammers.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/lectures/quranic_tafseer/quran_tafseer.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:arrahma_mobile_app/all_courses/al_misbah/al_misbah.dart';
-import 'package:arrahma_mobile_app/all_courses/al_misbah/misbah_lecture_tab/misbah_fav_surah/misbah_fav_surah.dart';
-import 'package:arrahma_mobile_app/all_courses/al_misbah/misbah_lecture_tab/surah_seleted/surah_selected.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lectures_course.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture_page.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/new_lectures/new_lectures.dart';
 import 'package:arrahma_mobile_app/all_courses/dua_sunnah_zirk/dua_sunnah_zirk.dart';
-import 'package:arrahma_mobile_app/all_courses/seerah/lecture_tab/lecture_detail/lecture_detail.dart';
 import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
 import 'package:arrahma_mobile_app/Lectures/Lectures_on_Death/lectures_on_deaths.dart';
-import 'package:arrahma_mobile_app/Lectures/Quran_Tafseer/quran_tafseer.dart';
 import 'package:arrahma_mobile_app/Lectures/Ramadan_Speical/ramadan_special.dart';
 import 'package:arrahma_mobile_app/Lectures/Speical_Series/asma_ul_husna/asma_ul_husna.dart';
 import 'package:arrahma_mobile_app/Lectures/Speical_Series/gumnaam_ki_diary/gumnaam_ki_diary.dart';
@@ -83,23 +73,27 @@ class Router {
     '/contact_us': (context, args) => ContactUs(),
     '/drawer': (context, args) => MainDrawer(),
     '/share': (context, args) => Share(),
-    '/favorite_juz': (context, args) => AdvTaleemmulFavoriteJuz(),
-    '/favorite_surah': (context, args) => QuranFavoriteSurah(),
-    '/juz_detail_page': (context, args) => QuranJuzDetailPage(
+    '/juz_detail_page': (context, args) => const QuranSurahPage(
           surahs: [],
         ),
-    '/lesson_detail_page': (context, args) => QuranLessonDetailPage(),
+    '/lesson_audio_page': (context, args) => QuranLessonAudioPage(),
     '/hadith': (context, args) => Hadith(),
+    '/favorite_surah': (context, args) => QuranFavoriteSurah(),
+
     '/fauz_pdf': (context, args) => AlFauzPDF(),
-    '/quran_course_page': (context, args) =>
-        QuranCoursePage(course: args as QuranCourse),
-    '/ahsanul_bayan': (context, args) =>
-        AhsanulBayan(course: args as QuranCourse),
-    '/al_furqan': (context, args) => AlFurqan(),
-    '/ilmul_taqeen': (context, args) => IlmulTaqeen(),
-    '/seerah_course': (context, args) => SeerahCourse(),
+    '/quran_course_page': (context, args) => QuranCoursePage(
+          course: args as QuranCourse,
+          title: '',
+        ),
+    '/supplementary_course': (context, args) => SupplementaryCourse(
+          course: args as QuranCourse,
+          title: args as String,
+        ),
+    // '/ilmul_taqeen': (context, args) => IlmulTaqeen(),
     '/tazkeer': (context, args) => Tazkeer(),
-    '/lecture_tab': (context, args) => LectureTab(),
+    '/surah_detail_page': (context, args) => const QuranLessonPage(
+          lessons: [],
+        ),
     '/seerah': (context, args) => Seerah(),
     '/quran_test_page': (context, args) => QuranTestsPage(
           title: args as String,
@@ -107,8 +101,6 @@ class Router {
     '/weekly_gems': (context, args) => WeeklyGems(),
     '/weekly_gems_course': (context, args) => WeeklyGemsCourse(),
     '/assorted_lectures': (context, args) => AssortedLectures(),
-    '/misbah_lectures_tab': (context, args) => MisbahLecturesTab(),
-    '/al_misbah': (context, args) => AlMisbah(),
     '/riza_us_saliheen': (context, args) => RiazUsSaliheen(),
     '/taleem_quran_2013': (context, args) => TaleemQuran2013(),
     // '/taleemul_tajweed_tab': (context, args) => TaleemulTajweedTab(),
@@ -116,14 +108,10 @@ class Router {
     // '/letter_practice': (context, args) => LetterPractice(
     //       course: args,
     //     ),
-    '/lecture_detail': (context, args) => LectureDetail(),
     // '/weekly_hifz': (context, args) => WeeklyHifz(),
     '/dua_sunnah_zikr': (context, args) => WeeklyDuaSunnahZikr(),
     // '/tajweed_rules': (context, args) => TajweedRules(),
     '/quran_tafseer': (context, args) => QuranTafseer(),
-    '/quran_tafseer_tab': (context, args) => QuranTafseerTab(
-          title: args as String,
-        ),
     '/youth_course': (context, args) => YouthCourse(),
     '/wirasat_course': (context, args) => WirasatCourse(),
     '/ramadan_special': (context, args) => RamadanSpecial(),
@@ -135,8 +123,6 @@ class Router {
     '/medan_mehshar_me_meriahani': (context, args) => MedanMehsharMeMeriahani(),
     '/meri_aakhri': (context, args) => MeriAakhri(),
     // '/femul_tajweed_tab': (context, args) => FemulTajweedTab(),
-    '/misbah_surah_selected': (context, args) => MisbahSurahSelected(),
-    '/misbah_fav_surah': (context, args) => MisbahFavSurah(),
     '/new_lectures': (context, args) => NewLectures(),
     '/english_qaida': (context, args) => EnglishQaida(),
     '/juz_30_hifz': (context, args) => Juz30Hifz(),

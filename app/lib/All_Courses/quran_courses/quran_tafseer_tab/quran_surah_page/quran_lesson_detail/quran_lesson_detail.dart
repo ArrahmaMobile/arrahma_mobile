@@ -2,26 +2,36 @@ import 'package:flutter/material.dart';
 
 import 'model/quran_lesson_detail_item.dart';
 
-class QuranLessonDetailPage extends StatefulWidget {
+class QuranLessonAudioPage extends StatefulWidget {
   @override
-  _QuranLessonDetailPageState createState() => _QuranLessonDetailPageState();
+  _QuranLessonAudioPageState createState() => _QuranLessonAudioPageState();
 }
 
-class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
+class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: Colors.white,
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50),
+              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10),
-                child: Column(),
+                margin: const EdgeInsets.only(left: 10),
+                child: IconButton(
+                  iconSize: 25,
+                  icon: const Icon(Icons.arrow_back),
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -29,55 +39,47 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
                   Container(
                     child: ClipRRect(
                       child: Image.asset(
-                        'assets/images/media_player/arrahmah_logo.jpeg',
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.width * 0.2,
-                        fit: BoxFit.cover,
+                        'assets/images/media_player/media_player_icon.PNG',
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: MediaQuery.of(context).size.width * 0.4,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Surah Al-Fatiha  الفاتحۃ',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Column(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Lesson 1: Ayah 1-3',
                         style: TextStyle(
                           fontSize: 15,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ],
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 30,
+              ),
               ..._quranLessonDetail
                   .map((item) => _buildQuranLessonDetail(context, item))
-                  .toList(),
-              SizedBox(height: 120),
-              GestureDetector(
-                child: Text(
-                  'Close',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              )
+                  .toList()
             ],
           ),
         ),
@@ -86,28 +88,28 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
   }
 
   final _quranLessonDetail = [
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Root',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Translation',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Tafseer',
       rootWordPdf: '',
       translationAudio: '',
       tafseerAudio: '',
       refMaterialAudio: '',
     ),
-    QuranLessonDetailItem(
+    const QuranLessonDetailItem(
       title: 'Ref. Material',
       rootWordPdf: '',
       translationAudio: '',
@@ -124,14 +126,14 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 20),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               Text(
                 item.title,
-                style: TextStyle(
-                    color: Colors.white,
+                style: const TextStyle(
+                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
@@ -140,9 +142,9 @@ class _QuranLessonDetailPageState extends State<QuranLessonDetailPage> {
           Row(
             children: <Widget>[
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.volume_up,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 color: Colors.black,
                 onPressed: () {},

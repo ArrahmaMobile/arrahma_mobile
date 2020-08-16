@@ -12,10 +12,15 @@ class _VocabularyWordsState extends State<VocabularyWords> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Word Meaning Of Common Words In Quran',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 16,
+          ),
         ),
       ),
       body: Column(
@@ -40,15 +45,15 @@ class _VocabularyWordsState extends State<VocabularyWords> {
   }
 
   final _vocabularyWord = [
-    VocabularyWordList(
+    const VocabularyWordList(
       title: 'Page 1',
       pagePdf: '',
     ),
-    VocabularyWordList(
+    const VocabularyWordList(
       title: 'Page 2',
       pagePdf: '',
     ),
-    VocabularyWordList(
+    const VocabularyWordList(
       title: 'Page 3',
       pagePdf: '',
     ),
@@ -63,7 +68,7 @@ class _VocabularyWordsState extends State<VocabularyWords> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -78,9 +83,10 @@ class _VocabularyWordsState extends State<VocabularyWords> {
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
                   width: 20,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

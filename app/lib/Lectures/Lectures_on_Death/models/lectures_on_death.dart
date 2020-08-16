@@ -1,6 +1,6 @@
 class LectureOnDeaths {
-  const LectureOnDeaths({this.title, this.imageUrl, this.pageRoute});
+  const LectureOnDeaths({this.title, this.image, this.imageUrl});
   final String title;
+  final String image;
   final String imageUrl;
-  final String pageRoute;
 }

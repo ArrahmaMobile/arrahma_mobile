@@ -8,10 +8,11 @@ class ArabicGrammer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Arabic Grammer',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -19,7 +20,7 @@ class ArabicGrammer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -29,17 +30,17 @@ class ArabicGrammer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Sheets',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
-                    Text(
+                    const Text(
                       'Audio',
                       style: TextStyle(
                           color: Colors.black,
@@ -60,17 +61,17 @@ class ArabicGrammer extends StatelessWidget {
   }
 
   final _arabicGrammer = [
-    GrammerItem(
+    const GrammerItem(
       title: 'Arabic Grammar Terminologies and Signs of Ism',
       sheetsPdf: '',
       audio: '',
     ),
-    GrammerItem(
+    const GrammerItem(
       title: 'Types of Ism Marfaa Part 1',
       sheetsPdf: '',
       audio: '',
     ),
-    GrammerItem(
+    const GrammerItem(
       title: 'Types of Ism Marfaa Part 2 (incomplete)',
       sheetsPdf: '',
       audio: '',
@@ -86,7 +87,7 @@ class ArabicGrammer extends StatelessWidget {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -101,19 +102,20 @@ class ArabicGrammer extends StatelessWidget {
                   child: Image.asset(
                     'assets/images/multi_page_icons/arrow_down.png',
                     width: 20,
+                    color: Colors.black,
                   )),
-              SizedBox(width: 60),
+              const SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, item.audio);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.volume_up,
                   color: Colors.black,
                   size: 25,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

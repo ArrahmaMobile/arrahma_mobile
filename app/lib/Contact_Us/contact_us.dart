@@ -8,14 +8,14 @@ class ContactUs extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Contact Us',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               Image.asset(
@@ -31,38 +31,38 @@ class ContactUs extends StatelessWidget {
                 text: TextSpan(
                   style: theme.textTheme.bodyText2,
                   children: <TextSpan>[
-                    TextSpan(text: 'Help Desk #'),
-                    TextSpan(
+                    const TextSpan(text: 'Help Desk #'),
+                    const TextSpan(
                       text: '1-(732)-443-0519',
-                      style: new TextStyle(
+                      style: TextStyle(
                         color: Color(0xFF124570),
                       ),
                     ),
-                    TextSpan(text: ' For any information or query'),
+                    const TextSpan(text: ' For any information or query'),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Image.asset(
                 'assets/images/contact_us/whatsapp.png',
                 height: 90.0,
                 width: 100.0,
               ),
-              Text(
+              const Text(
                 'For information about our courses and general Inquiries, contact us on WhatsApp 1-(732)-305-0744',
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Image.asset(
                 'assets/images/contact_us/arrahma_email.png',
                 height: 90.0,
                 width: 100.0,
               ),
-              Text(
+              const Text(
                 'For general Inquiries: arrahmaclass@gmail.com',
-                style: new TextStyle(color: Color(0xFF124570)),
+                style: TextStyle(color: Color(0xFF124570)),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Image.asset(
                 'assets/images/contact_us/ustaza_email.png',
                 height: 90.0,
@@ -73,20 +73,20 @@ class ContactUs extends StatelessWidget {
                 text: TextSpan(
                   style: theme.textTheme.bodyText2,
                   children: <TextSpan>[
-                    TextSpan(
+                    const TextSpan(
                         text:
                             'For any complaints, suggestions or questions directly to Ustaza, Please email at '),
-                    TextSpan(
+                    const TextSpan(
                       text: 'ustazanajihahashmi@gmail.com',
-                      style: new TextStyle(
+                      style: TextStyle(
                         color: Color(0xFF124570),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 'Your emails will be confidential and will be received by Ustaza only.',
                 textAlign: TextAlign.center,
               ),

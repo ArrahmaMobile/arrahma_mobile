@@ -12,10 +12,11 @@ class _WorkSheetState extends State<WorkSheet> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Worksheets',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -38,15 +39,15 @@ class _WorkSheetState extends State<WorkSheet> {
   }
 
   final _worksheet = [
-    WorkSheetItem(
+    const WorkSheetItem(
       title: 'Worksheet 1',
       worksheetPdf: '',
     ),
-    WorkSheetItem(
+    const WorkSheetItem(
       title: 'Worksheet 1',
       worksheetPdf: '',
     ),
-    WorkSheetItem(
+    const WorkSheetItem(
       title: 'Worksheet 1',
       worksheetPdf: '',
     ),
@@ -61,7 +62,7 @@ class _WorkSheetState extends State<WorkSheet> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -76,9 +77,10 @@ class _WorkSheetState extends State<WorkSheet> {
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
                   width: 20,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

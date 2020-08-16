@@ -12,18 +12,19 @@ class _LecturesOnNamazState extends State<LecturesOnNamaz> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Lectures on Namaz',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
@@ -38,13 +39,16 @@ class _LecturesOnNamazState extends State<LecturesOnNamaz> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.volume_up,
                               color: Colors.black,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/media_player_screen');
+                            },
                           )
                         ],
                       ),

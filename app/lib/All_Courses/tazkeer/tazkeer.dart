@@ -7,25 +7,26 @@ class TazkeerState extends StatelessWidget {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: const Color(0xff124570),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Tazkeed تذکیر',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: 10,
                     itemBuilder: (_, index) => ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.branding_watermark,
                         color: Colors.black,
                       ),
@@ -33,7 +34,7 @@ class TazkeerState extends StatelessWidget {
                         'Tazkeer 103',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(
+                      subtitle: const Text(
                           'ہم سب کے لئے لمحہ فکریہ    Hum sab kai liye Lamha-e-Fikriya'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -47,8 +48,8 @@ class TazkeerState extends StatelessWidget {
                                 'assets/images/multi_page_icons/play_icon.png',
                                 width: 30,
                               )),
-                          SizedBox(width: 10),
-                          Text(
+                          const SizedBox(width: 10),
+                          const Text(
                             '12:14',
                             style: TextStyle(
                                 color: Colors.black,

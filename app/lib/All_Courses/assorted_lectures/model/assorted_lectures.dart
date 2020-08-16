@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture.dart';
+import 'package:arrahma_mobile_app/all_courses/assorted_lectures/model/assorted_lecture.dart';
 
 class AssortedLectureCategoryItem {
   const AssortedLectureCategoryItem({this.title, this.lectures});

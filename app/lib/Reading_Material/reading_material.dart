@@ -7,15 +7,16 @@ class ReadingMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Reading Material',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             _studentCornerList(context),
@@ -32,7 +33,7 @@ class ReadingMaterial extends StatelessWidget {
       mainAxisSpacing: 8,
       crossAxisCount: 2,
       shrinkWrap: true,
-      childAspectRatio: 1.3,
+      childAspectRatio: 1.5,
       children: _readingMaterialItem
           .map(
             (item) => _buildReadingMaterial(context, item),
@@ -42,27 +43,27 @@ class ReadingMaterial extends StatelessWidget {
   }
 
   final _readingMaterialItem = [
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Dua',
       pageRoute: '/dua',
     ),
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Juz Translation',
       pageRoute: '/juz_Translation',
     ),
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Quran Dictionary',
       pageRoute: '/quran_dictionary',
     ),
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Assorted Topic',
       pageRoute: '/assorted_topic',
     ),
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Imp Vocabulary words',
       pageRoute: '/imp_vocabulary_words',
     ),
-    ReadingMaterialItem(
+    const ReadingMaterialItem(
       title: 'Worksheet by Ustazah',
       pageRoute: '/worksheet',
     ),
@@ -73,15 +74,22 @@ class ReadingMaterial extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, item.pageRoute);
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            item.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
+      child: Container(
+        color: const Color(0xff124570),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              item.title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -9,52 +9,50 @@ class _ShareState extends State<Share> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: Colors.white,
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50),
+              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10, top: 10),
+                margin: const EdgeInsets.only(left: 10, top: 10),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Text(
-                              'Share',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white),
+                    Row(
+                      children: <Widget>[
+                        Positioned(
+                          child: IconButton(
+                            iconSize: 25,
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.black,
                             ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
-                          Positioned(
-                            child: IconButton(
-                              iconSize: 25,
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/home');
-                              },
-                            ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 140),
+                          child: Text(
+                            'Share',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -64,22 +62,21 @@ class _ShareState extends State<Share> {
                           'assets/images/media_player/media_player_icon.PNG',
                           width: MediaQuery.of(context).size.width * 0.2,
                           height: MediaQuery.of(context).size.width * 0.2,
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    SizedBox(height: 50),
-                    Text(
+                    const SizedBox(height: 50),
+                    const Text(
                       'Tafseer - "Lesson Name"',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
-                          color: Colors.white),
+                          color: Colors.black),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 25),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,25 +84,25 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/message.png',
                             height: 25,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Messages',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -113,7 +110,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,25 +118,25 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/facebook.png',
                             height: 25,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Facebook',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -147,7 +144,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,25 +152,25 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/twitter.png',
                             height: 25,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Twitter',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -181,7 +178,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,25 +186,25 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/whatsapp.png',
                             height: 25,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Whatsapp',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -215,7 +212,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,25 +220,25 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/instagram.png',
                             height: 25,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Instagram',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -249,7 +246,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,26 +254,26 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/copy_link.png',
                             height: 25,
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'Copy Link',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),
@@ -284,7 +281,7 @@ class _ShareState extends State<Share> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 30),
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -292,26 +289,26 @@ class _ShareState extends State<Share> {
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
                             'assets/images/social_media_share/three_dots.png',
                             height: 25,
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
+                        const SizedBox(width: 15),
+                        const Text(
                           'More',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.keyboard_arrow_right,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 20,
                       ),
                     ),

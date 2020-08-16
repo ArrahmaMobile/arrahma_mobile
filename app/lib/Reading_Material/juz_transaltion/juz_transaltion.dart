@@ -12,10 +12,11 @@ class _JuzTranslationState extends State<JuzTranslation> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        title: const Text(
           'Juz Translation',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
@@ -23,7 +24,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -33,17 +34,17 @@ class _JuzTranslationState extends State<JuzTranslation> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Urdu',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 30,
                     ),
-                    Text(
+                    const Text(
                       'English',
                       style: TextStyle(
                           color: Colors.black,
@@ -64,17 +65,17 @@ class _JuzTranslationState extends State<JuzTranslation> {
   }
 
   final _juzTranslation = [
-    JuzTranslationItem(
+    const JuzTranslationItem(
       title: 'Juz 1 الم',
       urduPdf: '',
       englishPdf: '',
     ),
-    JuzTranslationItem(
+    const JuzTranslationItem(
       title: 'Juz 2 سیقول',
       urduPdf: '',
       englishPdf: '',
     ),
-    JuzTranslationItem(
+    const JuzTranslationItem(
       title: 'Juz 3  تلک الرسل',
       urduPdf: '',
       englishPdf: '',
@@ -90,7 +91,7 @@ class _JuzTranslationState extends State<JuzTranslation> {
           Flexible(
             child: Text(
               item.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
@@ -104,20 +105,22 @@ class _JuzTranslationState extends State<JuzTranslation> {
                 },
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
-                  width: 20,
+                  width: 15,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 80),
+              const SizedBox(width: 80),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, item.englishPdf);
                 },
                 child: Image.asset(
                   'assets/images/multi_page_icons/arrow_down.png',
-                  width: 20,
+                  width: 15,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(width: 30, height: 40),
+              const SizedBox(width: 30, height: 40),
             ],
           ),
         ],

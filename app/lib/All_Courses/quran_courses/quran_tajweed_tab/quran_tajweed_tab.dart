@@ -4,7 +4,7 @@ import 'package:arrahma_models/models.dart';
 import 'package:flutter/material.dart';
 
 class QuranTajweedTab extends StatelessWidget {
-  QuranTajweedTab({
+  const QuranTajweedTab({
     Key key,
     @required this.title,
     @required this.tajweed,
@@ -17,10 +17,12 @@ class QuranTajweedTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         title: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Padding(
@@ -53,10 +55,10 @@ class QuranTajweedTab extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Icon(
               Icons.keyboard_arrow_right,
               color: Colors.black,
@@ -73,7 +75,7 @@ class QuranTajweedTab extends StatelessWidget {
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (_) => QuranJuzDetailPage(
+              builder: (_) => QuranSurahPage(
                     surahs: item.surahs,
                   )));
     });
