@@ -11,6 +11,9 @@
             "runOptions": {
                 "runOn": "folderOpen"
             },
+            "dependsOn": [
+                "Run JSON Generator"
+            ],
             "isBackground": true
         },
     ]
