@@ -2,9 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Get Packages",
+            "label": "Start Api Server",
             "type": "shell",
-            "command": "pub get",
+            "command": "dart bin/main.dart",
             "problemMatcher": [
                 "$dart-pub-build_runner"
             ],

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:arrahma_mobile_app/services/models/api_response.dart';
-import 'package:arrahma_mobile_app/services/models/server_status_check.dart';
+import 'package:arrahma_models/src/status/server_status_check.dart';
 import 'package:arrahma_mobile_app/utils/app_utils.dart';
 import 'package:arrahma_mobile_app/utils/enum_utils.dart';
 import 'package:connectivity/connectivity.dart';
@@ -31,8 +31,8 @@ class ConnectivityService with StoppableService {
   var _prevDeviceResult = DeviceConnectionSource.None;
   var _curDeviceResult = DeviceConnectionSource.None;
 
-  ServerStatusCheck _prevServerResult;
-  ServerStatusCheck _curServerResult;
+  ServerStatus _prevServerResult;
+  ServerStatus _curServerResult;
 
   var _prevResult = const Connection();
   var _curResult = const Connection();
@@ -41,8 +41,8 @@ class ConnectivityService with StoppableService {
   Stream<DeviceConnectionSource> get deviceConnectivityStream =>
       _deviceConnectivityStreamController.stream;
 
-  StreamController<ServerStatusCheck> _serverConnectivityStreamController;
-  Stream<ServerStatusCheck> get servereConnectivityStream =>
+  StreamController<ServerStatus> _serverConnectivityStreamController;
+  Stream<ServerStatus> get servereConnectivityStream =>
       _serverConnectivityStreamController.stream;
 
   StreamController<Connection> _connectionStreamController;
@@ -54,24 +54,23 @@ class ConnectivityService with StoppableService {
   DeviceConnectionSource get previousDeviceResult => _prevDeviceResult;
   DeviceConnectionSource get latestDeviceResult => _curDeviceResult;
 
-  ServerStatusCheck get previousServerResult => _prevServerResult;
-  ServerStatusCheck get latestServerResult => _curServerResult;
+  ServerStatus get previousServerResult => _prevServerResult;
+  ServerStatus get latestServerResult => _curServerResult;
 
   bool get isConnected => _curResult?.isConnected;
 
-  Future<Connection> initResults(
+  Future<Connection> initConnectionStatus(
       EnvironmentConfig envConfig, ApiService apiService) async {
-    ServerStatusCheck serverStatus = latestServerResult;
+    ServerStatus serverStatus = latestServerResult;
     if (serverStatus == null) {
-      ApiResponse<ServerStatusCheck, dynamic> statusResponse;
+      ApiResponse<ServerStatus, dynamic> statusResponse;
       try {
         statusResponse = await apiService.getStatus(internal: true);
       } catch (err) {
-        if (err is ApiResponse<ServerStatusCheck, dynamic>)
-          statusResponse = err;
+        if (err is ApiResponse<ServerStatus, dynamic>) statusResponse = err;
       }
       final serverResult = statusResponse?.data ??
-          const ServerStatusCheck(status: ServerConnectionStatus.Unavailable);
+          const ServerStatus(status: ServerConnectionStatus.Unavailable);
       serverStatus = serverResult;
     }
     DeviceConnectionSource deviceStatus = latestDeviceResult;
@@ -120,7 +119,7 @@ class ConnectivityService with StoppableService {
           StreamController<DeviceConnectionSource>.broadcast();
     if (_serverConnectivityStreamController?.isClosed ?? true)
       _serverConnectivityStreamController =
-          StreamController<ServerStatusCheck>.broadcast();
+          StreamController<ServerStatus>.broadcast();
     // TODO(shah): Workaround for connectivity stream issue on iOS https://github.com/flutter/flutter/issues/20980
     if (AppUtils.isIOS) {
       _connectivityTimer ??=
@@ -153,8 +152,8 @@ class ConnectivityService with StoppableService {
     _connectivityTimer = null;
   }
 
-  ConnectionInfo<ServerStatusCheck, EnvironmentConfig> _getServerConnectionInfo(
-      EnvironmentConfig env, ServerStatusCheck status) {
+  ConnectionInfo<ServerStatus, EnvironmentConfig> _getServerConnectionInfo(
+      EnvironmentConfig env, ServerStatus status) {
     return ConnectionInfo(env, status, DateTime.now());
   }
 
@@ -173,13 +172,13 @@ class ConnectivityService with StoppableService {
     _updateResult(newResult);
   }
 
-  void updateEnvironment(EnvironmentConfig env, ServerStatusCheck status) {
+  void updateEnvironment(EnvironmentConfig env, ServerStatus status) {
     final newResult = _curResult.copyWith(
         serverConnectionInfo: _getServerConnectionInfo(env, status));
     _updateResult(newResult);
   }
 
-  void updateServerStatus(ServerStatusCheck status) {
+  void updateServerStatus(ServerStatus status) {
     final envConfig = RS.getFromRoot<EnvironmentConfig>();
     final newResult = _curResult.copyWith(
       serverConnectionInfo: _getServerConnectionInfo(envConfig, status),

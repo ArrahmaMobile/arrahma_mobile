@@ -1,7 +1,26 @@
-import 'package:arrahma_mobile_app/utils/models/key_value_pair.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 @JObj()
+class JsonApiResponse {
+  const JsonApiResponse({
+    this.errorData,
+    this.errorMessage,
+    this.fieldErrors,
+    this.data,
+  });
+
+  final dynamic data;
+  final dynamic errorData;
+  final String errorMessage;
+  final List<FieldKeyValuePair> fieldErrors;
+}
+
+class FieldKeyValuePair {
+  const FieldKeyValuePair({this.key, this.value});
+  final String key;
+  final String value;
+}
+
 class ApiResponse<TOut, TError> {
   const ApiResponse(
       {this.statusCode,
@@ -16,7 +35,7 @@ class ApiResponse<TOut, TError> {
   final TError errorData;
 
   final String errorMessage;
-  final List<KeyValuePair<String, String>> fieldErrors;
+  final List<FieldKeyValuePair> fieldErrors;
 
   final int contentLength;
   final Map<String, String> headers;
@@ -26,7 +45,7 @@ class ApiResponse<TOut, TError> {
       TOut data,
       TError errorData,
       String errorMessage,
-      List<KeyValuePair<String, String>> fieldErrors,
+      List<FieldKeyValuePair> fieldErrors,
       int contentLength,
       Map<String, String> headers}) {
     return ApiResponse<TOut, TError>(

@@ -43,9 +43,9 @@ class Scraper implements IScraper, IScraperRegistrar {
     return document;
   }
 
-  Future<AppMetadata> initiate() async {
+  Future<AppData> initiate() async {
     await navigateTo('');
-    return AppMetadata(
+    return AppData(
       logoUrl: document
           .querySelector('.header img')
           .attributes['src']
@@ -60,7 +60,7 @@ class Scraper implements IScraper, IScraperRegistrar {
                 linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
               ))
           .toList(),
-      broadcastLinks: document.querySelectorAll('.column6 .box4').map((banner) {
+      broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
         final aTag = banner.querySelector('a');
         final link = aTag != null ? aTag.attributes['href'] : null;
         final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
@@ -76,6 +76,15 @@ class Scraper implements IScraper, IScraperRegistrar {
                 .querySelector('img')
                 ?.attributes['src']
                 ?.toAbsolute(currentUrl));
+      }).toList(),
+      socialMediaItems:
+          document.querySelectorAll('.column3footer a').map((socialMediaItem) {
+        final link = socialMediaItem.attributes['href'];
+        final imageUrl = socialMediaItem
+            .querySelector('img')
+            ?.attributes['src']
+            ?.toAbsolute(currentUrl);
+        return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
       }).toList(),
       courses: await CourseScraper().scrape(this),
     );

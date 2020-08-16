@@ -1,5 +1,7 @@
-import 'package:arrahma_web_api/controller/metadata_controller.dart';
+import 'package:arrahma_models/models.dart';
+import 'package:arrahma_web_api/controller/data_controller.dart';
 import 'package:scraper_service/scraper_service.dart';
+import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 import 'api.dart';
 
@@ -31,9 +33,13 @@ class ArrahmaChannel extends ApplicationChannel {
   /// This method is invoked after [prepare].
   @override
   Controller get entryPoint {
-    final router = Router();
+    final router = Router(basePath: '/api');
 
-    router.route('/metadata/').link(() => MetadataController(_scraperService));
+    router.route('/status').linkFunction((request) => Response.ok(
+        JsonMapper.serializeToMap(
+            ServerStatus(status: ServerConnectionStatus.Available))));
+    router.route('/data').link(() => DataController(_scraperService));
+
     return router;
   }
 }

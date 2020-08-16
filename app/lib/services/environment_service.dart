@@ -5,7 +5,7 @@ class EnvironmentService {
     return [
       EnvironmentConfig(
         environmentType: EnvironmentType.DEV,
-        baseUrl: 'https://localhost:8080/api',
+        baseUrl: 'http://192.168.86.199:8888/api',
       ),
     ];
   }

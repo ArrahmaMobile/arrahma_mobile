@@ -13,7 +13,7 @@ class ScraperRunner {
   Future<ScrapedData> run({bool shouldStore = false}) async {
     final appMetadata = await Scraper(Client()).initiate();
     final scrapedData = ScrapedData(
-        appMetadata: appMetadata,
+        appData: appMetadata,
         runMetadata: RunMetadata(lastUpdate: DateTime.now()));
     if (shouldStore) store(FILE_PATH, scrapedData);
     return scrapedData;

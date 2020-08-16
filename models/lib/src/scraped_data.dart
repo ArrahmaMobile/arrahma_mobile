@@ -4,7 +4,7 @@ import '../models.dart';
 
 @JObj()
 class ScrapedData {
-  const ScrapedData({this.appMetadata, this.runMetadata});
-  final AppMetadata appMetadata;
+  const ScrapedData({this.appData, this.runMetadata});
+  final AppData appData;
   final RunMetadata runMetadata;
 }

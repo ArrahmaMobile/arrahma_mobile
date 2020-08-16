@@ -17,4 +17,12 @@ export 'src/quran_course_test.dart';
 export 'src/social_media_item.dart';
 export 'src/surah.dart';
 
+export 'src/status/server_status_check.dart';
+
 export 'src/service.dart';
+
+import 'mapper.g.dart' as mapper;
+
+void init() {
+  mapper.init();
+}

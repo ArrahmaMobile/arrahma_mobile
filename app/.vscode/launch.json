@@ -8,6 +8,16 @@
             "name": "Run Flutter App",
             "request": "launch",
             "type": "dart"
-        }
+        },
+        {
+            "name": "Debug Dart Builder",
+            "program": ".dart_tool/build/entrypoint/build.dart",
+            "args": [
+                "serve",
+                // "--delete-conflicting-outputs"
+            ],
+            "request": "launch",
+            "type": "dart"
+        },
     ]
 }

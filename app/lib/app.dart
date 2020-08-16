@@ -6,17 +6,9 @@ import 'package:inherited_state/inherited_state.dart';
 import 'Home_Page/home_page.dart';
 import 'router/router.dart';
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  @override
-  void initState() {
-    super.initState();
-    registerServices();
-  }
+class App extends StatelessWidget {
+  const App({Key key, this.dependencies}) : super(key: key);
+  final List<Inject> dependencies;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +16,13 @@ class _AppState extends State<App> {
       states: [
         Inject<EnvironmentConfig>(
             () => SL.get<EnvironmentService>().getDefaultEnvironment()),
+        if (dependencies != null) ...dependencies,
       ],
       builder: (_) => MaterialApp(
         initialRoute: '/home',
         onGenerateRoute: Router.generateRoute,
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             color: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),
           ),
@@ -37,9 +30,5 @@ class _AppState extends State<App> {
         home: HomePage(),
       ),
     );
-  }
-
-  void registerServices() {
-    SL.register(() => EnvironmentService());
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io' as io;
 
 import 'package:arrahma_mobile_app/utils/app_utils.dart';
@@ -7,6 +8,7 @@ import 'package:arrahma_mobile_app/utils/models/device_config.dart';
 import 'package:arrahma_mobile_app/utils/screen_utils.dart';
 import 'package:arrahma_mobile_app/utils/url_utils.dart';
 import 'package:arrahma_mobile_app/utils/wrap_list.dart';
+import 'package:arrahma_models/models.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' hide BaseResponse;
@@ -21,17 +23,21 @@ import 'models/connection.dart';
 import 'models/environment_config.dart';
 import 'models/http_status_code.dart';
 import 'models/log_event.dart';
-import 'models/server_status_check.dart';
 
 class ApiService {
-  ApiService(this._environmentConfig, this._connectivityService,
-      {this.deviceSize});
+  ApiService(this._connectivityService, this.deviceConfig,
+      {this.deviceSize,
+      this.environmentConfigCtrl,
+      this.initialEnvironmentConfig});
 
   final ConnectivityService _connectivityService;
-  final ReactiveController<EnvironmentConfig> _environmentConfig;
-  EnvironmentConfig get _environment => _environmentConfig.state;
+  final ReactiveController<EnvironmentConfig> environmentConfigCtrl;
+
+  final EnvironmentConfig initialEnvironmentConfig;
+  EnvironmentConfig get _environment =>
+      environmentConfigCtrl?.state ?? initialEnvironmentConfig;
   String authToken;
-  final _deviceConfig = SL.get<DeviceConfig>();
+  final DeviceConfig deviceConfig;
 
   final Size deviceSize;
 
@@ -149,6 +155,8 @@ class ApiService {
     final normalizedUrl = getUrl(request.relativeUrl, baseUrl);
     final isSameBaseUrl = () => normalizedUrl.startsWith(this.baseUrl);
 
+    request.startTime = DateTime.now();
+
     if (isSameBaseUrl() &&
         !request.isInternal &&
         _connectivityService.latestDeviceResult ==
@@ -166,7 +174,6 @@ class ApiService {
     }
 
     Future<Response> responseFuture;
-    request.startTime = DateTime.now();
     if (useBaseHeaders) headers = getHeaders()..addAll(headers ?? {});
     if (request.authToken != null) {
       headers['Authorization'] = createBearerToken(request.authToken);
@@ -318,9 +325,8 @@ class ApiService {
     TimeoutException: HttpStatus.TimeoutError,
   };
 
-  Future<ApiResponse<ServerStatusCheck, void>> getStatus(
-      {bool internal = false}) {
-    return getWithResponse('api/status');
+  Future<ApiResponse<ServerStatus, void>> getStatus({bool internal = false}) {
+    return getWithResponse('status', internal: internal);
   }
 
   Future<ApiResponse<TData, TError>> _parseResponse<TData, TError>(
@@ -330,14 +336,37 @@ class ApiService {
     try {
       if (isSuccess(response)) {
         if (response?.body?.isNotEmpty ?? false) {
-          final data = JsonMapper.deserialize<TData>(response.body);
-          retResponse = retResponse.copyWith(data: data);
+          final dynamic decodedBody = json.decode(response.body);
+          if (decodedBody is Map &&
+              decodedBody['data'] != null &&
+              decodedBody['data'] is Map) {
+            final jsonResponse =
+                JsonMapper.deserialize<JsonApiResponse>(decodedBody);
+            final data = JsonMapper.deserialize<TData>(jsonResponse.data);
+            retResponse = retResponse.copyWith(
+              data: data,
+              errorData: jsonResponse.errorData as TError,
+              errorMessage: jsonResponse.errorMessage,
+              fieldErrors: jsonResponse.fieldErrors,
+            );
+          } else {
+            final data = JsonMapper.deserialize<TData>(decodedBody);
+            retResponse = retResponse.copyWith(
+              data: data,
+            );
+          }
         }
         return Future.value(retResponse);
       } else {
         if (response?.body?.isNotEmpty ?? false) {
-          final data = JsonMapper.deserialize<TError>(response.body);
-          retResponse = retResponse.copyWith(errorData: data);
+          final jsonResponse =
+              JsonMapper.deserialize<JsonApiResponse>(response.body);
+          final data = JsonMapper.deserialize<TError>(jsonResponse.errorData);
+          retResponse = retResponse.copyWith(
+            errorData: data,
+            errorMessage: jsonResponse.errorMessage,
+            fieldErrors: jsonResponse.fieldErrors,
+          );
         }
         return Future.error(retResponse);
       }
@@ -385,9 +414,9 @@ class ApiService {
   Map<String, String> getHeaders() {
     return {
       'Authorization': 'Bearer ',
-      'User-Agent': getUserAgent(),
-      'Device-Id': _deviceConfig.deviceId,
-      'Device-Type': getDeviceType(),
+      'User-Agent': AppUtils.isWeb ? null : userAgent,
+      'Device-Id': deviceConfig.deviceId,
+      'Device-Type': getDeviceType(getDeviceForm()),
       'Content-Type': 'application/json'
     };
   }
@@ -401,12 +430,12 @@ class ApiService {
 
   String get userAgent => getUserAgent(getDeviceForm());
 
-  static String getDeviceType([String deviceForm]) {
+  static String getDeviceType(String deviceForm) {
     return '${AppUtils.platformName}:${deviceForm ?? ScreenUtils.getDeviceForm()}';
   }
 
-  static String getUserAgent([String deviceForm]) {
-    return 'BBIDevice:${deviceForm ?? ScreenUtils.getDeviceForm()}:${AppUtils.appName}'
+  static String getUserAgent(String deviceForm) {
+    return '${AppUtils.packageName}:${deviceForm ?? ScreenUtils.getDeviceForm()}:${AppUtils.appName}'
         ':${AppUtils.appVersion}:${AppUtils.platformName}:${AppUtils.deviceInfo.version}';
   }
 

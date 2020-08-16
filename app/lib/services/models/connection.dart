@@ -1,11 +1,7 @@
-import 'environment_config.dart';
-import 'server_status_check.dart';
+import 'package:arrahma_models/models.dart';
 
-enum ServerConnectionStatus {
-  Available,
-  Maintenance,
-  Unavailable,
-}
+import 'environment_config.dart';
+
 enum SessionStatus { Connected, Expiring, Expired }
 enum DeviceConnectionSource { WiFi, Cellular, None }
 
@@ -18,14 +14,13 @@ class Connection {
   });
   final DeviceConnectionSource deviceConnectionSource;
   final ConnectionInfo<bool, void> deviceConnectionInfo;
-  final ConnectionInfo<ServerStatusCheck, EnvironmentConfig>
-      serverConnectionInfo;
+  final ConnectionInfo<ServerStatus, EnvironmentConfig> serverConnectionInfo;
   // final ConnectionInfo<SessionStatus, UserSession> sessionConnectionInfo;
 
   Connection copyWith({
     DeviceConnectionSource deviceConnectionSource,
     ConnectionInfo<bool, void> deviceConnectionInfo,
-    ConnectionInfo<ServerStatusCheck, EnvironmentConfig> serverConnectionInfo,
+    ConnectionInfo<ServerStatus, EnvironmentConfig> serverConnectionInfo,
     // ConnectionInfo<SessionStatus, UserSession> sessionConnectionInfo,
   }) {
     return Connection(

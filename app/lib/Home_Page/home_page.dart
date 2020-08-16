@@ -3,6 +3,7 @@ import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_models/models.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:inherited_state/inherited_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,27 +16,30 @@ bool _isPlaying = false;
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final appData = context.on<AppData>();
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        title: Image.asset(
-            'assets/images/home_page_images/aarhman_mainImage.png',
-            fit: BoxFit.cover),
+        title: appData?.logoUrl != null
+            ? Image.network(appData.logoUrl)
+            : Image.asset(
+                'assets/images/home_page_images/aarhman_mainImage.png',
+                fit: BoxFit.cover),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            _buildBanners(),
+            _buildBanners(appData.banners),
             const SizedBox(height: 15),
-            _broadcast(),
-            Spacer(),
-            _socialMedia(context),
+            _broadcast(appData.broadcastItems),
+            const Spacer(),
+            _socialMedia(context, appData.socialMediaItems),
             const SizedBox(height: 15),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.black, width: 2),
                 ),
@@ -45,7 +49,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Talemul Quran - Lesson name',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
@@ -77,8 +81,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onPlayAudio() async {
-    AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  Future onPlayAudio() async {
+    final assetsAudioPlayer = AssetsAudioPlayer();
     assetsAudioPlayer.open(
       Audio(
         'assets/audio/introduction.mp3',
@@ -86,55 +90,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  final _banners = [
-    HeadingBanner(
-      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-      linkUrl: 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3',
-    ),
-    HeadingBanner(
-      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-      linkUrl: 'http://www.arrahma.org/tazkeer_n/tazkeer.php',
-    ),
-    HeadingBanner(
-      imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-      linkUrl:
-          'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3',
-    ),
-  ];
-
-  Widget _buildBanners() {
+  Widget _buildBanners(List<HeadingBanner> banners) {
     return CarouselIndicator(
-      items: _banners
+      items: banners
           .map((banner) => _buildImageLink(banner.linkUrl, banner.imageUrl))
           .toList(),
     );
   }
 
-  final _broadcasts = [
-    BroadcastItem(
-      imageUrl: 'assets/images/home_page_images/facebook.png',
-      linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute/',
-    ),
-    BroadcastItem(
-      imageUrl: 'assets/images/home_page_images/mixlr_logo.png',
-      linkUrl: 'https://mixlr.com/arrahma-live/',
-    ),
-    BroadcastItem(
-      imageUrl: 'assets/images/home_page_images/youtube.png',
-      linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
-    ),
-    BroadcastItem(
-      imageUrl: 'assets/images/home_page_images/contact_information.png',
-      linkUrl: 'tel:+1 712 432 1001#491760789',
-    ),
-  ];
-
-  Widget _broadcast() {
+  Widget _broadcast(List<BroadcastItem> broadcasts) {
     return GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
         childAspectRatio: 2.3,
-        children: _broadcasts
+        children: broadcasts
             .map((broadcast) =>
                 _buildImageLink(broadcast.linkUrl, broadcast.imageUrl))
             .toList());
@@ -143,11 +112,11 @@ class _HomePageState extends State<HomePage> {
   Widget _buildImageLink(String linkUrl, String imageUrl) {
     return GestureDetector(
       onTap: () => _launchLink(linkUrl),
-      child: Image.asset(imageUrl),
+      child: Image.network(imageUrl),
     );
   }
 
-  void _launchLink(String url) async {
+  Future _launchLink(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -155,36 +124,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  final _socialMediaList = [
-    SocialMediaItem(
-      imageUrl: 'assets/images/social_media/youtube.png',
-      linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
-    ),
-    SocialMediaItem(
-      imageUrl: 'assets/images/social_media/facebook.png',
-      linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute',
-    ),
-    SocialMediaItem(
-      imageUrl: 'assets/images/social_media/whatsapp.png',
-      linkUrl: 'http://arrahma.org/images/whatsapp.png',
-    ),
-    SocialMediaItem(
-      imageUrl: 'assets/images/social_media/twitter.png',
-      linkUrl: 'https://twitter.com/ArrahmahIslamic',
-    ),
-    SocialMediaItem(
-      imageUrl: 'assets/images/social_media/instagram.png',
-      linkUrl: 'https://www.instagram.com/arrahmah_islamic_institute',
-    ),
-  ];
-
-  Widget _socialMedia(BuildContext context) {
+  Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {
     return GridView.count(
       crossAxisCount: 6,
       shrinkWrap: true,
       childAspectRatio: 1.5,
       children: <Widget>[
-        ..._socialMediaList
+        ...socialItems
             .map((socialMedia) =>
                 _buildImageLink(socialMedia.linkUrl, socialMedia.imageUrl))
             .toList(),

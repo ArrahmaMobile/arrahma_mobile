@@ -1,18 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:aqueduct/aqueduct.dart';
 import 'package:scraper_service/scraper_service.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
-class MetadataController extends ResourceController {
-  MetadataController(this._scraperService);
+class DataController extends ResourceController {
+  DataController(this._scraperService);
 
   final ScraperService _scraperService;
 
   @Operation.get()
-  Future<Response> getMetadata() async {
-    final metadata = _scraperService.metadata;
-    return Response.ok(JsonMapper.serializeToMap(metadata));
+  Future<Response> getData() async {
+    final data = _scraperService.data;
+    final serializedData = JsonMapper.serializeToMap(data);
+    print(json.encode(serializedData));
+    return Response.ok(serializedData);
   }
 
   // @Operation.get('id')
