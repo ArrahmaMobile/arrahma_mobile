@@ -1,4 +1,4 @@
-import '../models.dart';
+import 'models/models.dart';
 
 class AppData {
   const AppData({
@@ -11,6 +11,6 @@ class AppData {
   final String logoUrl;
   final List<HeadingBanner> banners;
   final List<BroadcastItem> broadcastItems;
-  final List<Course> courses;
+  final List<QuranCourse> courses;
   final List<SocialMediaItem> socialMediaItems;
 }

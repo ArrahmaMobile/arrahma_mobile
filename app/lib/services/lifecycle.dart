@@ -1,7 +1,6 @@
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-
-import 'logger.dart';
 
 class LifecycleEventHandler extends WidgetsBindingObserver {
   factory LifecycleEventHandler(

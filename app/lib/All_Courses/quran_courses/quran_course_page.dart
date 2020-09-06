@@ -1,10 +1,9 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_details_tab/quran_details_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_registration_tab/quran_registration_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tajweed_tab/quran_tajweed_tab.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_test_page/quran_test_page.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
 class QuranCoursePage extends StatefulWidget {
@@ -35,9 +34,8 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       QuranSurahPage(
         surahs: widget.course.tafseer.surahs,
       ),
-      QuranTajweedTab(
-        title: widget.course.title,
-        tajweed: widget.course.tajweed,
+      QuranSurahPage(
+        surahs: widget.course.tajweed.surahs,
       ),
       QuranTestsPage(
         title: widget.course.title,
@@ -57,7 +55,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
         currentIndex: _tabSelected,
         type: BottomNavigationBarType.fixed,
         items: [
-          if (widget.course.courseDetailPdfUrl != null)
+          if (widget.course.courseDetails != null)
             const BottomNavigationBarItem(
               icon: Icon(
                 Icons.library_books,

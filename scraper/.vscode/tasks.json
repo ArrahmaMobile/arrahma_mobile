@@ -8,21 +8,9 @@
             "problemMatcher": [
                 "$dart-pub-build_runner"
             ],
-            "isBackground": true
-        },
-        {
-            "label": "Start Api Server",
-            "type": "shell",
-            "command": "dart bin/main.dart",
-            "problemMatcher": [
-                "$dart-pub-build_runner"
-            ],
             "runOptions": {
                 "runOn": "folderOpen"
             },
-            "dependsOn": [
-                "Get Packages"
-            ],
             "isBackground": true
         },
     ]

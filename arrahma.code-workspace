@@ -13,7 +13,7 @@
 			"path": "scraper_service"
 		},
 		{
-			"path": "models"
+			"path": "shared"
 		}
 	],
 	"settings": {}

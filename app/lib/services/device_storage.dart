@@ -1,9 +1,8 @@
 import 'package:arrahma_mobile_app/utils/models/device_config.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import 'logger.dart';
 import 'models/app_config.dart';
 import 'storage/storage_provider.dart';
 
@@ -55,42 +54,32 @@ class DeviceStorageService {
       ),
     ];
 
-    const courses = <Course>[
+    const courses = [
       QuranCourse(
         title: 'Adv Taleemul Quran',
         imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        courseDetailPdfUrl: '',
-        registration: CourseRegistration(
+        courseDetails: QuranCourseDetails(),
+        registration: QuranCourseRegistration(
           courseRegistration: '',
         ),
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Baqarah',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Openisssng',
-                  lessons: [
-                    Lesson(
-                      title: 'Lessssson',
-                      lessonNum: '1',
-                      ayahNum: '1-3',
-                      uploadDate: '08/17/2020',
-                      rootWordPdfUrls: ['hee'],
-                      translationAudioUrls: ['hee'],
-                      tafseerAudioUrls: ['hee'],
-                      refMaterials: ['hee'],
-                    )
-                  ],
-                ),
+        tajweed: QuranCourseContent(
+          surahs: [
+            Surah(
+              name: 'Surah Al-Baqarah',
+              arabicName: 'الفاتحۃ',
+              description: 'The Openisssng',
+              lessons: [
+                Lesson(
+                  title: 'Lessssson',
+                  lessonNum: '1',
+                  ayahNum: '1-3',
+                  uploadDate: '08/17/2020',
+                )
               ],
             ),
           ],
         ),
-        tafseer: QuranCourseTafseer(
+        tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
           surahs: [
             Surah(
@@ -102,10 +91,6 @@ class DeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
-                  rootWordPdfUrls: [''],
-                  translationAudioUrls: [''],
-                  tafseerAudioUrls: [''],
-                  refMaterials: [''],
                 )
               ],
             )
@@ -120,38 +105,28 @@ class DeviceStorageService {
       QuranCourse(
         title: 'Taleemul Quran',
         imageUrl: 'assets/images/courses/taleemul_quran.png',
-        courseDetailPdfUrl: '',
-        registration: CourseRegistration(
+        courseDetails: QuranCourseDetails(),
+        registration: QuranCourseRegistration(
           courseRegistration: '',
         ),
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Baqarah',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Openisssng',
-                  lessons: [
-                    Lesson(
-                      title: 'Lessssson',
-                      lessonNum: '1',
-                      ayahNum: '1-3',
-                      uploadDate: '08/17/2020',
-                      rootWordPdfUrls: ['hee'],
-                      translationAudioUrls: ['hee'],
-                      tafseerAudioUrls: ['hee'],
-                      refMaterials: ['hee'],
-                    )
-                  ],
-                ),
+        tajweed: QuranCourseContent(
+          surahs: [
+            Surah(
+              name: 'Surah Al-Baqarah',
+              arabicName: 'الفاتحۃ',
+              description: 'The Openisssng',
+              lessons: [
+                Lesson(
+                  title: 'Lessssson',
+                  lessonNum: '1',
+                  ayahNum: '1-3',
+                  uploadDate: '08/17/2020',
+                )
               ],
             ),
           ],
         ),
-        tafseer: QuranCourseTafseer(
+        tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
           surahs: [
             Surah(
@@ -163,10 +138,6 @@ class DeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
-                  rootWordPdfUrls: [''],
-                  translationAudioUrls: [''],
-                  tafseerAudioUrls: [''],
-                  refMaterials: [''],
                 )
               ],
             )
@@ -181,38 +152,28 @@ class DeviceStorageService {
       QuranCourse(
         title: 'Fehmul Quran',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetailPdfUrl: '',
-        registration: CourseRegistration(
+        courseDetails: QuranCourseDetails(),
+        registration: QuranCourseRegistration(
           courseRegistration: '',
         ),
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Baqarah',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Openisssng',
-                  lessons: [
-                    Lesson(
-                      title: 'Lessssson',
-                      lessonNum: '1',
-                      ayahNum: '1-3',
-                      uploadDate: '08/17/2020',
-                      rootWordPdfUrls: ['hee'],
-                      translationAudioUrls: ['hee'],
-                      tafseerAudioUrls: ['hee'],
-                      refMaterials: ['hee'],
-                    )
-                  ],
-                ),
+        tajweed: QuranCourseContent(
+          surahs: [
+            Surah(
+              name: 'Surah Al-Baqarah',
+              arabicName: 'الفاتحۃ',
+              description: 'The Openisssng',
+              lessons: [
+                Lesson(
+                  title: 'Lessssson',
+                  lessonNum: '1',
+                  ayahNum: '1-3',
+                  uploadDate: '08/17/2020',
+                )
               ],
             ),
           ],
         ),
-        tafseer: QuranCourseTafseer(
+        tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
           surahs: [
             Surah(
@@ -224,10 +185,6 @@ class DeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
-                  rootWordPdfUrls: [''],
-                  translationAudioUrls: [''],
-                  tafseerAudioUrls: [''],
-                  refMaterials: [''],
                 )
               ],
             )
@@ -242,38 +199,28 @@ class DeviceStorageService {
       QuranCourse(
         title: 'Course In Pashtu ',
         imageUrl: 'assets/images/courses/course_in_pashtu.png',
-        courseDetailPdfUrl: '',
-        registration: CourseRegistration(
+        courseDetails: QuranCourseDetails(),
+        registration: QuranCourseRegistration(
           courseRegistration: '',
         ),
-        tajweed: QuranCourseTajweed(
-          introductionUrl: '',
-          items: [
-            QuranCourseTajweedItem(
-              title: 'Surah Al-Baqarah',
-              surahs: [
-                Surah(
-                  name: 'Surah Al-Baqarah',
-                  arabicName: 'الفاتحۃ',
-                  description: 'The Openisssng',
-                  lessons: [
-                    Lesson(
-                      title: 'Lessssson',
-                      lessonNum: '1',
-                      ayahNum: '1-3',
-                      uploadDate: '08/17/2020',
-                      rootWordPdfUrls: ['hee'],
-                      translationAudioUrls: ['hee'],
-                      tafseerAudioUrls: ['hee'],
-                      refMaterials: ['hee'],
-                    )
-                  ],
-                ),
+        tajweed: QuranCourseContent(
+          surahs: [
+            Surah(
+              name: 'Surah Al-Baqarah',
+              arabicName: 'الفاتحۃ',
+              description: 'The Openisssng',
+              lessons: [
+                Lesson(
+                  title: 'Lessssson',
+                  lessonNum: '1',
+                  ayahNum: '1-3',
+                  uploadDate: '08/17/2020',
+                )
               ],
             ),
           ],
         ),
-        tafseer: QuranCourseTafseer(
+        tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
           surahs: [
             Surah(
@@ -285,10 +232,6 @@ class DeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
-                  rootWordPdfUrls: [''],
-                  translationAudioUrls: [''],
-                  tafseerAudioUrls: [''],
-                  refMaterials: [''],
                 )
               ],
             )
@@ -307,22 +250,22 @@ class DeviceStorageService {
       QuranCourse(
         title: 'Ahsanul Bayan',
         imageUrl: 'assets/images/courses/ahsanul_bayan.png',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
       QuranCourse(
         title: 'Al Furqan',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
       QuranCourse(
         title: 'Seerah',
         imageUrl: 'assets/images/courses/seerah.png',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
       QuranCourse(
         title: 'Al Misbah (Whatsapp Program)',
         imageUrl: 'assets/images/courses/al_misbah.png',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
       QuranCourse(
         title: 'Weekly Gems',

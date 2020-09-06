@@ -1,4 +1,4 @@
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
 class QuranRegistrationTab extends StatelessWidget {
@@ -7,7 +7,7 @@ class QuranRegistrationTab extends StatelessWidget {
     @required this.registration,
     @required this.title,
   }) : super(key: key);
-  final CourseRegistration registration;
+  final QuranCourseRegistration registration;
   final String title;
 
   @override

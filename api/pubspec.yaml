@@ -8,8 +8,8 @@ environment:
 
 dependencies:
  aqueduct: ^3.3.0+1
- arrahma_models:
-  path: ../models
+ arrahma_shared:
+  path: ../shared
  scraper_service:
   path: ../scraper_service
 

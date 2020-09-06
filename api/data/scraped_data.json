@@ -1,1 +1,224 @@
-{"appData":{"logoUrl":"https://arrahma.org/images_n/header_img.png","banners":[{"imageUrl":"https://arrahma.org/images_n/banner4.jpg?rand=251","linkUrl":"http://arrahma.org/taf2019mp3/juz4/aug14_20-imran121-143-1.mp3"},{"imageUrl":"https://arrahma.org/images_n/banner-sunnah.jpg","linkUrl":"http://www.arrahma.org/sunnah/sunnah.php"},{"imageUrl":"https://arrahma.org/images_n/quraqn_ki_kirnain.jpg","linkUrl":"http://arrahma.org/weekly_gems_n.php"},{"imageUrl":"https://arrahma.org/images_n/tazkeer.jpg","linkUrl":"http://www.arrahma.org/tazkeer_n/tazkeer.php"}],"broadcastItems":[{"type":"Mixlr","imageUrl":"https://arrahma.org/images_n/lb1a.png","linkUrl":"http://mixlr.com/arrahma-live/"},{"type":"Other","imageUrl":"https://arrahma.org/images_n/lb2a.png","linkUrl":null},{"type":"Other","imageUrl":"https://arrahma.org/images_n/lb3a.png","linkUrl":"https://www.facebook.com/arrahmah.islamic.institute/"},{"type":"Other","imageUrl":"https://arrahma.org/images_n/lb4a.png","linkUrl":"https://www.youtube.com/c/arrahmahislamicinstitute"}],"courses":[{"title":"Adv Taleemul Quran","imageUrl":"https://arrahma.org/images_n/201.png","pageRoute":null},{"title":"Taleemul Quran","imageUrl":"https://arrahma.org/images_n/203.png","pageRoute":null},{"title":"Fehmul Quran","imageUrl":"https://arrahma.org/images_n/204.png","pageRoute":null},{"title":"Course In Pashtu","imageUrl":"https://arrahma.org/images_n/202.png","pageRoute":null},{"title":"Ilmul Yaqeen","imageUrl":"https://arrahma.org/images_n/91a.png","pageRoute":null},{"title":"Ahsanul Bayan","imageUrl":"https://arrahma.org/images_n/211.png","pageRoute":null},{"title":"Al Furqan","imageUrl":"https://arrahma.org/images_n/205.png","pageRoute":null},{"title":"Seerah","imageUrl":"https://arrahma.org/images_n/75.png","pageRoute":null},{"title":"A L M I S B A H ( Whatsapp Program)","imageUrl":"https://arrahma.org/images_n/93a.png","pageRoute":null},{"title":"Q U R A N K I K I R N A I N ( Weekly Gems)","imageUrl":"https://arrahma.org/images_n/72.png","pageRoute":null},{"title":"Assorted Lectures","imageUrl":"https://arrahma.org/images_n/209.png","pageRoute":null},{"title":"Tazkeer","imageUrl":"https://arrahma.org/images_n/210.png","pageRoute":null}],"socialMediaItems":[{"imageUrl":"https://arrahma.org/images_n/yt.png","linkUrl":"https://www.youtube.com/c/arrahmahislamicinstitute"},{"imageUrl":"https://arrahma.org/images_n/fb.png","linkUrl":"https://www.facebook.com/arrahmah.islamic.institute/"},{"imageUrl":"https://arrahma.org/images_n/whatsapp.png","linkUrl":"http://arrahma.org/images/whatsapp.png"},{"imageUrl":"https://arrahma.org/images_n/twitter.png","linkUrl":"https://twitter.com/ArrahmahIslamic"},{"imageUrl":"https://arrahma.org/images_n/insta.png","linkUrl":"https://www.instagram.com/arrahmah_islamic_institute/"}]},"runMetadata":{"lastUpdate":"2020-08-16T02:12:48.994676"}}
+{
+    "appData": {
+        "logoUrl": "https://arrahma.org/images_n/header_img.png",
+        "banners": [
+            {
+                "imageUrl": "https://arrahma.org/images_n/banner4.jpg?rand=310",
+                "linkUrl": "http://arrahma.org/taf2019mp3/juz4/sept4_20-imran172-185.mp3"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/muharram.jpg",
+                "linkUrl": "https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/muharramournewyear.mp3"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/banner-sunnah.jpg",
+                "linkUrl": "http://www.arrahma.org/sunnah/sunnah.php"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/quraqn_ki_kirnain.jpg",
+                "linkUrl": "http://arrahma.org/weekly_gems_n.php"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/tazkeer.jpg",
+                "linkUrl": "http://www.arrahma.org/tazkeer_n/tazkeer.php"
+            }
+        ],
+        "broadcastItems": [
+            {
+                "type": "Mixlr",
+                "imageUrl": "https://arrahma.org/images_n/lb1a.png",
+                "linkUrl": "http://mixlr.com/arrahma-live/"
+            },
+            {
+                "type": "Other",
+                "imageUrl": "https://arrahma.org/images_n/lb2a.png",
+                "linkUrl": null
+            },
+            {
+                "type": "Other",
+                "imageUrl": "https://arrahma.org/images_n/lb3a.png",
+                "linkUrl": "https://www.facebook.com/arrahmah.islamic.institute/"
+            },
+            {
+                "type": "Other",
+                "imageUrl": "https://arrahma.org/images_n/lb4a.png",
+                "linkUrl": "https://www.youtube.com/c/arrahmahislamicinstitute"
+            }
+        ],
+        "courses": [
+            {
+                "title": "Adv Taleemul Quran",
+                "imageUrl": "https://arrahma.org/images_n/201.png",
+                "courseDetails": {
+                    "type": "Pdf",
+                    "details": "http://arrahma.org/TQ_adv/atq_detail.pdf"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Taleemul Quran",
+                "imageUrl": "https://arrahma.org/images_n/203.png",
+                "courseDetails": {
+                    "type": "Pdf",
+                    "details": "http://arrahma.org/TQ_19/tq_detail.pdf"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Fehmul Quran",
+                "imageUrl": "https://arrahma.org/images_n/204.png",
+                "courseDetails": {
+                    "type": "Pdf",
+                    "details": "http://arrahma.org/fq_19/fq_detail.pdf"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Course In Pashtu",
+                "imageUrl": "https://arrahma.org/images_n/202.png",
+                "courseDetails": {
+                    "type": "Pdf",
+                    "details": "http://www.arrahma.org/courses_details/pashto_detail.pdf"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Ilmul Yaqeen",
+                "imageUrl": "https://arrahma.org/images_n/91a.png",
+                "courseDetails": {
+                    "type": "Markdown",
+                    "details": "**ILM-UL-YAQEEN (A unique flexible word meaning and Tafseer Whatsapp course)**\n\n*     Started in 2018.\n*     Word to word Translation & in depth Quranic Tafseer.\n*     1.5 hours weekly lesson through WhatsApp or email.\n*   Lesson discussion will be held after every three weeks.\n*     Hifz of Juz 30 and Kitab ul Tahara and Salah (optional)\n*     Self-schedule and slow paced certificate course to fit everyone’s life style\n  \n\nCONTACT:\n\n ahsanalbayancourse@gmail.com  \n\nRegistration Closed"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Ahsanul Bayan",
+                "imageUrl": "https://arrahma.org/images_n/211.png",
+                "courseDetails": {
+                    "type": "Markdown",
+                    "details": "**Ahsan ul Bayan (A unique flexible word meaning and Tafseer Whatsapp course)**\n\n*     Started in 2016.\n*     Word to word Translation & in depth Quranic Tafseer.\n*     1.5 hours weekly lesson through WhatsApp or email.\n*   Lesson discussion will be held after every three weeks.\n*     Hifz of Juz 30 and Kitab ul Tahara and Salah (optional)\n*     Self-schedule and slow paced certificate course to fit everyone’s life style\n  \n\nCONTACT:\n\n ahsanalbayancourse@gmail.com  \n\nRegistration Closed"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Al Furqan",
+                "imageUrl": "https://arrahma.org/images_n/205.png",
+                "courseDetails": {
+                    "type": "Markdown",
+                    "details": " **AL-FURQAN (A unique Whatsapp Tafseer ul Quran course):**\n\n*     Started in 2018.\n*     1.5 hour weekly **_Tafseer Only_** delivered through WhatsApp.\n*     Specially designed for our busy bees sisters who are keen to once go through entire Quran.\n*     Easily manageable for professional women and students.\n*     No tuition fees, no fixed timings, no tests.\n  \n CONTACT:  \n  \n\n alfurqancourse@gmail.com\n\nRegistration Closed"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Seerah",
+                "imageUrl": "https://arrahma.org/images_n/75.png",
+                "courseDetails": {
+                    "type": "Markdown",
+                    "details": "**Seerah of Prophet Muhammah ﷺ (through Whatsapp)**  \n\n*     Registered Course started in 2020.\n*     Course duration is approximately 1.5 years.\n*     A short quiz will be taken after every few lessons.\n  \n SCHEDULE:  \n\n Every Monday through WhatsApp\n\n MODES OF LISTENING:  \n\n Whatsapp, Telegram & Website\n\n COURSE MATERIAL:  \n\n [Tajaliyyat e Nabuwat Book link](https://archive.org/stream/Tajalliyat-e-nabuwatnewEdition#page/n0/mode/2up)\n\nRegistration Closed"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "A L M I S B A H ( Whatsapp Program)",
+                "imageUrl": "https://arrahma.org/images_n/93a.png",
+                "courseDetails": {
+                    "type": "Markdown",
+                    "details": "**AL-MISBAH (Selective Surah short Tafseer through Whatsapp)**  \n\n*     Started on June 2020.\n*     No registration, No Test & No Fees  \n      \n    \n TIMINGS:  \n\n Every Monday and Thursday 20 to 30 min selected Surah Tafseer on WhatsApp\n\n MODE OF LISTENING:  \n\n Whatsapp, Telegram & Website\n\n TO JOIN: \n\n*   Join our whatsapp group by clicking one of the link [Group 1](https://chat.whatsapp.com/JpPiLjIH38TCWobRMcD1iK) or [Group 2](https://chat.whatsapp.com/FprFOF1Z8OT25cRn0a0Uyy)\n*    Telegram  [link](https://t.me/arrahmah_almisbah)"
+                },
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Q U R A N K I K I R N A I N ( Weekly Gems)",
+                "imageUrl": "https://arrahma.org/images_n/72.png",
+                "courseDetails": null,
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Assorted Lectures",
+                "imageUrl": "https://arrahma.org/images_n/209.png",
+                "courseDetails": null,
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            },
+            {
+                "title": "Tazkeer",
+                "imageUrl": "https://arrahma.org/images_n/210.png",
+                "courseDetails": null,
+                "lectures": null,
+                "registration": null,
+                "tafseer": null,
+                "tajweed": null,
+                "tests": null
+            }
+        ],
+        "socialMediaItems": [
+            {
+                "imageUrl": "https://arrahma.org/images_n/yt.png",
+                "linkUrl": "https://www.youtube.com/c/arrahmahislamicinstitute"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/fb.png",
+                "linkUrl": "https://www.facebook.com/arrahmah.islamic.institute/"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/whatsapp.png",
+                "linkUrl": "http://arrahma.org/images/whatsapp.png"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/twitter.png",
+                "linkUrl": "https://twitter.com/ArrahmahIslamic"
+            },
+            {
+                "imageUrl": "https://arrahma.org/images_n/insta.png",
+                "linkUrl": "https://www.instagram.com/arrahmah_islamic_institute/"
+            }
+        ]
+    },
+    "runMetadata": {
+        "lastUpdate": "2020-09-06T15:38:16.869583",
+        "updateFrequency": null
+    }
+}

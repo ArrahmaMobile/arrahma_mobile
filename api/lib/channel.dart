@@ -1,7 +1,7 @@
-import 'package:arrahma_models/models.dart';
 import 'package:arrahma_web_api/controller/data_controller.dart';
 import 'package:scraper_service/scraper_service.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
+import 'package:arrahma_shared/src/models/status/server_status_check.dart';
 
 import 'api.dart';
 
@@ -20,6 +20,8 @@ class ArrahmaChannel extends ApplicationChannel {
   /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
+    CORSPolicy.defaultPolicy.allowedOrigins = ['http://localhost:8000'];
+
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
     _scraperService = await ScraperService.init();
@@ -34,7 +36,7 @@ class ArrahmaChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router(basePath: '/api');
-
+    router.policy.allowedOrigins = ['http://localhost:8000'];
     router.route('/status').linkFunction((request) => Response.ok(
         JsonMapper.serializeToMap(
             ServerStatus(status: ServerConnectionStatus.Available))));

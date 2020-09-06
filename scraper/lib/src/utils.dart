@@ -9,3 +9,5 @@ extension StringUtils on String {
   String toAbsolute(String currentUrl) =>
       Uri.parse(currentUrl).resolve(this).toString();
 }
+
+extension IntUtils on int {}

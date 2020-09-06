@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:http/http.dart';
-import 'package:arrahma_models/src/run_metadata.dart';
-import 'package:arrahma_models/src/scraped_data.dart';
 import 'package:scraper/scraper.dart';
 
 class ScraperRunner {
@@ -23,7 +21,8 @@ class ScraperRunner {
     final file = File(FILE_PATH);
     final hasData = await file.exists();
     if (!hasData) return null;
-    return ModelService.deserializeScrapedData(await file.readAsString());
+    return SerializationService.deserializeScrapedData(
+        await file.readAsString());
   }
 
   void store(String relativeFilePath, ScrapedData result) async {
@@ -32,7 +31,7 @@ class ScraperRunner {
     await Directory(outputDir).create(recursive: true);
     final dataFile = File(relativeFilePath);
 
-    await dataFile.writeAsString(ModelService.serializeScrapedData(result),
-        mode: FileMode.write);
+    final serializedData = SerializationService.serializeScrapedData(result);
+    await dataFile.writeAsString(serializedData, mode: FileMode.write);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:arrahma_mobile_app/Tajweed/model/tajweed.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
 class Tajweed extends StatelessWidget {
@@ -48,7 +48,7 @@ class Tajweed extends StatelessWidget {
       pageRoute: '/quran_course_page',
       data: QuranCourse(
         title: 'Adv Taleemul Quran',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
     ),
     const TajweedItem<dynamic>(
@@ -56,7 +56,7 @@ class Tajweed extends StatelessWidget {
       pageRoute: '/quran_course_page',
       data: QuranCourse(
         title: 'Taleem Quran',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
     ),
     const TajweedItem<dynamic>(
@@ -64,7 +64,7 @@ class Tajweed extends StatelessWidget {
       pageRoute: '/quran_course_page',
       data: QuranCourse(
         title: 'Fehm Ul Quran',
-        courseDetailPdfUrl: '',
+        courseDetails: QuranCourseDetails(),
       ),
     ),
     const TajweedItem<dynamic>(

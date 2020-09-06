@@ -1,14 +1,15 @@
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
-import 'package:scraper/src/courses.dart';
-import 'package:arrahma_models/src/app_metadata.dart';
+import 'package:scraper/src/scrapers/quran_course_scraper.dart';
+import 'package:arrahma_shared/src/app_metadata.dart';
 import 'utils.dart';
 
 abstract class IScraper {
   Document get document;
   String get currentUrl;
+  Response getResponse(String url);
   Future<Document> navigateTo(String relativeUrl);
 }
 
@@ -21,7 +22,8 @@ class Scraper implements IScraper, IScraperRegistrar {
   final BaseClient client;
   final _scrapers = <ScraperBase<dynamic>>[];
   final _cachedDocs = <String, Document>{};
-  final _baseUrl = Uri.parse('https://arrahma.org');
+  final _cachedResponses = <String, Response>{};
+  final _baseUrl = Uri.parse('http://arrahma.org');
 
   String _currentUrl;
   @override
@@ -30,13 +32,20 @@ class Scraper implements IScraper, IScraperRegistrar {
   Document get document => _cachedDocs[currentUrl];
 
   @override
+  Response getResponse(String url) => _cachedResponses[url];
+
+  @override
   Future<Document> navigateTo(String url) async {
     final normalizedUrl = _baseUrl.resolve(url).toString();
     if (_cachedDocs.containsKey(normalizedUrl)) {
       return _cachedDocs[normalizedUrl];
     }
-    final response = await client.get(normalizedUrl);
-    if (response.statusCode != 200) return null;
+    logger.info('Navigating to $normalizedUrl');
+    final response = await client.get(normalizedUrl).catchError((err) => null);
+    _cachedResponses[normalizedUrl] = response;
+    if (response == null ||
+        response.statusCode != 200 ||
+        !response.headers['content-type'].startsWith('text/html')) return null;
     final document = parse(response.body);
     _cachedDocs[normalizedUrl] = document;
     _currentUrl = normalizedUrl;
@@ -44,7 +53,8 @@ class Scraper implements IScraper, IScraperRegistrar {
   }
 
   Future<AppData> initiate() async {
-    await navigateTo('');
+    final doc = await navigateTo('');
+    if (doc == null) return null;
     return AppData(
       logoUrl: document
           .querySelector('.header img')
@@ -86,7 +96,7 @@ class Scraper implements IScraper, IScraperRegistrar {
             ?.toAbsolute(currentUrl);
         return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
       }).toList(),
-      courses: await CourseScraper().scrape(this),
+      courses: await QuranCourseScraper().scrape(this),
     );
   }
 

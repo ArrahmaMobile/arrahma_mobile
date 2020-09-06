@@ -1,4 +1,4 @@
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 
 import 'environment_config.dart';
 

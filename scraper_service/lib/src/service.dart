@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:arrahma_models/models.dart';
-import 'package:arrahma_models/models.dart' as models;
+import 'package:arrahma_shared/shared.dart';
+import 'package:arrahma_shared/shared.dart' as shared;
 import 'package:scraper_service/scraper_runner.dart';
 
 class ScraperService {
   static const UPDATE_DURATION = Duration(hours: 4);
   static final _scraperRunner = ScraperRunner();
   static Future<ScraperService> init() async {
-    models.init();
+    shared.init();
     final scrapedData = await _scraperRunner.get();
     AppData metadata;
     final lastUpdate = scrapedData?.runMetadata?.lastUpdate;

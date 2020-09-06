@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:arrahma_mobile_app/utils/date_utils.dart';
-import 'package:arrahma_mobile_app/utils/wrap_list.dart';
+import 'package:arrahma_shared/src/utils/wrap_list.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 import 'logger.dart';
@@ -29,7 +29,7 @@ class DevLogger implements ILogger {
     logs.add(event);
     _logStreamController.add(event);
     developer.log(
-      '[${DateUtils.formatReadableFixedLengthTime(event.time)}] ${event.message}',
+      '[${_formatReadableFixedLengthTime(event.time)}] ${event.message}',
       time: event.time,
       level: LogLevelMap[event.level].value,
       error: event.data,
@@ -37,6 +37,10 @@ class DevLogger implements ILogger {
           ? StackTrace.fromString(event.stackTrace)
           : null,
     );
+  }
+
+  String _formatReadableFixedLengthTime(DateTime date) {
+    return DateFormat('hh:mm:ss a').format(date.toLocal());
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
-import '../models.dart';
+import '../models/models.dart';
 
-class ModelService {
+class SerializationService {
   static ScrapedData deserializeScrapedData(dynamic data) {
     return JsonMapper.deserialize<ScrapedData>(data);
   }

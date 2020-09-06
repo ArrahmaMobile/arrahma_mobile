@@ -7,8 +7,8 @@ import 'package:arrahma_mobile_app/utils/map_utils.dart';
 import 'package:arrahma_mobile_app/utils/models/device_config.dart';
 import 'package:arrahma_mobile_app/utils/screen_utils.dart';
 import 'package:arrahma_mobile_app/utils/url_utils.dart';
-import 'package:arrahma_mobile_app/utils/wrap_list.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/src/utils/wrap_list.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' hide BaseResponse;
@@ -16,13 +16,11 @@ import 'package:inherited_state/inherited_state.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 import 'connectivity.dart';
-import 'logger.dart';
 import 'models/api_request.dart';
 import 'models/api_response.dart';
 import 'models/connection.dart';
 import 'models/environment_config.dart';
 import 'models/http_status_code.dart';
-import 'models/log_event.dart';
 
 class ApiService {
   ApiService(this._connectivityService, this.deviceConfig,
@@ -412,13 +410,15 @@ class ApiService {
   }
 
   Map<String, String> getHeaders() {
-    return {
+    final headers = {
       'Authorization': 'Bearer ',
       'User-Agent': AppUtils.isWeb ? null : userAgent,
       'Device-Id': deviceConfig.deviceId,
       'Device-Type': getDeviceType(getDeviceForm()),
       'Content-Type': 'application/json'
     };
+    if (AppUtils.isWeb) headers.remove('User-Agent');
+    return headers;
   }
 
   String getDeviceForm() {

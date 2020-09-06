@@ -39,7 +39,7 @@ import 'package:arrahma_mobile_app/Tajweed/taleem_quran_2013/taleem_quran_2013.d
 import 'package:arrahma_mobile_app/arabic_grammer/arabic_grammers.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/lectures/quranic_tafseer/quran_tafseer.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lectures_course.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture_page.dart';

@@ -4,7 +4,7 @@ import 'package:arrahma_mobile_app/services/environment_service.dart';
 import 'package:arrahma_mobile_app/services/models/app_config.dart';
 import 'package:arrahma_mobile_app/services/models/environment_config.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -52,24 +52,32 @@ class _HomePageState extends State<HomePage> {
               if (success) print('Switched env to ${nextEnv.name}');
             }
           },
-          child: (appData?.logoUrl?.startsWith('http') ?? false)
-              ? Image.network(appData.logoUrl)
-              : Image.asset(
-                  'assets/images/home_page_images/aarhman_mainImage.png',
-                  fit: BoxFit.cover),
+          child: SizedBox(
+            height: 56,
+            child: (appData?.logoUrl?.startsWith('http') ?? false)
+                ? Image.network(appData.logoUrl)
+                : Image.asset(
+                    'assets/images/home_page_images/aarhman_mainImage.png',
+                    fit: BoxFit.cover),
+          ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
+      body: SingleChildScrollView(
         child: Column(
           children: [
             _buildBanners(appData.banners),
             const SizedBox(height: 15),
-            _broadcast(appData.broadcastItems),
-            const Spacer(),
-            _socialMedia(context, appData.socialMediaItems),
-            const SizedBox(height: 15),
-            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  _broadcast(appData.broadcastItems),
+                  const SizedBox(height: 15),
+                  _socialMedia(context, appData.socialMediaItems),
+                  const SizedBox(height: 15),
+                ],
+              ),
+            ),
             Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -78,30 +86,36 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GestureDetector(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
-                    'Talemul Quran - Lesson name',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        iconSize: 40,
-                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                        onPressed: () {
-                          onPlayAudio();
-                          setState(
-                            () {
-                              _isPlaying = !_isPlaying;
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Text(
+                      'Talemul Quran - Lesson name',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          iconSize: 40,
+                          icon:
+                              Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                          onPressed: () {
+                            onPlayAudio();
+                            setState(
+                              () {
+                                _isPlaying = !_isPlaying;
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               onTap: () {
                 Navigator.pushNamed(context, '/media_player_screen');

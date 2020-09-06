@@ -1,7 +1,7 @@
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/foundation.dart';
 
 import 'lifecycle.dart';
-import 'logger.dart';
 
 abstract class StoppableService {
   LifecycleEventHandler _handler;

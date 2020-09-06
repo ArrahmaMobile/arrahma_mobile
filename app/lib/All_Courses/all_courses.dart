@@ -1,5 +1,5 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
-import 'package:arrahma_models/models.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
 
@@ -33,7 +33,7 @@ class AllCourses extends StatelessWidget {
     );
   }
 
-  Widget _buildCourse(BuildContext context, Course course) {
+  Widget _buildCourse(BuildContext context, QuranCourse course) {
     return GestureDetector(
       onTap: () {
         Navigator.push<dynamic>(

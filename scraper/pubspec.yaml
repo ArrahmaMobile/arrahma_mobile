@@ -10,8 +10,9 @@ dependencies:
   html: ^0.14.0+3
   http: ^0.12.1
   recase: ^3.0.0
-  arrahma_models:
-    path: ../models
+  arrahma_shared:
+    path: ../shared
+  html2md: ^0.5.1
 
 
 dev_dependencies:

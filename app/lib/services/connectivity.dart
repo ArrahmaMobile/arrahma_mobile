@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:arrahma_mobile_app/services/models/api_response.dart';
-import 'package:arrahma_models/src/status/server_status_check.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_mobile_app/utils/app_utils.dart';
 import 'package:arrahma_mobile_app/utils/enum_utils.dart';
 import 'package:connectivity/connectivity.dart';
@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:inherited_state/inherited_state.dart';
 
 import 'api.dart';
-import 'logger.dart';
 import 'models/connection.dart';
 import 'models/environment_config.dart';
 import 'stoppable_service.dart';

@@ -1,8 +1,8 @@
 import 'package:arrahma_mobile_app/app.dart';
 import 'package:arrahma_mobile_app/services/models/app_config.dart';
 import 'package:arrahma_mobile_app/services/storage/storage_provider.dart';
-import 'package:arrahma_models/models.dart';
-import 'package:arrahma_models/models.dart' as models;
+import 'package:arrahma_shared/shared.dart';
+import 'package:arrahma_shared/shared.dart' as shared;
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
 import 'package:package_info/package_info.dart';
@@ -20,7 +20,7 @@ import 'utils/platform_utils.dart';
 
 Future main() async {
   mapper.init();
-  models.init();
+  shared.init();
 
   WidgetsFlutterBinding.ensureInitialized();
 

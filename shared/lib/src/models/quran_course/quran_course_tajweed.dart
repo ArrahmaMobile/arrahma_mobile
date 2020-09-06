@@ -1,4 +1,4 @@
-import 'surah.dart';
+import '../surah.dart';
 
 class QuranCourseTajweed {
   const QuranCourseTajweed({this.introductionUrl, this.items});

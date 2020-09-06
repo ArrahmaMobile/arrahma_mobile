@@ -5,18 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dart",
-            "program": "bin/main.dart",
-            "request": "launch",
-            "type": "dart"
+            "name": "Dart: Attach to Process",
+            "type": "dart",
+            "request": "attach"
         },
         {
-            "name": "Debug Dart Builder",
-            "program": ".dart_tool/build/entrypoint/build.dart",
-            "args": [
-                "serve",
-                "--delete-conflicting-outputs"
-            ],
+            "name": "Dart",
+            "program": "bin/main.dart",
             "request": "launch",
             "type": "dart"
         },
