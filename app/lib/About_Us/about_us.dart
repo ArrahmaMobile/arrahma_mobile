@@ -1,4 +1,3 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 class AboutUs extends StatefulWidget {
@@ -101,52 +100,10 @@ class _AboutUsState extends State<AboutUs> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const Text(
-                        'Talemul Quran - Lesson name',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          IconButton(
-                            iconSize: 40,
-                            icon: Icon(
-                                _isPlaying ? Icons.pause : Icons.play_arrow),
-                            onPressed: () {
-                              onPlayAudio();
-                              setState(
-                                () {
-                                  _isPlaying = !_isPlaying;
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/media_player_screen');
-                  },
-                ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // ignore: avoid_void_async
-  void onPlayAudio() async {
-    final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
-    assetsAudioPlayer.open(
-      Audio(
-        'assets/audio/introduction.mp3',
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io;
+import 'dart:typed_data';
 
 import 'package:arrahma_mobile_app/utils/app_utils.dart';
 import 'package:arrahma_mobile_app/utils/map_utils.dart';
@@ -89,6 +90,42 @@ class ApiService {
         cacheDuration: cacheDuration,
         authToken: authToken,
         internal: internal);
+  }
+
+  Stream<double> downloadFile(String url, void Function(Uint8List) onComplete) {
+    final httpClient = http.Client();
+    final request = http.Request('GET', Uri.parse(url));
+    final response = httpClient.send(request);
+
+    final chunks = <List<int>>[];
+    int downloaded = 0;
+    final downloadStream = StreamController<double>();
+
+    response.asStream().listen((http.StreamedResponse r) {
+      r.stream.listen((List<int> chunk) {
+        final percentage = downloaded / r.contentLength * 100;
+        // Display percentage of completion
+        debugPrint('downloadPercentage: $percentage');
+
+        chunks.add(chunk);
+        downloaded += chunk.length;
+        downloadStream.add(percentage);
+      }, onDone: () async {
+        // Display percentage of completion
+        debugPrint('downloadPercentage: ${downloaded / r.contentLength * 100}');
+        downloadStream.add(100);
+
+        final bytes = Uint8List(r.contentLength);
+        int offset = 0;
+        for (final chunk in chunks) {
+          bytes.setRange(offset, offset + chunk.length, chunk);
+          offset += chunk.length;
+        }
+        onComplete(bytes);
+        return;
+      });
+    });
+    return downloadStream.stream;
   }
 
   Future<ApiResponse<T, dynamic>> _sendGetRequest<T>(String relativeUrl,

@@ -23,7 +23,7 @@ class Scraper implements IScraper, IScraperRegistrar {
   final _scrapers = <ScraperBase<dynamic>>[];
   final _cachedDocs = <String, Document>{};
   final _cachedResponses = <String, Response>{};
-  final _baseUrl = Uri.parse('http://arrahma.org');
+  final _baseUrl = Uri.parse('https://arrahma.org');
 
   String _currentUrl;
   @override
@@ -72,7 +72,9 @@ class Scraper implements IScraper, IScraperRegistrar {
           .toList(),
       broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
         final aTag = banner.querySelector('a');
-        final link = aTag != null ? aTag.attributes['href'] : null;
+        final link = aTag != null
+            ? aTag.attributes['href'].toAbsolute(currentUrl)
+            : null;
         final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
         final type = host != null
             ? BroadcastType.values.firstWhere(
@@ -89,7 +91,7 @@ class Scraper implements IScraper, IScraperRegistrar {
       }).toList(),
       socialMediaItems:
           document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-        final link = socialMediaItem.attributes['href'];
+        final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
         final imageUrl = socialMediaItem
             .querySelector('img')
             ?.attributes['src']

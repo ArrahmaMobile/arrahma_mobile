@@ -2,6 +2,8 @@ import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/q
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
+import 'quran_lesson_detail/quran_lesson_detail.dart';
+
 class QuranSurahPage extends StatefulWidget {
   const QuranSurahPage({
     Key key,
@@ -106,8 +108,10 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                       final surah = widget.surahs[index];
                       return ListTile(
                         leading: const Icon(Icons.branding_watermark),
-                        title: Text('${surah.name} ${surah.arabicName}'),
-                        subtitle: Text(surah.description),
+                        title: Text('${surah.name} ${surah.arabicName ?? ''}'),
+                        subtitle: surah.description != null
+                            ? Text(surah.description)
+                            : null,
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -126,11 +130,14 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                         ),
                         onTap: () {
                           Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (_) => QuranLessonPage(
-                                        lessons: surah.lessons,
-                                      )));
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (_) => surah.lessons.length > 1
+                                  ? QuranLessonPage(surah: surah)
+                                  : QuranLessonAudioPage(
+                                      surah: surah, lesson: surah.lessons[0]),
+                            ),
+                          );
                         },
                       );
                     },

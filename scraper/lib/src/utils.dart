@@ -7,7 +7,7 @@ class Utils {
 extension StringUtils on String {
   String get cleanedText => Utils.cleanText(this);
   String toAbsolute(String currentUrl) =>
-      Uri.parse(currentUrl).resolve(this).toString();
+      Uri.parse(currentUrl).resolve(this).replace(scheme: 'https').toString();
 }
 
 extension IntUtils on int {}

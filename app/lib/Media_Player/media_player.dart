@@ -1,14 +1,43 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:arrahma_mobile_app/features/media_player/audio_player_controls.dart';
+import 'package:arrahma_mobile_app/features/media_player/audio_player_display.dart';
+import 'package:arrahma_mobile_app/features/media_player/audio_player_seeker.dart';
+import 'package:arrahma_mobile_app/features/media_player/audio_player_service.dart';
+import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:inherited_state/inherited_state.dart';
 
 class MediaPlayerScreen extends StatefulWidget {
+  const MediaPlayerScreen(
+      {Key key, @required this.mediaItems, this.initialAudioIndex = 0})
+      : super(key: key);
+  final List<MediaData> mediaItems;
+  final int initialAudioIndex;
+
   @override
   _MediaPlayerScreenState createState() => _MediaPlayerScreenState();
 }
 
-bool _isPlaying = false;
-
 class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
+  final _audioPlayer = SL.get<AudioPlayerService>();
+  int _index;
+
+  @override
+  void initState() {
+    super.initState();
+    _index = widget.initialAudioIndex;
+    _startAudio();
+  }
+
+  Future _startAudio() async {
+    if (widget.mediaItems.isNotEmpty) {
+      final success = await _audioPlayer.start(widget.mediaItems, _index);
+      if (success) await _audioPlayer.play();
+    }
+  }
+
+  MediaData get item => widget.mediaItems[_index];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +45,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
               const SizedBox(height: 30),
@@ -55,57 +85,21 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
-              const Text(
-                'Now Playing: Tafseer - "Lesson Name"',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.black),
-              ),
-              const SizedBox(height: 25),
-              Slider(
-                onChanged: (v) {},
-                value: 10,
-                max: 100,
-                min: 0,
-              ),
+              const SizedBox(height: 20),
+              AudioPlayerDisplay(item: item.toMediaItem()),
+              // const SizedBox(height: 25),
+              // AudioPlayerSeeker(),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(
-                      Icons.fast_rewind,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    iconSize: 50,
-                    icon: Icon(
-                      _isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      onPlayAudio();
-                      setState(
-                        () {
-                          _isPlaying = !_isPlaying;
-                        },
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.fast_forward,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
+              AudioPlayerControlBar(
+                onStart: () => _startAudio(),
+                onNext: () => setState(() {
+                  if (_index < widget.mediaItems.length - 1) _index++;
+                }),
+                onPrevious: () => setState(() {
+                  if (_index > 0) _index--;
+                }),
               ),
               const SizedBox(height: 25),
               Row(
@@ -128,14 +122,4 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
       ),
     );
   }
-}
-
-// ignore: avoid_void_async
-void onPlayAudio() async {
-  final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
-  assetsAudioPlayer.open(
-    Audio(
-      'assets/audio/introduction.mp3',
-    ),
-  );
 }

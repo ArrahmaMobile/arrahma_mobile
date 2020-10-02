@@ -24,22 +24,27 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
 
   Widget _getTab(int tabIndex) {
     final tabs = [
-      QuranDetailsTab(
-        title: widget.course.title,
-      ),
-      QuranRegistrationTab(
-        registration: widget.course.registration,
-        title: widget.course.title,
-      ),
-      QuranSurahPage(
-        surahs: widget.course.tafseer.surahs,
-      ),
-      QuranSurahPage(
-        surahs: widget.course.tajweed.surahs,
-      ),
-      QuranTestsPage(
-        title: widget.course.title,
-      )
+      if (widget.course.courseDetails != null)
+        QuranDetailsTab(
+          title: widget.course.title,
+        ),
+      if (widget.course.registration != null)
+        QuranRegistrationTab(
+          registration: widget.course.registration,
+          title: widget.course.title,
+        ),
+      if (widget.course.tafseer != null)
+        QuranSurahPage(
+          surahs: widget.course.tafseer.surahs,
+        ),
+      if (widget.course.tajweed != null)
+        QuranSurahPage(
+          surahs: widget.course.tajweed.surahs,
+        ),
+      if (widget.course.tests != null)
+        QuranTestsPage(
+          title: widget.course.title,
+        )
     ];
     return tabs[tabIndex];
   }

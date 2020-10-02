@@ -24,7 +24,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
           options: CarouselOptions(
               autoPlay: true,
               enlargeCenterPage: true,
-              aspectRatio: 2.7,
+              aspectRatio: 2.77,
               onPageChanged: (index, reason) {
                 setState(() {
                   _current = index;
@@ -38,7 +38,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
             return Container(
               width: 8.0,
               height: 8.0,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _current == index

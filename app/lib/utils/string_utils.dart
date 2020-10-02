@@ -85,14 +85,6 @@ const unicode_superscript_map = <String, String>{
 };
 
 class StringUtils {
-  static String getInitials(String text) {
-    return (text ?? '')
-        .split(' ')
-        .map((word) => word.isEmpty ? word : word.substring(0, 1))
-        .toList()
-        .join('');
-  }
-
   static bool isNullOrEmpty(String text, [bool checkWhiteSpace = false]) {
     return text == null || (checkWhiteSpace ? text.trim() : text) == '';
   }
@@ -149,7 +141,7 @@ class StringUtils {
         (!maskEnd ? maskChar * maskCharCount : '');
   }
 
-  static String initials(String text) {
+  static String getInitials(String text) {
     return RegExp('(?<![A-Z]|\$)([A-Z])')
         .allMatches(text)
         .map((m) => m.group(0))

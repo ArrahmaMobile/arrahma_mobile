@@ -18,13 +18,14 @@ class StorageService implements IStorageService {
   @override
   Future<T> getWithKey<T>(String key,
       {T Function() defaultFn, bool private = false}) async {
-    final value = await getString(key, private: private);
-    return (value != null ? JsonMapper.deserialize<T>(value) : null) ??
-        defaultFn();
+    final value = await _getString(key, private: private);
+    return T == String
+        ? value as T
+        : ((value != null ? JsonMapper.deserialize<T>(value) : null) ??
+            (defaultFn != null ? defaultFn() : null));
   }
 
-  @override
-  Future<String> getString(String key,
+  Future<String> _getString(String key,
       {String Function() defaultFn, bool private = false}) async {
     return (await getProvider(private).getString(key)) ??
         (defaultFn != null ? defaultFn() : null);
@@ -37,11 +38,11 @@ class StorageService implements IStorageService {
 
   @override
   Future<bool> setWithKey<T>(String key, T value, {bool private = false}) {
-    return setString(key, JsonMapper.serialize(value));
+    return _setString(
+        key, T == String ? value as String : JsonMapper.serialize(value));
   }
 
-  @override
-  Future<bool> setString(String key, String value, {bool private = false}) {
+  Future<bool> _setString(String key, String value, {bool private = false}) {
     return getProvider(private).setString(key, value);
   }
 

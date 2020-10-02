@@ -326,7 +326,7 @@ class DeviceStorageService {
 
   Future<DeviceConfig> loadDeviceConfig() async {
     final deviceId = await _storage
-        .getString(DEVICE_ID, private: true)
+        .getWithKey<String>(DEVICE_ID, private: true)
         .catchError((dynamic e) => resetDeviceId());
     final freshInstall = deviceId == null;
     return DeviceConfig(
@@ -337,7 +337,7 @@ class DeviceStorageService {
 
   Future<String> resetDeviceId() async {
     final newDeviceId = Uuid().v4();
-    await _storage.setString(DEVICE_ID, newDeviceId, private: true);
+    await _storage.setWithKey(DEVICE_ID, newDeviceId, private: true);
     logger.info('New Device ID: $newDeviceId');
     return newDeviceId;
   }

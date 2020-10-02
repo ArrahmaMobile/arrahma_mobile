@@ -17,18 +17,16 @@ class AllCourses extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
+      body: GridView.count(
         padding: const EdgeInsets.all(10.0),
-        child: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 8,
-          shrinkWrap: true,
-          childAspectRatio: .90,
-          children: appData.courses
-              .map((course) => _buildCourse(context, course))
-              .toList(),
-        ),
+        crossAxisCount: 3,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 8,
+        shrinkWrap: true,
+        childAspectRatio: .90,
+        children: appData.courses
+            .map((course) => _buildCourse(context, course))
+            .toList(),
       ),
     );
   }
@@ -39,9 +37,9 @@ class AllCourses extends StatelessWidget {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-                builder: (_) => const QuranCoursePage(
-                      title: '',
-                      course: QuranCourse(),
+                builder: (_) => QuranCoursePage(
+                      title: course.title,
+                      course: course,
                     )));
       },
       child: Column(

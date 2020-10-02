@@ -15,7 +15,10 @@ class QuranCourseScraper implements ScraperBase<List<QuranCourse>> {
     if (doc == null) return [];
     final courseList = doc.querySelectorAll('.column5 .box2');
     return Future.wait(courseList.map((course) async {
-      final title = course.querySelector('.box_h').text.cleanedText.titleCase;
+      final title = course.querySelector('.box_h').text.cleanedText;
+      final subStrIndex = title.indexOf('(') - 1;
+      final normalizedTitle =
+          subStrIndex >= 0 ? title.substring(0, subStrIndex) : title;
       final imageUrl = course
           .querySelector('img')
           .attributes['src']
@@ -59,7 +62,7 @@ class QuranCourseScraper implements ScraperBase<List<QuranCourse>> {
           : null;
 
       return QuranCourse(
-        title: title,
+        title: normalizedTitle,
         imageUrl: imageUrl,
         courseDetails: await courseDetails,
         registration: await registration,

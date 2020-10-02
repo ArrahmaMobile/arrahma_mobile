@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
-
-import 'Home_Page/home_page.dart';
 import 'router/router.dart';
 
 class App extends StatelessWidget {
@@ -15,15 +13,13 @@ class App extends StatelessWidget {
         if (dependencies != null) ...dependencies,
       ],
       builder: (_) => MaterialApp(
-        initialRoute: '/home',
-        onGenerateRoute: Router.generateRoute,
+        onGenerateRoute: AppRouter.generateRoute,
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
             color: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),
           ),
         ),
-        home: HomePage(),
       ),
     );
   }

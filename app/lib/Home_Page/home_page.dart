@@ -1,11 +1,11 @@
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/services/device_storage.dart';
 import 'package:arrahma_mobile_app/services/environment_service.dart';
 import 'package:arrahma_mobile_app/services/models/app_config.dart';
 import 'package:arrahma_mobile_app/services/models/environment_config.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isPlaying = false;
   int tapCount;
 
   @override
@@ -62,78 +61,39 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildBanners(appData.banners),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  _broadcast(appData.broadcastItems),
-                  const SizedBox(height: 15),
-                  _socialMedia(context, appData.socialMediaItems),
-                  const SizedBox(height: 15),
-                ],
-              ),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.black, width: 2),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 10),
+          Expanded(
+            child: Column(
+              children: [
+                _buildBanners(appData.banners),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(10),
+                    child: _broadcast(appData.broadcastItems),
+                  ),
                 ),
-              ),
+              ],
             ),
-            GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
-                      'Talemul Quran - Lesson name',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 40,
-                          icon:
-                              Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                          onPressed: () {
-                            onPlayAudio();
-                            setState(
-                              () {
-                                _isPlaying = !_isPlaying;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+          ),
+          Column(
+            children: [
+              _socialMedia(context, appData.socialMediaItems),
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: _buildAudioPlayer(),
               ),
-              onTap: () {
-                Navigator.pushNamed(context, '/media_player_screen');
-              },
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Future onPlayAudio() async {
-    final assetsAudioPlayer = AssetsAudioPlayer();
-    assetsAudioPlayer.open(
-      Audio(
-        'assets/audio/introduction.mp3',
-      ),
-    );
+  Widget _buildAudioPlayer() {
+    return CollapsedPlayer();
   }
 
   Widget _buildBanners(List<HeadingBanner> banners) {
@@ -159,7 +119,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () => _launchLink(linkUrl),
       child: imageUrl.startsWith('http')
-          ? Image.network(imageUrl)
+          ? Image.network(imageUrl, fit: BoxFit.contain, width: 1000.0)
           : Image.asset(imageUrl),
     );
   }

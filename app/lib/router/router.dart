@@ -40,6 +40,7 @@ import 'package:arrahma_mobile_app/arabic_grammer/arabic_grammers.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/lectures/quranic_tafseer/quran_tafseer.dart';
 import 'package:arrahma_shared/shared.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lectures_course.dart';
 import 'package:arrahma_mobile_app/all_courses/assorted_lectures/assorted_lecture_page.dart';
@@ -57,7 +58,7 @@ import 'package:arrahma_mobile_app/Lectures/Wirasat_Course/wirasat_course.dart';
 import 'package:arrahma_mobile_app/Lectures/Youth_Course/youth_course.dart';
 import 'package:arrahma_mobile_app/Lectures/lectures_on_namaz/lectures_on_namaz.dart';
 
-class Router {
+class AppRouter {
   static final _routeBuilderMap =
       <String, Widget Function(BuildContext, Object)>{
     '/home': (context, args) => HomePage(),
@@ -76,7 +77,10 @@ class Router {
     '/juz_detail_page': (context, args) => const QuranSurahPage(
           surahs: [],
         ),
-    '/lesson_audio_page': (context, args) => QuranLessonAudioPage(),
+    '/lesson_audio_page': (context, args) => QuranLessonAudioPage(
+          surah: (args as Map<String, dynamic>)['surah'] as Surah,
+          lesson: (args as Map<String, dynamic>)['lesson'] as Lesson,
+        ),
     '/hadith': (context, args) => Hadith(),
     '/favorite_surah': (context, args) => QuranFavoriteSurah(),
 
@@ -91,8 +95,8 @@ class Router {
         ),
     // '/ilmul_taqeen': (context, args) => IlmulTaqeen(),
     '/tazkeer': (context, args) => Tazkeer(),
-    '/surah_detail_page': (context, args) => const QuranLessonPage(
-          lessons: [],
+    '/surah_detail_page': (context, args) => QuranLessonPage(
+          surah: args as Surah,
         ),
     '/seerah': (context, args) => Seerah(),
     '/quran_test_page': (context, args) => QuranTestsPage(
@@ -142,7 +146,8 @@ class Router {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _routeBuilderMap[settings.name](context, settings.arguments));
+        builder: (context) => AudioServiceWidget(
+            child: (_routeBuilderMap[settings.name] ??
+                _routeBuilderMap['/home'])(context, settings.arguments)));
   }
 }
