@@ -1,4 +1,4 @@
-package org.arrahma.arrahma_mobile_app
+package org.arrahmah.app
 
 import io.flutter.embedding.android.FlutterActivity
 
