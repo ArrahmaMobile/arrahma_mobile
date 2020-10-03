@@ -25,9 +25,11 @@ packages:
   arrahma_shared:
     dependency: "direct main"
     description:
-      path: "../shared"
-      relative: true
-    source: path
+      path: shared
+      ref: HEAD
+      resolved-ref: "0ca1ea348db6d7544ef80340df30a34500b0734d"
+      url: "https://github.com/ArrahmaMobile/arrahma_mobile.git"
+    source: git
     version: "0.0.0"
   async:
     dependency: transitive
