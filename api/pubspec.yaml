@@ -1,17 +1,22 @@
 name: arrahma_web_api
+publish_to: none
 description: A sample command-line application.
 # version: 1.0.0
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
- aqueduct: ^3.3.0+1
- arrahma_shared:
-  path: ../shared
- scraper_service:
-  path: ../scraper_service
+  aqueduct: ^3.3.0+1
+  scraper_service:
+    git:
+      url: https://github.com/ArrahmaMobile/arrahma_mobile.git
+      path: scraper_service
+  arrahma_shared:
+    git:
+      url: https://github.com/ArrahmaMobile/arrahma_mobile.git
+      path: shared
 
 dev_dependencies:
   pedantic: ^1.8.0
