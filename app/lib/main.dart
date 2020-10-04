@@ -35,7 +35,18 @@ Future main() async {
   final envName = await deviceStorageService.loadEnvironmentName();
   final window = WidgetsBinding.instance.window;
   final deviceSize = window.physicalSize / window.devicePixelRatio;
-  final envService = EnvironmentService();
+  final envService = EnvironmentService([
+    EnvironmentConfig(
+      name: 'Staging',
+      environmentType: EnvironmentType.DEV,
+      baseUrl: 'https://arrahmah.sasid.me/api',
+    ),
+    EnvironmentConfig(
+      name: 'Dev-1',
+      environmentType: EnvironmentType.DEV,
+      baseUrl: 'http://192.168.86.199:8888/api',
+    ),
+  ]);
   final envConfig = envName != null
       ? envService.getEnvironments().singleWhere((env) => env.name == envName)
       : envService.getDefaultEnvironment();
