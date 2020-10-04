@@ -31,7 +31,7 @@ dependencies:
   audio_service: ^0.15.0
   flutter_framework:
     git:
-      url: https://github.com/SASID-PRO/flutter_framework.git
+      url: git@github.com:SASID-PRO/flutter_framework.git
     # path: ../../../commercial-project-ideas/flutter_framework
 
   flutter_cache_manager: ^1.4.2
