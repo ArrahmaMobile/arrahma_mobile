@@ -1,17 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:arrahma_mobile_app/features/media_player/models/media_context.dart';
-import 'package:arrahma_mobile_app/services/api.dart';
-import 'package:arrahma_mobile_app/services/stoppable_service.dart';
-import 'package:arrahma_mobile_app/services/storage/storage_provider.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:crypto/crypto.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'models/media_data.dart';
 

@@ -1,12 +1,10 @@
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
-import 'package:arrahma_mobile_app/services/device_storage.dart';
-import 'package:arrahma_mobile_app/services/environment_service.dart';
-import 'package:arrahma_mobile_app/services/models/app_config.dart';
-import 'package:arrahma_mobile_app/services/models/environment_config.dart';
+import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,12 +40,9 @@ class _HomePageState extends State<HomePage> {
               final nextEnv =
                   envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
               RS.set<EnvironmentConfig>(context, (_) => nextEnv);
-              final appConfig = context
-                  .once<AppConfig>()
-                  .copyWith(environmentName: nextEnv.name);
-              RS.set<AppConfig>(context, (_) => appConfig);
-              final success =
-                  await SL.get<DeviceStorageService>().saveAppConfig(appConfig);
+              final success = await SL
+                  .get<DeviceStorageService>()
+                  .saveEnvironmentName(nextEnv.name);
               if (success) print('Switched env to ${nextEnv.name}');
             }
           },

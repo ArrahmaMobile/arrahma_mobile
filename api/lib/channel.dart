@@ -20,7 +20,7 @@ class ArrahmaChannel extends ApplicationChannel {
   /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
-    CORSPolicy.defaultPolicy.allowedOrigins = ['http://localhost:8000'];
+    CORSPolicy.defaultPolicy.allowedOrigins = ['*'];
 
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));

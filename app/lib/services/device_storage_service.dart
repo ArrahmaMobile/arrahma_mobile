@@ -1,22 +1,8 @@
-import 'package:arrahma_mobile_app/utils/models/device_config.dart';
 import 'package:arrahma_shared/shared.dart';
-import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 
-import 'models/app_config.dart';
-import 'storage/storage_provider.dart';
-
-class DeviceStorageService {
-  const DeviceStorageService(this._storage);
-
-  final IStorageService _storage;
-
-  Future<AppConfig> loadAppConfigPreferences() async {
-    return _storage.get<AppConfig>(
-      defaultFn: () =>
-          const AppConfig(themeMode: ThemeMode.system, environmentName: null),
-    );
-  }
+class DeviceStorageService extends BaseDeviceStorageService {
+  const DeviceStorageService(IStorageService storage) : super(storage);
 
   Future<AppData> loadAppData() async {
     const banners = [
@@ -308,7 +294,7 @@ class DeviceStorageService {
       ),
     ];
 
-    return await _storage.get<AppData>(
+    return await storage.get<AppData>(
       defaultFn: () => const AppData(
         banners: banners,
         broadcastItems: broadcasts,
@@ -319,39 +305,6 @@ class DeviceStorageService {
   }
 
   Future<bool> saveAppData(AppData appData) async {
-    return _storage.set<AppData>(appData);
-  }
-
-  static const String DEVICE_ID = 'DEVICE_ID';
-
-  Future<DeviceConfig> loadDeviceConfig() async {
-    final deviceId = await _storage
-        .getWithKey<String>(DEVICE_ID, private: true)
-        .catchError((dynamic e) => resetDeviceId());
-    final freshInstall = deviceId == null;
-    return DeviceConfig(
-      deviceId: deviceId ?? await resetDeviceId(),
-      isFreshInstall: freshInstall,
-    );
-  }
-
-  Future<String> resetDeviceId() async {
-    final newDeviceId = Uuid().v4();
-    await _storage.setWithKey(DEVICE_ID, newDeviceId, private: true);
-    logger.info('New Device ID: $newDeviceId');
-    return newDeviceId;
-  }
-
-  // Future<bool> saveThemeMode(ThemeMode value) {
-  //   return _storage.setString(
-  //       AppConfig.THEME_MODE_STORAGE_KEY, EnumUtils.enumToString(value, false));
-  // }
-
-  // Future<bool> saveBannerVisibility(bool isVisible) {
-  //   return _storage.setBool(AppConfig.BANNER_STORAGE_KEY, isVisible);
-  // }
-
-  Future<bool> saveAppConfig(AppConfig appConfig) {
-    return _storage.set<AppConfig>(appConfig);
+    return storage.set<AppData>(appData);
   }
 }
