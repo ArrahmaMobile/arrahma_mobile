@@ -3,6 +3,8 @@ import 'package:arrahma_web_api/api.dart';
 Future main() async {
   final app = Application<ArrahmaChannel>()
     ..options.configurationFilePath = 'config.yaml'
+    ..options.certificateFilePath = Platform.environment['CERT_PATH']
+    ..options.privateKeyFilePath = Platform.environment['KEY_PATH']
     ..options.port =
         int.tryParse(Platform.environment['PORT'] ?? 8888.toString());
 
