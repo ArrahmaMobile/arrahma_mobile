@@ -8,4 +8,8 @@ pub get
 cd ../api
 pub upgrade
 pub get
-dart bin/server.dart
+export PORT="8443"
+export KEY_PATH="/etc/letsencrypt/live/arrahmah.sasid.me/privkey.pem"
+export CERT_PATH="/etc/letsencrypt/live/arrahmah.sasid.me/fullchain.pem"
+pkill dart
+dart bin/server.dart &
