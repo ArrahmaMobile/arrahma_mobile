@@ -8,6 +8,4 @@ pub get
 cd ../api
 pub upgrade
 pub get
-pub upgrade
-pub get
 dart bin/main.dart
