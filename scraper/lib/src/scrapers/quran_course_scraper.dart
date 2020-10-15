@@ -1,4 +1,5 @@
 import 'package:arrahma_shared/shared.dart';
+import 'package:html/dom.dart';
 import 'package:recase/recase.dart';
 import 'package:scraper/src/scrapers/quran_course_detail_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_juz_template_scraper.dart';
@@ -8,68 +9,89 @@ import '../utils.dart';
 import 'quran_course_registration_scraper.dart';
 import 'quran_course_surah_template_scraper.dart';
 
-class QuranCourseScraper implements ScraperBase<List<QuranCourse>> {
+class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
+  const QuranCourseScraper(IScraper scraper) : super(scraper);
+
   @override
-  Future<List<QuranCourse>> scrape(IScraper scraper) async {
+  Future<List<QuranCourse>> scrape() async {
     final doc = await scraper.navigateTo('');
+    final rootUrl = scraper.currentUrl;
     if (doc == null) return [];
     final courseList = doc.querySelectorAll('.column5 .box2');
-    return Future.wait(courseList.map((course) async {
-      final title = course.querySelector('.box_h').text.cleanedText;
-      final subStrIndex = title.indexOf('(') - 1;
-      final normalizedTitle =
-          subStrIndex >= 0 ? title.substring(0, subStrIndex) : title;
-      final imageUrl = course
-          .querySelector('img')
-          .attributes['src']
-          .toAbsolute(scraper.currentUrl);
+    final quranCourseList = <QuranCourse>[];
+    for (final course in courseList) {
+      quranCourseList.add(await scrapeCourse(rootUrl, course));
+    }
+    return quranCourseList;
+  }
 
-      final items = course
-          .querySelectorAll('a')
-          .where((e) => e.text?.trim()?.isNotEmpty ?? false)
-          .map(
-            (i) => CourseLinkItem(
-              name: i.text.cleanedText.titleCase,
-              link: i.attributes['href'].toAbsolute(scraper.currentUrl),
-            ),
-          )
-          .toList();
-      final itemLinkMap =
-          items.fold<Map<String, String>>(<String, String>{}, (map, item) {
-        map[item.name.toUpperCase()] = item.link;
-        return map;
-      });
+  Future<QuranCourse> scrapeCourse(String rootUrl, Element course) async {
+    final title = course.querySelector('.box_h').text.cleanedText;
+    final subStrIndex = title.indexOf('(') - 1;
+    final normalizedTitle =
+        subStrIndex >= 0 ? title.substring(0, subStrIndex) : title;
+    final imageUrl = course
+        .querySelector('img')
+        .attributes['src']
+        .toAbsolute(rootUrl)
+        .removeQueryString();
 
-      final courseDetailLink =
-          itemLinkMap['COURSE DETAIL'] ?? itemLinkMap['PROGRAM DETAIL'];
-      final courseDetails = courseDetailLink != null
-          ? QuranCourseDetailScraper(courseDetailLink).scrape(scraper)
-          : null;
+    final items = course
+        .querySelectorAll('a')
+        .where((e) => e.text?.trim()?.isNotEmpty ?? false)
+        .map(
+          (i) => CourseLinkItem(
+            name: i.text.cleanedText.titleCase,
+            link: i.attributes['href'].toAbsolute(scraper.currentUrl),
+          ),
+        )
+        .toList();
+    final itemLinkMap =
+        items.fold<Map<String, String>>(<String, String>{}, (map, item) {
+      map[item.name.toUpperCase()] = item.link;
+      return map;
+    });
 
-      final registrationLink = itemLinkMap['REGISTRATION'];
-      final registration = registrationLink != null
-          ? QuranCourseRegistrationScraper(registrationLink).scrape(scraper)
-          : null;
+    final courseDetailLink =
+        itemLinkMap['COURSE DETAIL'] ?? itemLinkMap['PROGRAM DETAIL'];
+    final courseDetails = courseDetailLink != null
+        ? QuranCourseDetailScraper(scraper, courseDetailLink).scrape()
+        : null;
 
-      final tafseerLink = itemLinkMap['TAFSEER LINK'];
-      final tafseer = tafseerLink != null
-          ? QuranCourseJuzTemplateScraper(tafseerLink).scrape(scraper)
-          : null;
+    final registrationLink = itemLinkMap['REGISTRATION'];
+    final registration = registrationLink != null
+        ? QuranCourseRegistrationScraper(scraper, registrationLink).scrape()
+        : null;
 
-      final tajweedLink = itemLinkMap['TAJWEED LINK'];
-      final tajweed = tajweedLink != null
-          ? QuranCourseSurahTemplateScraper(tajweedLink).scrape(scraper)
-          : null;
+    final tafseerLink = itemLinkMap['TAFSEER LINK'];
+    final tafseer = tafseerLink != null
+        ? QuranCourseJuzTemplateScraper(scraper, tafseerLink).scrape()
+        : null;
 
-      return QuranCourse(
-        title: normalizedTitle,
-        imageUrl: imageUrl,
-        courseDetails: await courseDetails,
-        registration: await registration,
-        tafseer: await tafseer,
-        tajweed: await tajweed,
-        // lectures: await lectures,
-      );
-    }).toList());
+    final tajweedLink = itemLinkMap['TAJWEED LINK'];
+    final tajweed = tajweedLink != null
+        ? QuranCourseSurahTemplateScraper(scraper, tajweedLink).scrape()
+        : null;
+
+    final lecutresLink = itemLinkMap['LECTURES'];
+
+    QuranCourseContent lectures;
+    if (lecutresLink != null) {
+      final doc = await scraper.navigateTo(lecutresLink);
+      final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
+      lectures = await (isSurahPage
+          ? QuranCourseSurahTemplateScraper(scraper, lecutresLink).scrape()
+          : QuranCourseJuzTemplateScraper(scraper, lecutresLink).scrape());
+    }
+
+    return QuranCourse(
+      title: normalizedTitle,
+      imageUrl: imageUrl,
+      courseDetails: await courseDetails,
+      registration: await registration,
+      tafseer: await tafseer,
+      tajweed: await tajweed,
+      lectures: await lectures,
+    );
   }
 }

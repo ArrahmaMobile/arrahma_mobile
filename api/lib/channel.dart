@@ -1,7 +1,6 @@
 import 'package:arrahma_web_api/controller/data_controller.dart';
+import 'package:arrahma_web_api/controller/status_controller.dart';
 import 'package:scraper_service/scraper_service.dart';
-import 'package:simple_json_mapper/simple_json_mapper.dart';
-import 'package:arrahma_shared/src/models/status/server_status_check.dart';
 
 import 'api.dart';
 
@@ -37,9 +36,7 @@ class ArrahmaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router(basePath: '/api');
     router.policy.allowedOrigins = ['http://localhost:8000'];
-    router.route('/status').linkFunction((request) => Response.ok(
-        JsonMapper.serializeToMap(
-            ServerStatus(status: ServerConnectionStatus.Available))));
+    router.route('/status').link(() => StatusController(_scraperService));
     router.route('/data').link(() => DataController(_scraperService));
 
     return router;

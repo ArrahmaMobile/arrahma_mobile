@@ -20,10 +20,14 @@ class QuranCoursePage extends StatefulWidget {
 }
 
 class _QuranCoursePageState extends State<QuranCoursePage> {
-  int _tabSelected = 2;
+  int _tabSelected;
 
-  Widget _getTab(int tabIndex) {
-    final tabs = [
+  int get tabCount => _getTabs().length;
+
+  int get selectedTabIndex => _tabSelected ?? (tabCount - 1);
+
+  List<Widget> _getTabs() {
+    return [
       if (widget.course.courseDetails != null)
         QuranDetailsTab(
           title: widget.course.title,
@@ -41,11 +45,19 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
         QuranSurahPage(
           surahs: widget.course.tajweed.surahs,
         ),
+      if (widget.course.lectures != null)
+        QuranSurahPage(
+          surahs: widget.course.lectures.surahs,
+        ),
       if (widget.course.tests != null)
         QuranTestsPage(
           title: widget.course.title,
         )
     ];
+  }
+
+  Widget _getTab(int tabIndex) {
+    final tabs = _getTabs();
     return tabs[tabIndex];
   }
 
@@ -53,75 +65,64 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainDrawer(),
-      body: _getTab(_tabSelected),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: const Color(0xff124570),
-        unselectedItemColor: Colors.black,
-        currentIndex: _tabSelected,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          if (widget.course.courseDetails != null)
-            const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.library_books,
-              ),
-              title: Text(
-                'Details',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
+      body: _getTab(selectedTabIndex),
+      bottomNavigationBar: tabCount <= 1
+          ? null
+          : BottomNavigationBar(
+              selectedItemColor: const Color(0xff124570),
+              unselectedItemColor: Colors.black,
+              currentIndex: selectedTabIndex,
+              type: BottomNavigationBarType.fixed,
+              items: [
+                if (widget.course.courseDetails != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.library_books,
+                    ),
+                    label: 'Details',
+                  ),
+                if (widget.course.registration != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.book,
+                    ),
+                    label: 'Registration',
+                  ),
+                if (widget.course.tafseer != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.book,
+                    ),
+                    label: 'Tafseer',
+                  ),
+                if (widget.course.tajweed != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                    ),
+                    label: 'Tajweed',
+                  ),
+                if (widget.course.lectures != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                    ),
+                    label: 'Lectures',
+                  ),
+                if (widget.course.tests != null)
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                    ),
+                    label: 'Tests',
+                  ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _tabSelected = index;
+                });
+              },
             ),
-          if (widget.course.registration != null)
-            const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.book,
-              ),
-              title: Text(
-                'Registration',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          if (widget.course.tafseer != null)
-            const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.book,
-              ),
-              title: Text(
-                'Tafseer',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          if (widget.course.tajweed != null)
-            const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              title: Text(
-                'Tajweed',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          if (widget.course.tests != null)
-            const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              title: Text(
-                'Tests',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _tabSelected = index;
-          });
-        },
-      ),
     );
   }
 }

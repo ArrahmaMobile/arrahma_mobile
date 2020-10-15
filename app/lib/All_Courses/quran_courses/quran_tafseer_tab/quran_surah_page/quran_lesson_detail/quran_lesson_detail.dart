@@ -2,6 +2,7 @@ import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
 import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 
 class QuranLessonAudioPage extends StatefulWidget {
   const QuranLessonAudioPage(
@@ -84,13 +85,12 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
               const SizedBox(
                 height: 30,
               ),
-              ...widget.surah.groupNames
+              ...widget.surah.groups
                   .asMap()
                   .entries
                   .map((itemEntry) => _buildQuranLessonDetail(
                         context,
                         itemEntry.value,
-                        widget.surah.groupNames[itemEntry.key],
                         widget.lesson.itemGroups[itemEntry.key].items,
                       ))
                   .toList()
@@ -101,21 +101,9 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
     );
   }
 
-  Widget _buildQuranLessonDetail(BuildContext context, String title,
-      String groupName, List<String> groupUrls) {
-    if (groupUrls.isEmpty) return Container();
-    final mediaItems = groupUrls
-        .asMap()
-        .entries
-        .map(
-          (urlEntry) => MediaData(
-            title:
-                '${widget.lesson.title} - ${widget.lesson.title.startsWith(groupName) ? '' : '$groupName '}Pt. ${urlEntry.key + 1}',
-            group: widget.surah.name,
-            sourceUrl: urlEntry.value,
-          ),
-        )
-        .toList();
+  Widget _buildQuranLessonDetail(
+      BuildContext context, Group group, List<Item> items) {
+    if (items.isEmpty) return Container();
     return GestureDetector(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +115,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
               ),
               const SizedBox(width: 15),
               Text(
-                title,
+                group.name,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -136,26 +124,42 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
             ],
           ),
           Row(
-              children: groupUrls
+              children: items
                   .asMap()
                   .entries
                   .map(
                     (entry) => IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
+                      icon: Icon(
+                        GroupTypeIconMap[entry.value.type],
                         color: Colors.black,
                       ),
                       color: Colors.black,
                       onPressed: () {
-                        Navigator.push<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (_) => MediaPlayerScreen(
-                              mediaItems: mediaItems,
-                              initialAudioIndex: entry.key,
+                        if (entry.value.type == ItemType.Audio) {
+                          final mediaItems = items
+                              .asMap()
+                              .entries
+                              .map(
+                                (urlEntry) => MediaData(
+                                  title:
+                                      '${widget.lesson.title} - ${widget.lesson.title.startsWith(group.name) ? '' : '${group.name} '}Pt. ${urlEntry.key + 1}',
+                                  group: widget.surah.name,
+                                  sourceUrl: urlEntry.value.url,
+                                ),
+                              )
+                              .toList();
+                          Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (_) => MediaPlayerScreen(
+                                mediaItems: mediaItems,
+                                initialAudioIndex: entry.key,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                          return;
+                        }
+                        Launch.url(entry.value.url);
                       },
                     ),
                   )
@@ -165,4 +169,13 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
       onTap: () {},
     );
   }
+
+  static const GroupTypeIconMap = <ItemType, IconData>{
+    ItemType.Audio: Icons.volume_up,
+    ItemType.Pdf: Icons.notes,
+    ItemType.Image: Icons.image,
+    ItemType.Video: Icons.ondemand_video,
+    ItemType.File: Icons.file_download,
+    ItemType.Website: Icons.web,
+  };
 }

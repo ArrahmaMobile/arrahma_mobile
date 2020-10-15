@@ -6,7 +6,6 @@ import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,14 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int tapCount;
-
-  @override
-  void initState() {
-    super.initState();
-    tapCount = 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     final appData = context.on<AppData>();
@@ -29,22 +20,20 @@ class _HomePageState extends State<HomePage> {
       drawer: MainDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        title: GestureDetector(
-          onTap: () async {
-            tapCount++;
-            if (tapCount > 2) {
-              tapCount = 0;
-              final currentEnv = context.once<EnvironmentConfig>();
-              final envs = SL.get<EnvironmentService>().getEnvironments();
-              final envNames = envs.map((e) => e.name).toList();
-              final nextEnv =
-                  envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
-              RS.set<EnvironmentConfig>(context, (_) => nextEnv);
-              final success = await SL
-                  .get<DeviceStorageService>()
-                  .saveEnvironmentName(nextEnv.name);
-              if (success) print('Switched env to ${nextEnv.name}');
-            }
+        title: HiddenTap(
+          onTrigger: () async {
+            if (!AppUtils.isDebug) return;
+            final currentEnv = context.once<EnvironmentConfig>();
+            final envs = SL.get<EnvironmentService>().getEnvironments();
+            if ((envs?.length ?? -1) <= 1) return;
+            final envNames = envs.map((e) => e.name).toList();
+            final nextEnv =
+                envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
+            RS.set<EnvironmentConfig>(context, (_) => nextEnv);
+            final success = await SL
+                .get<DeviceStorageService>()
+                .saveEnvironmentName(nextEnv.name);
+            if (success) print('Switched env to ${nextEnv.name}');
           },
           child: SizedBox(
             height: 56,
@@ -112,19 +101,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildImageLink(String linkUrl, String imageUrl) {
     return GestureDetector(
-      onTap: () => _launchLink(linkUrl),
+      onTap: () => Launch.url(linkUrl),
       child: imageUrl.startsWith('http')
           ? Image.network(imageUrl, fit: BoxFit.contain, width: 1000.0)
           : Image.asset(imageUrl),
     );
-  }
-
-  Future _launchLink(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {

@@ -4,17 +4,17 @@ import 'package:scraper/src/scrapers/quran_course_juz_template_scraper.dart';
 import '../utils.dart';
 import '../scraper_base.dart';
 
-class QuranCourseSurahTemplateScraper
-    implements ScraperBase<QuranCourseContent> {
-  QuranCourseSurahTemplateScraper(String contentUrl)
-      : contentUrl = Uri.parse(contentUrl).normalizePath();
+class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
+  QuranCourseSurahTemplateScraper(IScraper scraper, String contentUrl)
+      : contentUrl = Uri.parse(contentUrl).normalizePath(),
+        super(scraper);
 
   final Uri contentUrl;
 
   static const INTRO_TOKEN = 'Introduction';
 
   @override
-  Future<QuranCourseContent> scrape(IScraper scraper) async {
+  Future<QuranCourseContent> scrape() async {
     final url = contentUrl.toString();
     final doc = await scraper.navigateTo(url);
     if (doc == null) return null;
@@ -44,19 +44,27 @@ class QuranCourseSurahTemplateScraper
             response.statusCode < 300) {
           return Surah(
             name: item.name,
-            groupNames: ['Intro'],
+            groups: [Group(name: 'Intro')],
             lessons: [
               Lesson(title: item.name, itemGroups: [
-                ItemGroup(items: [item.link])
+                GroupItem(items: [
+                  Item(
+                    isDirectSource: true,
+                    url: item.link,
+                    type: ItemType.Audio,
+                  )
+                ])
               ]),
             ],
           );
         }
       } else {
-        final content =
-            await QuranCourseJuzTemplateScraper(item.link, useHeading: true)
-                .scrape(scraper);
-        return content.surahs.isNotEmpty ? content.surahs.first : null;
+        final content = await QuranCourseJuzTemplateScraper(scraper, item.link,
+                useHeading: true)
+            .scrape();
+        return content.surahs.isNotEmpty
+            ? content.surahs.first.update(name: item.name)
+            : null;
       }
       return null;
     }));

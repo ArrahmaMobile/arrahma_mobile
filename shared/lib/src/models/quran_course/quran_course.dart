@@ -4,7 +4,6 @@ import 'package:arrahma_shared/src/models/quran_course/quran_course_content.dart
 import 'package:arrahma_shared/src/models/quran_course/quran_course_details.dart';
 
 import 'quran_course_registration.dart';
-import 'quran_course_lectures.dart';
 import 'quran_course_test.dart';
 
 abstract class Course {
@@ -25,10 +24,9 @@ class QuranCourse extends Course {
       this.tests})
       : super(title: title, imageUrl: imageUrl);
   final QuranCourseDetails courseDetails;
-  final QuranCourseLectures lectures;
+  final QuranCourseContent lectures;
   final QuranCourseRegistration registration;
   final QuranCourseContent tafseer;
   final QuranCourseContent tajweed;
   final List<QuranCourseTest> tests;
-  // final CourseTafseer tafseer;
 }

@@ -6,9 +6,12 @@
     "configurations": [
         {
             "name": "Dart",
-            "program": "bin/main.dart",
+            "program": "bin/server.dart",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "env": {
+                "DEBUG": "true"
+            }
         },
     ]
 }

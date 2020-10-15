@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:arrahma_shared/shared.dart';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
@@ -13,15 +15,11 @@ abstract class IScraper {
   Future<Document> navigateTo(String relativeUrl);
 }
 
-abstract class IScraperRegistrar {
-  void register(ScraperBase<dynamic> scraper);
-}
-
-class Scraper implements IScraper, IScraperRegistrar {
+class Scraper implements IScraper {
   Scraper(this.client);
   final BaseClient client;
-  final _scrapers = <ScraperBase<dynamic>>[];
   final _cachedDocs = <String, Document>{};
+  final _cachedRequests = <String, Future<Document>>{};
   final _cachedResponses = <String, Response>{};
   final _baseUrl = Uri.parse('https://arrahma.org');
 
@@ -40,16 +38,31 @@ class Scraper implements IScraper, IScraperRegistrar {
     if (_cachedDocs.containsKey(normalizedUrl)) {
       return _cachedDocs[normalizedUrl];
     }
-    logger.info('Navigating to $normalizedUrl');
-    final response = await client.get(normalizedUrl).catchError((err) => null);
-    _cachedResponses[normalizedUrl] = response;
-    if (response == null ||
-        response.statusCode != 200 ||
-        !response.headers['content-type'].startsWith('text/html')) return null;
-    final document = parse(response.body);
-    _cachedDocs[normalizedUrl] = document;
-    _currentUrl = normalizedUrl;
-    return document;
+    final completer = Completer<Document>();
+    _cachedRequests[normalizedUrl] = completer.future;
+    if (_cachedRequests.isNotEmpty && _cachedRequests.length % 6 == 0) {
+      print('Pausing to avoid request burst and rate limiting...');
+      await Future<dynamic>.delayed(const Duration(seconds: 5));
+    }
+    print('Navigating to $normalizedUrl');
+    try {
+      final response =
+          await client.get(normalizedUrl).catchError((err) => null);
+      _cachedResponses[normalizedUrl] = response;
+      if (response == null ||
+          response.statusCode != 200 ||
+          !response.headers['content-type'].startsWith('text/html')) {
+        return null;
+      }
+      final document = parse(response.body);
+      _cachedDocs[normalizedUrl] = document;
+      _currentUrl = normalizedUrl;
+      completer.complete(document);
+      return document;
+    } catch (err) {
+      completer.completeError(err);
+    }
+    return null;
   }
 
   Future<AppData> initiate() async {
@@ -59,14 +72,16 @@ class Scraper implements IScraper, IScraperRegistrar {
       logoUrl: document
           .querySelector('.header img')
           .attributes['src']
-          .toAbsolute(currentUrl),
+          .toAbsolute(currentUrl)
+          .removeQueryString(),
       banners: document
           .querySelectorAll('#slider a')
           .map((banner) => HeadingBanner(
                 imageUrl: banner
                     .querySelector('img')
                     .attributes['src']
-                    .toAbsolute(currentUrl),
+                    .toAbsolute(currentUrl)
+                    .removeQueryString(),
                 linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
               ))
           .toList(),
@@ -87,7 +102,8 @@ class Scraper implements IScraper, IScraperRegistrar {
             imageUrl: banner
                 .querySelector('img')
                 ?.attributes['src']
-                ?.toAbsolute(currentUrl));
+                ?.toAbsolute(currentUrl)
+                ?.removeQueryString());
       }).toList(),
       socialMediaItems:
           document.querySelectorAll('.column3footer a').map((socialMediaItem) {
@@ -95,28 +111,25 @@ class Scraper implements IScraper, IScraperRegistrar {
         final imageUrl = socialMediaItem
             .querySelector('img')
             ?.attributes['src']
-            ?.toAbsolute(currentUrl);
+            ?.toAbsolute(currentUrl)
+            ?.removeQueryString();
         return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
       }).toList(),
-      courses: await QuranCourseScraper().scrape(this),
+      courses: await QuranCourseScraper(this).scrape(),
     );
-  }
-
-  @override
-  void register(ScraperBase<dynamic> scraper) {
-    _scrapers.add(scraper);
   }
 }
 
 abstract class ScraperBase<T> {
-  const ScraperBase();
-  Future<T> scrape(IScraper scraper);
+  const ScraperBase(this.scraper);
+  final IScraper scraper;
+  Future<T> scrape();
 }
 
 class AdHocScraper<T> extends ScraperBase<T> {
-  const AdHocScraper(this.scraperFn);
-  final T Function(IScraper scraper) scraperFn;
+  const AdHocScraper(this.scraperFn, IScraper scraper) : super(scraper);
+  final T Function() scraperFn;
 
   @override
-  Future<T> scrape(IScraper scraper) async => scraperFn(scraper);
+  Future<T> scrape() async => scraperFn();
 }

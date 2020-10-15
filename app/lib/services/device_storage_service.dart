@@ -4,6 +4,8 @@ import 'package:flutter_framework/flutter_framework.dart';
 class DeviceStorageService extends BaseDeviceStorageService {
   const DeviceStorageService(IStorageService storage) : super(storage);
 
+  static const APP_DATA_HASH_KEY = 'AppDataHash';
+
   Future<AppData> loadAppData() async {
     const banners = [
       HeadingBanner(
@@ -302,6 +304,14 @@ class DeviceStorageService extends BaseDeviceStorageService {
         socialMediaItems: socialMediaItems,
       ),
     );
+  }
+
+  Future<String> loadAppDataHash() async {
+    return storage.getWithKey(APP_DATA_HASH_KEY);
+  }
+
+  Future<bool> saveAppDataHash(String appDataHash) async {
+    return storage.setWithKey(APP_DATA_HASH_KEY, appDataHash);
   }
 
   Future<bool> saveAppData(AppData appData) async {

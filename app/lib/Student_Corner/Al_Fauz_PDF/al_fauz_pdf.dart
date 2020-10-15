@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 
 import 'model/fauz_pdf.dart';
 
@@ -84,7 +84,7 @@ class AlFauzPDF extends StatelessWidget {
 
   Widget _biildFauzPDF(FauzPdf item) {
     return GestureDetector(
-      onTap: () => _launchLink(item.pdfUrl),
+      onTap: () => Launch.url(item.pdfUrl),
       child: Container(
         color: const Color(0xff124570),
         child: Column(
@@ -101,102 +101,4 @@ class AlFauzPDF extends StatelessWidget {
       ),
     );
   }
-
-  Future _launchLink(String pdfUrl) async {
-    if (await canLaunch(pdfUrl)) {
-      await launch(pdfUrl);
-    } else {
-      throw 'Could not launch $pdfUrl';
-    }
-  }
-
-  // _juz1() async {
-  //   const url = 'http://arrahma.org/alfauz/juz1.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz2() async {
-  //   const url = 'http://arrahma.org/alfauz/juz2.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz3() async {
-  //   const url = 'http://arrahma.org/alfauz/juz3.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz4() async {
-  //   const url = 'http://arrahma.org/alfauz/juz4.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz5() async {
-  //   const url = 'http://arrahma.org/alfauz/juz5.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz6() async {
-  //   const url = 'http://arrahma.org/alfauz/juz6.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz7() async {
-  //   const url = 'http://arrahma.org/alfauz/juz7.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz8() async {
-  //   const url = 'http://arrahma.org/alfauz/juz8.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz9() async {
-  //   const url = 'http://arrahma.org/alfauz/juz9.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // _juz10() async {
-  //   const url = 'http://arrahma.org/alfauz/juz10.pdf';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
 }

@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_shared/shared.dart' as shared;
 import 'package:scraper_service/scraper_runner.dart';
+import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 class ScraperService {
   static const UPDATE_DURATION = Duration(hours: 4);
@@ -24,9 +27,26 @@ class ScraperService {
     return service;
   }
 
-  ScraperService._internal(this._data);
-  AppData _data;
-  AppData get data => _data;
+  ScraperService._internal(AppData value) {
+    _data = value;
+  }
+
+  AppData _rawData;
+  void set _data(AppData value) {
+    final serializedData = JsonMapper.serializeToMap(value);
+    final jsonData = json.encode(serializedData);
+    _serializedData = jsonData;
+    _dataHash = md5.convert(utf8.encode(_serializedData)).toString();
+    _rawData = value;
+  }
+
+  AppData get data => _rawData;
+
+  String _serializedData;
+  String get serializedData => _serializedData;
+
+  String _dataHash;
+  String get dataHash => _dataHash;
 
   Timer _updateTimer;
 

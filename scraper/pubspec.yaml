@@ -11,9 +11,7 @@ dependencies:
   http: ^0.12.1
   recase: ^3.0.0
   arrahma_shared:
-    git:
-      url: https://github.com/ArrahmaMobile/arrahma_mobile.git
-      path: shared
+    path: ../shared
   html2md: ^0.5.1
 
 dev_dependencies:

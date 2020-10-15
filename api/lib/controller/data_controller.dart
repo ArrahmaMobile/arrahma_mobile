@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:aqueduct/aqueduct.dart';
+import 'package:arrahma_web_api/api.dart';
 import 'package:scraper_service/scraper_service.dart';
-import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 class DataController extends ResourceController {
   DataController(this._scraperService);
@@ -11,31 +10,14 @@ class DataController extends ResourceController {
   final ScraperService _scraperService;
 
   @Operation.get()
-  Future<Response> getData() async {
-    final data = _scraperService.data;
-    final serializedData = JsonMapper.serializeToMap(data);
-    print(json.encode(serializedData));
-    return Response.ok(serializedData);
+  Future<Response> getData(
+      {@Bind.query('If-None-Match') String dataHash}) async {
+    final eTagHeader = {'ETag': _scraperService.dataHash};
+    if (dataHash != null && dataHash == _scraperService.dataHash) {
+      return Response(HttpStatus.notModified, eTagHeader, null);
+    }
+    final data = _scraperService.serializedData;
+    print(data.length > 1000 ? data.substring(0, 1000) : data);
+    return Response.ok(data, headers: eTagHeader);
   }
-
-  // @Operation.get('id')
-  // Future<Response> getHeroByID(@Bind.path('id') int id) async {
-  //   final heroQuery = Query<Hero>(context)..where((h) => h.id).equalTo(id);
-
-  //   final hero = await heroQuery.fetchOne();
-
-  //   if (hero == null) {
-  //     return Response.notFound();
-  //   }
-  //   return Response.ok(hero);
-  // }
-
-  // @Operation.post()
-  // Future<Response> createHero(@Bind.body() Hero inputHero) async {
-  //   final query = Query<Hero>(context)..values = inputHero;
-
-  //   final insertedHero = await query.insert();
-
-  //   return Response.ok(insertedHero);
-  // }
 }

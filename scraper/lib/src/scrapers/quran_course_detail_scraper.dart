@@ -4,13 +4,14 @@ import 'package:arrahma_shared/shared.dart';
 
 import '../scraper_base.dart';
 
-class QuranCourseDetailScraper implements ScraperBase<QuranCourseDetails> {
-  const QuranCourseDetailScraper(this.detailUrl);
+class QuranCourseDetailScraper extends ScraperBase<QuranCourseDetails> {
+  const QuranCourseDetailScraper(IScraper scraper, this.detailUrl)
+      : super(scraper);
 
   final String detailUrl;
 
   @override
-  Future<QuranCourseDetails> scrape(IScraper scraper) async {
+  Future<QuranCourseDetails> scrape() async {
     if (detailUrl.endsWith('pdf')) {
       return QuranCourseDetails(
         type: QuranCourseDetailsType.Pdf,
