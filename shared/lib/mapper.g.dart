@@ -45,6 +45,7 @@ final _serverstatusMapper = JsonObjectMapper(
 final _appdataMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => AppData(
     logoUrl: mapper.applyFromJsonConverter(json['logoUrl']),
+    aboutUsMarkdown: mapper.applyFromJsonConverter(json['aboutUsMarkdown']),
     banners: (json['banners'] as List)?.cast<Map<String, dynamic>>()?.map((item) => mapper.deserialize<HeadingBanner>(item))?.toList(),
     broadcastItems: (json['broadcastItems'] as List)?.cast<Map<String, dynamic>>()?.map((item) => mapper.deserialize<BroadcastItem>(item))?.toList(),
     courses: (json['courses'] as List)?.cast<Map<String, dynamic>>()?.map((item) => mapper.deserialize<QuranCourse>(item))?.toList(),
@@ -52,6 +53,7 @@ final _appdataMapper = JsonObjectMapper(
   ),
   (CustomJsonMapper mapper, AppData instance) => <String, dynamic>{
     'logoUrl': mapper.applyFromInstanceConverter(instance.logoUrl),
+    'aboutUsMarkdown': mapper.applyFromInstanceConverter(instance.aboutUsMarkdown),
     'banners': instance.banners?.map((item) => mapper.serializeToMap(item))?.toList(),
     'broadcastItems': instance.broadcastItems?.map((item) => mapper.serializeToMap(item))?.toList(),
     'courses': instance.courses?.map((item) => mapper.serializeToMap(item))?.toList(),

@@ -4,6 +4,7 @@ import 'package:arrahma_shared/shared.dart';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
+import 'package:scraper/src/scrapers/about_us_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_scraper.dart';
 import 'package:arrahma_shared/src/app_metadata.dart';
 import 'utils.dart';
@@ -69,53 +70,54 @@ class Scraper implements IScraper {
     final doc = await navigateTo('');
     if (doc == null) return null;
     return AppData(
-      logoUrl: document
-          .querySelector('.header img')
-          .attributes['src']
-          .toAbsolute(currentUrl)
-          .removeQueryString(),
-      banners: document
-          .querySelectorAll('#slider a')
-          .map((banner) => HeadingBanner(
-                imageUrl: banner
-                    .querySelector('img')
-                    .attributes['src']
-                    .toAbsolute(currentUrl)
-                    .removeQueryString(),
-                linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
-              ))
-          .toList(),
-      broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
-        final aTag = banner.querySelector('a');
-        final link = aTag != null
-            ? aTag.attributes['href'].toAbsolute(currentUrl)
-            : null;
-        final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
-        final type = host != null
-            ? BroadcastType.values.firstWhere(
-                (type) => type.toString().split('.')[1].toLowerCase() == host,
-                orElse: () => null)
-            : null;
-        return BroadcastItem(
-            type: type ?? BroadcastType.Other,
-            linkUrl: link,
-            imageUrl: banner
-                .querySelector('img')
-                ?.attributes['src']
-                ?.toAbsolute(currentUrl)
-                ?.removeQueryString());
-      }).toList(),
-      socialMediaItems:
-          document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-        final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
-        final imageUrl = socialMediaItem
-            .querySelector('img')
-            ?.attributes['src']
-            ?.toAbsolute(currentUrl)
-            ?.removeQueryString();
-        return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
-      }).toList(),
-      courses: await QuranCourseScraper(this).scrape(),
+      // logoUrl: document
+      //     .querySelector('.header img')
+      //     .attributes['src']
+      //     .toAbsolute(currentUrl)
+      //     .removeQueryString(),
+      aboutUsMarkdown: await AboutUsScraper(this).scrape(),
+      // banners: document
+      //     .querySelectorAll('#slider a')
+      //     .map((banner) => HeadingBanner(
+      //           imageUrl: banner
+      //               .querySelector('img')
+      //               .attributes['src']
+      //               .toAbsolute(currentUrl)
+      //               .removeQueryString(),
+      //           linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
+      //         ))
+      //     .toList(),
+      // broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
+      //   final aTag = banner.querySelector('a');
+      //   final link = aTag != null
+      //       ? aTag.attributes['href'].toAbsolute(currentUrl)
+      //       : null;
+      //   final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
+      //   final type = host != null
+      //       ? BroadcastType.values.firstWhere(
+      //           (type) => type.toString().split('.')[1].toLowerCase() == host,
+      //           orElse: () => null)
+      //       : null;
+      //   return BroadcastItem(
+      //       type: type ?? BroadcastType.Other,
+      //       linkUrl: link,
+      //       imageUrl: banner
+      //           .querySelector('img')
+      //           ?.attributes['src']
+      //           ?.toAbsolute(currentUrl)
+      //           ?.removeQueryString());
+      // }).toList(),
+      // socialMediaItems:
+      //     document.querySelectorAll('.column3footer a').map((socialMediaItem) {
+      //   final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
+      //   final imageUrl = socialMediaItem
+      //       .querySelector('img')
+      //       ?.attributes['src']
+      //       ?.toAbsolute(currentUrl)
+      //       ?.removeQueryString();
+      //   return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
+      // }).toList(),
+      // courses: await QuranCourseScraper(this).scrape(),
     );
   }
 }
