@@ -108,16 +108,20 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
         if (groupName != '') {
           groups.add(Group(name: groupName));
         } else {
-          skipCount++;
+          // skipCount++;
         }
       } else if (element.id.endsWith('ayah') ||
-          ['column1', 'column7'].any((id) => element.id.endsWith(id))) {
+          ['column1', 'column7', 'hadithtopic', 'tajweedc']
+              .any((id) => element.id.endsWith(id))) {
+        // TITLE
         addPreviousLesson();
         title = element.text.cleanedText;
         groupItems = [];
         skipped = 0;
-      } else if (element.id.endsWith('ayahb') ||
+      } else if (['ayahb', 'hb', 'tajweedd']
+              .any((id) => element.id.endsWith(id)) ||
           element.id.contains('column')) {
+        // Items
         if (skipped++ < skipCount) continue;
         final links = element.children.isNotEmpty
             ? element
