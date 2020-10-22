@@ -5,8 +5,13 @@ import 'package:inherited_state/inherited_state.dart';
 import 'audio_player_service.dart';
 
 class AudioPlayerDisplay extends StatefulWidget {
-  const AudioPlayerDisplay({Key key, this.item}) : super(key: key);
+  const AudioPlayerDisplay({
+    Key key,
+    this.item,
+    this.dense = false,
+  }) : super(key: key);
   final MediaItem item;
+  final bool dense;
 
   @override
   _AudioPlayerDisplayState createState() => _AudioPlayerDisplayState();
@@ -31,13 +36,15 @@ class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
       children: [
         Text(
           item?.album ?? '',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: widget.dense ? 16 : 18),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         Text(
           item?.title ?? (isLoading ? 'Loading...' : 'Unknown'),
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: widget.dense ? 16 : 18),
           textAlign: TextAlign.center,
         ),
       ],

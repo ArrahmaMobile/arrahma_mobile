@@ -19,83 +19,69 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 30),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 10),
-                child: IconButton(
-                  iconSize: 25,
-                  icon: const Icon(Icons.arrow_back),
-                  color: Colors.black,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/media_player/media_player_icon.PNG',
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: MediaQuery.of(context).size.width * 0.4,
-                      ),
+      appBar: AppBar(
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        child: Column(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: ClipRRect(
+                    child: Image.asset(
+                      'assets/images/media_player/media_player_icon.PNG',
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      height: MediaQuery.of(context).size.width * 0.4,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        widget.surah.name,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      widget.surah.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        widget.lesson.title,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      widget.lesson.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ...widget.surah.groups
-                  .asMap()
-                  .entries
-                  .map((itemEntry) => _buildQuranLessonDetail(
-                        context,
-                        itemEntry.value,
-                        widget.lesson.itemGroups[itemEntry.key].items,
-                      ))
-                  .toList()
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ...widget.surah.groups
+                .asMap()
+                .entries
+                .map((itemEntry) => _buildQuranLessonDetail(
+                      context,
+                      itemEntry.value,
+                      widget.lesson.itemGroups[itemEntry.key].items,
+                    ))
+                .toList()
+          ],
         ),
       ),
     );
@@ -108,20 +94,15 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(left: 20),
-              ),
-              const SizedBox(width: 15),
-              Text(
-                group.name,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              group.name,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
           Row(
               children: items

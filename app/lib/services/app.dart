@@ -40,11 +40,12 @@ class AppService extends StoppableService {
     _statusCheckTimer = Timer.periodic(
         STATUS_CHECK_INTERVAL + const Duration(seconds: 1),
         (_) => statusCheckTimerHandler());
+    _appDataHash ??= await deviceStorageService.loadAppDataHash();
+
     await _setupData();
     apiService.environmentConfigCtrl.stateListener
         .addListener(_onEnvironmentUpdate);
     _appData ??= await deviceStorageService.loadAppData();
-    _appDataHash ??= await deviceStorageService.loadAppDataHash();
     return _appData;
   }
 

@@ -35,12 +35,12 @@ class CoreAudioPlayerService {
   // }
 
   Future<void> stop() async {
-    return AudioService.stop();
+    return await AudioService.stop();
   }
 
   Future<bool> start(List<MediaData> mediaItems, int index) async {
     if (AudioService.running) await stop();
-    final items = mediaItems.map((i) => i.toMediaItem().toJson()).toList();
+    final items = mediaItems.map((i) => i.toMediaItem()).toList();
     return AudioService.start(
         backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
         androidNotificationChannelName: 'Arrahma Audio Service',
@@ -49,14 +49,19 @@ class CoreAudioPlayerService {
         androidNotificationColor: 0xFF2196f3,
         androidNotificationIcon: 'mipmap/ic_launcher',
         androidEnableQueue: true,
-        params: <String, dynamic>{'items': items, 'index': index ?? 0});
+        params: <String, dynamic>{
+          'items': items.map((i) => i.toJson()).toList(),
+          'index': index ?? 0
+        });
   }
 
-  Future<void> pause() {
+  Future<void> pause() async {
+    if (!AudioService.running) return;
     return AudioService.pause();
   }
 
   Future<void> play() async {
+    if (!AudioService.running) return;
     return AudioService.play();
   }
 
@@ -118,7 +123,7 @@ Future _audioPlayerTaskEntrypoint() async {
 class AudioPlayerTask extends BackgroundAudioTask {
   // final _corePlayerService = CoreAudioPlayerService();
   // AudioPlayer get _player => _corePlayerService.player;
-  final _player = AudioPlayer();
+  AudioPlayer _player;
   AudioProcessingState _skipState;
   Seeker _seeker;
   StreamSubscription<PlaybackEvent> _eventSubscription;
@@ -130,14 +135,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
-    final items = params['items'] != null
-        ? (params['items'] as List)
-            .map((dynamic item) =>
-                MediaItem.fromJson(item as Map<dynamic, dynamic>))
-            .toList()
-        : <MediaItem>[];
-    final index = params['index'] != null ? params['index'] as int : 0;
-    _queue = items;
+    _player = AudioPlayer();
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
     // Broadcast media item changes.
@@ -148,6 +146,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     _eventSubscription = _player.playbackEventStream.listen((event) {
       _broadcastState();
     });
+
     // Special processing for state transitions.
     _player.processingStateStream.listen((state) {
       switch (state) {
@@ -166,6 +165,19 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
 
     // Load and broadcast the queue
+    final items = params['items'] != null
+        ? (params['items'] as List)
+            .map((dynamic item) =>
+                MediaItem.fromJson(item as Map<dynamic, dynamic>))
+            .toList()
+        : <MediaItem>[];
+    final index = params['index'] != null ? params['index'] as int : 0;
+    await load(items, index);
+  }
+
+  Future<void> load(List<MediaItem> items, [int index = 0]) async {
+    _player.pause();
+    _queue = items;
     AudioServiceBackground.setQueue(queue);
     try {
       await _player.load(ConcatenatingAudioSource(
@@ -222,6 +234,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
   Future<void> onSeekBackward(bool begin) async => _seekContinuously(begin, -1);
 
   @override
+  Future<void> onUpdateQueue(List<MediaItem> queue) => load(queue);
+
+  @override
   Future<void> onStop() async {
     await _player.pause();
     await _player.dispose();
@@ -272,8 +287,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
       ],
       processingState: _getProcessingState(),
       playing: _player.playing,
-      position: _player.position,
-      bufferedPosition: _player.bufferedPosition,
+      position: _player.position ?? Duration.zero,
+      bufferedPosition: _player.bufferedPosition ?? Duration.zero,
       speed: _player.speed,
     );
   }

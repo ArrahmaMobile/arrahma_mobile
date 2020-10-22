@@ -74,12 +74,12 @@ class _AudioPlayerControlBarState extends State<AudioPlayerControlBar> {
                             height: 56,
                             width: 56,
                             child: Center(
-                              child: showingPauseButton || showingPauseButton
+                              child: showingPauseButton || showingPlayButton
                                   ? IconButton(
                                       icon: Icon(
-                                        showingPauseButton
-                                            ? Icons.pause
-                                            : Icons.play_arrow,
+                                        showingPlayButton
+                                            ? Icons.play_arrow
+                                            : Icons.pause,
                                         size: 32,
                                       ),
                                       onPressed: () {
