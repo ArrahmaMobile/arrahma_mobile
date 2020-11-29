@@ -21,12 +21,12 @@ Future main() async {
         environmentType: EnvironmentType.STAGING,
         baseUrl: 'https://arrahmah.sasid.me/api',
       ),
-      if (kDebugMode)
-        EnvironmentConfig(
-          name: 'Dev-1',
-          environmentType: EnvironmentType.DEV,
-          baseUrl: 'http://192.168.86.199:8888/api',
-        ),
+      // if (kDebugMode)
+      //   EnvironmentConfig(
+      //     name: 'Dev-1',
+      //     environmentType: EnvironmentType.DEV,
+      //     baseUrl: 'http://192.168.86.199:8888/api',
+      //   ),
     ],
   );
   final apiService = SL.get<ApiService>();

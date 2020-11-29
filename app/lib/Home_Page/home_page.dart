@@ -104,7 +104,10 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [], 0),
       child: imageUrl.startsWith('http')
-          ? Image.network(imageUrl, fit: BoxFit.contain, width: 1000.0)
+          ? Image(
+              image: ImageUtils.fromNetworkWithCached(imageUrl),
+              width: 1000,
+              fit: BoxFit.contain)
           : Image.asset(imageUrl),
     );
   }
