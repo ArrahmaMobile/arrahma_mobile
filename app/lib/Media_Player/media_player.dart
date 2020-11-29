@@ -41,68 +41,73 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 30),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 10),
-                child: IconButton(
-                  iconSize: 25,
-                  icon: const Icon(Icons.arrow_back),
-                  color: Colors.black,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  // ignore: prefer_const_literals_to_create_immutables
-                  boxShadow: [
-                    const BoxShadow(
-                      color: Color(0x0ff00000),
-                      offset: Offset(0, 10),
-                      spreadRadius: 0,
-                      blurRadius: 30,
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/images/media_player/media_player_icon.PNG',
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height * 0.4,
+      appBar: AppBar(
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                // ignore: prefer_const_literals_to_create_immutables
+                boxShadow: [
+                  const BoxShadow(
+                    color: Color(0x0ff00000),
+                    offset: Offset(0, 10),
+                    spreadRadius: 0,
+                    blurRadius: 30,
                   ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/images/media_player/media_player_icon.PNG',
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.4,
                 ),
               ),
-              const SizedBox(height: 20),
-              AudioPlayerDisplay(item: item.toMediaItem()),
-              // const SizedBox(height: 25),
-              // AudioPlayerSeeker(),
-              const SizedBox(
-                height: 20,
-              ),
-              AudioPlayerControlBar(
-                onStart: () => _startAudio(),
-                onNext: () => setState(() {
-                  if (_index < widget.mediaItems.length - 1) _index++;
-                }),
-                onPrevious: () => setState(() {
-                  if (_index > 0) _index--;
-                }),
-              ),
+<<<<<<< HEAD
             ],
           ),
+=======
+            ),
+            const SizedBox(height: 20),
+            AudioPlayerDisplay(item: item.toMediaItem()),
+            // const SizedBox(height: 25),
+            // AudioPlayerSeeker(),
+            const SizedBox(
+              height: 20,
+            ),
+            AudioPlayerControlBar(
+              onStart: () => _startAudio(),
+              onNext: () => setState(() {
+                if (_index < widget.mediaItems.length - 1) _index++;
+              }),
+              onPrevious: () => setState(() {
+                if (_index > 0) _index--;
+              }),
+            ),
+            const SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.share,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/share');
+                  },
+                ),
+              ],
+            ),
+          ],
+>>>>>>> fc69f29828580597bad3af74aeda9491ba77f9bc
         ),
       ),
     );
