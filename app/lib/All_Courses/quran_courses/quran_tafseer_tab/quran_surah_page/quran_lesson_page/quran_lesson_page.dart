@@ -42,11 +42,6 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: const Icon(Icons.star_border),
-                  color: Colors.white,
-                  onPressed: () {},
-                ),
-                IconButton(
                   icon: const Icon(Icons.search),
                   color: Colors.white,
                   onPressed: () {
@@ -94,13 +89,6 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
             ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(
-              'Continue to last Lesson',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-          ),
           Expanded(
             child: ListView.separated(
               itemCount: widget.surah.lessons.length,
@@ -113,19 +101,6 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
                   subtitle: lesson.uploadDate != null
                       ? Text(lesson.uploadDate)
                       : null,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(_isFav ? Icons.star : Icons.star_border),
-                        onPressed: () {
-                          setState(() {
-                            _isFav = !_isFav;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
                   onTap: () => _navigateToLesson(lesson),
                 );
               },

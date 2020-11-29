@@ -38,13 +38,6 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.star_border),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/favorite_surah');
-                    },
-                  ),
-                  IconButton(
                     icon: const Icon(Icons.search),
                     color: Colors.white,
                     onPressed: () {
@@ -94,13 +87,6 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
           children: [
             Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text(
-                    'Continue to last Surah',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: widget.surahs.length,
@@ -112,22 +98,6 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                         subtitle: surah.description != null
                             ? Text(surah.description)
                             : null,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(
-                                _isFav ? Icons.star : Icons.star_border,
-                                color: Colors.black,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isFav = !_isFav;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
                         onTap: () {
                           Navigator.push<dynamic>(
                             context,

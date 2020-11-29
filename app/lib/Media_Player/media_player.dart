@@ -101,21 +101,6 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                   if (_index > 0) _index--;
                 }),
               ),
-              const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(
-                      Icons.share,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/share');
-                    },
-                  ),
-                ],
-              ),
             ],
           ),
         ),
