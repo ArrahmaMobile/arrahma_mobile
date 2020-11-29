@@ -70,54 +70,63 @@ class Scraper implements IScraper {
     final doc = await navigateTo('');
     if (doc == null) return null;
     return AppData(
-      // logoUrl: document
-      //     .querySelector('.header img')
-      //     .attributes['src']
-      //     .toAbsolute(currentUrl)
-      //     .removeQueryString(),
+      logoUrl: document
+          .querySelector('.header img')
+          .attributes['src']
+          .toAbsolute(currentUrl)
+          .removeQueryString(),
+      banners: document
+          .querySelectorAll('#slider a')
+          .map((banner) => HeadingBanner(
+                imageUrl: banner
+                    .querySelector('img')
+                    .attributes['src']
+                    .toAbsolute(currentUrl)
+                    .removeQueryString(),
+                item: Utils.getItemByUrl(
+                    banner.attributes['href'].toAbsolute(currentUrl)),
+              ))
+          .toList(),
+      broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
+        final aTag = banner.querySelector('a');
+        final link = aTag != null
+            ? aTag.attributes['href'].toAbsolute(currentUrl)
+            : null;
+        final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
+        final type = host != null
+            ? BroadcastType.values.firstWhere(
+                (type) => type.toString().split('.')[1].toLowerCase() == host,
+                orElse: () => null)
+            : null;
+        return BroadcastItem(
+          type: type ?? BroadcastType.Other,
+          item: link != null
+              ? Utils.getItemByUrl(link)
+              : Item(
+                  isDirectSource: true,
+                  type: ItemType.Other,
+                  url: 'tel:7124321001;ext=491760789',
+                ),
+          imageUrl: banner
+              .querySelector('img')
+              ?.attributes['src']
+              ?.toAbsolute(currentUrl)
+              ?.removeQueryString(),
+        );
+      }).toList(),
+      socialMediaItems:
+          document.querySelectorAll('.column3footer a').map((socialMediaItem) {
+        final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
+        final imageUrl = socialMediaItem
+            .querySelector('img')
+            ?.attributes['src']
+            ?.toAbsolute(currentUrl)
+            ?.removeQueryString();
+        return SocialMediaItem(
+            item: Utils.getItemByUrl(link), imageUrl: imageUrl);
+      }).toList(),
       aboutUsMarkdown: await AboutUsScraper(this).scrape(),
-      // banners: document
-      //     .querySelectorAll('#slider a')
-      //     .map((banner) => HeadingBanner(
-      //           imageUrl: banner
-      //               .querySelector('img')
-      //               .attributes['src']
-      //               .toAbsolute(currentUrl)
-      //               .removeQueryString(),
-      //           linkUrl: banner.attributes['href'].toAbsolute(currentUrl),
-      //         ))
-      //     .toList(),
-      // broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
-      //   final aTag = banner.querySelector('a');
-      //   final link = aTag != null
-      //       ? aTag.attributes['href'].toAbsolute(currentUrl)
-      //       : null;
-      //   final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
-      //   final type = host != null
-      //       ? BroadcastType.values.firstWhere(
-      //           (type) => type.toString().split('.')[1].toLowerCase() == host,
-      //           orElse: () => null)
-      //       : null;
-      //   return BroadcastItem(
-      //       type: type ?? BroadcastType.Other,
-      //       linkUrl: link,
-      //       imageUrl: banner
-      //           .querySelector('img')
-      //           ?.attributes['src']
-      //           ?.toAbsolute(currentUrl)
-      //           ?.removeQueryString());
-      // }).toList(),
-      // socialMediaItems:
-      //     document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-      //   final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
-      //   final imageUrl = socialMediaItem
-      //       .querySelector('img')
-      //       ?.attributes['src']
-      //       ?.toAbsolute(currentUrl)
-      //       ?.removeQueryString();
-      //   return SocialMediaItem(linkUrl: link, imageUrl: imageUrl);
-      // }).toList(),
-      // courses: await QuranCourseScraper(this).scrape(),
+      courses: await QuranCourseScraper(this).scrape(),
     );
   }
 }

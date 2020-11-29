@@ -3,5 +3,5 @@ import 'package:arrahma_shared/shared.dart' as shared;
 
 Future main(List<String> arguments) async {
   shared.init();
-  await ScraperService.update();
+  await ScraperService.runScraper();
 }

@@ -21,6 +21,7 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
     final body = doc.querySelector('#main');
     if (body == null) return null;
     final content = QuranCourseContent(
+      id: url,
       title: body.querySelector('#mainheading1').text.cleanedText,
       surahs: [],
     );

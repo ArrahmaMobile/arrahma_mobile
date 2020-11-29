@@ -1,3 +1,5 @@
+import 'package:arrahma_shared/shared.dart';
+
 class Utils {
   static String cleanText(String text) {
     return text?.replaceAll(RegExp(r'\s+'), ' ')?.trim();
@@ -13,6 +15,34 @@ class Utils {
     final description = enumVal.toString();
     final indexOfDot = description.indexOf('.');
     return description.substring(indexOfDot + 1);
+  }
+
+  static Item getItemByUrl(String url) {
+    final parsedUri = Uri.parse(url);
+    final isDirectSource = parsedUri.pathSegments.isNotEmpty &&
+        parsedUri.pathSegments.last.contains('.');
+    ItemType type;
+    if (isDirectSource) {
+      final lastSegment = parsedUri.pathSegments.last.toLowerCase();
+      if (lastSegment.endsWith('.pdf')) {
+        type = ItemType.Pdf;
+      } else if (['.mp3', '.wav'].any((ext) => lastSegment.endsWith(ext))) {
+        type = ItemType.Audio;
+      } else if (['.mp4'].any((ext) => lastSegment.endsWith(ext))) {
+        type = ItemType.Video;
+      } else if (['.jpg', '.png', '.jpeg', '.gif']
+          .any((ext) => lastSegment.endsWith(ext))) {
+        type = ItemType.Image;
+      }
+      type ??= ItemType.File;
+    } else {
+      if (['video', 'watch']
+          .any((partial) => parsedUri.path.contains(partial))) {
+        type = ItemType.Video;
+      }
+      type ??= ItemType.Website;
+    }
+    return Item(url: url, type: type, isDirectSource: isDirectSource);
   }
 }
 

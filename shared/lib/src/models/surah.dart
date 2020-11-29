@@ -53,7 +53,7 @@ class Item {
   final String url;
 }
 
-enum ItemType { Audio, Video, Pdf, Image, Website, File }
+enum ItemType { Audio, Video, Pdf, Image, Website, File, Other }
 
 class Group {
   const Group({this.name});

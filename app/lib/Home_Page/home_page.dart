@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBanners(List<HeadingBanner> banners) {
     return CarouselIndicator(
       items: banners
-          .map((banner) => _buildImageLink(banner.linkUrl, banner.imageUrl))
+          .map((banner) => _buildImageLink(banner.item, banner.imageUrl))
           .toList(),
     );
   }
@@ -95,13 +96,13 @@ class _HomePageState extends State<HomePage> {
         childAspectRatio: 2.3,
         children: broadcasts
             .map((broadcast) =>
-                _buildImageLink(broadcast.linkUrl, broadcast.imageUrl))
+                _buildImageLink(broadcast.item, broadcast.imageUrl))
             .toList());
   }
 
-  Widget _buildImageLink(String linkUrl, String imageUrl) {
+  Widget _buildImageLink(Item item, String imageUrl) {
     return GestureDetector(
-      onTap: () => Launch.url(linkUrl),
+      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [], 0),
       child: imageUrl.startsWith('http')
           ? Image.network(imageUrl, fit: BoxFit.contain, width: 1000.0)
           : Image.asset(imageUrl),
@@ -116,7 +117,7 @@ class _HomePageState extends State<HomePage> {
       children: <Widget>[
         ...socialItems
             .map((socialMedia) =>
-                _buildImageLink(socialMedia.linkUrl, socialMedia.imageUrl))
+                _buildImageLink(socialMedia.item, socialMedia.imageUrl))
             .toList(),
         GestureDetector(
             onTap: () {

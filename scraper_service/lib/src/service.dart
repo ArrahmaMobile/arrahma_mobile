@@ -19,7 +19,7 @@ class ScraperService {
         DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
       metadata = scrapedData.appData;
     } else {
-      metadata = await update();
+      metadata = await runScraper();
     }
     final service = ScraperService._internal(metadata);
     service.setupUpdateTimer();
@@ -49,15 +49,26 @@ class ScraperService {
   String get dataHash => _dataHash;
 
   Timer _updateTimer;
+  Future<AppData> _appDataFuture;
 
   void setupUpdateTimer() {
     _updateTimer = Timer.periodic(
         UPDATE_DURATION, (timer) async => _data = await update());
   }
 
-  static Future<AppData> update() async {
+  static Future<AppData> runScraper() async {
     print('Updating metadata...');
     return (await ScraperRunner().run(shouldStore: true)).appData;
+  }
+
+  Future<AppData> update() async {
+    if (_appDataFuture != null) return await _appDataFuture;
+    try {
+      _appDataFuture = runScraper();
+      return await _appDataFuture;
+    } finally {
+      _appDataFuture = null;
+    }
   }
 
   void dispose() {

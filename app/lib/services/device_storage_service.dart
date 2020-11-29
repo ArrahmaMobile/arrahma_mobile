@@ -10,35 +10,56 @@ class DeviceStorageService extends BaseDeviceStorageService {
     const banners = [
       HeadingBanner(
         imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-        linkUrl: 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3',
+        item: Item(
+          type: ItemType.Audio,
+          url: 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3',
+        ),
       ),
       HeadingBanner(
         imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-        linkUrl: 'http://www.arrahma.org/tazkeer_n/tazkeer.php',
+        item: Item(
+          type: ItemType.Website,
+          url: 'http://www.arrahma.org/tazkeer_n/tazkeer.php',
+        ),
       ),
       HeadingBanner(
         imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
-        linkUrl:
-            'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3',
+        item: Item(
+          type: ItemType.Audio,
+          url:
+              'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3',
+        ),
       ),
     ];
 
     const broadcasts = [
       BroadcastItem(
         imageUrl: 'assets/images/home_page_images/facebook.png',
-        linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute/',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://www.facebook.com/arrahmah.islamic.institute/',
+        ),
       ),
       BroadcastItem(
         imageUrl: 'assets/images/home_page_images/mixlr_logo.png',
-        linkUrl: 'https://mixlr.com/arrahma-live/',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://mixlr.com/arrahma-live/',
+        ),
       ),
       BroadcastItem(
         imageUrl: 'assets/images/home_page_images/youtube.png',
-        linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+        ),
       ),
       BroadcastItem(
         imageUrl: 'assets/images/home_page_images/contact_information.png',
-        linkUrl: 'tel:+1 712 432 1001#491760789',
+        item: Item(
+          type: ItemType.Website,
+          url: 'tel:+1 712 432 1001#491760789',
+        ),
       ),
     ];
 
@@ -276,23 +297,38 @@ class DeviceStorageService extends BaseDeviceStorageService {
     const socialMediaItems = [
       SocialMediaItem(
         imageUrl: 'assets/images/social_media/youtube.png',
-        linkUrl: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+        ),
       ),
       SocialMediaItem(
         imageUrl: 'assets/images/social_media/facebook.png',
-        linkUrl: 'https://www.facebook.com/arrahmah.islamic.institute',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://www.facebook.com/arrahmah.islamic.institute',
+        ),
       ),
       SocialMediaItem(
         imageUrl: 'assets/images/social_media/whatsapp.png',
-        linkUrl: 'http://arrahma.org/images/whatsapp.png',
+        item: Item(
+          type: ItemType.Website,
+          url: 'http://arrahma.org/images/whatsapp.png',
+        ),
       ),
       SocialMediaItem(
         imageUrl: 'assets/images/social_media/twitter.png',
-        linkUrl: 'https://twitter.com/ArrahmahIslamic',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://twitter.com/ArrahmahIslamic',
+        ),
       ),
       SocialMediaItem(
         imageUrl: 'assets/images/social_media/instagram.png',
-        linkUrl: 'https://www.instagram.com/arrahmah_islamic_institute',
+        item: Item(
+          type: ItemType.Website,
+          url: 'https://www.instagram.com/arrahmah_islamic_institute',
+        ),
       ),
     ];
 

@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/Media_Player/media_player.dart';
+import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -115,33 +116,14 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
                         color: Colors.black,
                       ),
                       color: Colors.black,
-                      onPressed: () {
-                        if (entry.value.type == ItemType.Audio) {
-                          final mediaItems = items
-                              .asMap()
-                              .entries
-                              .map(
-                                (urlEntry) => MediaData(
-                                  title:
-                                      '${widget.lesson.title} - ${widget.lesson.title.startsWith(group.name) ? '' : '${group.name} '}Pt. ${urlEntry.key + 1}',
-                                  group: widget.surah.name,
-                                  sourceUrl: urlEntry.value.url,
-                                ),
-                              )
-                              .toList();
-                          Navigator.push<dynamic>(
-                            context,
-                            MaterialPageRoute<dynamic>(
-                              builder: (_) => MediaPlayerScreen(
-                                mediaItems: mediaItems,
-                                initialAudioIndex: entry.key,
-                              ),
-                            ),
-                          );
-                          return;
-                        }
-                        Launch.url(entry.value.url);
-                      },
+                      onPressed: () => Utils.openUrl(
+                        context,
+                        (index) =>
+                            '${widget.lesson.title} - ${widget.lesson.title.startsWith(group.name) ? '' : '${group.name} '}Pt. ${index + 1}',
+                        widget.surah.name,
+                        items,
+                        entry.key,
+                      ),
                     ),
                   )
                   .toList())

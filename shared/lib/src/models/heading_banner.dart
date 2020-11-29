@@ -1,5 +1,7 @@
+import 'package:arrahma_shared/shared.dart';
+
 class HeadingBanner {
-  const HeadingBanner({this.imageUrl, this.linkUrl});
+  const HeadingBanner({this.imageUrl, this.item});
   final String imageUrl;
-  final String linkUrl;
+  final Item item;
 }

@@ -37,6 +37,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
         hasTabs = true;
       }
       content ??= QuranCourseContent(
+        id: url,
         title: body.querySelector('#mainheading1')?.text?.cleanedText,
         surahs: [],
       );
@@ -130,7 +131,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
                     tag.parent.attributes['href'].cleanedUrl.toAbsolute(url))
                 .toList()
             : <String>[];
-        groupItems.add(links.map((l) => getItemByUrl(l)).toList());
+        groupItems.add(links.map((l) => Utils.getItemByUrl(l)).toList());
       }
     }
     addPreviousLesson();
@@ -172,7 +173,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
         final hasFilled = !diff.isNegative;
         if (firstFilledGroup == null && !hasFilled) {
           lessons.forEach((l) => l.itemGroups.removeAt(index));
-        } else {
+        } else if (firstFilledGroup != null) {
           if (!hasFilled) {
             groups.addAll(List.filled(diff.abs(), null));
           }
@@ -183,34 +184,6 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       });
     }
     return Surah(lessons: lessons, groups: groups);
-  }
-
-  Item getItemByUrl(String url) {
-    final parsedUri = Uri.parse(url);
-    final isDirectSource = parsedUri.pathSegments.isNotEmpty &&
-        parsedUri.pathSegments.last.contains('.');
-    ItemType type;
-    if (isDirectSource) {
-      final lastSegment = parsedUri.pathSegments.last.toLowerCase();
-      if (lastSegment.endsWith('.pdf')) {
-        type = ItemType.Pdf;
-      } else if (['.mp3', '.wav'].any((ext) => lastSegment.endsWith(ext))) {
-        type = ItemType.Audio;
-      } else if (['.mp4'].any((ext) => lastSegment.endsWith(ext))) {
-        type = ItemType.Video;
-      } else if (['.jpg', '.png', '.jpeg', '.gif']
-          .any((ext) => lastSegment.endsWith(ext))) {
-        type = ItemType.Image;
-      }
-      type ??= ItemType.File;
-    } else {
-      if (['video', 'watch']
-          .any((partial) => parsedUri.path.contains(partial))) {
-        type = ItemType.Video;
-      }
-      type ??= ItemType.Website;
-    }
-    return Item(url: url, type: type, isDirectSource: isDirectSource);
   }
 
   Group getGroupByItem(Item item) {

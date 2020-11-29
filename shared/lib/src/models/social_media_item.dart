@@ -1,5 +1,7 @@
+import 'models.dart';
+
 class SocialMediaItem {
-  const SocialMediaItem({this.imageUrl, this.linkUrl});
+  const SocialMediaItem({this.imageUrl, this.item});
   final String imageUrl;
-  final String linkUrl;
+  final Item item;
 }

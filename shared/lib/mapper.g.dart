@@ -10,11 +10,11 @@ import 'package:arrahma_shared/src/models/heading_banner.dart';
 import 'package:arrahma_shared/src/models/broadcast_item.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course.dart';
 import 'package:arrahma_shared/src/models/social_media_item.dart';
+import 'package:arrahma_shared/src/models/surah.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_details.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_content.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_registration.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_test.dart';
-import 'package:arrahma_shared/src/models/surah.dart';
 
 final _scrapeddataMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => ScrapedData(
@@ -78,11 +78,11 @@ final _runmetadataMapper = JsonObjectMapper(
 final _headingbannerMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => HeadingBanner(
     imageUrl: mapper.applyFromJsonConverter(json['imageUrl']),
-    linkUrl: mapper.applyFromJsonConverter(json['linkUrl']),
+    item: mapper.deserialize<Item>(json['item'] as Map<String, dynamic>),
   ),
   (CustomJsonMapper mapper, HeadingBanner instance) => <String, dynamic>{
     'imageUrl': mapper.applyFromInstanceConverter(instance.imageUrl),
-    'linkUrl': mapper.applyFromInstanceConverter(instance.linkUrl),
+    'item': mapper.serializeToMap(instance.item),
   },
 );
 
@@ -93,12 +93,12 @@ final _broadcastitemMapper = JsonObjectMapper(
         (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
         orElse: () => null)),
     imageUrl: mapper.applyFromJsonConverter(json['imageUrl']),
-    linkUrl: mapper.applyFromJsonConverter(json['linkUrl']),
+    item: mapper.deserialize<Item>(json['item'] as Map<String, dynamic>),
   ),
   (CustomJsonMapper mapper, BroadcastItem instance) => <String, dynamic>{
     'type': mapper.applyFromInstanceConverter(instance.type?.toString()?.split('.')?.elementAt(1)),
     'imageUrl': mapper.applyFromInstanceConverter(instance.imageUrl),
-    'linkUrl': mapper.applyFromInstanceConverter(instance.linkUrl),
+    'item': mapper.serializeToMap(instance.item),
   },
 );
 
@@ -130,11 +130,27 @@ final _qurancourseMapper = JsonObjectMapper(
 final _socialmediaitemMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => SocialMediaItem(
     imageUrl: mapper.applyFromJsonConverter(json['imageUrl']),
-    linkUrl: mapper.applyFromJsonConverter(json['linkUrl']),
+    item: mapper.deserialize<Item>(json['item'] as Map<String, dynamic>),
   ),
   (CustomJsonMapper mapper, SocialMediaItem instance) => <String, dynamic>{
     'imageUrl': mapper.applyFromInstanceConverter(instance.imageUrl),
-    'linkUrl': mapper.applyFromInstanceConverter(instance.linkUrl),
+    'item': mapper.serializeToMap(instance.item),
+  },
+);
+
+
+final _itemMapper = JsonObjectMapper(
+  (CustomJsonMapper mapper, Map<String, dynamic> json) => Item(
+    type: mapper.applyFromJsonConverter(ItemType.values.firstWhere(
+        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        orElse: () => null)),
+    url: mapper.applyFromJsonConverter(json['url']),
+    isDirectSource: mapper.applyFromJsonConverter(json['isDirectSource']),
+  ),
+  (CustomJsonMapper mapper, Item instance) => <String, dynamic>{
+    'type': mapper.applyFromInstanceConverter(instance.type?.toString()?.split('.')?.elementAt(1)),
+    'url': mapper.applyFromInstanceConverter(instance.url),
+    'isDirectSource': mapper.applyFromInstanceConverter(instance.isDirectSource),
   },
 );
 
@@ -156,10 +172,12 @@ final _qurancoursedetailsMapper = JsonObjectMapper(
 
 final _qurancoursecontentMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => QuranCourseContent(
+    id: mapper.applyFromJsonConverter(json['id']),
     title: mapper.applyFromJsonConverter(json['title']),
     surahs: (json['surahs'] as List)?.cast<Map<String, dynamic>>()?.map((item) => mapper.deserialize<Surah>(item))?.toList(),
   ),
   (CustomJsonMapper mapper, QuranCourseContent instance) => <String, dynamic>{
+    'id': mapper.applyFromInstanceConverter(instance.id),
     'title': mapper.applyFromInstanceConverter(instance.title),
     'surahs': instance.surahs?.map((item) => mapper.serializeToMap(item))?.toList(),
   },
@@ -184,6 +202,7 @@ final _qurancoursetestMapper = JsonObjectMapper(
     'title': mapper.applyFromInstanceConverter(instance.title),
   },
 );
+
 
 
 
@@ -242,23 +261,6 @@ final _groupitemMapper = JsonObjectMapper(
   },
 );
 
-
-final _itemMapper = JsonObjectMapper(
-  (CustomJsonMapper mapper, Map<String, dynamic> json) => Item(
-    type: mapper.applyFromJsonConverter(ItemType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
-        orElse: () => null)),
-    url: mapper.applyFromJsonConverter(json['url']),
-    isDirectSource: mapper.applyFromJsonConverter(json['isDirectSource']),
-  ),
-  (CustomJsonMapper mapper, Item instance) => <String, dynamic>{
-    'type': mapper.applyFromInstanceConverter(instance.type?.toString()?.split('.')?.elementAt(1)),
-    'url': mapper.applyFromInstanceConverter(instance.url),
-    'isDirectSource': mapper.applyFromInstanceConverter(instance.isDirectSource),
-  },
-);
-
-
 void init() {
   JsonMapper.register(_scrapeddataMapper);
   JsonMapper.register(_serverstatusMapper);
@@ -268,6 +270,7 @@ void init() {
   JsonMapper.register(_broadcastitemMapper);
   JsonMapper.register(_qurancourseMapper);
   JsonMapper.register(_socialmediaitemMapper);
+  JsonMapper.register(_itemMapper);
   JsonMapper.register(_qurancoursedetailsMapper);
   JsonMapper.register(_qurancoursecontentMapper);
   JsonMapper.register(_qurancourseregistrationMapper);
@@ -275,8 +278,7 @@ void init() {
   JsonMapper.register(_surahMapper);
   JsonMapper.register(_groupMapper);
   JsonMapper.register(_lessonMapper);
-  JsonMapper.register(_groupitemMapper);
-  JsonMapper.register(_itemMapper); 
+  JsonMapper.register(_groupitemMapper); 
 
   
 
@@ -289,17 +291,17 @@ void init() {
   JsonMapper.registerListCast((value) => value?.cast<BroadcastItem>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourse>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<SocialMediaItem>()?.toList());
+  JsonMapper.registerListCast((value) => value?.cast<Item>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<BroadcastType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseDetails>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseContent>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseRegistration>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseTest>()?.toList());
+  JsonMapper.registerListCast((value) => value?.cast<ItemType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseDetailsType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<Surah>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<Group>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<Lesson>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<GroupItem>()?.toList());
-  JsonMapper.registerListCast((value) => value?.cast<Item>()?.toList());
-  JsonMapper.registerListCast((value) => value?.cast<ItemType>()?.toList());
 }
     
