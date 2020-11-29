@@ -71,6 +71,34 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            AudioPlayerDisplay(item: item.toMediaItem()),
+            // const SizedBox(height: 25),
+            // AudioPlayerSeeker(),
+            const SizedBox(
+              height: 20,
+            ),
+            AudioPlayerControlBar(
+              onStart: () => _startAudio(),
+              onNext: () => setState(() {
+                if (_index < widget.mediaItems.length - 1) _index++;
+              }),
+              onPrevious: () => setState(() {
+                if (_index > 0) _index--;
+              }),
+            ),
+            const SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.share,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

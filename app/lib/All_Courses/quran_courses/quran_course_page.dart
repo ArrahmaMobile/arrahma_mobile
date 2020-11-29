@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class QuranCoursePage extends StatefulWidget {
   const QuranCoursePage({
     Key key,
-    @required this.title,
     @required this.course,
+    this.initialTabIndex,
   }) : super(key: key);
   final QuranCourse course;
-  final String title;
+  final int initialTabIndex;
 
   @override
   _QuranCoursePageState createState() => _QuranCoursePageState();
@@ -25,6 +25,12 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
   int get tabCount => _getTabs().length;
 
   int get selectedTabIndex => _tabSelected ?? (tabCount - 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _tabSelected = widget.initialTabIndex;
+  }
 
   List<Widget> _getTabs() {
     return [

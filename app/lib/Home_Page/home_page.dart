@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
@@ -38,11 +39,8 @@ class _HomePageState extends State<HomePage> {
           },
           child: SizedBox(
             height: 56,
-            child: (appData?.logoUrl?.startsWith('http') ?? false)
-                ? Image.network(appData.logoUrl)
-                : Image.asset(
-                    'assets/images/home_page_images/aarhman_mainImage.png',
-                    fit: BoxFit.cover),
+            child: _buildImage(appData?.logoUrl ??
+                'assets/images/home_page_images/aarhman_mainImage.png'),
           ),
         ),
       ),
@@ -102,14 +100,18 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildImageLink(Item item, String imageUrl) {
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [], 0),
-      child: imageUrl.startsWith('http')
-          ? Image(
-              image: ImageUtils.fromNetworkWithCached(imageUrl),
-              width: 1000,
-              fit: BoxFit.contain)
-          : Image.asset(imageUrl),
+      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [item], 0),
+      child: _buildImage(imageUrl),
     );
+  }
+
+  Widget _buildImage(String imageUrl) {
+    return imageUrl.startsWith('http')
+        ? Image(
+            image: ImageUtils.fromNetworkWithCached(imageUrl),
+            width: 1000,
+            fit: BoxFit.contain)
+        : Image.asset(imageUrl);
   }
 
   Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {
@@ -124,7 +126,8 @@ class _HomePageState extends State<HomePage> {
             .toList(),
         GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/contact_us');
+              Navigator.push<dynamic>(context,
+                  MaterialPageRoute<dynamic>(builder: (_) => ContactUs()));
             },
             child: Image.asset('assets/images/home_page_images/contact.png')),
       ],

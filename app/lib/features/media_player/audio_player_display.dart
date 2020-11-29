@@ -34,12 +34,13 @@ class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
   Widget _buildDisplay(MediaItem item, [bool isLoading = false]) {
     return Column(
       children: [
-        Text(
-          item?.album ?? '',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: widget.dense ? 16 : 18),
-          textAlign: TextAlign.center,
-        ),
+        if (item?.album != null)
+          Text(
+            item?.album,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: widget.dense ? 16 : 18),
+            textAlign: TextAlign.center,
+          ),
         const SizedBox(height: 10),
         Text(
           item?.title ?? (isLoading ? 'Loading...' : 'Unknown'),

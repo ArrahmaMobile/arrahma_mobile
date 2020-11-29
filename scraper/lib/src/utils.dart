@@ -61,8 +61,18 @@ extension StringUtils on String {
         .toString();
   }
 
-  String toAbsolute(String currentUrl) =>
-      Uri.parse(currentUrl).resolve(this).replace(scheme: 'https').toString();
+  String toAbsolute(String currentUrl) {
+    final parsedUrl = Uri.parse(currentUrl);
+    final host = parsedUrl.host.substring(
+        parsedUrl.host.contains('arrahma.org') &&
+                parsedUrl.host.startsWith('www')
+            ? 4
+            : 0);
+    return parsedUrl
+        .resolve(this)
+        .replace(scheme: 'https', host: host)
+        .toString();
+  }
 }
 
 extension IntUtils on int {}

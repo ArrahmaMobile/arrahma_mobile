@@ -35,12 +35,13 @@ class AllCourses extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (_) => QuranCoursePage(
-                      title: course.title,
-                      course: course,
-                    )));
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (_) => QuranCoursePage(
+              course: course,
+            ),
+          ),
+        );
       },
       child: Column(
         children: <Widget>[
