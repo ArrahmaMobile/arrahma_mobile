@@ -1,6 +1,7 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
 
 class AllCourses extends StatelessWidget {
@@ -46,8 +47,10 @@ class AllCourses extends StatelessWidget {
       child: Column(
         children: <Widget>[
           if (course.imageUrl.startsWith('http'))
-            Image.network(
-              course.imageUrl,
+            Image(
+              image: ImageUtils.fromNetworkWithCached(
+                course.imageUrl,
+              ),
               width: 80,
               height: 80,
             )

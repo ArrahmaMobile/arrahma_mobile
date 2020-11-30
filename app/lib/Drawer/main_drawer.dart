@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
+import 'package:arrahma_mobile_app/all_courses/all_courses.dart';
 import 'package:flutter/material.dart';
 
 import 'model/drawer.dart';
@@ -16,39 +18,31 @@ class MainDrawer extends StatelessWidget {
   final _drawer = [
     const DrawerList(
       title: 'Home',
-      pageRoute: '/home',
     ),
     const DrawerList(
       title: 'About Us',
-      pageRoute: '/about_us',
     ),
-    const DrawerList(
+    DrawerList(
       title: 'All Courses',
-      pageRoute: '/all_courses',
+      pageRoute: () => AllCourses(),
     ),
     const DrawerList(
       title: 'Lectures',
-      pageRoute: '/lectures',
     ),
     const DrawerList(
       title: 'Arabic Grammer',
-      pageRoute: '/arabic_grammer',
     ),
     const DrawerList(
       title: 'Tajweed',
-      pageRoute: '/tajweed',
     ),
     const DrawerList(
       title: 'Our Nabi',
-      pageRoute: '/our_nabi',
     ),
     const DrawerList(
       title: 'Student Corner',
-      pageRoute: '/student_corner',
     ),
     const DrawerList(
       title: 'Reading Material',
-      pageRoute: '/reading_material',
     ),
   ];
 
@@ -62,7 +56,10 @@ class MainDrawer extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, list.pageRoute);
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (_) => list?.pageRoute?.call() ?? HomePage()));
       },
     );
   }
