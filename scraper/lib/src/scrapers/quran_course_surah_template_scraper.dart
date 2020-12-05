@@ -37,37 +37,33 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
         .toList();
 
     final surahs = await Future.wait(items.map((item) async {
-      final doc = await scraper.navigateTo(item.link);
+      final doc = item.link.urlPathSegments.last.endsWith('mp3')
+          ? null
+          : await scraper.navigateTo(item.link);
       if (doc == null) {
-        final response = scraper.getResponse(url);
-        if (response != null &&
-            response.statusCode >= 200 &&
-            response.statusCode < 300) {
-          return Surah(
-            name: item.name,
-            groups: [Group(name: 'Intro')],
-            lessons: [
-              Lesson(title: item.name, itemGroups: [
-                GroupItem(items: [
-                  Item(
-                    isDirectSource: true,
-                    url: item.link,
-                    type: ItemType.Audio,
-                  )
-                ])
-              ]),
-            ],
-          );
-        }
+        return Surah(
+          name: item.name,
+          groups: [Group(name: 'Intro')],
+          lessons: [
+            Lesson(title: item.name, itemGroups: [
+              GroupItem(items: [
+                Item(
+                  isDirectSource: true,
+                  url: item.link,
+                  type: ItemType.Audio,
+                )
+              ])
+            ]),
+          ],
+        );
       } else {
         final content = await QuranCourseJuzTemplateScraper(scraper, item.link,
                 useHeading: true)
             .scrape();
-        return content.surahs.isNotEmpty
+        return (content?.surahs?.isNotEmpty ?? false)
             ? content.surahs.first.update(name: item.name)
             : null;
       }
-      return null;
     }));
     content.surahs.addAll(surahs);
 

@@ -50,6 +50,7 @@ extension StringUtils on String {
   bool get isNullOrWhitespace => this?.trim()?.isEmpty ?? true;
   String get cleanedText => Utils.cleanText(this);
   String get cleanedUrl => Utils.cleanUrl(this);
+  List<String> get urlPathSegments => Uri.parse(this).pathSegments;
   String removeQueryString() {
     final uri = Uri.parse(this);
     return Uri(
@@ -61,14 +62,16 @@ extension StringUtils on String {
         .toString();
   }
 
-  String toAbsolute(String currentUrl) {
-    final parsedUrl = Uri.parse(currentUrl);
-    final host = parsedUrl.host.substring(
-        parsedUrl.host.contains('arrahma.org') &&
+  String toAbsolute(String baseUrl) {
+    final parsedUrl = Uri.parse(this);
+    final parsedBaseUrl = Uri.parse(baseUrl);
+    final host = parsedUrl.host.trim().isEmpty
+        ? parsedBaseUrl.host
+        : parsedUrl.host.substring(parsedUrl.host.contains('arrahma.org') &&
                 parsedUrl.host.startsWith('www')
             ? 4
             : 0);
-    return parsedUrl
+    return parsedBaseUrl
         .resolve(this)
         .replace(scheme: 'https', host: host)
         .toString();
