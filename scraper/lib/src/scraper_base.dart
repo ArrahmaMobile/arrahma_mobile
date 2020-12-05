@@ -77,7 +77,8 @@ class Scraper implements IScraper {
           .removeQueryString(),
       drawerItems: document
           .querySelectorAll('.container_nav .nav > li a')
-          .map(scrapeDrawerItem),
+          .map((item) => scrapeDrawerItem(item))
+          .toList(),
       quickLinks: document
           .querySelectorAll('#message1 > *')
           .asMap()
@@ -89,7 +90,8 @@ class Scraper implements IScraper {
                     .text,
                 link: Utils.getItemByUrl(messageEntry.value.attributes['href']
                     .toAbsolute(currentUrl)),
-              )),
+              ))
+          .toList(),
       banners: document
           .querySelectorAll('#slider a')
           .map((banner) => HeadingBanner(
@@ -147,9 +149,13 @@ class Scraper implements IScraper {
 
   DrawerItem scrapeDrawerItem(Element item) {
     return DrawerItem(
-        title: item.text,
-        link: Utils.getItemByUrl(item.attributes['href']),
-        children: item.querySelectorAll('ul li a').map(scrapeDrawerItem));
+      title: item.text,
+      link: Utils.getItemByUrl(item.attributes['href']),
+      children: item
+          .querySelectorAll('ul li a')
+          .map((item) => scrapeDrawerItem(item))
+          .toList(),
+    );
   }
 }
 
