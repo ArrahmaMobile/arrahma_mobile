@@ -92,6 +92,7 @@ class _MediaPlayerScreenState extends State<MediaPlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 IconButton(
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.share,
                     color: Colors.black,
