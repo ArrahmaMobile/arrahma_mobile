@@ -87,7 +87,8 @@ class Scraper implements IScraper {
                 title: messageEntry.value.parentNode.nodes
                     .whereType<Text>()
                     .elementAt(messageEntry.key)
-                    .text,
+                    .text
+                    .cleanedText,
                 link: Utils.getItemByUrl(messageEntry.value.attributes['href']
                     .toAbsolute(currentUrl)),
               ))
@@ -149,8 +150,10 @@ class Scraper implements IScraper {
 
   DrawerItem scrapeDrawerItem(Element item) {
     return DrawerItem(
-      title: item.text,
-      link: Utils.getItemByUrl(item.attributes['href']),
+      title: item.text.cleanedText,
+      link: Utils.getItemByUrl(
+        item.attributes['href'].toAbsolute(currentUrl),
+      ),
       children: item
           .querySelectorAll('ul li a')
           .map((item) => scrapeDrawerItem(item))

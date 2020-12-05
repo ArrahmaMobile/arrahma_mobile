@@ -3,8 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CarouselIndicator extends StatefulWidget {
-  const CarouselIndicator({Key key, @required this.items}) : super(key: key);
+  const CarouselIndicator(
+      {Key key,
+      @required this.items,
+      this.showIndicator = true,
+      this.aspectRatio})
+      : super(key: key);
   final List<Widget> items;
+  final bool showIndicator;
+  final double aspectRatio;
 
   @override
   State<StatefulWidget> createState() {
@@ -24,30 +31,33 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
           options: CarouselOptions(
               autoPlay: true,
               enlargeCenterPage: true,
-              aspectRatio: 2.77,
+              aspectRatio: widget.aspectRatio ?? 2.77,
               onPageChanged: (index, reason) {
                 setState(() {
                   _current = index;
                 });
               }),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widget.items.map((url) {
-            int index = widget.items.indexOf(url);
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _current == index
-                    ? Color.fromRGBO(0, 0, 0, 0.9)
-                    : Color.fromRGBO(0, 0, 0, 0.4),
-              ),
-            );
-          }).toList(),
-        ),
+        if (widget.showIndicator)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.items?.map((url) {
+                  int index = widget.items.indexOf(url);
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? Color.fromRGBO(0, 0, 0, 0.9)
+                          : Color.fromRGBO(0, 0, 0, 0.4),
+                    ),
+                  );
+                })?.toList() ??
+                [],
+          ),
       ],
     );
   }

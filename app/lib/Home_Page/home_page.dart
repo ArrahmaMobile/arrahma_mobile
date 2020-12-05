@@ -19,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final appData = context.on<AppData>();
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: MainDrawer(
+        items: appData.drawerItems,
+      ),
       appBar: AppBar(
         centerTitle: true,
         title: HiddenTap(
@@ -90,9 +92,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildQuickLinks(List<QuickLink> quickLinks) {
     return CarouselIndicator(
+      aspectRatio: 20,
+      showIndicator: false,
       items: quickLinks
-          .map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))
-          .toList(),
+          ?.map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))
+          ?.toList(),
     );
   }
 

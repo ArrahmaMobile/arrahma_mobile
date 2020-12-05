@@ -13,7 +13,8 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-          children: items.map((item) => _buildDrawer(context, item)).toList()),
+        children: items?.map((item) => _buildDrawer(context, item))?.toList(),
+      ),
     );
   }
 
