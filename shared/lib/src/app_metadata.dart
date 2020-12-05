@@ -1,4 +1,5 @@
 import 'models/models.dart';
+import 'models/quick_link.dart';
 
 class AppData {
   const AppData({
@@ -8,7 +9,11 @@ class AppData {
     this.broadcastItems,
     this.courses,
     this.socialMediaItems,
+    this.quickLinks,
+    this.drawerItems,
   });
+  final List<DrawerItem> drawerItems;
+  final List<QuickLink> quickLinks;
   final String logoUrl;
   final String aboutUsMarkdown;
   final List<HeadingBanner> banners;

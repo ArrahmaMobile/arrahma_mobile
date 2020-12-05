@@ -75,6 +75,21 @@ class Scraper implements IScraper {
           .attributes['src']
           .toAbsolute(currentUrl)
           .removeQueryString(),
+      drawerItems: document
+          .querySelectorAll('.container_nav .nav > li a')
+          .map(scrapeDrawerItem),
+      quickLinks: document
+          .querySelectorAll('#message1 > *')
+          .asMap()
+          .entries
+          .map((messageEntry) => QuickLink(
+                title: messageEntry.value.parentNode.nodes
+                    .whereType<Text>()
+                    .elementAt(messageEntry.key)
+                    .text,
+                link: Utils.getItemByUrl(messageEntry.value.attributes['href']
+                    .toAbsolute(currentUrl)),
+              )),
       banners: document
           .querySelectorAll('#slider a')
           .map((banner) => HeadingBanner(
@@ -128,6 +143,13 @@ class Scraper implements IScraper {
       aboutUsMarkdown: await AboutUsScraper(this).scrape(),
       courses: await QuranCourseScraper(this).scrape(),
     );
+  }
+
+  DrawerItem scrapeDrawerItem(Element item) {
+    return DrawerItem(
+        title: item.text,
+        link: Utils.getItemByUrl(item.attributes['href']),
+        children: item.querySelectorAll('ul li a').map(scrapeDrawerItem));
   }
 }
 

@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: Column(
               children: [
+                _buildQuickLinks(appData.quickLinks),
                 _buildBanners(appData.banners),
                 Expanded(
                   child: SingleChildScrollView(
@@ -87,6 +88,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildQuickLinks(List<QuickLink> quickLinks) {
+    return CarouselIndicator(
+      items: quickLinks
+          .map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))
+          .toList(),
+    );
+  }
+
   Widget _broadcast(List<BroadcastItem> broadcasts) {
     return GridView.count(
         crossAxisCount: 2,
@@ -102,6 +111,13 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [item], 0),
       child: _buildImage(imageUrl),
+    );
+  }
+
+  Widget _buildQuickLink(Item link, String title) {
+    return GestureDetector(
+      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [link], 0),
+      child: Text(title),
     );
   }
 

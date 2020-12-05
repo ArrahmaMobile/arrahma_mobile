@@ -1,65 +1,36 @@
 import 'dart:ui';
-import 'package:arrahma_mobile_app/Home_Page/home_page.dart';
-import 'package:arrahma_mobile_app/all_courses/all_courses.dart';
+import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
-import 'model/drawer.dart';
-
 class MainDrawer extends StatelessWidget {
+  const MainDrawer({
+    Key key,
+    this.items,
+  }) : super(key: key);
+  final List<DrawerItem> items;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-          children:
-              _drawer.map((list) => _buildDrawer(context, list)).toList()),
+          children: items.map((item) => _buildDrawer(context, item)).toList()),
     );
   }
 
-  final _drawer = [
-    const DrawerList(
-      title: 'Home',
-    ),
-    const DrawerList(
-      title: 'About Us',
-    ),
-    DrawerList(
-      title: 'All Courses',
-      pageRoute: () => AllCourses(),
-    ),
-    const DrawerList(
-      title: 'Lectures',
-    ),
-    const DrawerList(
-      title: 'Arabic Grammer',
-    ),
-    const DrawerList(
-      title: 'Tajweed',
-    ),
-    const DrawerList(
-      title: 'Our Nabi',
-    ),
-    const DrawerList(
-      title: 'Student Corner',
-    ),
-    const DrawerList(
-      title: 'Reading Material',
-    ),
-  ];
-
-  Widget _buildDrawer(BuildContext context, DrawerList list) {
+  Widget _buildDrawer(BuildContext context, DrawerItem item) {
     return ListTile(
       title: Text(
-        list.title,
+        item.title,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
       ),
       onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (_) => list?.pageRoute?.call() ?? HomePage()));
+        // Navigator.push<dynamic>(
+        //     context,
+        //     MaterialPageRoute<dynamic>(
+        //         builder: (_) => list?.pageRoute?.call() ?? HomePage()));
       },
     );
   }

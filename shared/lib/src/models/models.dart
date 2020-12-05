@@ -11,5 +11,7 @@ export 'quran_course/quran_course_tajweed.dart';
 export 'quran_course/quran_course_test.dart';
 export 'social_media_item.dart';
 export 'surah.dart';
+export 'quick_link.dart';
+export 'drawer_item.dart';
 
 export 'status/server_status_check.dart';
