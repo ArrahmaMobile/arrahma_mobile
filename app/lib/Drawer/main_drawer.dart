@@ -19,7 +19,7 @@ class MainDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawer(BuildContext context, DrawerItem item) {
-    return ListTile(
+    return ExpansionTile(
       title: Text(
         item.title,
         style: const TextStyle(
@@ -27,12 +27,7 @@ class MainDrawer extends StatelessWidget {
           fontSize: 18,
         ),
       ),
-      onTap: () {
-        // Navigator.push<dynamic>(
-        //     context,
-        //     MaterialPageRoute<dynamic>(
-        //         builder: (_) => list?.pageRoute?.call() ?? HomePage()));
-      },
+      children: [],
     );
   }
 }
