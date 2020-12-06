@@ -76,7 +76,7 @@ class Scraper implements IScraper {
           .toAbsolute(currentUrl)
           .removeQueryString(),
       drawerItems: document
-          .querySelectorAll('.container_nav .nav > li a')
+          .querySelectorAll('.container_nav .nav > li > a')
           .map((item) => scrapeDrawerItem(item))
           .toList(),
       quickLinks: document
