@@ -67,7 +67,7 @@ class ScraperService {
       _appDataFuture = runScraper();
       return await _appDataFuture;
     } finally {
-      _appDataFuture = null;
+      Timer(const Duration(seconds: 10), () => _appDataFuture = null);
     }
   }
 

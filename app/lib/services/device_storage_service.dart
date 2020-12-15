@@ -336,6 +336,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
       defaultFn: () => const AppData(
         banners: banners,
         broadcastItems: broadcasts,
+        quickLinks: [],
         courses: courses,
         socialMediaItems: socialMediaItems,
       ),

@@ -33,6 +33,9 @@ class Utils {
       } else if (['.jpg', '.png', '.jpeg', '.gif']
           .any((ext) => lastSegment.endsWith(ext))) {
         type = ItemType.Image;
+      } else if (['.php', '.html', '.htm', '.aspx']
+          .any((ext) => lastSegment.endsWith(ext))) {
+        type = ItemType.Website;
       }
       type ??= ItemType.File;
     } else {

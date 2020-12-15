@@ -42,7 +42,7 @@ class AppService extends StoppableService {
         (_) => statusCheckTimerHandler());
     _appDataHash ??= await deviceStorageService.loadAppDataHash();
 
-    await _setupData();
+    await _setupData().catchError((dynamic _) => null);
     apiService.environmentConfigCtrl.stateListener
         .addListener(_onEnvironmentUpdate);
     _appData ??= await deviceStorageService.loadAppData();

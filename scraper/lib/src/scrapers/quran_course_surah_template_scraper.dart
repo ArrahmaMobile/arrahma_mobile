@@ -22,21 +22,23 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
     if (body == null) return null;
     final content = QuranCourseContent(
       id: url,
-      title: body.querySelector('#mainheading1').text.cleanedText,
+      title: (body.querySelector('#mainheading1') ??
+              body.querySelector('#mainheading2'))
+          ?.text
+          ?.cleanedText,
       surahs: [],
     );
 
-    final items = body
-        .querySelectorAll('#table1 #ayahc')
-        .map(
-          (i) => CourseLinkItem(
-            name: i.text.cleanedText,
-            link: i.querySelector('a').attributes['href'].toAbsolute(url),
-          ),
-        )
-        .toList();
+    final items = body.querySelectorAll('#table1 #ayahc').map((i) {
+      final link = i.querySelector('a');
+      return CourseLinkItem(
+        name: i.text.cleanedText,
+        link: link != null ? link.attributes['href'].toAbsolute(url) : null,
+      );
+    }).toList();
 
-    final surahs = await Future.wait(items.map((item) async {
+    final surahs =
+        await Future.wait(items.where((i) => i.link != null).map((item) async {
       final doc = item.link.urlPathSegments.last.endsWith('mp3')
           ? null
           : await scraper.navigateTo(item.link);

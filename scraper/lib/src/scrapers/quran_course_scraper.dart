@@ -77,11 +77,7 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
 
     QuranCourseContent lectures;
     if (lecutresLink != null) {
-      final doc = await scraper.navigateTo(lecutresLink);
-      final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
-      lectures = await (isSurahPage
-          ? QuranCourseSurahTemplateScraper(scraper, lecutresLink).scrape()
-          : QuranCourseJuzTemplateScraper(scraper, lecutresLink).scrape());
+      lectures = await scrapeContent(lecutresLink);
     }
 
     return QuranCourse(
@@ -93,5 +89,13 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
       tajweed: await tajweed,
       lectures: await lectures,
     );
+  }
+
+  Future<QuranCourseContent> scrapeContent(String url) async {
+    final doc = await scraper.navigateTo(url);
+    final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
+    return await (isSurahPage
+        ? QuranCourseSurahTemplateScraper(scraper, url).scrape()
+        : QuranCourseJuzTemplateScraper(scraper, url).scrape());
   }
 }

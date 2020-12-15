@@ -53,8 +53,10 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       if (hasIntro) {
         final surah = _extractLessons(url, allNodes, firstHeading.key,
             isGroupedByHeading: true);
-        content.surahs.add(Surah(
-            name: INTRO_TOKEN, lessons: surah.lessons, groups: surah.groups));
+        if (surah != null) {
+          content.surahs.add(Surah(
+              name: INTRO_TOKEN, lessons: surah.lessons, groups: surah.groups));
+        }
       }
       final isGroupedByHeading =
           useHeading || hasTabs || !allNodes.any((n) => n.id == 'surahname');
@@ -62,15 +64,19 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
           entry.value.id ==
           (isGroupedByHeading ? 'mainheading2' : 'surahname'));
       Surah previousSurahOnPage;
-      final surahs = surahNodes.map((e) {
-        final title = e.value.text.cleanedText;
-        var surah = _extractLessons(url, allNodes, e.key,
-            previousSurahOnPage: previousSurahOnPage,
-            isGroupedByHeading: isGroupedByHeading);
-        surah = previousSurahOnPage =
-            Surah(name: title, lessons: surah.lessons, groups: surah.groups);
-        return surah;
-      }).toList();
+      final surahs = surahNodes
+          .map((e) {
+            final title = e.value.text.cleanedText;
+            var surah = _extractLessons(url, allNodes, e.key,
+                previousSurahOnPage: previousSurahOnPage,
+                isGroupedByHeading: isGroupedByHeading);
+            if (surah == null) return null;
+            surah = previousSurahOnPage = Surah(
+                name: title, lessons: surah.lessons, groups: surah.groups);
+            return surah;
+          })
+          .where((s) => s != null)
+          .toList();
       if (content.surahs.isNotEmpty &&
           surahs.isNotEmpty &&
           content.surahs.last.name == surahs.first.name) {
@@ -153,6 +159,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       final diff = maxGroupsLesson.itemGroups.length - l.itemGroups.length;
       l.itemGroups.addAll(List.filled(diff.abs(), GroupItem(items: [])));
     });
+    if (lessons.isEmpty) return null;
     final lessonGroups = lessons.first.itemGroups;
     final groupCountDiff = groups.length - lessonGroups.length;
     final groupNamesMissing = lessons.isNotEmpty && groupCountDiff.isNegative;

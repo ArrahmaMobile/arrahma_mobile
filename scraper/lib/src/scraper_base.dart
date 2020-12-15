@@ -41,11 +41,12 @@ class Scraper implements IScraper {
     }
     final completer = Completer<Document>();
     _cachedRequests[normalizedUrl] = completer.future;
-    if (_cachedRequests.isNotEmpty && _cachedRequests.length % 6 == 0) {
-      print('Pausing to avoid request burst and rate limiting...');
-      await Future<dynamic>.delayed(const Duration(seconds: 5));
-    }
     print('Navigating to $normalizedUrl');
+    if (_cachedRequests.isNotEmpty && _cachedRequests.length % 5 == 0) {
+      print('Pausing to avoid request burst and rate limiting...');
+      await Future<dynamic>.delayed(
+          Duration(seconds: 5 + (_cachedRequests.length ~/ 50)));
+    }
     try {
       final response =
           await client.get(normalizedUrl).catchError((err) => null);
@@ -75,10 +76,6 @@ class Scraper implements IScraper {
           .attributes['src']
           .toAbsolute(currentUrl)
           .removeQueryString(),
-      drawerItems: document
-          .querySelectorAll('.container_nav .nav > li > a')
-          .map((item) => scrapeDrawerItem(item))
-          .toList(),
       quickLinks: document
           .querySelectorAll('#message1 > *')
           .asMap()
@@ -143,21 +140,48 @@ class Scraper implements IScraper {
         return SocialMediaItem(
             item: Utils.getItemByUrl(link), imageUrl: imageUrl);
       }).toList(),
+      drawerItems: await performAsyncOp(
+        document.querySelectorAll('.container_nav ul.nav > li'),
+        scrapeDrawerItem,
+      ),
       aboutUsMarkdown: await AboutUsScraper(this).scrape(),
       courses: await QuranCourseScraper(this).scrape(),
     );
   }
 
-  DrawerItem scrapeDrawerItem(Element item) {
+  Future<List<TOut>> performAsyncOp<TIn, TOut>(
+      List<TIn> arr, Future<TOut> Function(TIn) asyncMap) async {
+    var result = <TOut>[];
+    for (var item in arr) {
+      result.add(await asyncMap(item));
+    }
+    return result;
+  }
+
+  Future<DrawerItem> scrapeDrawerItem(Element item) async {
+    final firstChild = item.children.first;
+    final anchorTag =
+        firstChild.localName == 'a' ? firstChild : item.querySelector('a');
+    final link = Utils.getItemByUrl(
+      anchorTag.attributes['href'].toAbsolute(currentUrl),
+    );
+    final url = Uri.parse(link.url);
+    final pathSegments = url.pathSegments;
+    final isLinkToContent = url.host.contains('arrahma.org') &&
+        pathSegments.isNotEmpty &&
+        pathSegments.first != 'index.php' &&
+        !pathSegments.first.contains('about') &&
+        pathSegments.last.endsWith('.php');
     return DrawerItem(
-      title: item.text.cleanedText,
-      link: Utils.getItemByUrl(
-        item.attributes['href'].toAbsolute(currentUrl),
+      title: anchorTag.text.cleanedText,
+      link: link,
+      content: isLinkToContent
+          ? await QuranCourseScraper(this).scrapeContent(link.url)
+          : null,
+      children: await performAsyncOp(
+        item.querySelectorAll('ul > li'),
+        scrapeDrawerItem,
       ),
-      children: item
-          .querySelectorAll('ul li a')
-          .map((item) => scrapeDrawerItem(item))
-          .toList(),
     );
   }
 }
