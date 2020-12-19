@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:arrahma_mobile_app/Drawer/menu_item_list.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
@@ -12,22 +13,9 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        children: items?.map((item) => _buildDrawer(context, item))?.toList(),
+      child: MenuItemList(
+        items: items,
       ),
-    );
-  }
-
-  Widget _buildDrawer(BuildContext context, DrawerItem item) {
-    return ExpansionTile(
-      title: Text(
-        item.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-      children: [],
     );
   }
 }

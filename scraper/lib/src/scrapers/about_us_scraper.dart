@@ -8,13 +8,15 @@ class AboutUsScraper extends ScraperBase<String> {
 
   @override
   Future<String> scrape() async {
-    final aboutUsUrl = scraper.document
+    final homeDoc = await scraper.navigateTo('');
+    final aboutUsUrl = homeDoc
         .querySelectorAll('.container_nav .nav > li > a')
         .firstWhere((e) => e.text.toLowerCase() == 'About Us'.toLowerCase(),
             orElse: () => null)
         .attributes['href']
         .toAbsolute(scraper.currentUrl);
     final doc = await scraper.navigateTo(aboutUsUrl);
+    if (doc == null) return null;
     final content = doc.querySelector('#aboutuscontent').outerHtml;
     final contentMarkdown = html2md.convert(content);
     return contentMarkdown;

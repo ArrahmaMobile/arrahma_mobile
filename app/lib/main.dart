@@ -27,7 +27,7 @@ Future main() async {
         EnvironmentConfig(
           name: 'Dev-1',
           environmentType: EnvironmentType.DEV,
-          baseUrl: 'http://192.168.86.204:8888/api', // 199
+          baseUrl: 'http://192.168.86.199:8888/api', // 199
         ),
     ],
   );
