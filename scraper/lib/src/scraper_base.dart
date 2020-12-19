@@ -7,22 +7,22 @@ import 'package:html/dom.dart';
 import 'package:scraper/src/scrapers/about_us_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_scraper.dart';
 import 'package:arrahma_shared/src/app_metadata.dart';
+import 'package:scraper/src/worker.dart';
 import 'utils.dart';
 
 abstract class IScraper {
   Document get document;
   String get currentUrl;
-  Response getResponse(String url);
   Future<Document> navigateTo(String relativeUrl);
 }
 
-class Scraper implements IScraper {
-  Scraper(this.client);
+class Scraper extends Worker<String, Document> implements IScraper {
+  Scraper(this.client) : super(maxSimultaneousJobCount: 5);
   final BaseClient client;
   final _cachedDocs = <String, Document>{};
-  final _cachedRequests = <String, Future<Document>>{};
-  final _cachedResponses = <String, Response>{};
+
   final _baseUrl = Uri.parse('https://arrahma.org');
+  String get baseUrl => _baseUrl.toString();
 
   String _currentUrl;
   @override
@@ -31,26 +31,16 @@ class Scraper implements IScraper {
   Document get document => _cachedDocs[currentUrl];
 
   @override
-  Response getResponse(String url) => _cachedResponses[url];
-
-  @override
-  Future<Document> navigateTo(String url) async {
+  Future<Document> performWork(String url) async {
+    await Future.delayed(const Duration(seconds: 1));
     final normalizedUrl = _baseUrl.resolve(url).toString();
     if (_cachedDocs.containsKey(normalizedUrl)) {
       return _cachedDocs[normalizedUrl];
     }
-    final completer = Completer<Document>();
-    _cachedRequests[normalizedUrl] = completer.future;
-    print('Navigating to $normalizedUrl');
-    if (_cachedRequests.isNotEmpty && _cachedRequests.length % 5 == 0) {
-      print('Pausing to avoid request burst and rate limiting...');
-      await Future<dynamic>.delayed(
-          Duration(seconds: 5 + (_cachedRequests.length ~/ 50)));
-    }
     try {
+      print('Navigating to $normalizedUrl');
       final response =
           await client.get(normalizedUrl).catchError((err) => null);
-      _cachedResponses[normalizedUrl] = response;
       if (response == null ||
           response.statusCode != 200 ||
           !response.headers['content-type'].startsWith('text/html')) {
@@ -59,12 +49,16 @@ class Scraper implements IScraper {
       final document = parse(response.body);
       _cachedDocs[normalizedUrl] = document;
       _currentUrl = normalizedUrl;
-      completer.complete(document);
       return document;
     } catch (err) {
-      completer.completeError(err);
+      return null;
     }
-    return null;
+  }
+
+  @override
+  Future<Document> navigateTo(String url) async {
+    // print('Pausing to avoid request burst and rate limiting...');
+    return add(url);
   }
 
   Future<AppData> initiate() async {
@@ -74,7 +68,7 @@ class Scraper implements IScraper {
       logoUrl: document
           .querySelector('.header img')
           .attributes['src']
-          .toAbsolute(currentUrl)
+          .toAbsolute(baseUrl)
           .removeQueryString(),
       quickLinks: document
           .querySelectorAll('#message1 > *')
@@ -86,8 +80,8 @@ class Scraper implements IScraper {
                     .elementAt(messageEntry.key)
                     .text
                     .cleanedText,
-                link: Utils.getItemByUrl(messageEntry.value.attributes['href']
-                    .toAbsolute(currentUrl)),
+                link: Utils.getItemByUrl(
+                    messageEntry.value.attributes['href'].toAbsolute(baseUrl)),
               ))
           .toList(),
       banners: document
@@ -96,17 +90,16 @@ class Scraper implements IScraper {
                 imageUrl: banner
                     .querySelector('img')
                     .attributes['src']
-                    .toAbsolute(currentUrl)
+                    .toAbsolute(baseUrl)
                     .removeQueryString(),
                 item: Utils.getItemByUrl(
-                    banner.attributes['href'].toAbsolute(currentUrl)),
+                    banner.attributes['href'].toAbsolute(baseUrl)),
               ))
           .toList(),
       broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
         final aTag = banner.querySelector('a');
-        final link = aTag != null
-            ? aTag.attributes['href'].toAbsolute(currentUrl)
-            : null;
+        final link =
+            aTag != null ? aTag.attributes['href'].toAbsolute(baseUrl) : null;
         final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
         final type = host != null
             ? BroadcastType.values.firstWhere(
@@ -125,17 +118,17 @@ class Scraper implements IScraper {
           imageUrl: banner
               .querySelector('img')
               ?.attributes['src']
-              ?.toAbsolute(currentUrl)
+              ?.toAbsolute(baseUrl)
               ?.removeQueryString(),
         );
       }).toList(),
       socialMediaItems:
           document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-        final link = socialMediaItem.attributes['href'].toAbsolute(currentUrl);
+        final link = socialMediaItem.attributes['href'].toAbsolute(baseUrl);
         final imageUrl = socialMediaItem
             .querySelector('img')
             ?.attributes['src']
-            ?.toAbsolute(currentUrl)
+            ?.toAbsolute(baseUrl)
             ?.removeQueryString();
         return SocialMediaItem(
             item: Utils.getItemByUrl(link), imageUrl: imageUrl);
@@ -163,7 +156,7 @@ class Scraper implements IScraper {
     final anchorTag =
         firstChild.localName == 'a' ? firstChild : item.querySelector('a');
     final link = Utils.getItemByUrl(
-      anchorTag.attributes['href'].toAbsolute(currentUrl),
+      anchorTag.attributes['href'].toAbsolute(baseUrl),
     );
     final url = Uri.parse(link.url);
     final pathSegments = url.pathSegments;
@@ -179,7 +172,7 @@ class Scraper implements IScraper {
           ? await QuranCourseScraper(this).scrapeContent(link.url)
           : null,
       children: await performAsyncOp(
-        item.querySelectorAll('ul > li'),
+        item.querySelector('ul')?.children ?? <Element>[],
         scrapeDrawerItem,
       ),
     );

@@ -12,18 +12,28 @@ class ScraperService {
   static final _scraperRunner = ScraperRunner();
   static Future<ScraperService> init() async {
     shared.init();
-    final scrapedData = await _scraperRunner.get();
+
     AppData metadata;
-    final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
-    if (lastUpdate != null &&
-        DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
-      metadata = scrapedData.appData;
-    } else {
-      metadata = await runScraper();
+    if (_appDataFuture != null)
+      metadata = await _appDataFuture;
+    else {
+      final completer = Completer<AppData>();
+      _appDataFuture = completer.future;
+      final scrapedData = await _scraperRunner.get();
+      final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
+      if (lastUpdate != null &&
+          DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
+        metadata = scrapedData.appData;
+        Timer(const Duration(seconds: 10), () => _appDataFuture = null);
+      } else {
+        metadata = await update();
+      }
+      completer.complete(metadata);
+      print('Initialized metadata...');
     }
+
     final service = ScraperService._internal(metadata);
     service.setupUpdateTimer();
-    print('Initialized metadata...');
     return service;
   }
 
@@ -49,7 +59,7 @@ class ScraperService {
   String get dataHash => _dataHash;
 
   Timer _updateTimer;
-  Future<AppData> _appDataFuture;
+  static Future<AppData> _appDataFuture;
 
   void setupUpdateTimer() {
     _updateTimer = Timer.periodic(
@@ -58,11 +68,15 @@ class ScraperService {
 
   static Future<AppData> runScraper() async {
     print('Updating metadata...');
-    return (await ScraperRunner().run(shouldStore: true)).appData;
+    final stopwatch = Stopwatch()..start();
+    final data = await ScraperRunner().run(shouldStore: true);
+    stopwatch.stop();
+    print('Scraped data in ${stopwatch.elapsed}');
+    return data.appData;
   }
 
-  Future<AppData> update() async {
-    if (_appDataFuture != null) return await _appDataFuture;
+  static Future<AppData> update({bool force = false}) async {
+    if (!force && _appDataFuture != null) return await _appDataFuture;
     try {
       _appDataFuture = runScraper();
       return await _appDataFuture;
