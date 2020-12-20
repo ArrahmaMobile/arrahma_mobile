@@ -29,9 +29,9 @@ dependencies:
   audio_session: ^0.0.7
   audio_service: ^0.15.0
   flutter_framework:
-    # git:
-    #   url: git@github.com:SASID-PRO/flutter_framework.git
-    path: ../../../commercial-project-ideas/flutter_framework
+    git:
+      url: git@github.com:SASID-PRO/flutter_framework.git
+    # path: ../../../commercial-project-ideas/flutter_framework
 
   flutter_cache_manager: ^1.4.2
 
@@ -43,6 +43,8 @@ dependencies:
   inherited_state: ^0.3.1
   crypto: ^2.1.5
   stream_transform: ^1.2.0
+  native_pdf_view: ^3.9.0
+  flutter_markdown: ^0.5.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

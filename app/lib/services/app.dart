@@ -80,7 +80,8 @@ class AppService extends StoppableService {
       connectivityService.updateServerStatus(serverStatus);
     }
     final isStale = status?.isDataStale ?? false;
-    await dataFetchTimerHandler(init: init, force: force || isStale);
+    await dataFetchTimerHandler(
+        init: init, force: force || isStale || appDataHash == null);
     return status;
   }
 
@@ -98,8 +99,10 @@ class AppService extends StoppableService {
     final date = DateTime.now().toUtc();
     if (connectivityService.isConnected &&
         (force ||
-            lastFetchDate == null ||
-            date.difference(lastFetchDate) > FETCH_INTERVAL)) {
+            lastFetchDate ==
+                null /*||
+            date.difference(lastFetchDate) > FETCH_INTERVAL*/
+        )) {
       try {
         final appDataResponse =
             await apiService.getWithResponse<AppData>('data');

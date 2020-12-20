@@ -18,20 +18,32 @@ class ScraperRunner {
   }
 
   Future<ScrapedData> get() async {
-    final file = File(FILE_PATH);
-    final hasData = await file.exists();
-    if (!hasData) return null;
     return SerializationService.deserializeScrapedData(
-        await file.readAsString());
+        await getData(FILE_PATH));
   }
 
-  void store(String relativeFilePath, ScrapedData result) async {
+  Future<String> getData(String filePath) async {
+    final file = File(filePath);
+    final hasData = await file.exists();
+    if (!hasData) return null;
+    return await file.readAsString();
+  }
+
+  Future<void> store(String relativeFilePath, ScrapedData result) async {
+    final serializedData = SerializationService.serializeScrapedData(result);
+    await storeData(relativeFilePath, serializedData);
+  }
+
+  Future<void> storeData(String relativeFilePath, String data) async {
     final outputDir =
         relativeFilePath.substring(0, relativeFilePath.lastIndexOf('/') + 1);
     await Directory(outputDir).create(recursive: true);
     final dataFile = File(relativeFilePath);
 
-    final serializedData = SerializationService.serializeScrapedData(result);
-    await dataFile.writeAsString(serializedData, mode: FileMode.write);
+    await dataFile.writeAsString(data, mode: FileMode.write);
+  }
+
+  Future<void> deleteFile(String filePath) async {
+    return await File(filePath).delete();
   }
 }

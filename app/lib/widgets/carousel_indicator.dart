@@ -3,15 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CarouselIndicator extends StatefulWidget {
-  const CarouselIndicator(
-      {Key key,
-      @required this.items,
-      this.showIndicator = true,
-      this.aspectRatio})
-      : super(key: key);
+  const CarouselIndicator({
+    Key key,
+    @required this.items,
+    this.showIndicator = true,
+    this.aspectRatio,
+    this.autoPlayInterval,
+  }) : super(key: key);
   final List<Widget> items;
   final bool showIndicator;
   final double aspectRatio;
+  final Duration autoPlayInterval;
 
   @override
   State<StatefulWidget> createState() {
@@ -29,6 +31,8 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
         CarouselSlider(
           items: widget.items,
           options: CarouselOptions(
+              autoPlayInterval:
+                  widget.autoPlayInterval ?? const Duration(seconds: 4),
               autoPlay: true,
               enlargeCenterPage: true,
               aspectRatio: widget.aspectRatio ?? 2.77,

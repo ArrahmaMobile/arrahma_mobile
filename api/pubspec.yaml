@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   aqueduct: ^3.3.0+1
+  uuid: ^2.2.2
   scraper_service:
     path: ../scraper_service
   arrahma_shared: 

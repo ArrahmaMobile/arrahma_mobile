@@ -37,6 +37,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       if (widget.course.courseDetails != null)
         QuranDetailsTab(
           title: widget.course.title,
+          details: widget.course.courseDetails,
         ),
       if (widget.course.registration != null)
         QuranRegistrationTab(
@@ -74,60 +75,73 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       body: _getTab(selectedTabIndex),
       bottomNavigationBar: tabCount <= 1
           ? null
-          : BottomNavigationBar(
-              selectedItemColor: const Color(0xff124570),
-              unselectedItemColor: Colors.black,
-              currentIndex: selectedTabIndex,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                if (widget.course.courseDetails != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.library_books,
-                    ),
-                    label: 'Details',
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Divider(
+                  height: 2,
+                  thickness: 2,
+                  color: Colors.grey.shade300,
+                ),
+                Flexible(
+                  child: BottomNavigationBar(
+                    elevation: 10,
+                    selectedItemColor: const Color(0xff124570),
+                    unselectedItemColor: Colors.black,
+                    currentIndex: selectedTabIndex,
+                    type: BottomNavigationBarType.fixed,
+                    items: [
+                      if (widget.course.courseDetails != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.library_books,
+                          ),
+                          label: 'Details',
+                        ),
+                      if (widget.course.registration != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.book,
+                          ),
+                          label: 'Registration',
+                        ),
+                      if (widget.course.tafseer != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.book,
+                          ),
+                          label: 'Tafseer',
+                        ),
+                      if (widget.course.tajweed != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.home,
+                          ),
+                          label: 'Tajweed',
+                        ),
+                      if (widget.course.lectures != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.home,
+                          ),
+                          label: 'Lectures',
+                        ),
+                      if (widget.course.tests != null)
+                        const BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.home,
+                          ),
+                          label: 'Tests',
+                        ),
+                    ],
+                    onTap: (index) {
+                      setState(() {
+                        _tabSelected = index;
+                      });
+                    },
                   ),
-                if (widget.course.registration != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.book,
-                    ),
-                    label: 'Registration',
-                  ),
-                if (widget.course.tafseer != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.book,
-                    ),
-                    label: 'Tafseer',
-                  ),
-                if (widget.course.tajweed != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    label: 'Tajweed',
-                  ),
-                if (widget.course.lectures != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    label: 'Lectures',
-                  ),
-                if (widget.course.tests != null)
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    label: 'Tests',
-                  ),
+                ),
               ],
-              onTap: (index) {
-                setState(() {
-                  _tabSelected = index;
-                });
-              },
             ),
     );
   }

@@ -8,37 +8,45 @@ import 'package:scraper_service/scraper_runner.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 class ScraperService {
-  static const UPDATE_DURATION = Duration(hours: 4);
-  static final _scraperRunner = ScraperRunner();
+  static const UPDATE_DURATION = Duration(minutes: 10);
+  static void Function(Map<String, dynamic>) sendMessage;
+  static String id;
+
   static Future<ScraperService> init() async {
     shared.init();
 
     AppData metadata;
-    if (_appDataFuture != null)
-      metadata = await _appDataFuture;
-    else {
-      final completer = Completer<AppData>();
-      _appDataFuture = completer.future;
-      final scrapedData = await _scraperRunner.get();
+    if (isMain) {
+      final scrapedData = await ScraperRunner().get();
       final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
       if (lastUpdate != null &&
           DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
         metadata = scrapedData.appData;
-        Timer(const Duration(seconds: 10), () => _appDataFuture = null);
       } else {
-        metadata = await update();
+        metadata = await runScraper(true);
       }
-      completer.complete(metadata);
-      print('Initialized metadata...');
+    } else {
+      onDataUpdate();
+      metadata = await _appDataStreamCtrl.stream.first;
     }
 
+    log('Initialized metadata...');
+
     final service = ScraperService._internal(metadata);
-    service.setupUpdateTimer();
+    if (isMain) service.setupUpdateTimer();
     return service;
   }
 
   ScraperService._internal(AppData value) {
     _data = value;
+    if (!isMain) _appDataStreamCtrl?.stream?.listen((data) => _data = data);
+  }
+
+  static Future<void> onDataUpdate({Map<String, dynamic> data}) async {
+    final scrapedData = await ScraperRunner().get();
+    _appDataStreamCtrl.add(scrapedData.appData);
+    if (data != null)
+      log('Recieved data from main service (${data['origin']})');
   }
 
   AppData _rawData;
@@ -59,33 +67,40 @@ class ScraperService {
   String get dataHash => _dataHash;
 
   Timer _updateTimer;
-  static Future<AppData> _appDataFuture;
+
+  static final _appDataStreamCtrl = StreamController<AppData>.broadcast();
+  static bool isMain = true;
 
   void setupUpdateTimer() {
     _updateTimer = Timer.periodic(
-        UPDATE_DURATION, (timer) async => _data = await update());
+        UPDATE_DURATION, (timer) async => _data = await runScraper(false));
   }
 
-  static Future<AppData> runScraper() async {
-    print('Updating metadata...');
+  static Future<AppData> runScraper(bool initial) async {
+    log('Updating metadata...');
     final stopwatch = Stopwatch()..start();
     final data = await ScraperRunner().run(shouldStore: true);
     stopwatch.stop();
-    print('Scraped data in ${stopwatch.elapsed}');
-    return data.appData;
-  }
-
-  static Future<AppData> update({bool force = false}) async {
-    if (!force && _appDataFuture != null) return await _appDataFuture;
-    try {
-      _appDataFuture = runScraper();
-      return await _appDataFuture;
-    } finally {
-      Timer(const Duration(seconds: 10), () => _appDataFuture = null);
-    }
+    log('Scraped data in ${stopwatch.elapsed}');
+    if (!initial)
+      sendMessage({
+        'type': 'statusUpdate',
+        'scrapeStatus': ScrapeStatus.Complete.index
+      });
+    return data?.appData;
   }
 
   void dispose() {
     _updateTimer?.cancel();
   }
+
+  static void log(String message) {
+    print('[$id] $message');
+  }
+}
+
+enum ScrapeStatus {
+  Idle,
+  Start,
+  Complete,
 }

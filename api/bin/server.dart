@@ -1,4 +1,5 @@
 import 'package:arrahma_web_api/api.dart';
+import 'package:scraper_service/scraper_runner.dart';
 
 Future main() async {
   final isDebugging = Platform.environment['DEBUG'] == 'true';
@@ -9,6 +10,8 @@ Future main() async {
     ..options.privateKeyFilePath = Platform.environment['KEY_PATH']
     ..options.port =
         int.tryParse(Platform.environment['PORT'] ?? 8888.toString());
+
+  await ScraperRunner().deleteFile(ArrahmaChannel.idFilePath);
 
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);

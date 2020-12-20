@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/About_Us/about_us.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -16,25 +17,41 @@ class MenuItemList extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, DrawerItem item) {
     return ListTile(
-      title: Text(
-        item.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
+        title: Text(
+          item.title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
-      ),
-      onTap: () => Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (_) => (item.children?.isNotEmpty ?? false)
-              ? Scaffold(appBar: AppBar(), body: MenuItemList(
-                  items: item.children,
-                ),)
-              : QuranSurahPage(
-                  surahs: item.content.surahs,
-                ),
-        ),
-      ),
-    );
+        onTap: () {
+          final normalizedTitle = item.title.toLowerCase();
+          Widget page;
+          switch (normalizedTitle) {
+            case 'home':
+              Navigator.pop(context);
+              return;
+            case 'about us':
+              page = AboutUs();
+              break;
+          }
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (_) =>
+                  page ??
+                  ((item.children?.isNotEmpty ?? false)
+                      ? Scaffold(
+                          appBar: AppBar(),
+                          body: MenuItemList(
+                            items: item.children,
+                          ),
+                        )
+                      : QuranSurahPage(
+                          surahs: item.content.surahs,
+                        )),
+            ),
+          );
+        });
   }
 }

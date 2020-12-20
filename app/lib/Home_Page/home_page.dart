@@ -1,6 +1,7 @@
 import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
@@ -55,22 +56,22 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildQuickLinks(appData.quickLinks),
                 _buildBanners(appData.banners),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(10),
-                    child: _broadcast(appData.broadcastItems),
-                  ),
-                ),
+                Expanded(child: CourseView())
+                // _broadcast(appData.broadcastItems),
               ],
             ),
           ),
           Column(
             children: [
-              _socialMedia(context, appData.socialMediaItems),
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0),
-                child: _buildAudioPlayer(),
+              Divider(
+                height: 2,
+                thickness: 2,
+                color: Colors.grey.shade300,
               ),
+              const SizedBox(height: 8),
+              _socialMedia(context, appData.socialMediaItems),
+              _buildAudioPlayer(),
+              const SizedBox(height: 8),
             ],
           ),
         ],
@@ -84,6 +85,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBanners(List<HeadingBanner> banners) {
     return CarouselIndicator(
+      autoPlayInterval: const Duration(seconds: 5),
       items: banners
           .map((banner) => _buildImageLink(banner.item, banner.imageUrl))
           .toList(),
@@ -92,6 +94,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildQuickLinks(List<QuickLink> quickLinks) {
     return CarouselIndicator(
+      autoPlayInterval: const Duration(seconds: 7),
       aspectRatio: 20,
       showIndicator: false,
       items: quickLinks
