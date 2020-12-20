@@ -44,6 +44,6 @@ class ScraperRunner {
   }
 
   Future<void> deleteFile(String filePath) async {
-    return await File(filePath).delete();
+    return await File(filePath).delete().catchError((_) {});
   }
 }
