@@ -6,11 +6,15 @@ class ContactUs extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
         centerTitle: true,
         title: const Text(
           'Contact Us',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: SingleChildScrollView(

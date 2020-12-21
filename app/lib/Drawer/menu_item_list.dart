@@ -47,7 +47,7 @@ class MenuItemList extends StatelessWidget {
                             backgroundColor: const Color(0xff124570),
                             centerTitle: true,
                             title: const Text(
-                              'About us',
+                              'TITLEE',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
