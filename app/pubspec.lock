@@ -361,7 +361,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ecc61423be31cedcbd37ed37a4bbc170d86a9ddc
+      resolved-ref: a72003d02fd979eec42853e56f19db2673531dcd
       url: "git@github.com:SASID-PRO/flutter_framework.git"
     source: git
     version: "0.0.1"
@@ -379,13 +379,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.1"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.11"
   flutter_secure_storage:
     dependency: transitive
     description:
@@ -543,13 +536,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  local_auth:
-    dependency: transitive
-    description:
-      name: local_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.3+2"
   logging:
     dependency: transitive
     description:
