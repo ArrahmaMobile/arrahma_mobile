@@ -42,7 +42,17 @@ class MenuItemList extends StatelessWidget {
                   page ??
                   ((item.children?.isNotEmpty ?? false)
                       ? Scaffold(
-                          appBar: AppBar(),
+                          appBar: AppBar(
+                            iconTheme: const IconThemeData(color: Colors.white),
+                            backgroundColor: const Color(0xff124570),
+                            centerTitle: true,
+                            title: const Text(
+                              'About us',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                           body: MenuItemList(
                             items: item.children,
                           ),

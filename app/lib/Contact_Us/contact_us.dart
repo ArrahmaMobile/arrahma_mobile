@@ -88,6 +88,9 @@ class ContactUs extends StatelessWidget {
               const SizedBox(height: 15),
               const Text(
                 'Your emails will be confidential and will be received by Ustaza only.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
