@@ -35,11 +35,25 @@ class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
     return Column(
       children: [
         if (item?.album != null)
-          Text(
-            item?.album,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: widget.dense ? 16 : 18),
-            textAlign: TextAlign.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              Text(
+                item?.album,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: widget.dense ? 16 : 18),
+                textAlign: TextAlign.center,
+              ),
+              GestureDetector(
+                onTap: () {}, // NEED TO WORK ON
+                child: const Icon(
+                  Icons.insert_comment_rounded,
+                  size: 15,
+                ),
+              ),
+            ],
           ),
         const SizedBox(height: 10),
         Text(

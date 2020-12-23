@@ -28,65 +28,19 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: !_isSearching
-          ? AppBar(
-              iconTheme: const IconThemeData(color: Colors.white),
-              backgroundColor: const Color(0xff124570),
-              centerTitle: true,
-              title: const Text(
-                'Lessons',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  color: Colors.white,
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                    });
-                  },
-                ),
-              ],
-            )
-          : AppBar(
-              iconTheme: const IconThemeData(color: Colors.white),
-              backgroundColor: const Color(0xff124570),
-              title: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(22.0),
-                  ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: TextField(
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                        hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.black)),
-                  ),
-                ),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.cancel),
-                  color: Colors.white,
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = false;
-                    });
-                  },
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xff124570),
+        centerTitle: true,
+        title: const Text(
+          'Lessons',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
