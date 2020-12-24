@@ -59,12 +59,13 @@ class _HomePageState extends State<HomePage> {
                 _buildQuickLinks(appData.quickLinks),
                 _buildBanners(appData.banners),
                 Expanded(
-                    child: CourseView(
-                  courses: [
-                    ...appData.courses.take(3),
-                    ...staticCourses(appData)
-                  ],
-                ))
+                  child: CourseView(
+                    courses: [
+                      ...appData.courses.take(3),
+                      ...staticCourses(appData),
+                    ],
+                  ),
+                ),
                 // _broadcast(appData.broadcastItems),
               ],
             ),
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
   List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
         StaticQuranCourse(
           imageUrl: 'https://arrahma.org/images_n/202.png',
-          title: 'OTHER COURSES',
+          title: 'OTHER \nCOURSES',
           onTap: () {
             NavigationUtils.push<dynamic>(
                 context,
