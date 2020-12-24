@@ -1,6 +1,6 @@
 import 'package:arrahma_mobile_app/features/media_player/media_player.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';

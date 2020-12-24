@@ -1,7 +1,6 @@
-import 'package:arrahma_mobile_app/pages/contact_us.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
+import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
-import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
