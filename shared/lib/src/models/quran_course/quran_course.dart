@@ -12,6 +12,13 @@ abstract class Course {
   final String imageUrl;
 }
 
+class StaticQuranCourse extends Course {
+  const StaticQuranCourse({String title, String imageUrl, this.onTap})
+      : super(title: title, imageUrl: imageUrl);
+
+  final void Function() onTap;
+}
+
 class QuranCourse extends Course {
   const QuranCourse(
       {String title,

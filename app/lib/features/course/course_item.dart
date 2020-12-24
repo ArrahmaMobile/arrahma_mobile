@@ -1,28 +1,36 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 
 class CourseItem extends StatelessWidget {
   const CourseItem({Key key, this.course}) : super(key: key);
-  final QuranCourse course;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
     return _buildCourse(context, course);
   }
 
-  Widget _buildCourse(BuildContext context, QuranCourse course) {
+  Widget _buildCourse(BuildContext context, Course course) {
     return GestureDetector(
       onTap: () {
-        Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (_) => QuranCoursePage(
-              course: course,
-            ),
-          ),
-        );
+        if (course is QuranCourse)
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (_) => course.lectures != null &&
+                        course.lectures.surahs.length == 1
+                    ? QuranLessonPage(
+                        surah: course.lectures.surahs.first,
+                        title: course.lectures.surahs.first.name,
+                      )
+                    : QuranCoursePage(
+                        course: course,
+                      )),
+          );
+        else if (course is StaticQuranCourse) course.onTap();
       },
       child: Column(
         children: <Widget>[

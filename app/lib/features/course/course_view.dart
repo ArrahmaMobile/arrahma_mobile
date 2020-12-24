@@ -1,12 +1,13 @@
 import 'package:arrahma_mobile_app/features/course/course_item.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:inherited_state/inherited_state.dart';
 
 class CourseView extends StatelessWidget {
+  const CourseView({Key key, @required this.courses}) : super(key: key);
+  final List<Course> courses;
+
   @override
   Widget build(BuildContext context) {
-    final appData = context.on<AppData>();
     return GridView.count(
       padding: const EdgeInsets.all(10.0),
       crossAxisCount: 3,
@@ -14,7 +15,7 @@ class CourseView extends StatelessWidget {
       mainAxisSpacing: 8,
       shrinkWrap: true,
       childAspectRatio: .90,
-      children: appData.courses.map((c) => CourseItem(course: c)).toList(),
+      children: courses.map((c) => CourseItem(course: c)).toList(),
     );
   }
 }

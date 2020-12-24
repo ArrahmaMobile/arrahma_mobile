@@ -47,14 +47,17 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
       if (widget.course.tafseer != null)
         QuranSurahPage(
           surahs: widget.course.tafseer.surahs,
+          title: widget.course.title,
         ),
       if (widget.course.tajweed != null)
         QuranSurahPage(
           surahs: widget.course.tajweed.surahs,
+          title: widget.course.title,
         ),
       if (widget.course.lectures != null)
         QuranSurahPage(
           surahs: widget.course.lectures.surahs,
+          title: widget.course.title,
         ),
       if (widget.course.tests != null)
         QuranTestsPage(

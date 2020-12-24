@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
+import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
@@ -8,34 +9,23 @@ class QuranSurahPage extends StatefulWidget {
   const QuranSurahPage({
     Key key,
     @required this.surahs,
+    @required this.title,
   }) : super(key: key);
   final List<Surah> surahs;
+  final String title;
 
   @override
   _QuranSurahPageState createState() => _QuranSurahPageState();
 }
 
 class _QuranSurahPageState extends State<QuranSurahPage> {
-  bool _isFav = false;
-  bool _isSearching = false;
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: const Color(0xff124570),
-          centerTitle: true,
-          title: const Text(
-            'Surah Detail',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        appBar: ThemedAppBar(
+          title: widget.title,
         ),
         body: TabBarView(
           children: [
@@ -57,7 +47,10 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                             context,
                             MaterialPageRoute<dynamic>(
                               builder: (_) => surah.lessons.length > 1
-                                  ? QuranLessonPage(surah: surah)
+                                  ? QuranLessonPage(
+                                      surah: surah,
+                                      title: surah.name,
+                                    )
                                   : QuranLessonAudioPage(
                                       surah: surah, lesson: surah.lessons[0]),
                             ),

@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_detail/quran_lesson_detail.dart';
+import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
@@ -6,17 +7,16 @@ class QuranLessonPage extends StatefulWidget {
   const QuranLessonPage({
     Key key,
     @required this.surah,
+    @required this.title,
   }) : super(key: key);
   final Surah surah;
+  final String title;
 
   @override
   _QuranLessonPageState createState() => _QuranLessonPageState();
 }
 
 class _QuranLessonPageState extends State<QuranLessonPage> {
-  bool _isFav = false;
-  bool _isSearching = false;
-
   @override
   void initState() {
     super.initState();
@@ -28,18 +28,8 @@ class _QuranLessonPageState extends State<QuranLessonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: const Color(0xff124570),
-        centerTitle: true,
-        title: const Text(
-          'Lessons',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      appBar: ThemedAppBar(
+        title: widget.title,
       ),
       body: Column(
         children: [

@@ -1,6 +1,8 @@
 import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
+import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
@@ -56,7 +58,13 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildQuickLinks(appData.quickLinks),
                 _buildBanners(appData.banners),
-                Expanded(child: CourseView())
+                Expanded(
+                    child: CourseView(
+                  courses: [
+                    ...appData.courses.take(3),
+                    ...staticCourses(appData)
+                  ],
+                ))
                 // _broadcast(appData.broadcastItems),
               ],
             ),
@@ -79,6 +87,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
+        StaticQuranCourse(
+          imageUrl: 'https://arrahma.org/images_n/202.png',
+          title: 'OTHER COURSES',
+          onTap: () {
+            NavigationUtils.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (_) => Scaffold(
+                        appBar: ThemedAppBar(
+                          title: 'OTHER COURSES',
+                        ),
+                        body: CourseView(
+                            courses:
+                                appData.courses.skip(3).take(6).toList()))));
+          },
+        ),
+        StaticQuranCourse(
+            imageUrl: 'https://arrahma.org/images_n/209.png',
+            title: 'ASSORTED LECTURES',
+            onTap: () {
+              NavigationUtils.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (_) =>
+                          QuranCoursePage(course: appData.courses[10])));
+            }),
+        StaticQuranCourse(
+            imageUrl: 'https://arrahma.org/images_n/72.png',
+            title: 'WEEKLY REMINDERS',
+            onTap: () {
+              NavigationUtils.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (_) => Scaffold(
+                            appBar: ThemedAppBar(
+                              title: 'WEEKLY REMINDERS',
+                            ),
+                            body: CourseView(courses: [
+                              appData.courses[9],
+                              appData.courses.last
+                            ]),
+                          )));
+            }),
+      ];
+
   Widget _buildAudioPlayer() {
     return CollapsedPlayer();
   }
@@ -95,7 +149,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildQuickLinks(List<QuickLink> quickLinks) {
     return CarouselIndicator(
       autoPlayInterval: const Duration(seconds: 7),
-      aspectRatio: 20,
+      aspectRatio: 10,
       showIndicator: false,
       items: quickLinks
           ?.map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))
@@ -122,9 +176,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildQuickLink(Item link, String title) {
-    return GestureDetector(
-      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [link], 0),
-      child: Text(title),
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: double.infinity),
+      child: Card(
+        child: InkWell(
+          onTap: () =>
+              Utils.openUrl(context, (index) => 'Audio', '', [link], 0),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(child: Text(title)),
+          ),
+        ),
+      ),
     );
   }
 
