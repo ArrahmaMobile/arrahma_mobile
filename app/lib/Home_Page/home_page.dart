@@ -53,18 +53,24 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 50.0),
         child: FloatingActionButton(
+          backgroundColor: Colors.grey,
           mini: true,
           child: const Icon(Icons.comment),
           onPressed: () {
             NavigationUtils.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                    builder: (_) => Tawk(
-                          directChatLink:
-                              'https://tawk.to/chat/59840e124471ce54db652823/default',
-                          visitor: TawkVisitor(
-                            name: 'Ayoub AMINE',
-                            email: 'ayoubamine2a@gmail.com',
+                    builder: (_) => Scaffold(
+                          appBar: const ThemedAppBar(
+                            title: 'Chat With Us',
+                          ),
+                          body: Tawk(
+                            directChatLink:
+                                'https://tawk.to/chat/59840e124471ce54db652823/default',
+                            visitor: TawkVisitor(
+                              name: '',
+                              email: '',
+                            ),
                           ),
                         )));
           },
