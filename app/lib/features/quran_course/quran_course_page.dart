@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +75,7 @@ class _QuranCoursePageState extends State<QuranCoursePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       body: _getTab(selectedTabIndex),
       bottomNavigationBar: tabCount <= 1
           ? null
