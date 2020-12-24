@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
+import 'package:arrahma_mobile_app/pages/contact_us.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
         GestureDetector(
             onTap: () {
               Navigator.push<dynamic>(context,
-                  MaterialPageRoute<dynamic>(builder: (_) => ContactUs()));
+                  MaterialPageRoute<dynamic>(builder: (_) => ContactUsPage()));
             },
             child: Image.asset('assets/images/home_page_images/contact.png')),
       ],
