@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
+        padding: const EdgeInsets.only(bottom: 50.0),
         child: FloatingActionButton(
           mini: true,
           child: const Icon(Icons.comment),
