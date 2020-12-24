@@ -1,9 +1,9 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
 import 'quran_lesson_detail/quran_lesson_detail.dart';
+import 'quran_lesson_page/quran_lesson_page.dart';
 
 class QuranSurahPage extends StatefulWidget {
   const QuranSurahPage({

@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
-import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
