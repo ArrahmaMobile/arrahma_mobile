@@ -1,4 +1,4 @@
-import 'package:arrahma_mobile_app/Contact_Us/contact_us.dart';
+import 'package:arrahma_mobile_app/pages/contact_us.dart';
 import 'package:arrahma_mobile_app/all_courses/quran_courses/quran_course_page.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/drawer/main_drawer.dart';
