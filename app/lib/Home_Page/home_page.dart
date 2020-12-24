@@ -10,6 +10,7 @@ import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:flutter_tawk/flutter_tawk.dart';
 import 'package:inherited_state/inherited_state.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +50,26 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: FloatingActionButton(
+          mini: true,
+          child: const Icon(Icons.comment),
+          onPressed: () {
+            NavigationUtils.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (_) => Tawk(
+                          directChatLink:
+                              'https://tawk.to/chat/59840e124471ce54db652823/default',
+                          visitor: TawkVisitor(
+                            name: 'Ayoub AMINE',
+                            email: 'ayoubamine2a@gmail.com',
+                          ),
+                        )));
+          },
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -66,10 +87,10 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                // _broadcast(appData.broadcastItems),
               ],
             ),
           ),
+          const SizedBox(height: 8),
           Column(
             children: [
               Divider(
@@ -212,11 +233,16 @@ class _HomePageState extends State<HomePage> {
                 _buildImageLink(socialMedia.item, socialMedia.imageUrl))
             .toList(),
         GestureDetector(
-            onTap: () {
-              Navigator.push<dynamic>(context,
-                  MaterialPageRoute<dynamic>(builder: (_) => ContactUs()));
-            },
-            child: Image.asset('assets/images/home_page_images/contact.png')),
+          onTap: () {
+            Launch.url('https://mixlr.com/arrahma-live/');
+          },
+          child: Tooltip(
+            message: 'Mixlr',
+            child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Image.asset('assets/images/social_media/mixlr.png')),
+          ),
+        ),
       ],
     );
   }

@@ -33,7 +33,7 @@ dependencies:
     git:
       url: git@github.com:SASID-PRO/flutter_framework.git
     # path: ../../../commercial-project-ideas/flutter_framework
-
+  flutter_tawk: ^0.0.5 
   flutter_cache_manager: ^1.4.2
 
   share: ^0.6.5+4
