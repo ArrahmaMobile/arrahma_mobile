@@ -59,16 +59,18 @@ class _HomePageState extends State<HomePage> {
             NavigationUtils.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                    builder: (_) => Scaffold(
-                          appBar: const ThemedAppBar(
-                            title: 'Chat With Us',
-                          ),
-                          body: Tawk(
-                            directChatLink:
-                                'https://tawk.to/chat/59840e124471ce54db652823/default',
-                            visitor: TawkVisitor(
-                              name: '',
-                              email: '',
+                    builder: (_) => SafeArea(
+                          child: Scaffold(
+                            appBar: const ThemedAppBar(
+                              title: 'Chat With Us',
+                            ),
+                            body: Tawk(
+                              directChatLink:
+                                  'https://tawk.to/chat/59840e124471ce54db652823/default',
+                              visitor: TawkVisitor(
+                                name: '',
+                                email: '',
+                              ),
                             ),
                           ),
                         )));
