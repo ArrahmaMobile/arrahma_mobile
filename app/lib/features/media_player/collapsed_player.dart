@@ -7,6 +7,10 @@ import 'package:inherited_state/inherited_state.dart';
 import 'audio_player_display.dart';
 
 class CollapsedPlayer extends StatefulWidget {
+  const CollapsedPlayer({
+    Key key,
+  }) : super(key: key);
+
   @override
   _CollapsedPlayerState createState() => _CollapsedPlayerState();
 }
@@ -14,9 +18,12 @@ class CollapsedPlayer extends StatefulWidget {
 class _CollapsedPlayerState extends State<CollapsedPlayer> {
   final _audioPlayer = SL.get<AudioPlayerService>();
 
+  bool isClosed;
+
   @override
   void initState() {
     super.initState();
+    isClosed = false;
   }
 
   @override
@@ -30,7 +37,7 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
         return StreamBuilder(
           stream: _audioPlayer.audioStream,
           builder: (_, snapshot) => AnimatedCrossFade(
-            crossFadeState: snapshot.hasData && !finished
+            crossFadeState: snapshot.hasData && !finished && !isClosed
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
             firstChild: Column(
@@ -53,6 +60,11 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                         Flexible(
                             child: AudioPlayerDisplay(
                           dense: true,
+                          onClose: () {
+                            setState(() {
+                              isClosed = true;
+                            });
+                          },
                         )),
                         AudioPlayerControlBar(),
                       ],

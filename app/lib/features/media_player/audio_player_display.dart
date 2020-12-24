@@ -9,9 +9,11 @@ class AudioPlayerDisplay extends StatefulWidget {
     Key key,
     this.item,
     this.dense = false,
+    this.onClose,
   }) : super(key: key);
   final MediaItem item;
   final bool dense;
+  final VoidCallback onClose;
 
   @override
   _AudioPlayerDisplayState createState() => _AudioPlayerDisplayState();
@@ -19,6 +21,8 @@ class AudioPlayerDisplay extends StatefulWidget {
 
 class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
   final _audioPlayer = SL.get<AudioPlayerService>();
+
+  bool get showCloseButton => widget.onClose != null;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,9 @@ class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
       children: [
         if (item?.album != null)
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: showCloseButton
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
             children: [
               Container(),
               Text(
@@ -46,13 +52,14 @@ class _AudioPlayerDisplayState extends State<AudioPlayerDisplay> {
                     fontSize: widget.dense ? 16 : 18),
                 textAlign: TextAlign.center,
               ),
-              GestureDetector(
-                onTap: () {}, // NEED TO WORK ON
-                child: const Icon(
-                  Icons.insert_comment_rounded,
-                  size: 15,
+              if (showCloseButton)
+                GestureDetector(
+                  onTap: widget.onClose, // NEED TO WORK ON
+                  child: const Icon(
+                    Icons.close,
+                    size: 15,
+                  ),
                 ),
-              ),
             ],
           ),
         const SizedBox(height: 10),
