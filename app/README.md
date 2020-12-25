@@ -1,11 +1,9 @@
 ## TODO
 
-- Figure out a better caching and invalidation strategy for app data. Status calls should notify the app about data changes.
-
-
-> Bugs:
-⦁	If there's only one audio, "next" and "previous" are still enable.
-⦁	If there's three audio, you can only go to the next one, not the third one. If click on the second on, cant go back nor forward. Same thing with 3rd audio.
+Bottom Nav Quran Course (Registration and Test)
+Android build
+Seeker
+Seeker notification
 
 > Ex: Lectures > Quranic Tafseer > Ahsan-ul-Bayna > Surah Fatiha > Lesson 1 > Tafseer
 

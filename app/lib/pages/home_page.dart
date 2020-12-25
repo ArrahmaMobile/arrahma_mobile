@@ -49,55 +49,60 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 50.0),
-        child: FloatingActionButton(
-          backgroundColor: Colors.grey,
-          mini: true,
-          child: const Icon(Icons.comment),
-          onPressed: () {
-            NavigationUtils.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (_) => SafeArea(
-                          child: Scaffold(
-                            appBar: const ThemedAppBar(
-                              title: 'Chat With Us',
-                            ),
-                            body: Tawk(
-                              directChatLink:
-                                  'https://tawk.to/chat/59840e124471ce54db652823/default',
-                              visitor: TawkVisitor(
-                                name: '',
-                                email: '',
-                              ),
-                            ),
-                          ),
-                        )));
-          },
-        ),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(height: 10),
           Expanded(
-            child: Column(
+            child: Stack(
               children: [
-                _buildQuickLinks(appData.quickLinks),
-                _buildBanners(appData.banners),
-                Expanded(
-                  child: CourseView(
-                    courses: [
-                      ...appData.courses.take(3),
-                      ...staticCourses(appData),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    _buildQuickLinks(appData.quickLinks),
+                    _buildBanners(appData.banners),
+                    Expanded(
+                      child: CourseView(
+                        courses: [
+                          ...appData.courses.take(3),
+                          ...staticCourses(appData),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.grey,
+                      child: const Icon(Icons.comment),
+                      onPressed: () {
+                        NavigationUtils.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (_) => SafeArea(
+                                      child: Scaffold(
+                                        appBar: const ThemedAppBar(
+                                          title: 'Chat With Us',
+                                        ),
+                                        body: Tawk(
+                                          directChatLink:
+                                              'https://tawk.to/chat/59840e124471ce54db652823/default',
+                                          visitor: TawkVisitor(
+                                            name: '',
+                                            email: '',
+                                          ),
+                                        ),
+                                      ),
+                                    )));
+                      },
+                    ),
+                  ),
+                )
               ],
             ),
           ),
-          const SizedBox(height: 8),
           Column(
             children: [
               Divider(

@@ -50,11 +50,13 @@ class _AudioPlayerControlBarState extends State<AudioPlayerControlBar> {
                       final allowPrevious = playbackSnapshot.hasData &&
                           playbackSnapshot.data.actions
                               .contains(MediaAction.skipToPrevious) &&
-                          queue.last == item;
+                          queue.first != item &&
+                          queue.length > 1;
                       final allowNext = playbackSnapshot.hasData &&
                           playbackSnapshot.data.actions
                               .contains(MediaAction.skipToNext) &&
-                          queue.first == item;
+                          queue.last != item &&
+                          queue.length > 1;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[

@@ -42,6 +42,7 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                 : CrossFadeState.showSecond,
             firstChild: Column(
               children: [
+                const SizedBox(height: 9),
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
