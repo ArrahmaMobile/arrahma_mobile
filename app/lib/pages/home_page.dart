@@ -1,15 +1,16 @@
 import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_tawk/flutter_tawk.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inherited_state/inherited_state.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,8 +45,8 @@ class _HomePageState extends State<HomePage> {
           },
           child: SizedBox(
             height: 56,
-            child: _buildImage(appData?.logoUrl ??
-                'assets/images/home_page_images/aarhman_mainImage.png'),
+            child:
+                _buildImage(appData?.logoUrl ?? 'assets/images/logo_full.png'),
           ),
         ),
       ),
@@ -75,8 +76,8 @@ class _HomePageState extends State<HomePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: FloatingActionButton(
-                      backgroundColor: Colors.grey,
-                      child: const Icon(Icons.comment),
+                      backgroundColor: Colors.brown.shade400,
+                      child: const FaIcon(FontAwesomeIcons.solidCommentAlt),
                       onPressed: () {
                         NavigationUtils.push<dynamic>(
                             context,
@@ -146,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute<dynamic>(
                       builder: (_) =>
-                          QuranCoursePage(course: appData.courses[10])));
+                          QuranCourseView(course: appData.courses[10])));
             }),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/72.png',
@@ -162,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                             body: CourseView(
                               courses: [
                                 appData.courses[9],
-                                appData.courses.last
+                                ...appData.courses.skip(11).toList()
                               ],
                             ),
                           )));

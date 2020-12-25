@@ -1,6 +1,7 @@
-import 'package:arrahma_mobile_app/features/media_player/media_player.dart';
+import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
+import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
@@ -8,6 +9,22 @@ import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
 
 class Utils {
+  static void pushView(BuildContext context, String title, Widget view,
+      {bool replace = false, Color backgroundColor}) {
+    NavigationUtils.pushNoResultView(
+      context,
+      view,
+      safeArea: false,
+      appBar: title != null
+          ? ThemedAppBar(
+              title: title,
+              backgroundColor: backgroundColor,
+            )
+          : null,
+      replace: replace,
+    );
+  }
+
   static void openUrl(BuildContext context, String Function(int index) title,
       String group, List<Item> items, int index) {
     final item = items[index];
@@ -24,13 +41,12 @@ class Utils {
             ),
           )
           .toList();
-      Navigator.push<dynamic>(
+      Utils.pushView(
         context,
-        MaterialPageRoute<dynamic>(
-          builder: (_) => MediaPlayerScreen(
-            mediaItems: mediaItems,
-            initialAudioIndex: index,
-          ),
+        null,
+        MediaPlayerView(
+          mediaItems: mediaItems,
+          initialAudioIndex: index,
         ),
       );
       return;
@@ -48,15 +64,14 @@ class Utils {
       final course = appData.courses[courseContents.key ~/ 3];
       final courseContentIndex = courseContents.key % 3;
       final tabIndex = courseContentIndex == 2 ? 0 : courseContentIndex;
-      Navigator.push<dynamic>(
+      Utils.pushView(
         context,
-        MaterialPageRoute<dynamic>(
-          builder: (_) => QuranCoursePage(
-            course: course,
-            initialTabIndex: tabIndex +
-                (course.courseDetails != null ? 1 : 0) +
-                (course.registration != null ? 1 : 0),
-          ),
+        course.title,
+        QuranCourseView(
+          course: course,
+          initialTabIndex: tabIndex +
+              (course.courseDetails != null ? 1 : 0) +
+              (course.registration != null ? 1 : 0),
         ),
       );
     } else {

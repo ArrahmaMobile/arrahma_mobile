@@ -1,7 +1,11 @@
-import 'package:arrahma_mobile_app/features/quran_course/quran_tafseer_tab/quran_surah_page/quran_surah_page.dart';
-import 'package:arrahma_mobile_app/pages/about_us.dart';
+import 'package:arrahma_mobile_app/core/utils.dart';
+import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_surah_view.dart';
+import 'package:arrahma_mobile_app/pages/about_us_view.dart';
+import 'package:arrahma_mobile_app/pages/contact_us_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 
 class MenuItemList extends StatelessWidget {
   const MenuItemList({Key key, this.items}) : super(key: key);
@@ -10,8 +14,10 @@ class MenuItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: items?.map((item) => _buildItem(context, item))?.toList(),
+    return ListView.separated(
+      itemCount: items.length,
+      itemBuilder: (_, i) => _buildItem(context, items[i]),
+      separatorBuilder: (_, i) => const Divider(height: 2, thickness: 2),
     );
   }
 
@@ -26,42 +32,29 @@ class MenuItemList extends StatelessWidget {
         ),
         onTap: () {
           final normalizedTitle = item.title.toLowerCase();
-          Widget page;
+          Widget view;
           switch (normalizedTitle) {
             case 'home':
               Navigator.pop(context);
               return;
             case 'about us':
-              page = AboutUsPage();
+              view = AboutUsView();
+              break;
+            case 'contact us':
+              view = ContactUsView();
               break;
           }
-          Navigator.push<dynamic>(
+          Utils.pushView(
             context,
-            MaterialPageRoute<dynamic>(
-              builder: (_) =>
-                  page ??
-                  ((item.children?.isNotEmpty ?? false)
-                      ? Scaffold(
-                          appBar: AppBar(
-                            iconTheme: const IconThemeData(color: Colors.white),
-                            backgroundColor: const Color(0xff124570),
-                            centerTitle: true,
-                            title: Text(
-                              item.title,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          body: MenuItemList(
-                            items: item.children,
-                          ),
-                        )
-                      : QuranSurahPage(
-                          title: item.title,
-                          surahs: item.content.surahs,
-                        )),
-            ),
+            item.title,
+            view ??
+                ((item.children?.isNotEmpty ?? false)
+                    ? MenuItemList(
+                        items: item.children,
+                      )
+                    : QuranSurahView(
+                        content: item.content,
+                      )),
           );
         });
   }

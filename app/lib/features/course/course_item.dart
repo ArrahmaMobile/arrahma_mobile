@@ -1,5 +1,5 @@
-import 'package:arrahma_mobile_app/features/quran_course/quran_course_page.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_tafseer_tab/quran_surah_page/quran_lesson_page/quran_lesson_page.dart';
+import 'package:arrahma_mobile_app/core/utils.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
@@ -17,18 +17,12 @@ class CourseItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (course is QuranCourse)
-          Navigator.push<dynamic>(
+          Utils.pushView(
             context,
-            MaterialPageRoute<dynamic>(
-                builder: (_) => course.lectures != null &&
-                        course.lectures.surahs.length == 1
-                    ? QuranLessonPage(
-                        surah: course.lectures.surahs.first,
-                        title: course.lectures.surahs.first.name,
-                      )
-                    : QuranCoursePage(
-                        course: course,
-                      )),
+            course.title,
+            QuranCourseView(
+              course: course,
+            ),
           );
         else if (course is StaticQuranCourse) course.onTap();
       },

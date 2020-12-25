@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 
 class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ThemedAppBar({Key key, this.title}) : super(key: key);
+  const ThemedAppBar({
+    Key key,
+    this.title,
+    this.backgroundColor,
+  }) : super(key: key);
   final String title;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final color = backgroundColor == Colors.white ? Colors.black : Colors.white;
     return AppBar(
-      brightness: Brightness.dark,
-      iconTheme: const IconThemeData(color: Colors.white),
-      backgroundColor: const Color(0xff124570),
+      brightness:
+          backgroundColor == Colors.white ? Brightness.light : Brightness.dark,
+      iconTheme: IconThemeData(color: color),
+      backgroundColor: backgroundColor ?? const Color(0xff124570),
       centerTitle: true,
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: color,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),

@@ -38,7 +38,10 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       }
       content ??= QuranCourseContent(
         id: url,
-        title: body.querySelector('#mainheading1')?.text?.cleanedText,
+        title: (body.querySelector('#mainheading1') ??
+                body.querySelector('#mainheading2'))
+            ?.text
+            ?.cleanedText,
         surahs: [],
       );
 
@@ -72,7 +75,9 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
                 isGroupedByHeading: isGroupedByHeading);
             if (surah == null) return null;
             surah = previousSurahOnPage = Surah(
-                name: title, lessons: surah.lessons, groups: surah.groups);
+                name: title.isNullOrWhitespace ? null : title,
+                lessons: surah.lessons,
+                groups: surah.groups);
             return surah;
           })
           .where((s) => s != null)
