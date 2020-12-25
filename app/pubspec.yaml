@@ -28,6 +28,7 @@ dependencies:
   just_audio: ^0.5.0
   audio_session: ^0.0.7
   audio_service: ^0.15.0
+  font_awesome_flutter: ^8.11.0
   flutter_launcher_icons: ^0.8.1
   flutter_framework:
     git:

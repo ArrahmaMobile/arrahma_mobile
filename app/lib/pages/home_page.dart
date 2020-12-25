@@ -154,10 +154,12 @@ class _HomePageState extends State<HomePage> {
                             appBar: ThemedAppBar(
                               title: 'WEEKLY REMINDERS',
                             ),
-                            body: CourseView(courses: [
-                              appData.courses[9],
-                              appData.courses.last
-                            ]),
+                            body: CourseView(
+                              courses: [
+                                appData.courses[9],
+                                appData.courses.last
+                              ],
+                            ),
                           )));
             }),
       ];

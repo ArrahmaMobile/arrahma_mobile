@@ -1,9 +1,7 @@
-import 'package:arrahma_mobile_app/features/media_player/media_player.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
-import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_framework/flutter_framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class QuranLessonAudioPage extends StatefulWidget {
   const QuranLessonAudioPage(
@@ -111,7 +109,7 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
                   .entries
                   .map(
                     (entry) => IconButton(
-                      icon: Icon(
+                      icon: FaIcon(
                         GroupTypeIconMap[entry.value.type],
                         color: Colors.black,
                       ),
@@ -134,11 +132,11 @@ class _QuranLessonAudioPageState extends State<QuranLessonAudioPage> {
   }
 
   static const GroupTypeIconMap = <ItemType, IconData>{
-    ItemType.Audio: Icons.volume_up,
-    ItemType.Pdf: Icons.notes,
+    ItemType.Audio: Icons.play_circle_fill,
+    ItemType.Pdf: FontAwesomeIcons.filePdf,
     ItemType.Image: Icons.image,
-    ItemType.Video: Icons.ondemand_video,
-    ItemType.File: Icons.file_download,
+    ItemType.Video: FontAwesomeIcons.playCircle,
+    ItemType.File: FontAwesomeIcons.youtube,
     ItemType.Website: Icons.web,
   };
 }
