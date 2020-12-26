@@ -1,5 +1,7 @@
+import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_controls.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_service.dart';
+import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -42,6 +44,7 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                 : CrossFadeState.showSecond,
             firstChild: Column(
               children: [
+                const SizedBox(height: 9),
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
@@ -71,7 +74,8 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, '/media_player_screen');
+                    Utils.pushView(
+                        context, null, MediaPlayerView(mediaItems: []));
                   },
                 )
               ],

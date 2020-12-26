@@ -1,6 +1,8 @@
 ## TODO
 
-- Figure out a better caching and invalidation strategy for app data. Status calls should notify the app about data changes.
+Bottom Nav Quran Course (Registration and Test)
+Seeker
+Seeker notification
 
 ⦁	Wrong app bar titles in the following pages
 >  Lectures:

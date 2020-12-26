@@ -42,7 +42,7 @@ class _AudioPlayerControlBarState extends State<AudioPlayerControlBar> {
           return StreamBuilder<List<MediaItem>>(
               stream: _audioPlayer.queueStream,
               builder: (context, queueSnapshot) {
-                final queue = queueSnapshot.data;
+                final queue = queueSnapshot.data ?? [];
                 return StreamBuilder<MediaItem>(
                     stream: _audioPlayer.audioStream,
                     builder: (context, itemSnapshot) {
@@ -50,11 +50,13 @@ class _AudioPlayerControlBarState extends State<AudioPlayerControlBar> {
                       final allowPrevious = playbackSnapshot.hasData &&
                           playbackSnapshot.data.actions
                               .contains(MediaAction.skipToPrevious) &&
-                          queue.last == item;
+                          queue.length > 1 &&
+                          queue.first != item;
                       final allowNext = playbackSnapshot.hasData &&
                           playbackSnapshot.data.actions
                               .contains(MediaAction.skipToNext) &&
-                          queue.first == item;
+                          queue.length > 1 &&
+                          queue.last != item;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[

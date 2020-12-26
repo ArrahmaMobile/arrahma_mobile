@@ -40,7 +40,8 @@ class Utils {
       type ??= ItemType.File;
     } else {
       if (['video', 'watch']
-          .any((partial) => parsedUri.path.contains(partial))) {
+              .any((partial) => parsedUri.path.contains(partial)) ||
+          ['youtu.be'].any((host) => parsedUri.host.endsWith(host))) {
         type = ItemType.Video;
       }
       type ??= ItemType.Website;

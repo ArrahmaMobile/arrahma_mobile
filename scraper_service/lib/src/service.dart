@@ -8,7 +8,7 @@ import 'package:scraper_service/scraper_runner.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 class ScraperService {
-  static const UPDATE_DURATION = Duration(minutes: 10);
+  static const UPDATE_DURATION = Duration(hours: 4);
   static void Function(Map<String, dynamic>) sendMessage;
   static String id;
 
