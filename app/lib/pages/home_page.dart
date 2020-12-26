@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
 
   List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
         StaticQuranCourse(
-          imageUrl: 'https://arrahma.org/images_n/202.png',
+          imageUrl: 'https://arrahma.org/images_n/209.png',
           title: 'OTHER \nCOURSES',
           onTap: () {
             NavigationUtils.push<dynamic>(
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         StaticQuranCourse(
-            imageUrl: 'https://arrahma.org/images_n/209.png',
+            imageUrl: 'https://arrahma.org/images_n/202.png',
             title: 'ASSORTED LECTURES',
             onTap: () {
               NavigationUtils.push<dynamic>(

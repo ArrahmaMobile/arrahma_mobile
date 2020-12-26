@@ -2,30 +2,20 @@
 
 - Figure out a better caching and invalidation strategy for app data. Status calls should notify the app about data changes.
 
-
-> Bugs:
-⦁	If there's only one audio, "next" and "previous" are still enable.
-⦁	If there's three audio, you can only go to the next one, not the third one. If click on the second on, cant go back nor forward. Same thing with 3rd audio.
-
-> Ex: Lectures > Quranic Tafseer > Ahsan-ul-Bayna > Surah Fatiha > Lesson 1 > Tafseer
-
-⦁	Remove unnessery page for the following pages:
-	>  Lectures:
+⦁	Wrong app bar titles in the following pages
+>  Lectures:
         i.	Zilhajj 10 days
-        ii.	Tazkeer
         iii.	ArRgmah Peace
         iv.	Wirasat Course
         v.	Weekly Gems
         vi.	Ramadan Special
         vii.	Speical Series > All 4 Series
         viii.	Lectures On Namaz
-	> Tajweed: 
+> Tajweed: 
         i.	English Qaida
-	> Reading Material:
+> Reading Material:
         i.	Juz Translation
-        ii.	Quran Dictionary	
-
-> Ex: Lectures > Zilhajj 10 days > Remove that extra page
+        ii.	Juz translation	
 
 ⦁	Following pages are not loading:
 > Tajweed: 
@@ -44,3 +34,9 @@
         ii.	Assorted Topics
         iii.	Imp Vocabulary Words
         iv.	Worksheed By Ustazah	
+
+
+> Bugs:
+        i. Audio screen needs an app bar. Emulator has app bar but not IOS
+        ii. Email/Phone open on clikc in Contact Us page
+        iii. Add Course icon for Sunnah,Dua in Weekly Reminders
