@@ -39,6 +39,4 @@ Seeker notification
 
 
 > Bugs:
-        i. Audio screen needs an app bar. Emulator has app bar but not IOS
-        ii. Email/Phone open on clikc in Contact Us page
         iii. Add Course icon for Sunnah,Dua in Weekly Reminders

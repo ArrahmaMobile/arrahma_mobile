@@ -1,7 +1,35 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ContactUsView extends StatelessWidget {
+class ContactUsView extends StatefulWidget {
+  @override
+  _ContactUsViewState createState() => _ContactUsViewState();
+}
+
+class _ContactUsViewState extends State<ContactUsView> {
+  TapGestureRecognizer _openPhone;
+  TapGestureRecognizer _openUstazanaEmail;
+  TapGestureRecognizer _openGeneralInquiriesEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _openPhone = TapGestureRecognizer()
+      ..onTap = () {
+        launch('tel:+1-(732)-443-0519');
+      };
+    _openUstazanaEmail = TapGestureRecognizer()
+      ..onTap = () {
+        launch('mailto:ustazanajihahashmi@gmail.com');
+      };
+    _openGeneralInquiriesEmail = TapGestureRecognizer()
+      ..onTap = () {
+        launch('mailto:arrahmaclass@gmail.com');
+      };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -14,19 +42,21 @@ class ContactUsView extends StatelessWidget {
               FontAwesomeIcons.phone,
               size: 32,
             ),
+            const SizedBox(height: 10),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
                 style: theme.textTheme.bodyText2,
                 children: <TextSpan>[
                   const TextSpan(text: 'Help Desk #'),
-                  const TextSpan(
+                  TextSpan(
                     text: '1-(732)-443-0519',
-                    style: TextStyle(
+                    recognizer: _openPhone,
+                    style: const TextStyle(
                       color: Color(0xFF124570),
                     ),
                   ),
-                  const TextSpan(text: ' For any information or query'),
+                  const TextSpan(text: 'For any information or query'),
                 ],
               ),
             ),
@@ -35,24 +65,53 @@ class ContactUsView extends StatelessWidget {
               FontAwesomeIcons.whatsapp,
               size: 32,
             ),
-            const Text(
-              'For information about our courses and general Inquiries, contact us on WhatsApp 1-(732)-305-0744',
+            const SizedBox(height: 10),
+            RichText(
               textAlign: TextAlign.center,
+              text: TextSpan(
+                style: theme.textTheme.bodyText2,
+                children: <TextSpan>[
+                  const TextSpan(
+                      text:
+                          'For information about our courses and general Inquiries, contact us on WhatsApp:'),
+                  TextSpan(
+                    text: '1-(732)-305-0744',
+                    // recognizer: ,
+                    style: const TextStyle(
+                      color: Color(0xFF124570),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 15),
             const FaIcon(
               FontAwesomeIcons.solidEnvelope,
               size: 32,
             ),
-            const Text(
-              'For general Inquiries: arrahmaclass@gmail.com',
-              style: TextStyle(color: Color(0xFF124570)),
+            const SizedBox(height: 10),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: theme.textTheme.bodyText2,
+                children: <TextSpan>[
+                  const TextSpan(text: 'For general Inquiries:'),
+                  TextSpan(
+                    text: 'arrahmaclass@gmail.com',
+                    recognizer: _openGeneralInquiriesEmail,
+                    style: const TextStyle(
+                      color: Color(0xFF124570),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 15),
             const FaIcon(
               FontAwesomeIcons.mailBulk,
               size: 32,
             ),
+            const SizedBox(height: 10),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
@@ -61,16 +120,17 @@ class ContactUsView extends StatelessWidget {
                   const TextSpan(
                       text:
                           'For any complaints, suggestions or questions directly to Ustaza, Please email at '),
-                  const TextSpan(
+                  TextSpan(
                     text: 'ustazanajihahashmi@gmail.com',
-                    style: TextStyle(
+                    recognizer: _openUstazanaEmail,
+                    style: const TextStyle(
                       color: Color(0xFF124570),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 55),
             const Text(
               'Your emails will be confidential and will be received by Ustaza only.',
               style: TextStyle(
