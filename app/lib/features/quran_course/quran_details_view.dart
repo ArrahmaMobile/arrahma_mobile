@@ -51,7 +51,7 @@ class _QuranDetailsViewState extends State<QuranDetailsView> {
         ? FutureBuilder<PdfController>(
             future: _pdfController,
             builder: (_, snapshot) => snapshot.data == null
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : PdfView(
                     controller: snapshot.data,
                   ),

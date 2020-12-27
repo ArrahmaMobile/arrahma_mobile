@@ -23,6 +23,7 @@ class QuranCourseDetailScraper extends ScraperBase<QuranCourseDetails> {
     final bodyHtml = doc.querySelector('#main').outerHtml;
     final bodyMarkdown = html2md.convert(bodyHtml,
         styleOptions: {'headingStyle': 'atx'}, ignore: ['script']);
+    bodyMarkdown.replaceAll(RegExp(r'^\*\s+'), '* ');
 
     return QuranCourseDetails(
       type: QuranCourseDetailsType.Markdown,

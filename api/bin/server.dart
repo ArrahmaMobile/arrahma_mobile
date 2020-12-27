@@ -1,5 +1,6 @@
+import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/api.dart';
-import 'package:scraper_service/scraper_runner.dart';
+import 'package:arrahma_web_api/services/file_sync_service.dart';
 
 Future main() async {
   final isDebugging = Platform.environment['DEBUG'] == 'true';
@@ -11,7 +12,7 @@ Future main() async {
     ..options.port =
         int.tryParse(Platform.environment['PORT'] ?? 8888.toString());
 
-  await ScraperRunner().deleteFile(ArrahmaChannel.idFilePath);
+  await FileService().delete(FileSyncService.idFilePath);
 
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);

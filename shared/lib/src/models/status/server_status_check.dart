@@ -5,9 +5,11 @@ class ServerStatus {
   const ServerStatus({
     this.status,
     this.isDataStale,
+    this.isLive,
   });
   final ServerConnectionStatus status;
   final bool isDataStale;
+  final bool isLive;
 }
 
 enum ServerConnectionStatus {

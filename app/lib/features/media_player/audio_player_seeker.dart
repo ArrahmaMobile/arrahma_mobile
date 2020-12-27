@@ -44,8 +44,9 @@ class _AudioPlayerSeekerState extends State<AudioPlayerSeeker> {
     return StreamBuilder<MediaItemData>(
       stream: itemDataStream,
       builder: (_, snapshot) {
-        final position = snapshot.data.position;
-        final duration = snapshot.data.item.duration.inMilliseconds.toDouble();
+        final position = snapshot.data?.position ?? 0;
+        final duration =
+            snapshot.data?.item?.duration?.inMilliseconds?.toDouble() ?? 1.0;
         return Slider(
           min: 0,
           max: duration,

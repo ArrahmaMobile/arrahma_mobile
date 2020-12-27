@@ -4,12 +4,13 @@ import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
+import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
+import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
-import 'package:flutter_tawk/flutter_tawk.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inherited_state/inherited_state.dart';
 
@@ -127,46 +128,31 @@ class _HomePageState extends State<HomePage> {
           imageUrl: 'https://arrahma.org/images_n/209.png',
           title: 'OTHER \nCOURSES',
           onTap: () {
-            NavigationUtils.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (_) => Scaffold(
-                        appBar: ThemedAppBar(
-                          title: 'OTHER COURSES',
-                        ),
-                        body: CourseView(
-                            courses:
-                                appData.courses.skip(3).take(6).toList()))));
+            Utils.pushView(context, 'OTHER COURSES',
+                CourseView(courses: appData.courses.skip(3).take(6).toList()));
           },
         ),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/202.png',
             title: 'ASSORTED LECTURES',
             onTap: () {
-              NavigationUtils.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      builder: (_) =>
-                          QuranCourseView(course: appData.courses[10])));
+              Utils.pushView(context, 'ASSORTED LECTURES',
+                  QuranCourseView(course: appData.courses[10]));
             }),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/72.png',
             title: 'WEEKLY REMINDERS',
             onTap: () {
-              NavigationUtils.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      builder: (_) => Scaffold(
-                            appBar: ThemedAppBar(
-                              title: 'WEEKLY REMINDERS',
-                            ),
-                            body: CourseView(
-                              courses: [
-                                appData.courses[9],
-                                ...appData.courses.skip(11).toList()
-                              ],
-                            ),
-                          )));
+              Utils.pushView(
+                context,
+                'WEEKLY REMINDERS',
+                CourseView(
+                  courses: [
+                    appData.courses[9],
+                    ...appData.courses.skip(11).toList()
+                  ],
+                ),
+              );
             }),
       ];
 

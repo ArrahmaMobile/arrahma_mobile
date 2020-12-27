@@ -18,7 +18,7 @@ abstract class IScraper {
 
 class Scraper extends Worker<String, Document> implements IScraper {
   Scraper(this.client) : super(maxSimultaneousJobCount: 5);
-  final BaseClient client;
+  final Client client;
   final _cachedDocs = <String, Document>{};
 
   final _baseUrl = Uri.parse('https://arrahma.org');

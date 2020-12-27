@@ -54,6 +54,7 @@ class MenuItemList extends StatelessWidget {
                       )
                     : QuranSurahView(
                         content: item.content,
+                        referrerTitle: item.title,
                       )),
           );
         });

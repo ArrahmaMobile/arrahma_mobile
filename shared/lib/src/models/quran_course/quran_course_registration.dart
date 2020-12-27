@@ -1,4 +1,9 @@
 class QuranCourseRegistration {
-  const QuranCourseRegistration({this.courseRegistration});
-  final String courseRegistration;
+  const QuranCourseRegistration({this.type, this.url});
+  final RegistrationType type;
+  final String url;
+}
+
+enum RegistrationType {
+  WebForm,
 }

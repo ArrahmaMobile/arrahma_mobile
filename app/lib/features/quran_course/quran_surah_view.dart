@@ -9,8 +9,10 @@ class QuranSurahView extends StatefulWidget {
   const QuranSurahView({
     Key key,
     @required this.content,
+    this.referrerTitle,
   }) : super(key: key);
   final QuranCourseContent content;
+  final String referrerTitle;
 
   @override
   _QuranSurahViewState createState() => _QuranSurahViewState();
@@ -48,7 +50,9 @@ class _QuranSurahViewState extends State<QuranSurahView> {
   void _navigateToLessonView(Surah surah, [bool replace = false]) {
     Utils.pushView(
       context,
-      surah.name ?? widget.content.title,
+      replace
+          ? widget.referrerTitle ?? widget.content.title ?? surah.name
+          : surah.name ?? widget.content.title,
       QuranLessonView(
         surah: surah,
       ),

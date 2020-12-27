@@ -69,7 +69,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
         courseDetails: QuranCourseDetails(),
         registration: QuranCourseRegistration(
-          courseRegistration: '',
+          url: '',
         ),
         tajweed: QuranCourseContent(
           surahs: [
@@ -116,7 +116,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         imageUrl: 'assets/images/courses/taleemul_quran.png',
         courseDetails: QuranCourseDetails(),
         registration: QuranCourseRegistration(
-          courseRegistration: '',
+          url: '',
         ),
         tajweed: QuranCourseContent(
           surahs: [
@@ -163,7 +163,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         imageUrl: 'assets/images/courses/fehmul_quran.png',
         courseDetails: QuranCourseDetails(),
         registration: QuranCourseRegistration(
-          courseRegistration: '',
+          url: '',
         ),
         tajweed: QuranCourseContent(
           surahs: [
@@ -210,7 +210,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         imageUrl: 'assets/images/courses/course_in_pashtu.png',
         courseDetails: QuranCourseDetails(),
         registration: QuranCourseRegistration(
-          courseRegistration: '',
+          url: '',
         ),
         tajweed: QuranCourseContent(
           surahs: [

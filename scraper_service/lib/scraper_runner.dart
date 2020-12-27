@@ -6,6 +6,8 @@ import 'package:scraper/scraper.dart';
 
 class ScraperRunner {
   ScraperRunner();
+
+  final _fileService = FileService();
   static const FILE_PATH = 'data/scraped_data.json';
 
   Future<ScrapedData> run({bool shouldStore = false}) async {
@@ -19,31 +21,11 @@ class ScraperRunner {
 
   Future<ScrapedData> get() async {
     return SerializationService.deserializeScrapedData(
-        await getData(FILE_PATH));
-  }
-
-  Future<String> getData(String filePath) async {
-    final file = File(filePath);
-    final hasData = await file.exists();
-    if (!hasData) return null;
-    return await file.readAsString();
+        await _fileService.read(FILE_PATH));
   }
 
   Future<void> store(String relativeFilePath, ScrapedData result) async {
     final serializedData = SerializationService.serializeScrapedData(result);
-    await storeData(relativeFilePath, serializedData);
-  }
-
-  Future<void> storeData(String relativeFilePath, String data) async {
-    final outputDir =
-        relativeFilePath.substring(0, relativeFilePath.lastIndexOf('/') + 1);
-    await Directory(outputDir).create(recursive: true);
-    final dataFile = File(relativeFilePath);
-
-    await dataFile.writeAsString(data, mode: FileMode.write);
-  }
-
-  Future<void> deleteFile(String filePath) async {
-    return await File(filePath).delete().catchError((_) {});
+    await _fileService.write(relativeFilePath, serializedData);
   }
 }

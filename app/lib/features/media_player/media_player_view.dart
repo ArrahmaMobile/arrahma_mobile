@@ -5,6 +5,8 @@ import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart'
 import 'package:flutter/material.dart';
 import 'package:inherited_state/inherited_state.dart';
 
+import 'audio_player_seeker.dart';
+
 class MediaPlayerView extends StatefulWidget {
   const MediaPlayerView(
       {Key key, @required this.mediaItems, this.initialAudioIndex = 0})
@@ -71,8 +73,8 @@ class _MediaPlayerViewState extends State<MediaPlayerView> {
             ),
             const SizedBox(height: 20),
             AudioPlayerDisplay(item: item.toMediaItem()),
-            // const SizedBox(height: 25),
-            // AudioPlayerSeeker(),
+            const SizedBox(height: 25),
+            AudioPlayerSeeker(),
             const SizedBox(
               height: 20,
             ),

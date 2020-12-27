@@ -24,8 +24,8 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
     }
     quranCourseList.add(QuranCourse(
       title: 'Sunnah, Dua, and Zikr',
-      imageUrl: 'http://www.arrahma.org/images_n/wt.jpg',
-      lectures: await scrapeContent('http://www.arrahma.org/sunnah/sunnah.php'),
+      imageUrl: 'assets/images/weekly_dua_sunnat.png',
+      lectures: await scrapeContent('https://arrahma.org/sunnah/sunnah.php'),
     ));
     return quranCourseList;
   }
