@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aqueduct/aqueduct.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/services/broadcast_service.dart';
+import 'package:arrahma_web_api/services/data_sync_service.dart';
 import 'package:scraper_service/scraper_service.dart';
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 
@@ -21,9 +22,8 @@ class StatusController extends ResourceController {
         isLive: _broadcastService.isLive ?? false,
       ),
     );
-    print(statusResponse.length > 1000
-        ? statusResponse.substring(0, 1000)
-        : statusResponse);
+    print(
+        '[${DataSyncService.instanceId}] ${statusResponse.length > 1000 ? statusResponse.substring(0, 1000) : statusResponse}');
     return Response.ok(statusResponse);
   }
 }

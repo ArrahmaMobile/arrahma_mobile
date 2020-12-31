@@ -134,7 +134,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
             item: Utils.getItemByUrl(link), imageUrl: imageUrl);
       }).toList(),
       drawerItems: await performAsyncOp(
-        document.querySelectorAll('.container_nav ul.nav > li'),
+        document.querySelectorAll('#container_nav ul#nav > li'),
         scrapeDrawerItem,
       ),
       aboutUsMarkdown: await AboutUsScraper(this).scrape(),

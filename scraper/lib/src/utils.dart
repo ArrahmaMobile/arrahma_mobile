@@ -2,7 +2,10 @@ import 'package:arrahma_shared/shared.dart';
 
 class Utils {
   static String cleanText(String text) {
-    return text?.replaceAll(RegExp(r'\s+'), ' ')?.trim();
+    return text
+        ?.replaceAll(RegExp(r'[^\w-.&\/\s]'), '')
+        ?.replaceAll(RegExp(r'\s+'), ' ')
+        ?.trim();
   }
 
   static String cleanUrl(String url) {

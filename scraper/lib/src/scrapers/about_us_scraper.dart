@@ -10,7 +10,7 @@ class AboutUsScraper extends ScraperBase<String> {
   Future<String> scrape() async {
     final homeDoc = await scraper.navigateTo('');
     final aboutUsUrl = homeDoc
-        .querySelectorAll('.container_nav .nav > li > a')
+        .querySelectorAll('#container_nav #nav > li > a')
         .firstWhere((e) => e.text.toLowerCase() == 'About Us'.toLowerCase(),
             orElse: () => null)
         .attributes['href']

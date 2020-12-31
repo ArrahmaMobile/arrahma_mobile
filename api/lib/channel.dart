@@ -1,6 +1,7 @@
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/controller/data_controller.dart';
 import 'package:arrahma_web_api/controller/status_controller.dart';
+import 'package:arrahma_web_api/services/data_sync_service.dart';
 import 'package:scraper_service/scraper_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,8 +16,6 @@ import 'services/broadcast_service.dart';
 class ArrahmaChannel extends ApplicationChannel {
   BroadcastService _broadcastService;
   ScraperService _scraperService;
-  String _id;
-  String _mainId;
 
   /// Initialize services in this method.
   ///
@@ -30,33 +29,17 @@ class ArrahmaChannel extends ApplicationChannel {
 
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
-    _id = Uuid().v4();
+    logger.parent.level = Level.ALL;
 
-    final fileService = FileService();
     final config = ArrahmahConfiguration(options.configurationFilePath);
+    DataSyncService.messageHub = messageHub;
 
     _broadcastService =
         BroadcastService(config.youtubeChannelId, config.googleApiKey);
     await _broadcastService.init();
-    _mainId = await fileService.read(idFilePath);
-    if (_mainId == null) {
-      _mainId = _id;
-      await fileService.write(idFilePath, _id);
-    }
-    ScraperService.isMain = _mainId == _id;
-    ScraperService.sendMessage = (message) =>
-        messageHub.add({'origin': _id, 'taskName': '', ...message});
-    ScraperService.id = _id;
-    _scraperService = await ScraperService.init();
-    messageHub.listen((event) {
-      if (event is Map && event['origin'] != _id) {
-        if (event['type'] == 'statusUpdate') {
-          if (event['scrapeStatus'] == ScrapeStatus.Complete.index) {
-            ScraperService.onDataUpdate(data: event);
-          }
-        }
-      }
-    });
+    _scraperService =
+        ScraperService(await DataSyncService.init('$ScraperService'));
+    await _scraperService.init();
   }
 
   /// Construct the request channel.
