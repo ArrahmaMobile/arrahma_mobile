@@ -132,6 +132,6 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
     ItemType.Image: FontAwesomeIcons.solidImage,
     ItemType.Video: FontAwesomeIcons.solidFileVideo,
     ItemType.File: FontAwesomeIcons.solidFile,
-    ItemType.Website: Icons.web,
+    ItemType.WebPage: Icons.web,
   };
 }

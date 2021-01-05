@@ -1,10 +1,10 @@
 // import 'course_tafseer.dart';
 
+import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_content.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_details.dart';
 
 import 'quran_course_registration.dart';
-import 'quran_course_test.dart';
 
 abstract class Course {
   const Course({this.title, this.imageUrl});
@@ -35,5 +35,5 @@ class QuranCourse extends Course {
   final QuranCourseRegistration registration;
   final QuranCourseContent tafseer;
   final QuranCourseContent tajweed;
-  final List<QuranCourseTest> tests;
+  final MediaContent tests;
 }

@@ -2,10 +2,11 @@ import 'package:arrahma_shared/shared.dart';
 
 class Utils {
   static String cleanText(String text) {
-    return text
-        ?.replaceAll(RegExp(r'[^\w-.&\/\s]'), '')
-        ?.replaceAll(RegExp(r'\s+'), ' ')
-        ?.trim();
+    return text?.replaceAll(RegExp(r'\s+'), ' ')?.trim();
+  }
+
+  static String toAlphaNumeric(String text) {
+    return text?.replaceAll(RegExp('[^\\w-.&\\/\\s\'()]'), '')?.trim();
   }
 
   static String cleanUrl(String url) {
@@ -38,7 +39,7 @@ class Utils {
         type = ItemType.Image;
       } else if (['.php', '.html', '.htm', '.aspx']
           .any((ext) => lastSegment.endsWith(ext))) {
-        type = ItemType.Website;
+        type = ItemType.WebPage;
       }
       type ??= ItemType.File;
     } else {
@@ -47,15 +48,16 @@ class Utils {
           ['youtu.be'].any((host) => parsedUri.host.endsWith(host))) {
         type = ItemType.Video;
       }
-      type ??= ItemType.Website;
+      type ??= ItemType.WebPage;
     }
-    return Item(url: url, type: type, isDirectSource: isDirectSource);
+    return Item(data: url, type: type, isDirectSource: isDirectSource);
   }
 }
 
 extension StringUtils on String {
   bool get isNullOrWhitespace => this?.trim()?.isEmpty ?? true;
   String get cleanedText => Utils.cleanText(this);
+  String get alphaNumeric => Utils.toAlphaNumeric(this);
   String get cleanedUrl => Utils.cleanUrl(this);
   List<String> get urlPathSegments => Uri.parse(this).pathSegments;
   String removeQueryString() {

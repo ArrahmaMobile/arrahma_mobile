@@ -37,7 +37,7 @@ class Utils {
             (urlEntry) => MediaData(
               title: title(urlEntry.key),
               group: group,
-              sourceUrl: urlEntry.value.url,
+              sourceUrl: urlEntry.value.data,
             ),
           )
           .toList();
@@ -58,7 +58,7 @@ class Utils {
             (allC, c) => allC..addAll([c.tafseer, c.tajweed, c.lectures]))
         .asMap()
         .entries
-        .firstWhere((cEntry) => cEntry.value?.id == item.url,
+        .firstWhere((cEntry) => cEntry.value?.id == item.data,
             orElse: () => null);
     if (courseContents != null) {
       final course = appData.courses[courseContents.key ~/ 3];
@@ -75,7 +75,7 @@ class Utils {
         ),
       );
     } else {
-      Launch.url(item.url);
+      Launch.url(item.data);
     }
   }
 }

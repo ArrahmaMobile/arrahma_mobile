@@ -1,6 +1,7 @@
 import 'package:arrahma_shared/shared.dart';
 import 'package:html/dom.dart';
 import 'package:recase/recase.dart';
+import 'package:scraper/src/scrapers/media_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_detail_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_juz_template_scraper.dart';
 
@@ -47,13 +48,13 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
         .map(
           (i) => CourseLinkItem(
             name: i.text.cleanedText.titleCase,
-            link: i.attributes['href'].toAbsolute(scraper.currentUrl),
+            links: [i.attributes['href'].toAbsolute(scraper.currentUrl)],
           ),
         )
         .toList();
     final itemLinkMap =
         items.fold<Map<String, String>>(<String, String>{}, (map, item) {
-      map[item.name.toUpperCase()] = item.link;
+      map[item.name.toUpperCase()] = item.links.first;
       return map;
     });
 
@@ -79,11 +80,11 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
         : null;
 
     final lecutresLink = itemLinkMap['LECTURES'];
+    final lectures = lecutresLink != null ? scrapeContent(lecutresLink) : null;
 
-    QuranCourseContent lectures;
-    if (lecutresLink != null) {
-      lectures = await scrapeContent(lecutresLink);
-    }
+    final testsLink = itemLinkMap['TESTS'];
+    final tests =
+        testsLink != null ? MediaScraper(scraper, testsLink).scrape() : null;
 
     return QuranCourse(
       title: normalizedTitle,
@@ -93,14 +94,19 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
       tafseer: await tafseer,
       tajweed: await tajweed,
       lectures: await lectures,
+      tests: await tests,
     );
   }
 
   Future<QuranCourseContent> scrapeContent(String url) async {
     final doc = await scraper.navigateTo(url);
     final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
+    final isReadingMaterialPage =
+        doc?.querySelector(r'#studentportion #studentpresentation') != null;
     return await (isSurahPage
         ? QuranCourseSurahTemplateScraper(scraper, url).scrape()
-        : QuranCourseJuzTemplateScraper(scraper, url).scrape());
+        : isReadingMaterialPage
+            ? null
+            : QuranCourseJuzTemplateScraper(scraper, url).scrape());
   }
 }

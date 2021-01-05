@@ -45,15 +45,29 @@ class GroupItem {
 class Item {
   const Item({
     this.type,
-    this.url,
+    this.data,
     this.isDirectSource,
   });
   final bool isDirectSource;
   final ItemType type;
-  final String url;
+  final String data;
 }
 
-enum ItemType { Audio, Video, Pdf, Image, Website, File, Other }
+class MediaItem {
+  const MediaItem({this.item, this.imageUrl, this.title});
+  final Item item;
+  final String imageUrl;
+  final String title;
+}
+
+class MediaContent {
+  MediaContent({this.title, this.description, this.items});
+  final String title;
+  final String description;
+  final List<MediaItem> items;
+}
+
+enum ItemType { Audio, Video, Pdf, Image, WebPage, WebForm, File, Title, Other }
 
 class Group {
   const Group({this.name});

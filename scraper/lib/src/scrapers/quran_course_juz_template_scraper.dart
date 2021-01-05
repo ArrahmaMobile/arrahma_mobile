@@ -61,8 +61,10 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
               name: INTRO_TOKEN, lessons: surah.lessons, groups: surah.groups));
         }
       }
+      final hasMainHeading = allNodes.any((n) => n.id == 'mainheading2');
+      final hasSurahHeading = allNodes.any((n) => n.id == 'surahname');
       final isGroupedByHeading =
-          useHeading || hasTabs || !allNodes.any((n) => n.id == 'surahname');
+          hasTabs || (useHeading && hasMainHeading) || !hasSurahHeading;
       final surahNodes = allNodes.asMap().entries.where((entry) =>
           entry.value.id ==
           (isGroupedByHeading ? 'mainheading2' : 'surahname'));
@@ -122,15 +124,14 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
         } else {
           // skipCount++;
         }
-      } else if (element.id.endsWith('ayah') ||
-          ['column1', 'column7', 'hadithtopic', 'tajweedc']
-              .any((id) => element.id.endsWith(id))) {
+      } else if (['ayah', 'column1', 'column7', 'tajweedc', 'topic']
+          .any((id) => element.id.endsWith(id))) {
         // TITLE
         addPreviousLesson();
         title = element.text.cleanedText;
         groupItems = [];
         skipped = 0;
-      } else if (['ayahb', 'hb', 'tajweedd']
+      } else if (['ayahb', 'hb', 'tajweedd', 'topic1']
               .any((id) => element.id.endsWith(id)) ||
           element.id.contains('column')) {
         // Items
@@ -165,12 +166,13 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       l.itemGroups.addAll(List.filled(diff.abs(), GroupItem(items: [])));
     });
     if (lessons.isEmpty) return null;
+    if (previousSurahOnPage != null && groups.isEmpty) {
+      groups.addAll(previousSurahOnPage.groups);
+    }
     final lessonGroups = lessons.first.itemGroups;
     final groupCountDiff = groups.length - lessonGroups.length;
     final groupNamesMissing = lessons.isNotEmpty && groupCountDiff.isNegative;
-    if (previousSurahOnPage != null && groups.isEmpty) {
-      groups.addAll(previousSurahOnPage.groups);
-    } else if (groupNamesMissing) {
+    if (groupNamesMissing) {
       final startGroupIndex = groups.length;
       final indexes = List.generate(
               groupCountDiff.abs(), (index) => startGroupIndex + index)
@@ -183,8 +185,10 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
             orElse: () => null);
         final diff = groups.length - (index + 1);
         final hasFilled = !diff.isNegative;
-        if (firstFilledGroup == null && !hasFilled) {
+        if (firstFilledGroup == null) {
+          final removeGroup = groups.length == lessons.first.itemGroups.length;
           lessons.forEach((l) => l.itemGroups.removeAt(index));
+          if (removeGroup) groups.removeAt(index);
         } else if (firstFilledGroup != null) {
           if (!hasFilled) {
             groups.addAll(List.filled(diff.abs(), null));
@@ -199,7 +203,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
   }
 
   Group getGroupByItem(Item item) {
-    final parsedUri = Uri.parse(item.url);
+    final parsedUri = Uri.parse(item.data);
     final urlHostParts = parsedUri.host.split('.');
     final name = !item.isDirectSource
         ? (['www', 'm'].contains(urlHostParts.first.toLowerCase())

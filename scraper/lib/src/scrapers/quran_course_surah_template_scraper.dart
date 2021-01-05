@@ -30,36 +30,38 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
     );
 
     final items = body.querySelectorAll('#table1 #ayahc').map((i) {
-      final link = i.querySelector('a');
+      final links = i.querySelectorAll('a').where((i) => i.children.isNotEmpty);
       return CourseLinkItem(
         name: i.text.cleanedText,
-        link: link != null ? link.attributes['href'].toAbsolute(url) : null,
+        links: links
+            .map((link) =>
+                link != null ? link.attributes['href'].toAbsolute(url) : null)
+            .where((l) => l != null)
+            .toList(),
       );
     }).toList();
 
-    final surahs =
-        await Future.wait(items.where((i) => i.link != null).map((item) async {
-      final doc = item.link.urlPathSegments.last.endsWith('mp3')
-          ? null
-          : await scraper.navigateTo(item.link);
+    final surahs = await Future.wait(
+        items.where((i) => i.links.isNotEmpty).map((item) async {
+      final linkItem = Utils.getItemByUrl(item.links.first);
+      final doc = linkItem.type == ItemType.WebPage
+          ? await scraper.navigateTo(item.links.first)
+          : null;
       if (doc == null) {
+        final linkItems =
+            item.links.map((link) => Utils.getItemByUrl(link)).toList();
         return Surah(
           name: item.name,
-          groups: [Group(name: 'Intro')],
+          groups: linkItems
+              .map((l) => Group(name: Utils.enumToString(l.type)))
+              .toList(),
           lessons: [
-            Lesson(title: item.name, itemGroups: [
-              GroupItem(items: [
-                Item(
-                  isDirectSource: true,
-                  url: item.link,
-                  type: ItemType.Audio,
-                )
-              ])
-            ]),
+            Lesson(title: item.name, itemGroups: [GroupItem(items: linkItems)]),
           ],
         );
       } else {
-        final content = await QuranCourseJuzTemplateScraper(scraper, item.link,
+        final content = await QuranCourseJuzTemplateScraper(
+                scraper, linkItem.data,
                 useHeading: true)
             .scrape();
         return (content?.surahs?.isNotEmpty ?? false)

@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/scrapers/about_us_scraper.dart';
+import 'package:scraper/src/scrapers/media_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_scraper.dart';
 import 'package:arrahma_shared/src/app_metadata.dart';
 import 'package:scraper/src/worker.dart';
@@ -14,6 +15,7 @@ abstract class IScraper {
   Document get document;
   String get currentUrl;
   Future<Document> navigateTo(String relativeUrl);
+  Future<String> download(String url, [String contentType]);
 }
 
 class Scraper extends Worker<String, Document> implements IScraper {
@@ -39,14 +41,13 @@ class Scraper extends Worker<String, Document> implements IScraper {
     }
     try {
       print('Navigating to $normalizedUrl');
-      final response =
-          await client.get(normalizedUrl).catchError((err) => null);
-      if (response == null ||
-          response.statusCode != 200 ||
-          !response.headers['content-type'].startsWith('text/html')) {
+      final html = await download(normalizedUrl, 'text/html');
+      if (html == null) return null;
+      final document = parse(html);
+      if (document == null) {
+        print('Unable to parse html content from $url');
         return null;
       }
-      final document = parse(response.body);
       _cachedDocs[normalizedUrl] = document;
       _currentUrl = normalizedUrl;
       return document;
@@ -56,8 +57,20 @@ class Scraper extends Worker<String, Document> implements IScraper {
   }
 
   @override
+  Future<String> download(String url, [String contentType]) async {
+    final response = await client.get(url).catchError((err) => null);
+    if (response == null ||
+        response.statusCode != 200 ||
+        contentType == null ||
+        !response.headers['content-type'].startsWith(contentType)) {
+      print('Unable to download data from $url');
+      return null;
+    }
+    return response.body;
+  }
+
+  @override
   Future<Document> navigateTo(String url) async {
-    // print('Pausing to avoid request burst and rate limiting...');
     return add(url);
   }
 
@@ -113,7 +126,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
               : Item(
                   isDirectSource: true,
                   type: ItemType.Other,
-                  url: 'tel:7124321001;ext=491760789',
+                  data: 'tel:7124321001;ext=491760789',
                 ),
           imageUrl: banner
               .querySelector('img')
@@ -158,18 +171,21 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final link = Utils.getItemByUrl(
       anchorTag.attributes['href'].toAbsolute(baseUrl),
     );
-    final url = Uri.parse(link.url);
+    final url = Uri.parse(link.data);
     final pathSegments = url.pathSegments;
     final isLinkToContent = url.host.contains('arrahma.org') &&
         pathSegments.isNotEmpty &&
         pathSegments.first != 'index.php' &&
         !pathSegments.first.contains('about') &&
-        pathSegments.last.endsWith('.php');
+        link.type == ItemType.WebPage;
+    final title = anchorTag.text.cleanedText.alphaNumeric;
+    // if (!['Our Nabi', 'Hadith', 'Hadith Lessons'].contains(title)) return null;
     return DrawerItem(
-      title: anchorTag.text.cleanedText,
+      title: title,
       link: link,
+      media: await MediaScraper(this, link.data).scrape(),
       content: isLinkToContent
-          ? await QuranCourseScraper(this).scrapeContent(link.url)
+          ? await QuranCourseScraper(this).scrapeContent(link.data)
           : null,
       children: await performAsyncOp(
         item.querySelector('ul')?.children ?? <Element>[],
