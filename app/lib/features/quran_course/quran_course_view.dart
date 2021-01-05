@@ -25,7 +25,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
 
   int get tabCount => _getTabs().length;
 
-  int get selectedTabIndex => _tabSelected ?? (tabCount - 1);
+  int get selectedTabIndex => _tabSelected ?? (tabCount ~/ 2);
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                     if (widget.course.registration != null)
                       const BottomNavigationBarItem(
                         icon: Icon(
-                          Icons.book,
+                          Icons.app_registration,
                         ),
                         label: 'Registration',
                       ),
@@ -118,7 +118,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                     if (widget.course.lectures != null)
                       const BottomNavigationBarItem(
                         icon: Icon(
-                          Icons.home,
+                          Icons.book,
                         ),
                         label: 'Lectures',
                       ),
