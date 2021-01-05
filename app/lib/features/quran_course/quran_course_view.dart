@@ -55,7 +55,8 @@ class _QuranCourseViewState extends State<QuranCourseView> {
         QuranSurahView(
           content: widget.course.lectures,
         ),
-      if (widget.course.tests != null) QuranTestsView()
+      if (widget.course.tests != null)
+        QuranTestsView(tests: widget.course.tests)
     ];
   }
 
@@ -124,7 +125,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                     if (widget.course.tests != null)
                       const BottomNavigationBarItem(
                         icon: Icon(
-                          Icons.home,
+                          FontAwesomeIcons.edit,
                         ),
                         label: 'Tests',
                       ),
