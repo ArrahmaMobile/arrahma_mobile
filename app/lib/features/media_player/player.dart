@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:just_audio_service/index.dart';
+import 'package:flutter_framework/flutter_framework.dart';
+import './player/index.dart';
 import 'package:rxdart/rxdart.dart';
 
 final positionManager =
@@ -128,7 +129,7 @@ class MainScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: [
-              Text(_printDuration(state.currentPosition)),
+              Text(DurationUtils.durationToString(state.currentPosition)),
               Expanded(
                 child: Slider(
                   min: 0.0,
@@ -142,20 +143,13 @@ class MainScreen extends StatelessWidget {
                       : null,
                 ),
               ),
-              Text(_printDuration(
+              Text(DurationUtils.durationToString(
                   mediaItem?.duration ?? const Duration(seconds: 0))),
             ],
           ),
         );
       },
     );
-  }
-
-  String _printDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${duration.inHours > 0 ? "${twoDigits(duration.inHours)}:" : ""}$twoDigitMinutes:$twoDigitSeconds";
   }
 }
 

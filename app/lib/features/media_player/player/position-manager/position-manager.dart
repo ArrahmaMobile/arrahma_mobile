@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:just_audio_service/position-manager/position.dart';
-import 'package:just_audio_service/position-manager/positioned-audio-task.dart';
-import 'package:just_audio_service/position-manager/position-data-manager.dart';
+import './position.dart';
+import './positioned-audio-task.dart';
+import './position-data-manager.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -32,8 +32,8 @@ class PositionManager {
             AudioService.playbackStateStream.where((state) =>
                 (state?.processingState ?? AudioProcessingState.none) !=
                 AudioProcessingState.none),
-            Stream.periodic(positionUpdateTime),
-            (state, _) => state)
+            Stream<dynamic>.periodic(positionUpdateTime),
+            (state, dynamic _) => state)
         .where((_) => _isAudioServiceEventRelevant())
         .listen((state) => _positionSubject.value = Position(
             id: AudioService.currentMediaItem.id,
