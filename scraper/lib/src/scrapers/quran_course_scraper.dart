@@ -58,29 +58,29 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
       return map;
     });
 
-    // final courseDetailLink =
-    //     itemLinkMap['COURSE DETAIL'] ?? itemLinkMap['PROGRAM DETAIL'];
-    // final courseDetails = courseDetailLink != null
-    //     ? QuranCourseDetailScraper(scraper, courseDetailLink).scrape()
-    //     : null;
+    final courseDetailLink =
+        itemLinkMap['COURSE DETAIL'] ?? itemLinkMap['PROGRAM DETAIL'];
+    final courseDetails = courseDetailLink != null
+        ? QuranCourseDetailScraper(scraper, courseDetailLink).scrape()
+        : null;
 
-    // final registrationLink = itemLinkMap['REGISTRATION'];
-    // final registration = registrationLink != null
-    //     ? QuranCourseRegistrationScraper(scraper, registrationLink).scrape()
-    //     : null;
+    final registrationLink = itemLinkMap['REGISTRATION'];
+    final registration = registrationLink != null
+        ? QuranCourseRegistrationScraper(scraper, registrationLink).scrape()
+        : null;
 
-    // final tafseerLink = itemLinkMap['TAFSEER LINK'];
-    // final tafseer = tafseerLink != null
-    //     ? QuranCourseJuzTemplateScraper(scraper, tafseerLink).scrape()
-    //     : null;
+    final tafseerLink = itemLinkMap['TAFSEER LINK'];
+    final tafseer = tafseerLink != null
+        ? QuranCourseJuzTemplateScraper(scraper, tafseerLink).scrape()
+        : null;
 
-    // final tajweedLink = itemLinkMap['TAJWEED LINK'];
-    // final tajweed = tajweedLink != null
-    //     ? QuranCourseSurahTemplateScraper(scraper, tajweedLink).scrape()
-    //     : null;
+    final tajweedLink = itemLinkMap['TAJWEED LINK'];
+    final tajweed = tajweedLink != null
+        ? QuranCourseSurahTemplateScraper(scraper, tajweedLink).scrape()
+        : null;
 
-    // final lecutresLink = itemLinkMap['LECTURES'];
-    // final lectures = lecutresLink != null ? scrapeContent(lecutresLink) : null;
+    final lecutresLink = itemLinkMap['LECTURES'];
+    final lectures = lecutresLink != null ? scrapeContent(lecutresLink) : null;
 
     final testsLink = itemLinkMap['TESTS'];
     final tests =
@@ -89,11 +89,11 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
     return QuranCourse(
       title: normalizedTitle,
       imageUrl: imageUrl,
-      // courseDetails: await courseDetails,
-      // registration: await registration,
-      // tafseer: await tafseer,
-      // tajweed: await tajweed,
-      // lectures: await lectures,
+      courseDetails: await courseDetails,
+      registration: await registration,
+      tafseer: await tafseer,
+      tajweed: await tajweed,
+      lectures: await lectures,
       tests: await tests,
     );
   }

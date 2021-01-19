@@ -78,79 +78,79 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final doc = await navigateTo('');
     if (doc == null) return null;
     return AppData(
-      // logoUrl: document
-      //     .querySelector('.header img')
-      //     .attributes['src']
-      //     .toAbsolute(baseUrl)
-      //     .removeQueryString(),
-      // quickLinks: document
-      //     .querySelectorAll('#message1 > *')
-      //     .asMap()
-      //     .entries
-      //     .map((messageEntry) => QuickLink(
-      //           title: messageEntry.value.parentNode.nodes
-      //               .whereType<Text>()
-      //               .elementAt(messageEntry.key)
-      //               .text
-      //               .cleanedText,
-      //           link: Utils.getItemByUrl(
-      //               messageEntry.value.attributes['href'].toAbsolute(baseUrl)),
-      //         ))
-      //     .toList(),
-      // banners: document
-      //     .querySelectorAll('#slider a')
-      //     .map((banner) => HeadingBanner(
-      //           imageUrl: banner
-      //               .querySelector('img')
-      //               .attributes['src']
-      //               .toAbsolute(baseUrl)
-      //               .removeQueryString(),
-      //           item: Utils.getItemByUrl(
-      //               banner.attributes['href'].toAbsolute(baseUrl)),
-      //         ))
-      //     .toList(),
-      // broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
-      //   final aTag = banner.querySelector('a');
-      //   final link =
-      //       aTag != null ? aTag.attributes['href'].toAbsolute(baseUrl) : null;
-      //   final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
-      //   final type = host != null
-      //       ? BroadcastType.values.firstWhere(
-      //           (type) => type.toString().split('.')[1].toLowerCase() == host,
-      //           orElse: () => null)
-      //       : null;
-      //   return BroadcastItem(
-      //     type: type ?? BroadcastType.Other,
-      //     item: link != null
-      //         ? Utils.getItemByUrl(link)
-      //         : Item(
-      //             isDirectSource: true,
-      //             type: ItemType.Other,
-      //             data: 'tel:7124321001;ext=491760789',
-      //           ),
-      //     imageUrl: banner
-      //         .querySelector('img')
-      //         ?.attributes['src']
-      //         ?.toAbsolute(baseUrl)
-      //         ?.removeQueryString(),
-      //   );
-      // }).toList(),
-      // socialMediaItems:
-      //     document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-      //   final link = socialMediaItem.attributes['href'].toAbsolute(baseUrl);
-      //   final imageUrl = socialMediaItem
-      //       .querySelector('img')
-      //       ?.attributes['src']
-      //       ?.toAbsolute(baseUrl)
-      //       ?.removeQueryString();
-      //   return SocialMediaItem(
-      //       item: Utils.getItemByUrl(link), imageUrl: imageUrl);
-      // }).toList(),
-      // drawerItems: await performAsyncOp(
-      //   document.querySelectorAll('#container_nav ul#nav > li'),
-      //   scrapeDrawerItem,
-      // ),
-      // aboutUsMarkdown: await AboutUsScraper(this).scrape(),
+      logoUrl: document
+          .querySelector('.header img')
+          .attributes['src']
+          .toAbsolute(baseUrl)
+          .removeQueryString(),
+      quickLinks: document
+          .querySelectorAll('#message1 > *')
+          .asMap()
+          .entries
+          .map((messageEntry) => QuickLink(
+                title: messageEntry.value.parentNode.nodes
+                    .whereType<Text>()
+                    .elementAt(messageEntry.key)
+                    .text
+                    .cleanedText,
+                link: Utils.getItemByUrl(
+                    messageEntry.value.attributes['href'].toAbsolute(baseUrl)),
+              ))
+          .toList(),
+      banners: document
+          .querySelectorAll('#slider a')
+          .map((banner) => HeadingBanner(
+                imageUrl: banner
+                    .querySelector('img')
+                    .attributes['src']
+                    .toAbsolute(baseUrl)
+                    .removeQueryString(),
+                item: Utils.getItemByUrl(
+                    banner.attributes['href'].toAbsolute(baseUrl)),
+              ))
+          .toList(),
+      broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
+        final aTag = banner.querySelector('a');
+        final link =
+            aTag != null ? aTag.attributes['href'].toAbsolute(baseUrl) : null;
+        final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
+        final type = host != null
+            ? BroadcastType.values.firstWhere(
+                (type) => type.toString().split('.')[1].toLowerCase() == host,
+                orElse: () => null)
+            : null;
+        return BroadcastItem(
+          type: type ?? BroadcastType.Other,
+          item: link != null
+              ? Utils.getItemByUrl(link)
+              : Item(
+                  isDirectSource: true,
+                  type: ItemType.Other,
+                  data: 'tel:7124321001;ext=491760789',
+                ),
+          imageUrl: banner
+              .querySelector('img')
+              ?.attributes['src']
+              ?.toAbsolute(baseUrl)
+              ?.removeQueryString(),
+        );
+      }).toList(),
+      socialMediaItems:
+          document.querySelectorAll('.column3footer a').map((socialMediaItem) {
+        final link = socialMediaItem.attributes['href'].toAbsolute(baseUrl);
+        final imageUrl = socialMediaItem
+            .querySelector('img')
+            ?.attributes['src']
+            ?.toAbsolute(baseUrl)
+            ?.removeQueryString();
+        return SocialMediaItem(
+            item: Utils.getItemByUrl(link), imageUrl: imageUrl);
+      }).toList(),
+      drawerItems: await performAsyncOp(
+        document.querySelectorAll('#container_nav ul#nav > li'),
+        scrapeDrawerItem,
+      ),
+      aboutUsMarkdown: await AboutUsScraper(this).scrape(),
       courses: await QuranCourseScraper(this).scrape(),
     );
   }
