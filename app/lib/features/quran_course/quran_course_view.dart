@@ -37,7 +37,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
     return [
       if (widget.course.courseDetails != null)
         QuranDetailsView(
-          details: widget.course.courseDetails,
+          courseDetails: widget.course.courseDetails,
         ),
       if (widget.course.registration != null)
         QuranRegistrationView(

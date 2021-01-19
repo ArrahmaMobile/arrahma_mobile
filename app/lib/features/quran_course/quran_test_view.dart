@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -23,10 +24,25 @@ class QuranTestsView extends StatelessWidget {
           ),
           ListView.builder(
             itemCount: tests.items.length,
-            itemBuilder: (_, index) => ListTile(
-              title: Text(tests.items[index].title),
-              onTap: () {},
-            ),
+            itemBuilder: (_, index) {
+              final item = tests.items[index];
+              final title = item.title;
+              return ListTile(
+                title: Text(title),
+                onTap: item.item?.data != null
+                    ? () {
+                        Utils.openUrl(
+                            context,
+                            TitledItem(
+                              title: title,
+                              isDirectSource: item.item.isDirectSource,
+                              type: item.item.type,
+                              data: item.item.data,
+                            ));
+                      }
+                    : null,
+              );
+            },
             primary: false,
             shrinkWrap: true,
           ),

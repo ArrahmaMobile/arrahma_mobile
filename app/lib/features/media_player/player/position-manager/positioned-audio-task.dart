@@ -5,17 +5,30 @@ import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
+import '../background/audio-context.dart';
 import '../background/audio-task-decorator.dart';
 import '../background/audio-task.dart';
 import '../background/icontext-audio-task.dart';
 import './position-data-manager.dart';
 import './position-manager.dart';
 import './position.dart';
-import '../background/audio-context.dart';
 
 /// The background component to [PositionManager]. Decorates an audio task by persisting
 /// current media position, if it has an ID.
 class PositionedAudioTask extends AudioTaskDecorater {
+  PositionedAudioTask({@required IContextAudioTask audioTask, this.dataManager})
+      : super(baseTask: audioTask) {
+    IsolateNameServer.removePortNameMapping(SendPortID);
+    IsolateNameServer.registerPortWithName(_receivePort.sendPort, SendPortID);
+
+    _receivePort
+        .listen((dynamic data) => _answerPortMessage(data as List<dynamic>));
+  }
+
+  /// Initilize a [PositionedAudioTask] with default audio task and data manager implementations.
+  PositionedAudioTask.standard()
+      : this(audioTask: AudioTask(), dataManager: HivePositionDataManager());
+
   static const String SendPortID = 'position_send_port';
   static const String GetPositionsCommand = 'getPosition';
   static const String SetPositionCommand = 'setPosition';
@@ -29,19 +42,6 @@ class PositionedAudioTask extends AudioTaskDecorater {
   final Completer<void> _readyToAnswerMessages = Completer();
 
   StreamSubscription subscription;
-
-  PositionedAudioTask({@required IContextAudioTask audioTask, this.dataManager})
-      : super(baseTask: audioTask) {
-    IsolateNameServer.removePortNameMapping(SendPortID);
-    IsolateNameServer.registerPortWithName(_receivePort.sendPort, SendPortID);
-
-    _receivePort
-        .listen((dynamic data) => _answerPortMessage(data as List<dynamic>));
-  }
-
-  /// Initilize a [PositionedAudioTask] with default audio task and data manager implementations.
-  PositionedAudioTask.standard()
-      : this(audioTask: AudioTask(), dataManager: HivePositionDataManager());
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
@@ -87,6 +87,33 @@ class PositionedAudioTask extends AudioTaskDecorater {
 
   @override
   Future<void> onPlayFromMediaId(String mediaId) async {
+    _loadPosition(mediaId);
+    super.onPlayFromMediaId(mediaId);
+  }
+
+  @override
+  Future<void> onSkipToQueueItem(String mediaId) async {
+    _loadPosition(mediaId);
+    super.onSkipToQueueItem(mediaId);
+  }
+
+  @override
+  Future<void> onSkipToNext() async {
+    if (!baseTask.context.hasNext()) return;
+    final id = baseTask.context.getNext().id;
+    _loadPosition(id);
+    super.onSkipToQueueItem(id);
+  }
+
+  @override
+  Future<void> onSkipToPrevious() async {
+    if (!baseTask.context.hasPrevious()) return;
+    final id = baseTask.context.getPrevious().id;
+    _loadPosition(id);
+    super.onSkipToQueueItem(id);
+  }
+
+  Future<void> _loadPosition(String mediaId) async {
     final startPosition =
         await dataManager.getPosition(context.getIdFromUrl(mediaId));
 
@@ -94,8 +121,6 @@ class PositionedAudioTask extends AudioTaskDecorater {
       context.upcomingPlaybackSettings =
           context.upcomingPlaybackSettings.copyWith(position: startPosition);
     }
-
-    super.onPlayFromMediaId(mediaId);
   }
 
   @override
@@ -121,7 +146,7 @@ class PositionedAudioTask extends AudioTaskDecorater {
   /// the UI isolate.
   /// The first item in the list will always be a [SendPort].
   /// The second is the name of the command, for example [GetPositionsCommand].
-  void _answerPortMessage(List<dynamic> message) async {
+  Future<void> _answerPortMessage(List<dynamic> message) async {
     await _readyToAnswerMessages.future;
 
     final sendPort = message[0] as SendPort;

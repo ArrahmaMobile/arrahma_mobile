@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 
 import '../audio-context.dart';
@@ -21,8 +22,8 @@ class NoneState extends MediaStateBase {
   Future<void> play() async {}
 
   @override
-  Future<void> setUrl(String url) async {
+  Future<void> setItem(String mediaId) async {
     context.stateHandler = ConnectingState(context: context);
-    await context.stateHandler.setUrl(url);
+    await context.stateHandler.setItem(mediaId);
   }
 }

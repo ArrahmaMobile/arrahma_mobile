@@ -1,8 +1,9 @@
+import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
-import 'package:arrahma_mobile_app/features/media_player/models/media_data.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
-import 'package:arrahma_shared/shared.dart';
+import 'package:arrahma_shared/shared.dart' hide MediaItem;
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 
@@ -25,28 +26,56 @@ class Utils {
     );
   }
 
-  static void openUrl(BuildContext context, String Function(int index) title,
-      String group, List<Item> items, int index) {
-    final item = items[index];
+  static List<MediaItem> itemToMediaItem(List<TitledItem> items, String group) {
+    return items
+        .asMap()
+        .entries
+        .where((i) => i.value.type == ItemType.Audio)
+        .map(
+          (urlEntry) => MediaItem(
+            title: urlEntry.value.title,
+            album: group,
+            id: urlEntry.value.data,
+          ),
+        )
+        .toList();
+  }
+
+  static void openAudio(
+      BuildContext context, List<MediaItem> items, int index) {
+    Utils.pushView(
+      context,
+      null,
+      MediaPlayerView(
+        mediaItems: items,
+        initialAudioIndex: index,
+      ),
+    );
+    return;
+  }
+
+  static void openUrl(BuildContext context, Item item) {
+    final typeName = EnumUtils.enumToString(item.type);
+    final title = item is TitledItem ? item.title : typeName;
     if (item.type == ItemType.Audio) {
-      final mediaItems = items
-          .asMap()
-          .entries
-          .where((i) => i.value.type == ItemType.Audio)
-          .map(
-            (urlEntry) => MediaData(
-              title: title(urlEntry.key),
-              group: group,
-              sourceUrl: urlEntry.value.data,
-            ),
-          )
-          .toList();
+      openAudio(
+          context,
+          [
+            MediaItem(
+              title: title,
+              album: typeName,
+              id: item.data,
+            )
+          ],
+          0);
+      return;
+    }
+    if (item.type == ItemType.Pdf) {
       Utils.pushView(
         context,
-        null,
-        MediaPlayerView(
-          mediaItems: mediaItems,
-          initialAudioIndex: index,
+        title,
+        SimplePdfView(
+          url: item.data,
         ),
       );
       return;

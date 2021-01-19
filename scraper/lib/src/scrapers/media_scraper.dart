@@ -31,7 +31,7 @@ class MediaScraper extends ScraperBase<MediaContent> {
           .map((n) => n.attributes
               .singleWhere((a) => a.name.local == 'imageURL')
               .value
-              .toAbsolute(scraper.currentUrl))
+              .toAbsolute(url))
           .map((i) => Utils.getItemByUrl(i))
           .toList();
       return MediaContent(
@@ -41,14 +41,11 @@ class MediaScraper extends ScraperBase<MediaContent> {
           doc.querySelectorAll('#table1 #ramadancontainer,#ramadansec2d');
       final mediaItems = items.map((i) {
         final title = i.text.cleanedText;
-        final link = Utils.getItemByUrl(i
-            .querySelector('a')
-            ?.attributes['href']
-            ?.toAbsolute(scraper.currentUrl));
+        final link = Utils.getItemByUrl(
+            i.querySelector('a')?.attributes['href']?.toAbsolute(url));
         final img = i.querySelector('img');
-        final imageUrl = img != null
-            ? img.attributes['src']?.toAbsolute(scraper.currentUrl)
-            : null;
+        final imageUrl =
+            img != null ? img.attributes['src']?.toAbsolute(url) : null;
         return MediaItem(
           title: title,
           item: link,
@@ -74,15 +71,12 @@ class MediaScraper extends ScraperBase<MediaContent> {
           return MediaItem(
             title: i.text.cleanedText,
             item: Utils.getItemByUrl(
-              i
-                  .querySelector('a')
-                  .attributes['href']
-                  ?.toAbsolute(scraper.currentUrl),
+              i.querySelector('a').attributes['href']?.toAbsolute(url),
             ),
           );
         }));
       } else {
-        final sections = doc.querySelectorAll('#studentportion #studenttest');
+        final sections = doc.querySelectorAll('#studentportion #studentrbox');
         sections.forEach((s) {
           final title = s.querySelector('#studenttestprep1').text.cleanedText;
           content.items.add(MediaItem(
@@ -93,7 +87,7 @@ class MediaScraper extends ScraperBase<MediaContent> {
               .map((o) => MediaItem(
                     title: o.text.cleanedText,
                     item: Utils.getItemByUrl(
-                        o.attributes['value'].toAbsolute(scraper.currentUrl)),
+                        o.attributes['value'].toAbsolute(url)),
                   ));
           content.items.addAll(options);
         });

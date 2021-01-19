@@ -34,13 +34,13 @@ const stopControl = MediaControl(
 
 /// Audio settings which effect all audio.
 class GeneralPlaybackSettings {
+  GeneralPlaybackSettings({this.speed, this.volume});
+
   /// The current speed.
   final double speed;
 
   /// The current volume.
   final double volume;
-
-  GeneralPlaybackSettings({this.speed, this.volume});
 
   GeneralPlaybackSettings copyWith({double speed, double volume}) =>
       GeneralPlaybackSettings(
@@ -53,9 +53,8 @@ class GeneralPlaybackSettings {
 /// For example, when no audio is loaded we can't seek, but we can set that
 /// when we can seek, go to a certain position.
 class UpcomingPlaybackSettings {
-  final Duration position;
-
   UpcomingPlaybackSettings({@required this.position});
+  final Duration position;
 }
 
 extension UpcomingPlaybackSettingsExtensions on UpcomingPlaybackSettings {
@@ -65,10 +64,6 @@ extension UpcomingPlaybackSettingsExtensions on UpcomingPlaybackSettings {
 
 /// Functionality which the [MediaStateBase] classes will use to mantain state.
 abstract class AudioContextBase {
-  final AudioPlayer mediaPlayer;
-
-  MediaStateBase stateHandler;
-
   AudioContextBase({@required this.mediaPlayer}) {
     stateHandler = NoneState(context: this);
 
@@ -76,13 +71,25 @@ abstract class AudioContextBase {
         .listen((e) => stateHandler.onPlaybackEvent(e));
   }
 
+  final AudioPlayer mediaPlayer;
+
+  MediaStateBase stateHandler;
+
   Stream<PlaybackState> get mediaStateStream;
 
   /// Get current media item.
   MediaItem get mediaItem;
 
-  /// Set current media item.
+  /// Set current media item index.
   set mediaItem(MediaItem item);
+
+  MediaItem getItemFromId(String mediaId);
+
+  /// Get current queue.
+  Iterable<MediaItem> get queue;
+
+  /// Set current media item.
+  set queue(Iterable<MediaItem> queue);
 
   /// Get the current playback state.
   PlaybackState get playBackState;
@@ -106,38 +113,85 @@ abstract class AudioContextBase {
 }
 
 class AudioContext extends AudioContextBase {
-  MediaItem _mediaItem;
-  BehaviorSubject<PlaybackState> _mediaStateSubject = BehaviorSubject();
-
   AudioContext() : super(mediaPlayer: AudioPlayer());
+  MediaItem _mediaItem;
+  Map<String, MediaItem> _queue;
+  final _mediaStateSubject = BehaviorSubject<PlaybackState>();
 
   @override
   GeneralPlaybackSettings generalPlaybackSettings;
 
   @override
   MediaItem get mediaItem => _mediaItem;
+
   @override
   set mediaItem(MediaItem item) {
-    AudioServiceBackground.setMediaItem(item);
+    final index = _getIndexFromId(item.id);
+    if (index != null && item != queue.elementAt(index)) {
+      _queue[item.id] = item;
+      AudioServiceBackground.setQueue(queue.toList());
+    }
     _mediaItem = item;
+    AudioServiceBackground.setMediaItem(mediaItem);
+  }
+
+  @override
+  Iterable<MediaItem> get queue => _queue.values;
+  @override
+  set queue(Iterable<MediaItem> queue) {
+    AudioServiceBackground.setQueue(queue.toList());
+    _queue = queue.fold({}, (map, item) {
+      map[item.id] = item;
+      return map;
+    });
+  }
+
+  @override
+  MediaItem getItemFromId(String mediaId) {
+    return _queue[mediaId];
+  }
+
+  int _getIndexFromId(String mediaId) {
+    final index = _queue.keys.toList().indexOf(mediaId);
+    return index >= 0 ? index : null;
+  }
+
+  int get index => _getIndexFromId(mediaItem.id);
+
+  MediaItem getNext() {
+    if (!hasNext()) return null;
+    return queue.elementAt((index ?? 0) + 1);
+  }
+
+  MediaItem getPrevious() {
+    if (!hasPrevious()) return null;
+    return queue.elementAt((index ?? 0) - 1);
+  }
+
+  bool hasNext() {
+    return (index ?? 0) + 1 < _queue.length;
+  }
+
+  bool hasPrevious() {
+    return (index ?? 0) > 0;
   }
 
   @override
   PlaybackState get playBackState => _mediaStateSubject.value;
 
   @override
-  Future<void> setPlaybackState(PlaybackState state) async {
+  Future<void> setPlaybackState(playbackState) async {
     await AudioServiceBackground.setState(
-        controls: state.playing ? [pauseControl] : [playControl],
-        systemActions: state.actions?.toList() ?? List(),
-        playing: state.playing,
-        bufferedPosition: state.bufferedPosition,
-        processingState: state.processingState,
-        position: state.position,
-        speed: state.speed,
-        updateTime: state.updateTime);
+        controls: playbackState.playing ? [pauseControl] : [playControl],
+        systemActions: playbackState.actions?.toList() ?? [],
+        playing: playbackState.playing,
+        bufferedPosition: playbackState.bufferedPosition,
+        processingState: playbackState.processingState,
+        position: playbackState.position,
+        speed: playbackState.speed,
+        updateTime: playbackState.updateTime);
 
-    _mediaStateSubject.value = state;
+    _mediaStateSubject.value = playbackState;
   }
 
   @override

@@ -26,10 +26,6 @@ abstract class IPositionDataManager {
 /// If the audio task is running, interacts with it to get/set postions.
 /// Otherwise, uses disk.
 class PositionDataManager extends IPositionDataManager {
-  HivePositionDataManager _hiveManager;
-  final AudioServicePositionManager _serviceManager =
-      AudioServicePositionManager();
-
   PositionDataManager() {
     // Disconnect hive whenever audio state is running.
     AudioService.playbackStateStream
@@ -43,6 +39,10 @@ class PositionDataManager extends IPositionDataManager {
       _hiveManager = null;
     });
   }
+
+  HivePositionDataManager _hiveManager;
+  final AudioServicePositionManager _serviceManager =
+      AudioServicePositionManager();
 
   IPositionDataManager get _activeManager => AudioService.running
       ? _serviceManager
@@ -62,11 +62,10 @@ class PositionDataManager extends IPositionDataManager {
 
 /// Saves position to disk.
 class HivePositionDataManager extends IPositionDataManager {
-  static final positionHive = HiveImpl();
-  static const positionBoxName = "positions";
-  static const int maxSavedPositions = 200;
-
   HivePositionDataManager();
+  static final positionHive = HiveImpl();
+  static const positionBoxName = 'positions';
+  static const int maxSavedPositions = 200;
 
   Future<Box<Position>> getPositionBox() async {
     final box = await positionHive.openBox<Position>(positionBoxName);
@@ -84,7 +83,7 @@ class HivePositionDataManager extends IPositionDataManager {
     } else {
       final hivePath = await getApplicationDocumentsDirectory();
 
-      positionHive.init("${hivePath.path}/just_audio_service_hive");
+      positionHive.init('${hivePath.path}/just_audio_service_hive');
 
       if (!positionHive.isAdapterRegistered(0)) {
         positionHive.registerAdapter(PositionAdapter());
@@ -107,9 +106,11 @@ class HivePositionDataManager extends IPositionDataManager {
     }
   }
 
+  @override
   Future<Duration> getPosition(String id) async =>
       (await getPositions([id]))[0].position;
 
+  @override
   Future<List<Position>> getPositions(List<String> ids) async {
     final positionBox = await init();
     // Take only last 255 charachters because of HiveDB limits
@@ -120,6 +121,7 @@ class HivePositionDataManager extends IPositionDataManager {
         .toList();
   }
 
+  @override
   Future<void> setPosition(Position position) async {
     final positionBox = await init();
 
@@ -134,7 +136,7 @@ class HivePositionDataManager extends IPositionDataManager {
   /// Make sure we don't try to hold too many positions in memory.
   Future<void> _constrainBoxSize(Box<Position> positionBox) async {
     // E.g: There are 3 items, we're aloud max of 2, we need to delete 1.
-    int amountPositionsToDelete = positionBox.length - maxSavedPositions;
+    final amountPositionsToDelete = positionBox.length - maxSavedPositions;
 
     if (amountPositionsToDelete < 1) {
       return;
@@ -174,10 +176,10 @@ class AudioServicePositionManager extends IPositionDataManager {
       await Future<dynamic>.delayed(const Duration(milliseconds: 100));
       // Try again...
       return true;
-    }).timeout(Duration(seconds: 2), onTimeout: () async {
+    }).timeout(const Duration(seconds: 2), onTimeout: () async {
       // If I make this a lambda, it's an error. This is a bit clumsy - dart
       // should be able to do better.
-      print("error: timeout for port");
+      print('error: timeout for port');
       return false;
     });
 
@@ -208,7 +210,7 @@ class AudioServicePositionManager extends IPositionDataManager {
         IsolateNameServer.lookupPortByName(PositionedAudioTask.SendPortID);
 
     if (sendPort == null) {
-      return null;
+      return;
     }
 
     final receivePort = ReceivePort();

@@ -43,8 +43,8 @@ class StoppedState extends MediaStateBase {
   }
 
   @override
-  Future<void> setUrl(String url) async {
+  Future<void> setItem(String mediaId) async {
     context.stateHandler = ConnectingState(context: context);
-    await context.stateHandler.setUrl(url);
+    await context.stateHandler.setItem(mediaId);
   }
 }

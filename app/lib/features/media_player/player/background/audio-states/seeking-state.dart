@@ -10,17 +10,13 @@ import 'connecting-state.dart';
 import 'playing-state.dart';
 
 class SeekingState extends MediaStateBase {
-  /// In case a seek is requested in the middle of another, this state isn't
-  /// finished untill that seek is done.
-  int numSeeking = 0;
-
   /// Keep track of if we give up on seeking in the middle. For example, connect to other media.
   bool get didAbandonSeek => !didPersistSeek;
 
   /// Keep track of if we give up on seeking in the middle. For example, connect to other media.
   bool get didPersistSeek => this == context.stateHandler;
 
-  final Completer<void> _doneSeeking = Completer();
+  Completer<void> _doneSeeking;
 
   SeekingState({@required AudioContextBase context}) : super(context: context);
 
@@ -43,14 +39,15 @@ class SeekingState extends MediaStateBase {
     }
 
     super.reactToStream = false;
+    _doneSeeking = Completer<void>();
 
     if (position < Duration.zero) {
       position = Duration.zero;
     }
 
-    ++numSeeking;
+    final currentPosition = context.playBackState.currentPosition;
 
-    final basicState = position > context.playBackState.currentPosition
+    final basicState = position > currentPosition
         ? AudioProcessingState.fastForwarding
         : AudioProcessingState.rewinding;
 
@@ -60,34 +57,14 @@ class SeekingState extends MediaStateBase {
         justAudioState: context.mediaPlayer.playerState.processingState,
         position: position);
 
-    // Don't await. I'm not sure if it will complete before or after it's finished seeking,
-    // so I'll check myself for when it reaches the correct position later.
-    // TODO: This section could use some work.
-    await context.mediaPlayer.seek(position);
-
-    // TODO :remove commented out code, update previous comment.
-    // final reachedPositionState = await context.mediaPlayer.playbackEventStream
-    //     .firstWhere(
-    //       (event) => event.updatePosition == position,
-    //       orElse: () => null,
-    //     )
-    //     .timeout(Duration(milliseconds: 250), onTimeout: () => null);
+    try {
+      await context.mediaPlayer.seek(position);
+    } catch (err) {
+      position = currentPosition;
+      await context.mediaPlayer.seek(position);
+    }
 
     if (didAbandonSeek) return;
-
-    // if ((reachedPositionState?.processingState == ProcessingState.buffering) ??
-    //     false) {
-    //   await context.mediaPlayer.playbackEventStream
-    //       .firstWhere(
-    //           (event) => event.processingState != ProcessingState.buffering)
-    //       .timeout(Duration(milliseconds: 250), onTimeout: () => null);
-    // }
-
-    --numSeeking;
-
-    if (numSeeking > 0 || didAbandonSeek) {
-      return;
-    }
 
     // We made it to wanted place in media.
     await setMediaState(
@@ -111,12 +88,13 @@ class SeekingState extends MediaStateBase {
   }
 
   @override
-  Future<void> setUrl(String url) async {
+  Future<void> setItem(String mediaId) async {
+    final url = mediaId;
     if (url == context.mediaItem.id) {
       return;
     }
 
     context.stateHandler = ConnectingState(context: context);
-    await context.stateHandler.setUrl(url);
+    await context.stateHandler.setItem(mediaId);
   }
 }

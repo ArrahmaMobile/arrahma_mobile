@@ -1,119 +1,94 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:inherited_state/inherited_state.dart';
+import 'media_player_service.dart';
 
-import 'audio_player_service.dart';
-
-class AudioPlayerControlBar extends StatefulWidget {
+class AudioPlayerControlBar extends StatelessWidget {
   const AudioPlayerControlBar({
     Key key,
+    @required this.screenState,
     this.onNext,
     this.onPrevious,
     this.onStart,
+    this.onPause,
   }) : super(key: key);
+  final ScreenState screenState;
   final VoidCallback onNext;
   final VoidCallback onPrevious;
   final VoidCallback onStart;
-
-  @override
-  _AudioPlayerControlBarState createState() => _AudioPlayerControlBarState();
-}
-
-class _AudioPlayerControlBarState extends State<AudioPlayerControlBar> {
-  final _audioPlayer = SL.get<AudioPlayerService>();
+  final VoidCallback onPause;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlaybackState>(
-        stream: _audioPlayer.playbackStateStream,
-        builder: (_, playbackSnapshot) {
-          final showingPlayButton = playbackSnapshot.hasData &&
-              (playbackSnapshot.data.processingState ==
-                      AudioProcessingState.completed ||
-                  playbackSnapshot.data.processingState ==
-                      AudioProcessingState.stopped ||
-                  (playbackSnapshot.data.processingState ==
-                          AudioProcessingState.ready &&
-                      !playbackSnapshot.data.playing));
-          final showingPauseButton = playbackSnapshot.hasData &&
-              (playbackSnapshot.data.processingState ==
-                      AudioProcessingState.ready &&
-                  playbackSnapshot.data.playing);
-          return StreamBuilder<List<MediaItem>>(
-              stream: _audioPlayer.queueStream,
-              builder: (context, queueSnapshot) {
-                final queue = queueSnapshot.data ?? [];
-                return StreamBuilder<MediaItem>(
-                    stream: _audioPlayer.audioStream,
-                    builder: (context, itemSnapshot) {
-                      final item = itemSnapshot.data;
-                      final allowPrevious = playbackSnapshot.hasData &&
-                          playbackSnapshot.data.actions
-                              .contains(MediaAction.skipToPrevious) &&
-                          queue.length > 1 &&
-                          queue.first != item;
-                      final allowNext = playbackSnapshot.hasData &&
-                          playbackSnapshot.data.actions
-                              .contains(MediaAction.skipToNext) &&
-                          queue.length > 1 &&
-                          queue.last != item;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          IconButton(
-                            icon: const Icon(
-                              Icons.skip_previous,
-                            ),
-                            onPressed: allowPrevious
-                                ? () {
-                                    if (widget.onPrevious != null)
-                                      widget.onPrevious();
-                                    AudioService.skipToPrevious();
-                                  }
-                                : null,
-                          ),
-                          SizedBox(
-                            height: 56,
-                            width: 56,
-                            child: Center(
-                              child: showingPauseButton || showingPlayButton
-                                  ? IconButton(
-                                      icon: Icon(
-                                        showingPlayButton
-                                            ? Icons.play_arrow
-                                            : Icons.pause,
-                                        size: 32,
-                                      ),
-                                      onPressed: () {
-                                        if (showingPauseButton) {
-                                          _audioPlayer.pause();
-                                        } else {
-                                          if (showingPlayButton)
-                                            _audioPlayer.play();
-                                          else if (widget.onStart != null) {
-                                            widget.onStart();
-                                          }
-                                        }
-                                      },
-                                    )
-                                  : const CircularProgressIndicator(),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.skip_next,
-                            ),
-                            onPressed: allowNext
-                                ? () {
-                                    if (widget.onNext != null) widget.onNext();
-                                    AudioService.skipToNext();
-                                  }
-                                : null,
-                          ),
-                        ],
-                      );
-                    });
-              });
-        });
+    final item = screenState?.mediaItem;
+    final state = screenState?.playbackState;
+    final processingState = state?.processingState ?? AudioProcessingState.none;
+    final queue = screenState?.queue ?? [];
+
+    final playing = state?.playing ?? false;
+    final loading = [
+      AudioProcessingState.connecting,
+      AudioProcessingState.buffering,
+      AudioProcessingState.fastForwarding,
+      AudioProcessingState.rewinding,
+    ].contains(processingState);
+
+    final allowPrevious =
+        (state?.actions?.contains(MediaAction.skipToPrevious) ?? false) &&
+            queue.length > 1 &&
+            queue.first != item;
+    final allowNext =
+        (state?.actions?.contains(MediaAction.skipToNext) ?? false) &&
+            queue.length > 1 &&
+            queue.last != item;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        IconButton(
+          icon: const Icon(
+            Icons.skip_previous,
+          ),
+          onPressed: allowPrevious
+              ? () {
+                  MediaPlayerService.skipToPrevious();
+                  onPrevious?.call();
+                }
+              : null,
+        ),
+        SizedBox(
+          height: 56,
+          width: 56,
+          child: Center(
+            child: !loading
+                ? IconButton(
+                    icon: Icon(
+                      playing ? Icons.pause : Icons.play_arrow,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      if (playing) {
+                        MediaPlayerService.pause();
+                        onPause?.call();
+                      } else {
+                        MediaPlayerService.play();
+                        onStart?.call();
+                      }
+                    },
+                  )
+                : const CircularProgressIndicator(),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.skip_next,
+          ),
+          onPressed: allowNext
+              ? () {
+                  MediaPlayerService.skipToNext();
+                  onNext?.call();
+                }
+              : null,
+        ),
+      ],
+    );
   }
 }

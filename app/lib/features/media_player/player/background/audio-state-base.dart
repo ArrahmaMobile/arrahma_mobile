@@ -8,6 +8,8 @@ import 'audio-states/stopped-state.dart';
 
 /// Deals with state for a given state.
 abstract class MediaStateBase {
+  MediaStateBase({this.context, this.reactToStream = true});
+
   static const stateToStateMap = {
     ProcessingState.loading: AudioProcessingState.connecting,
     ProcessingState.idle: AudioProcessingState.none,
@@ -21,60 +23,38 @@ abstract class MediaStateBase {
       case ProcessingState.loading:
       case ProcessingState.idle:
       case ProcessingState.completed:
-        return {MediaAction.playFromMediaId};
+        return {
+          MediaAction.playFromMediaId,
+          MediaAction.skipToPrevious,
+          MediaAction.skipToNext,
+        };
       case ProcessingState.buffering:
       case ProcessingState.ready:
         return {
-          MediaAction.playPause,
+          if (!playing) MediaAction.play,
+          if (playing) MediaAction.pause,
           MediaAction.stop,
           MediaAction.playFromMediaId,
           MediaAction.fastForward,
           MediaAction.rewind,
-          MediaAction.seekTo
+          MediaAction.seekTo,
+          MediaAction.skipToPrevious,
+          MediaAction.skipToNext,
         };
       default:
-        throw new Exception('Unhandled state: $state');
+        throw Exception('Unhandled state: $state');
     }
   }
-
-  // TODO: I think I can drop this whole thing? Truth is, I barely know what
-  // media action is all about and have never tested it :shrug:
-  // static const stateToActionsMap = {
-  //   ProcessingState.ready: const {
-  //     true: const {
-  //       MediaAction.playPause,
-  //       MediaAction.stop,
-  //       MediaAction.playFromMediaId,
-  //       MediaAction.fastForward,
-  //       MediaAction.rewind,
-  //       MediaAction.seekTo
-  //     },
-  //     false: const {
-  //       MediaAction.playPause,
-  //       MediaAction.stop,
-  //       MediaAction.playFromMediaId,
-  //       MediaAction.fastForward,
-  //       MediaAction.rewind,
-  //       MediaAction.seekTo
-  //     }
-  //   },
-  //   ProcessingState.buffering: const {
-  //   }
-  // };
 
   final AudioContextBase context;
 
   /// Whether media player state streams should be ignored.
   bool reactToStream;
 
-  MediaStateBase({this.context, bool reactToStream = true}) {
-    this.reactToStream = reactToStream;
-  }
-
   /// Called by [AudioContext] whenever [AudioPlayer] raises an event.
   /// Uses [reactToStream] to ignore events if a particular [MediaStateBase] doesn't
   /// want that event to be handled for whatever reason.
-  void onPlaybackEvent(PlaybackEvent event) async {
+  Future<void> onPlaybackEvent(PlaybackEvent event) async {
     if (reactToStream) {
       await context.setPlaybackState(PlaybackState(
           processingState: stateToStateMap[event.processingState],
@@ -89,7 +69,7 @@ abstract class MediaStateBase {
     }
   }
 
-  Future<void> setUrl(String url);
+  Future<void> setItem(String mediaId);
   Future<void> pause();
   Future<void> play();
   Future<void> seek(Duration position);

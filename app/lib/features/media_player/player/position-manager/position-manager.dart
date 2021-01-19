@@ -11,8 +11,8 @@ import 'package:rxdart/rxdart.dart';
 class PositionManager {
   /// How often the position stream is updated from audio_service.
   /// Note that when seeking (eg, dragging a position slider), the "position" is updated constantly.
-  static const positionUpdateTime = Duration(milliseconds: 50);
-  static const audioServicePositionUpdateTime = Duration(milliseconds: 500);
+  final Duration positionUpdateTime;
+  final Duration audioServicePositionUpdateTime;
 
   // Ensure that seeks don't happen to frequently.
   final BehaviorSubject<Position> _seekingValues = BehaviorSubject.seeded(null);
@@ -26,7 +26,11 @@ class PositionManager {
   /// to give it time to react to the seek.
   DateTime _ignoreAudioServiceUntil;
 
-  PositionManager({this.positionDataManager}) {
+  PositionManager(
+      {this.positionDataManager,
+      this.positionUpdateTime = const Duration(milliseconds: 50),
+      this.audioServicePositionUpdateTime =
+          const Duration(milliseconds: 500)}) {
     // Make sure that we always keep up to date on audio_service media position.
     Rx.combineLatest2<PlaybackState, dynamic, PlaybackState>(
             AudioService.playbackStateStream.where((state) =>

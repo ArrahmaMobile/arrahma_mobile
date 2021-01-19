@@ -42,6 +42,16 @@ class GroupItem {
   final List<Item> items;
 }
 
+class TitledItem extends Item {
+  const TitledItem({
+    this.title,
+    ItemType type,
+    String data,
+    bool isDirectSource,
+  }) : super(data: data, isDirectSource: isDirectSource, type: type);
+  final String title;
+}
+
 class Item {
   const Item({
     this.type,

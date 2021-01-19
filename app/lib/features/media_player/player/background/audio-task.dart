@@ -8,19 +8,53 @@ import 'audio-context.dart';
 import 'icontext-audio-task.dart';
 
 class AudioTask extends BackgroundAudioTask implements IContextAudioTask {
-  final AudioContext context = AudioContext();
+  @override
+  final context = AudioContext();
+
+  AudioPlayer get player => context.mediaPlayer;
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
     // This will be changed when we support playlists.
     // Then, on media completion we'll check if there's another file to play.
-    context.mediaPlayer.playerStateStream
+    player.playerStateStream
         .where((state) => state.processingState == ProcessingState.completed)
-        .listen((_) => _dispose());
+        .listen((_) {
+      if (context.hasNext())
+        AudioService.skipToNext();
+      else
+        _dispose();
+    });
 
     final session = await AudioSession.instance;
-    session.configure(AudioSessionConfiguration.speech());
+    session.configure(const AudioSessionConfiguration.speech());
+
+    // player.currentIndexStream.listen((index) {
+    //   if (index != null) {
+    //     AudioService.playFromMediaId(queue[index].id);
+    //   }
+    // });
+
+    // Load and broadcast the queue
   }
+
+  // Future<void> load(List<MediaItem> items, [int index = 0]) async {
+  //   player.pause();
+  //   _queue = items;
+  //   AudioServiceBackground.setQueue(queue);
+  //   try {
+  //     await player.setAudioSource(ConcatenatingAudioSource(
+  //       children:
+  //           queue.map((item) => AudioSource.uri(Uri.parse(item.id))).toList(),
+  //     ));
+  //     // In this example, we automatically start playing on start.
+  //     if (index != 0) player.seek(Duration.zero, index: index);
+  //     onPlay();
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     onStop();
+  //   }
+  // }
 
   @override
   // (calls super in dispose)
@@ -38,7 +72,17 @@ class AudioTask extends BackgroundAudioTask implements IContextAudioTask {
 
   @override
   Future<void> onPlayFromMediaId(String mediaId) async {
-    final future = context.stateHandler.setUrl(mediaId);
+    onSkipToQueueItem(mediaId);
+  }
+
+  @override
+  Future<void> onUpdateQueue(List<MediaItem> queue) async {
+    context.queue = queue;
+  }
+
+  @override
+  Future<void> onSkipToQueueItem(String mediaId) async {
+    final future = context.stateHandler.setItem(mediaId);
     context.stateHandler.play();
     await future;
   }
@@ -46,12 +90,12 @@ class AudioTask extends BackgroundAudioTask implements IContextAudioTask {
   @override
   Future<void> onFastForward() =>
       onSeekTo((context.playBackState?.currentPosition ?? Duration.zero) +
-          Duration(seconds: 15));
+          const Duration(seconds: 15));
 
   @override
   Future<void> onRewind() =>
       onSeekTo((context.playBackState?.currentPosition ?? Duration.zero) -
-          Duration(seconds: 15));
+          const Duration(seconds: 15));
 
   @override
   Future<void> onSeekTo(Duration position) =>

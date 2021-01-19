@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 
 import '../audio-context.dart';
@@ -57,14 +58,15 @@ class PlayingState extends MediaStateBase {
   }
 
   @override
-  Future<void> setUrl(String url) async {
+  Future<void> setItem(String mediaId) async {
     // No need to connect if we already did.
     // TODO: this check is in every change to ConnectingState. This should be less manual.
+    final url = mediaId;
     if (url == context.mediaItem.id) {
       return;
     }
 
     context.stateHandler = ConnectingState(context: context);
-    await context.stateHandler.setUrl(url);
+    await context.stateHandler.setItem(mediaId);
   }
 }

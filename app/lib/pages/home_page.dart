@@ -83,9 +83,9 @@ class _HomePageState extends State<HomePage> {
                         NavigationUtils.push<dynamic>(
                             context,
                             MaterialPageRoute<dynamic>(
-                                builder: (_) => SafeArea(
+                                builder: (_) => const SafeArea(
                                       child: Scaffold(
-                                        appBar: const ThemedAppBar(
+                                        appBar: ThemedAppBar(
                                           title: 'Chat With Us',
                                         ),
                                         body: Tawk(
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
       ];
 
   Widget _buildAudioPlayer() {
-    return CollapsedPlayer();
+    return const CollapsedPlayer();
   }
 
   Widget _buildBanners(List<HeadingBanner> banners) {
@@ -180,31 +180,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _broadcast(List<BroadcastItem> broadcasts) {
-    return GridView.count(
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        childAspectRatio: 2.3,
-        children: broadcasts
-            .map((broadcast) =>
-                _buildImageLink(broadcast.item, broadcast.imageUrl))
-            .toList());
-  }
-
   Widget _buildImageLink(Item item, String imageUrl) {
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, (index) => 'Audio', '', [item], 0),
+      onTap: () => Utils.openUrl(context, item),
       child: _buildImage(imageUrl),
     );
   }
 
   Widget _buildQuickLink(Item link, String title) {
     return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: double.infinity),
+      constraints: const BoxConstraints(minWidth: double.infinity),
       child: Card(
         child: InkWell(
-          onTap: () =>
-              Utils.openUrl(context, (index) => 'Audio', '', [link], 0),
+          onTap: () => Utils.openUrl(context, link),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Center(child: Text(title)),

@@ -6,12 +6,12 @@ import 'icontext-audio-task.dart';
 /// Supports mixing and matching audio tasks
 class AudioTaskDecorater extends BackgroundAudioTask
     implements IContextAudioTask {
+  AudioTaskDecorater({this.baseTask});
+
   final IContextAudioTask baseTask;
 
   @override
   AudioContext get context => baseTask.context;
-
-  AudioTaskDecorater({this.baseTask});
 
   @override
   Future<void> onStart(Map<String, dynamic> params) => baseTask.onStart(params);
@@ -30,6 +30,14 @@ class AudioTaskDecorater extends BackgroundAudioTask
   @override
   Future<void> onPlayFromMediaId(String mediaId) =>
       baseTask.onPlayFromMediaId(mediaId);
+
+  @override
+  Future<void> onSkipToQueueItem(String mediaId) =>
+      baseTask.onSkipToQueueItem(mediaId);
+
+  @override
+  Future<void> onUpdateQueue(List<MediaItem> queue) =>
+      baseTask.onUpdateQueue(queue);
 
   @override
   Future<void> onFastForward() => baseTask.onFastForward();

@@ -1,5 +1,4 @@
 import 'package:arrahma_mobile_app/app.dart';
-import 'package:arrahma_mobile_app/features/media_player/audio_player_service.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/foundation.dart';
@@ -45,7 +44,6 @@ Future main() async {
   ]);
 
   SL.register(() => deviceStorageService);
-  SL.register(() => AudioPlayerService(storageService, apiService));
 
   runApp(App(dependencies: dependencies));
 }

@@ -34,9 +34,10 @@ class ConnectingState extends MediaStateBase {
   }
 
   @override
-  Future<void> setUrl(String url) async {
+  Future<void> setItem(String mediaId) async {
     reactToStream = false;
     try {
+      var url = mediaId;
       // If URL is called multiple times with same value, ignore.
       if (url == context.mediaItem?.id) {
         return;
@@ -64,21 +65,26 @@ class ConnectingState extends MediaStateBase {
       final publicId = context.urlToIdMap[url] ?? url;
 
       // Notify what is being played.
-      context.mediaItem =
-          MediaItem(id: publicId, album: "lessons", title: "lesson");
+      context.mediaItem = context.getItemFromId(mediaId);
       // Notify the state (ie, connecting).
       super.setMediaState(
           state: AudioProcessingState.connecting,
           justAudioState: ProcessingState.loading);
 
       // Don't continue playing current audio when switched to new.
-      await context.mediaPlayer.pause();
+      if (context.mediaPlayer.processingState != ProcessingState.completed)
+        await context.mediaPlayer.pause();
 
       if (url.startsWith(p.separator)) {
         url = Uri.file(url).toString();
       }
 
       final duration = await context.mediaPlayer.setUrl(url);
+      //     await context.mediaPlayer.setAudioSource(ConcatenatingAudioSource(
+      //   children: context.queue
+      //       .map((item) => AudioSource.uri(Uri.parse(item.id)))
+      //       .toList(),
+      // ));
 
       // If we switched to something else while this file was loading,
       // forget about it.

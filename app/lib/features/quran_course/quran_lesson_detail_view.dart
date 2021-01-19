@@ -81,6 +81,10 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
     );
   }
 
+  String _getTitle(String groupName, int index) {
+    return '${widget.lesson.title} - ${widget.lesson.title.startsWith(groupName) ? '' : '$groupName '}Pt. ${index + 1}';
+  }
+
   Widget _buildQuranLessonDetail(
       BuildContext context, Group group, List<Item> items) {
     if (items.isEmpty) return Container();
@@ -109,14 +113,38 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                         color: Colors.black,
                       ),
                       color: Colors.black,
-                      onPressed: () => Utils.openUrl(
-                        context,
-                        (index) =>
-                            '${widget.lesson.title} - ${widget.lesson.title.startsWith(group.name) ? '' : '${group.name} '}Pt. ${index + 1}',
-                        widget.surah.name,
-                        items,
-                        entry.key,
-                      ),
+                      onPressed: () {
+                        if (entry.value.type == ItemType.Audio) {
+                          Utils.openAudio(
+                              context,
+                              Utils.itemToMediaItem(
+                                  items
+                                      .asMap()
+                                      .entries
+                                      .map(
+                                        (entry) => TitledItem(
+                                          title:
+                                              _getTitle(group.name, entry.key),
+                                          type: entry.value.type,
+                                          data: entry.value.data,
+                                          isDirectSource:
+                                              entry.value.isDirectSource,
+                                        ),
+                                      )
+                                      .toList(),
+                                  widget.surah.name),
+                              entry.key);
+                          return;
+                        }
+                        Utils.openUrl(
+                            context,
+                            TitledItem(
+                              title: _getTitle(group.name, entry.key),
+                              data: entry.value.data,
+                              isDirectSource: entry.value.isDirectSource,
+                              type: entry.value.type,
+                            ));
+                      },
                     ),
                   )
                   .toList())
