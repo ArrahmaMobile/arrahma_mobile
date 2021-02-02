@@ -15,12 +15,16 @@ class QuranCourseRegistrationScraper
     final doc = await scraper.navigateTo(registrationUrl);
     final url = scraper.currentUrl;
     final formContainer = doc.querySelector('#cus2');
-    final formIframe = formContainer.querySelector('iframe');
-    final formSrc = formIframe.attributes['src'].toAbsolute(url);
+    final formIframe = formContainer?.querySelector('iframe');
+    final formSrc = formIframe != null
+        ? formIframe.attributes['src'].toAbsolute(url)
+        : null;
 
-    return QuranCourseRegistration(
-      type: RegistrationType.WebForm,
-      url: formSrc,
-    );
+    return formSrc != null
+        ? QuranCourseRegistration(
+            type: RegistrationType.WebForm,
+            url: formSrc,
+          )
+        : null;
   }
 }

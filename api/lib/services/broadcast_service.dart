@@ -3,27 +3,25 @@ import 'dart:convert';
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/api.dart';
 import 'package:http/http.dart';
-import 'package:html/parser.dart';
-import 'package:html/dom.dart';
 
+import '../arrahmah_config.dart';
 import 'data_sync_service.dart';
 
 class BroadcastService {
-  BroadcastService(this.youtubeChannelId, this.googleApiKey);
+  BroadcastService(this.config);
 
-  static const lastVideoIdFile = 'data/lastVideoId.txt';
+  static const lastVideoIdsFile = 'data/lastVideoIds.txt';
 
-  final String youtubeChannelId;
-  final String googleApiKey;
+  final ArrahmahConfiguration config;
 
   final _client = Client();
   final _fileService = FileService();
   DataSyncService _dataSyncService;
 
-  String _lastVideoId;
-  bool _isLive;
+  List<String> _lastVideoIds;
 
-  bool get isLive => _isLive;
+  BroadcastStatus _broadcastStatus = BroadcastStatus.init();
+  BroadcastStatus get broadcastStatus => _broadcastStatus;
 
   Timer _liveStatusCheckTimer;
 
@@ -31,39 +29,65 @@ class BroadcastService {
     _dataSyncService = await DataSyncService.init('$BroadcastService');
 
     if (_dataSyncService.isMain) {
-      _lastVideoId = await _fileService.read(lastVideoIdFile);
+      _lastVideoIds = (await _fileService.read(lastVideoIdsFile))?.split(',') ??
+          ['', '', ''];
       await _performliveCheck();
       _liveStatusCheckTimer = Timer.periodic(
           const Duration(seconds: 30), (_) => _performliveCheck());
     } else {
       _dataSyncService.valueStreamCtrl.stream.listen((eventStr) {
         final event = json.decode(eventStr) as Map;
-        _isLive = event['isLive'];
-        _lastVideoId = event['lastVideoId'];
+        _broadcastStatus = BroadcastStatus(
+          isYoutubeLive: event['isYoutubeLive'],
+          isFacebookLive: event['isFacebookLive'],
+          isMixlrLive: event['isMixlrLive'],
+        );
       }, onError: (err) => _dataSyncService.log(err));
     }
   }
 
-  Future<void> _performliveCheck() async => _isLive = await checkIsLive();
+  Future<void> _performliveCheck() async =>
+      _broadcastStatus = await checkIsLive();
 
-  Future<bool> checkIsLive() async {
-    final videoId =
-        await _getLiveResultFromHtml(); //await _getLiveResultFromApi();
-    final isLive = videoId != null;
-    if (isLive && videoId != _lastVideoId) {
-      await _fileService.write(lastVideoIdFile, videoId);
-      _lastVideoId = videoId;
-    }
+  Future<BroadcastStatus> checkIsLive() async {
+    final youtubeVideoId =
+        await _getYoutubeLiveResultFromHtml(); //await _getLiveResultFromApi();
+    final isYoutubeLive = youtubeVideoId != null;
+    final lastYoutubeVideoId = _lastVideoIds[0];
+
+    final facebookVideoId = await _getFacebookLiveResultFromHtml();
+    final isFacebookLive = facebookVideoId != null;
+    final lastFacebookVideoId = _lastVideoIds[1];
+
+    final mixlrVideoId = await _getMixlrLiveResultFromApi();
+    final isMixlrLive = mixlrVideoId != null;
+    final lastMixlrVideoId = _lastVideoIds[2];
+
+    final hasChanged = lastYoutubeVideoId != youtubeVideoId ||
+        lastFacebookVideoId != facebookVideoId ||
+        lastMixlrVideoId != mixlrVideoId;
+
+    if (!hasChanged) return _broadcastStatus;
+
+    _lastVideoIds = [youtubeVideoId, facebookVideoId, mixlrVideoId];
+    await _fileService.write(lastVideoIdsFile, _lastVideoIds.join(','));
+
+    final broadcaseStatus = BroadcastStatus(
+      isYoutubeLive: isYoutubeLive,
+      isFacebookLive: isFacebookLive,
+      isMixlrLive: isMixlrLive,
+    );
     _dataSyncService.valueStreamCtrl.add(json.encode({
-      'isLive': isLive,
-      'lastVideoId': _lastVideoId,
+      'isYoutubeLive': broadcaseStatus.isYoutubeLive,
+      'isFacebookLive': broadcaseStatus.isFacebookLive,
+      'isMixlrLive': broadcaseStatus.isMixlrLive,
     }));
-    return isLive;
+    return broadcaseStatus;
   }
 
   Future<String> _getLiveResultFromApi() async {
     final url =
-        'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=$youtubeChannelId&type=video&eventType=live&key=$googleApiKey';
+        'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${config.youtubeChannelId}&type=video&eventType=live&key=${config.googleApiKey}';
     final response = await _client.get(url).catchError((_) => null);
     if (response?.body?.isEmpty ?? true) return null;
     final result = json.decode(response.body) as Map<String, dynamic>;
@@ -75,8 +99,8 @@ class BroadcastService {
     return null;
   }
 
-  Future<String> _getLiveResultFromHtml() async {
-    final url = 'https://www.youtube.com/channel/$youtubeChannelId';
+  Future<String> _getYoutubeLiveResultFromHtml() async {
+    final url = 'https://www.youtube.com/channel/${config.youtubeChannelId}';
     final response = await _client.get(url).catchError((_) => null);
     if (response?.body?.isEmpty ?? true) return null;
     // final document = parse(response.body);
@@ -91,6 +115,25 @@ class BroadcastService {
             r'https://i.ytimg.com/vi/([A-Za-z0-9\-_]+)/hqdefault_live.jpg')
         .firstMatch(response.body)
         ?.group(1);
+  }
+
+  Future<String> _getFacebookLiveResultFromHtml() async {
+    final url =
+        'https://www.facebook.com/${config.facebookChannelId}/live_videos';
+    final response = await _client.get(url).catchError((_) => null);
+    if (response?.body?.isEmpty ?? true) return null;
+    return RegExp(r'"videoID":"(\d+)"').firstMatch(response.body)?.group(1);
+  }
+
+  Future<String> _getMixlrLiveResultFromApi() async {
+    final url =
+        'https://api.mixlr.com/users/${config.mixlrChannelId}?source=embed';
+    final response = await _client.get(url).catchError((_) => null);
+    if (response?.body?.isEmpty ?? true) return null;
+    final data = json.decode(response.body);
+    final isLive = (data['is_live'] ?? false) as bool;
+    final ids = (data['broadcast_ids'] as List<dynamic>)?.cast<String>();
+    return isLive && (ids?.isNotEmpty ?? false) ? ids.first : null;
   }
 
   void dispose() {

@@ -44,6 +44,7 @@ Future main() async {
   ]);
 
   SL.register(() => deviceStorageService);
+  SL.register(() => appService);
 
   runApp(App(dependencies: dependencies));
 }

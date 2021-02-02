@@ -1,7 +1,5 @@
 ## TODO
 
-Bottom Nav Quran Course (Test)
-
 ⦁	Following pages are not loading:
 > Lectures: 
         i.	Youth Courses  - Password
@@ -14,6 +12,4 @@ Bottom Nav Quran Course (Test)
         i.	Dua
         ii.	Assorted Topics
         iii.	Imp Vocabulary Words
-        iv.	Worksheed By Ustazah	
-
-Live label and notification when mixlr or youtube is l
+        iv.	Worksheed By Ustazah

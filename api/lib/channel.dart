@@ -29,13 +29,11 @@ class ArrahmaChannel extends ApplicationChannel {
 
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
-    logger.parent.level = Level.ALL;
 
     final config = ArrahmahConfiguration(options.configurationFilePath);
     DataSyncService.messageHub = messageHub;
 
-    _broadcastService =
-        BroadcastService(config.youtubeChannelId, config.googleApiKey);
+    _broadcastService = BroadcastService(config);
     await _broadcastService.init();
     _scraperService =
         ScraperService(await DataSyncService.init('$ScraperService'));

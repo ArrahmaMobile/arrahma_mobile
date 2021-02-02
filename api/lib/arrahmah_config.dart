@@ -7,4 +7,6 @@ class ArrahmahConfiguration extends Configuration {
 
   String googleApiKey;
   String youtubeChannelId;
+  String facebookChannelId;
+  String mixlrChannelId;
 }

@@ -19,7 +19,7 @@ class StatusController extends ResourceController {
       ServerStatus(
         status: ServerConnectionStatus.Available,
         isDataStale: dataHash != null && _scraperService.dataHash != dataHash,
-        isLive: _broadcastService.isLive ?? false,
+        broadcastStatus: _broadcastService.broadcastStatus,
       ),
     );
     print(

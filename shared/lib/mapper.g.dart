@@ -4,6 +4,7 @@
 import 'package:simple_json_mapper/simple_json_mapper.dart';
 import 'package:arrahma_shared/src/models/scraped_data.dart';
 import 'package:arrahma_shared/src/models/status/server_status_check.dart';
+import 'package:arrahma_shared/src/models/surah.dart';
 import 'package:arrahma_shared/src/app_metadata.dart';
 import 'package:arrahma_shared/src/run_metadata.dart';
 import 'package:arrahma_shared/src/models/heading_banner.dart';
@@ -12,7 +13,6 @@ import 'package:arrahma_shared/src/models/quran_course/quran_course.dart';
 import 'package:arrahma_shared/src/models/social_media_item.dart';
 import 'package:arrahma_shared/src/models/quick_link.dart';
 import 'package:arrahma_shared/src/models/drawer_item.dart';
-import 'package:arrahma_shared/src/models/surah.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_details.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_content.dart';
 import 'package:arrahma_shared/src/models/quran_course/quran_course_registration.dart';
@@ -35,12 +35,28 @@ final _serverstatusMapper = JsonObjectMapper(
         (item) => item.toString().split('.')[1].toLowerCase() == json['status']?.toLowerCase(),
         orElse: () => null)),
     isDataStale: mapper.applyFromJsonConverter(json['isDataStale']),
-    isLive: mapper.applyFromJsonConverter(json['isLive']),
+    broadcastStatus: mapper.deserialize<BroadcastStatus>(json['broadcastStatus'] as Map<String, dynamic>),
   ),
   (CustomJsonMapper mapper, ServerStatus instance) => <String, dynamic>{
     'status': mapper.applyFromInstanceConverter(instance.status?.toString()?.split('.')?.elementAt(1)),
     'isDataStale': mapper.applyFromInstanceConverter(instance.isDataStale),
-    'isLive': mapper.applyFromInstanceConverter(instance.isLive),
+    'broadcastStatus': mapper.serializeToMap(instance.broadcastStatus),
+  },
+);
+
+
+final _itemMapper = JsonObjectMapper(
+  (CustomJsonMapper mapper, Map<String, dynamic> json) => Item(
+    type: mapper.applyFromJsonConverter(ItemType.values.firstWhere(
+        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        orElse: () => null)),
+    data: mapper.applyFromJsonConverter(json['data']),
+    isDirectSource: mapper.applyFromJsonConverter(json['isDirectSource']),
+  ),
+  (CustomJsonMapper mapper, Item instance) => <String, dynamic>{
+    'type': mapper.applyFromInstanceConverter(instance.type?.toString()?.split('.')?.elementAt(1)),
+    'data': mapper.applyFromInstanceConverter(instance.data),
+    'isDirectSource': mapper.applyFromInstanceConverter(instance.isDirectSource),
   },
 );
 
@@ -77,6 +93,21 @@ final _runmetadataMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, RunMetadata instance) => <String, dynamic>{
     'lastUpdate': mapper.applyFromInstanceConverter(instance.lastUpdate),
     'updateFrequency': mapper.applyFromInstanceConverter(instance.updateFrequency),
+  },
+);
+
+
+
+final _broadcaststatusMapper = JsonObjectMapper(
+  (CustomJsonMapper mapper, Map<String, dynamic> json) => BroadcastStatus(
+    isYoutubeLive: mapper.applyFromJsonConverter(json['isYoutubeLive']),
+    isFacebookLive: mapper.applyFromJsonConverter(json['isFacebookLive']),
+    isMixlrLive: mapper.applyFromJsonConverter(json['isMixlrLive']),
+  ),
+  (CustomJsonMapper mapper, BroadcastStatus instance) => <String, dynamic>{
+    'isYoutubeLive': mapper.applyFromInstanceConverter(instance.isYoutubeLive),
+    'isFacebookLive': mapper.applyFromInstanceConverter(instance.isFacebookLive),
+    'isMixlrLive': mapper.applyFromInstanceConverter(instance.isMixlrLive),
   },
 );
 
@@ -176,22 +207,6 @@ final _draweritemMapper = JsonObjectMapper(
 );
 
 
-final _itemMapper = JsonObjectMapper(
-  (CustomJsonMapper mapper, Map<String, dynamic> json) => Item(
-    type: mapper.applyFromJsonConverter(ItemType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
-        orElse: () => null)),
-    data: mapper.applyFromJsonConverter(json['data']),
-    isDirectSource: mapper.applyFromJsonConverter(json['isDirectSource']),
-  ),
-  (CustomJsonMapper mapper, Item instance) => <String, dynamic>{
-    'type': mapper.applyFromInstanceConverter(instance.type?.toString()?.split('.')?.elementAt(1)),
-    'data': mapper.applyFromInstanceConverter(instance.data),
-    'isDirectSource': mapper.applyFromInstanceConverter(instance.isDirectSource),
-  },
-);
-
-
 
 final _qurancoursedetailsMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => QuranCourseDetails(
@@ -247,7 +262,6 @@ final _mediacontentMapper = JsonObjectMapper(
     'items': instance.items?.map((item) => mapper.serializeToMap(item))?.toList(),
   },
 );
-
 
 
 
@@ -324,15 +338,16 @@ final _groupitemMapper = JsonObjectMapper(
 void init() {
   JsonMapper.register(_scrapeddataMapper);
   JsonMapper.register(_serverstatusMapper);
+  JsonMapper.register(_itemMapper);
   JsonMapper.register(_appdataMapper);
   JsonMapper.register(_runmetadataMapper);
+  JsonMapper.register(_broadcaststatusMapper);
   JsonMapper.register(_headingbannerMapper);
   JsonMapper.register(_broadcastitemMapper);
   JsonMapper.register(_qurancourseMapper);
   JsonMapper.register(_socialmediaitemMapper);
   JsonMapper.register(_quicklinkMapper);
   JsonMapper.register(_draweritemMapper);
-  JsonMapper.register(_itemMapper);
   JsonMapper.register(_qurancoursedetailsMapper);
   JsonMapper.register(_qurancoursecontentMapper);
   JsonMapper.register(_qurancourseregistrationMapper);
@@ -347,22 +362,23 @@ void init() {
 
   JsonMapper.registerListCast((value) => value?.cast<ScrapedData>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<ServerStatus>()?.toList());
+  JsonMapper.registerListCast((value) => value?.cast<Item>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<AppData>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<RunMetadata>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<ServerConnectionStatus>()?.toList());
+  JsonMapper.registerListCast((value) => value?.cast<BroadcastStatus>()?.toList());
+  JsonMapper.registerListCast((value) => value?.cast<ItemType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<HeadingBanner>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<BroadcastItem>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourse>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<SocialMediaItem>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuickLink>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<DrawerItem>()?.toList());
-  JsonMapper.registerListCast((value) => value?.cast<Item>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<BroadcastType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseDetails>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseContent>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseRegistration>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<MediaContent>()?.toList());
-  JsonMapper.registerListCast((value) => value?.cast<ItemType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<QuranCourseDetailsType>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<Surah>()?.toList());
   JsonMapper.registerListCast((value) => value?.cast<RegistrationType>()?.toList());

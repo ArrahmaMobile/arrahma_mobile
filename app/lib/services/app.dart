@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:arrahma_shared/shared.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_framework/flutter_framework.dart'
     hide ServerConnectionStatus;
 import 'package:flutter_framework/flutter_framework.dart' as f;
@@ -32,6 +34,11 @@ class AppService extends StoppableService {
   // TODO(shah): Abstract into cached timer service
   Timer _dataFetchTimer;
   Timer _statusCheckTimer;
+
+  final _broadcastStatusNotifier =
+      ValueNotifier<BroadcastStatus>(const BroadcastStatus.init());
+  ValueListenable<BroadcastStatus> get broadcastStatusListenable =>
+      _broadcastStatusNotifier;
 
   Future<AppData> initApp() async {
     // _dataFetchTimer = Timer.periodic(
@@ -74,6 +81,7 @@ class AppService extends StoppableService {
   Future<ServerStatus> statusCheckTimerHandler(
       {bool init = true, bool force = false}) async {
     final status = await getStatus();
+    _broadcastStatusNotifier.value = status.broadcastStatus;
     if (status != null) {
       final serverStatus =
           f.ServerConnectionStatus(status: STATUS_MAP[status.status]);
