@@ -146,10 +146,12 @@ class Scraper extends Worker<String, Document> implements IScraper {
         return SocialMediaItem(
             item: Utils.getItemByUrl(link), imageUrl: imageUrl);
       }).toList(),
-      drawerItems: await performAsyncOp(
+      drawerItems: (await performAsyncOp(
         document.querySelectorAll('#container_nav ul#nav > li'),
         scrapeDrawerItem,
-      ),
+      ))
+          .where((i) => i != null)
+          .toList(),
       aboutUsMarkdown: await AboutUsScraper(this).scrape(),
       courses: await QuranCourseScraper(this).scrape(),
     );
@@ -173,25 +175,33 @@ class Scraper extends Worker<String, Document> implements IScraper {
     );
     final url = Uri.parse(link.data);
     final pathSegments = url.pathSegments;
-    final isLinkToContent = url.host.contains('arrahma.org') &&
+    final isLinkExternal = !url.host.contains('arrahma.org');
+    final isLinkToContent = !isLinkExternal &&
         pathSegments.isNotEmpty &&
         pathSegments.first != 'index.php' &&
         !pathSegments.first.contains('about') &&
         link.type == ItemType.WebPage;
     final title = anchorTag.text.cleanedText.alphaNumeric;
-    // if (!['Our Nabi', 'Hadith', 'Hadith Lessons'].contains(title)) return null;
-    return DrawerItem(
+    final drawerItem = DrawerItem(
       title: title,
       link: link,
       media: await MediaScraper(this, link.data).scrape(),
       content: isLinkToContent
           ? await QuranCourseScraper(this).scrapeContent(link.data)
           : null,
-      children: await performAsyncOp(
+      children: (await performAsyncOp(
         item.querySelector('ul')?.children ?? <Element>[],
         scrapeDrawerItem,
-      ),
+      ))
+          .where((i) => i != null)
+          .toList(),
     );
+    if (drawerItem.content == null &&
+        drawerItem.media == null &&
+        drawerItem.children.isEmpty &&
+        drawerItem.link.type == ItemType.WebPage &&
+        !isLinkExternal) return null;
+    return drawerItem;
   }
 }
 

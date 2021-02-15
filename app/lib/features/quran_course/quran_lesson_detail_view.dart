@@ -1,6 +1,7 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class QuranLessonDetailView extends StatefulWidget {
@@ -15,6 +16,22 @@ class QuranLessonDetailView extends StatefulWidget {
 }
 
 class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.lesson.itemGroups.length == 1 &&
+        widget.lesson.itemGroups.first.items.length == 1)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context);
+        onTap(
+          context,
+          widget.surah.groups.first,
+          MapEntry(0, widget.lesson.itemGroups.first.items.first),
+          widget.lesson.itemGroups.first.items,
+        );
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,12 +50,10 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
+              if (widget.surah.name != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
                     widget.surah.name,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -47,12 +62,11 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                       color: Colors.black,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Column(
-                children: <Widget>[
-                  Text(
+                ),
+              if (widget.lesson.title != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
                     widget.lesson.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -60,8 +74,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                       color: Colors.black,
                     ),
                   ),
-                ],
-              ),
+                ),
             ],
           ),
           const SizedBox(
@@ -81,77 +94,90 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
     );
   }
 
-  String _getTitle(String groupName, int index) {
-    return '${widget.lesson.title} - ${widget.lesson.title.startsWith(groupName) ? '' : '$groupName '}Pt. ${index + 1}';
+  String _getTitle(String groupName, int index, bool hasMore) {
+    return '${widget.lesson.title != null ? '${widget.lesson.title} - ' : ''}${widget.lesson?.title?.startsWith(groupName) ?? false ? '' : '$groupName '}${hasMore ? 'Pt. ${index + 1}' : ''}';
   }
 
   Widget _buildQuranLessonDetail(
       BuildContext context, Group group, List<Item> items) {
     if (items.isEmpty) return Container();
-    return GestureDetector(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              group.name,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+    return items.length == 1 && items.first.type == ItemType.Title
+        ? Text(
+            items.first.data,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-          ),
-          Row(
-              children: items
+            textAlign: TextAlign.center,
+          )
+        : GestureDetector(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    group.name,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Row(
+                    children: items
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => IconButton(
+                            icon: FaIcon(
+                              GroupTypeIconMap[entry.value.type],
+                              color: Colors.black,
+                            ),
+                            color: Colors.black,
+                            onPressed: () =>
+                                onTap(context, group, entry, items),
+                          ),
+                        )
+                        .toList())
+              ],
+            ),
+            onTap: () {},
+          );
+  }
+
+  void onTap(BuildContext context, Group group, MapEntry<int, Item> entry,
+      List<Item> items) {
+    if (entry.value.type == ItemType.Audio) {
+      Utils.openAudio(
+          context,
+          Utils.itemToMediaItem(
+              items
                   .asMap()
                   .entries
                   .map(
-                    (entry) => IconButton(
-                      icon: FaIcon(
-                        GroupTypeIconMap[entry.value.type],
-                        color: Colors.black,
-                      ),
-                      color: Colors.black,
-                      onPressed: () {
-                        if (entry.value.type == ItemType.Audio) {
-                          Utils.openAudio(
-                              context,
-                              Utils.itemToMediaItem(
-                                  items
-                                      .asMap()
-                                      .entries
-                                      .map(
-                                        (entry) => TitledItem(
-                                          title:
-                                              _getTitle(group.name, entry.key),
-                                          type: entry.value.type,
-                                          data: entry.value.data,
-                                          isDirectSource:
-                                              entry.value.isDirectSource,
-                                        ),
-                                      )
-                                      .toList(),
-                                  widget.surah.name),
-                              entry.key);
-                          return;
-                        }
-                        Utils.openUrl(
-                            context,
-                            TitledItem(
-                              title: _getTitle(group.name, entry.key),
-                              data: entry.value.data,
-                              isDirectSource: entry.value.isDirectSource,
-                              type: entry.value.type,
-                            ));
-                      },
+                    (entry) => TitledItem(
+                      title: _getTitle(group.name, entry.key, items.length > 1),
+                      type: entry.value.type,
+                      data: entry.value.data,
+                      isDirectSource: entry.value.isDirectSource,
                     ),
                   )
-                  .toList())
-        ],
-      ),
-      onTap: () {},
-    );
+                  .toList(),
+              widget.surah.name),
+          entry.key);
+      return;
+    }
+    Utils.openUrl(
+        context,
+        TitledItem(
+          title: _getTitle(group.name, entry.key, items.length > 1),
+          data: entry.value.data,
+          isDirectSource: entry.value.isDirectSource,
+          type: entry.value.type,
+        ));
   }
 
   static const GroupTypeIconMap = <ItemType, IconData>{

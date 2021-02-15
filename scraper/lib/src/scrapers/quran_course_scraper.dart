@@ -101,12 +101,8 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
   Future<QuranCourseContent> scrapeContent(String url) async {
     final doc = await scraper.navigateTo(url);
     final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
-    final isReadingMaterialPage =
-        doc?.querySelector(r'#studentportion #studentpresentation') != null;
     return await (isSurahPage
         ? QuranCourseSurahTemplateScraper(scraper, url).scrape()
-        : isReadingMaterialPage
-            ? null
-            : QuranCourseJuzTemplateScraper(scraper, url).scrape());
+        : QuranCourseJuzTemplateScraper(scraper, url).scrape());
   }
 }

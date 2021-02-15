@@ -69,7 +69,7 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
             : null;
       }
     }));
-    content.surahs.addAll(surahs);
+    content.surahs.addAll(surahs.where((s) => s != null));
 
     return content;
   }

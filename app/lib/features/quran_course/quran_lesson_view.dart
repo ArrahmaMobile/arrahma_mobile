@@ -34,7 +34,9 @@ class _QuranLessonViewState extends State<QuranLessonView> {
         return ListTile(
           leading: const FaIcon(FontAwesomeIcons.solidStickyNote),
           title: Text(lesson.title ??
-              'Lesson ${lesson.lessonNum}: Ayah ${lesson.ayahNum}'),
+              (lesson.lessonNum != null && lesson.ayahNum != null
+                  ? 'Lesson ${lesson.lessonNum}: Ayah ${lesson.ayahNum}'
+                  : 'Part ${index + 1}')),
           subtitle: lesson.uploadDate != null ? Text(lesson.uploadDate) : null,
           onTap: () => _navigateToLesson(lesson),
         );

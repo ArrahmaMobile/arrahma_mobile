@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 
 import 'package:inherited_state/inherited_state.dart';
+import 'package:photo_view/photo_view.dart';
 
 class Utils {
   static void pushView(BuildContext context, String title, Widget view,
@@ -76,6 +77,19 @@ class Utils {
         title,
         SimplePdfView(
           url: item.data,
+        ),
+      );
+      return;
+    }
+    if (item.type == ItemType.Image) {
+      Utils.pushView(
+        context,
+        title,
+        PhotoView(
+          imageProvider: ImageUtils.fromNetworkWithCached(item.data),
+          backgroundDecoration: const BoxDecoration(
+            color: Colors.white,
+          ),
         ),
       );
       return;
