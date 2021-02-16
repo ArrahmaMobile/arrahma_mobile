@@ -158,11 +158,9 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                   .asMap()
                   .entries
                   .map(
-                    (entry) => TitledItem(
-                      title: _getTitle(group.name, entry.key, items.length > 1),
-                      type: entry.value.type,
-                      data: entry.value.data,
-                      isDirectSource: entry.value.isDirectSource,
+                    (entry) => TitledItem.fromItem(
+                      _getTitle(group.name, entry.key, items.length > 1),
+                      entry.value,
                     ),
                   )
                   .toList(),
@@ -172,11 +170,9 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
     }
     Utils.openUrl(
         context,
-        TitledItem(
-          title: _getTitle(group.name, entry.key, items.length > 1),
-          data: entry.value.data,
-          isDirectSource: entry.value.isDirectSource,
-          type: entry.value.type,
+        TitledItem.fromItem(
+          _getTitle(group.name, entry.key, items.length > 1),
+          entry.value,
         ));
   }
 

@@ -49,6 +49,16 @@ class TitledItem extends Item {
     String data,
     bool isDirectSource,
   }) : super(data: data, isDirectSource: isDirectSource, type: type);
+
+  factory TitledItem.fromItem(String title, Item item) {
+    return TitledItem(
+      title: title,
+      data: item.data,
+      type: item.type,
+      isDirectSource: item.isDirectSource,
+    );
+  }
+
   final String title;
 }
 

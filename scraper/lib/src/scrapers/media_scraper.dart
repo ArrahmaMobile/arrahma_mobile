@@ -58,8 +58,12 @@ class MediaScraper extends ScraperBase<MediaContent> {
     } else if (doc.querySelector('#studentportion') != null) {
       final title =
           doc.querySelector('#studentportion #studentheading').text.cleanedText;
-      final descriptionMd = html2md
-          .convert(doc.querySelector('#studentportion #testins')?.innerHtml);
+      final desEl = doc.querySelector(
+          '#studentportion #testins, #studentportion #weeklyupdatetable');
+      if (desEl != null) {
+        desEl.querySelectorAll('#testselectbox').forEach((e) => e.remove());
+      }
+      final descriptionMd = html2md.convert(desEl?.innerHtml);
       final content = MediaContent(
         title: title,
         description: descriptionMd,
@@ -98,7 +102,7 @@ class MediaScraper extends ScraperBase<MediaContent> {
       return MediaContent(
         title: doc.querySelector('#containerm #heading1')?.text?.cleanedText,
         description: html2md.convert(
-            '<div>${doc.querySelectorAll('#containerm p,a').map((i) => i.outerHtml).join('\n')}</div>'),
+            '<div>${doc.querySelectorAll('#containerm p, #containerm a').map((i) => i.outerHtml).join('\n')}</div>'),
       );
     } else if (doc.querySelector('#containerd') != null) {
       final formContainer = doc.querySelector('#containerd');

@@ -1,3 +1,4 @@
+import 'package:arrahma_mobile_app/features/common/basic_webview.dart';
 import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
@@ -55,7 +56,8 @@ class Utils {
     return;
   }
 
-  static void openUrl(BuildContext context, Item item) {
+  static void openUrl(BuildContext context, Item item,
+      {bool fromMenu = false}) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
     if (item.type == ItemType.Audio) {
@@ -118,7 +120,10 @@ class Utils {
         ),
       );
     } else {
-      Launch.url(item.data);
+      if (fromMenu)
+        Utils.pushView(context, title, BasicWebView(url: item.data));
+      else
+        Launch.url(item.data);
     }
   }
 }

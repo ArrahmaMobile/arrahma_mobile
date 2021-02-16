@@ -1,3 +1,6 @@
+pkill dart
+git reset --hard HEAD
+git pull
 cd ../shared
 pub get
 pub run build_runner build --delete-conflicting-outputs
@@ -11,5 +14,4 @@ pub get
 export PORT="8443"
 export KEY_PATH="/etc/letsencrypt/live/arrahmah.sasid.me/privkey.pem"
 export CERT_PATH="/etc/letsencrypt/live/arrahmah.sasid.me/fullchain.pem"
-pkill dart
 dart bin/server.dart &

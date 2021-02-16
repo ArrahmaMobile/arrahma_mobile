@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'quran_surah_view.dart';
-import 'quran_test_view.dart';
+import '../common/media_content_view.dart';
 
 class QuranCourseView extends StatefulWidget {
   const QuranCourseView({
@@ -56,7 +56,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
           content: widget.course.lectures,
         ),
       if (widget.course.tests != null)
-        QuranTestsView(tests: widget.course.tests)
+        MediaContentView(content: widget.course.tests)
     ];
   }
 

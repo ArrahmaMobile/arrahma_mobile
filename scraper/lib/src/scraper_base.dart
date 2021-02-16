@@ -174,6 +174,8 @@ class Scraper extends Worker<String, Document> implements IScraper {
       anchorTag.attributes['href'].toAbsolute(baseUrl),
     );
     final url = Uri.parse(link.data);
+    // if (!['tests.php', '#', '.php#'].any((end) => url.toString().endsWith(end)))
+    //   return null;
     final pathSegments = url.pathSegments;
     final isLinkExternal = !url.host.contains('arrahma.org');
     final isLinkToContent = !isLinkExternal &&
