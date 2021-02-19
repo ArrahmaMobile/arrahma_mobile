@@ -58,8 +58,10 @@ class MediaScraper extends ScraperBase<MediaContent> {
     } else if (doc.querySelector('#studentportion') != null) {
       final title =
           doc.querySelector('#studentportion #studentheading').text.cleanedText;
-      final desEl = doc.querySelector(
-          '#studentportion #testins, #studentportion #weeklyupdatetable');
+      final desEl = doc
+          .querySelector(
+              '#studentportion #testins, #studentportion #weeklyupdatetable')
+          ?.clone(true);
       if (desEl != null) {
         desEl.querySelectorAll('#testselectbox').forEach((e) => e.remove());
       }

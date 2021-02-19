@@ -1,6 +1,7 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'basic_webview.dart';
@@ -20,12 +21,13 @@ class MediaContentView extends StatelessWidget {
     final child = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: MarkdownBody(
-            data: content.description,
+        if (content.description != null)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: MarkdownBody(
+              data: content.description,
+            ),
           ),
-        ),
         if (showForm)
           Flexible(
             child: BasicWebView(
@@ -38,7 +40,8 @@ class MediaContentView extends StatelessWidget {
             itemCount: content.items?.length ?? 0,
             itemBuilder: (_, index) {
               final item = content.items[index];
-              final title = item.title;
+              final title = item.title ??
+                  '${EnumUtils.enumToString(item.item.type)} ${index + 1}';
               return ListTile(
                 title: Text(title),
                 onTap: item.item?.data != null

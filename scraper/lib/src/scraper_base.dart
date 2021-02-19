@@ -187,7 +187,8 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final drawerItem = DrawerItem(
       title: title,
       link: link,
-      media: await MediaScraper(this, link.data).scrape(),
+      media:
+          isLinkToContent ? await MediaScraper(this, link.data).scrape() : null,
       content: isLinkToContent
           ? await QuranCourseScraper(this).scrapeContent(link.data)
           : null,
