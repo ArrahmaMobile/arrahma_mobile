@@ -32,7 +32,7 @@ final _scrapeddataMapper = JsonObjectMapper(
 final _serverstatusMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => ServerStatus(
     status: mapper.applyFromJsonConverter(ServerConnectionStatus.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['status']?.toLowerCase(),
+        (value) => value?.toString()?.split('.')?.elementAt(1)?.toLowerCase() == json['status']?.toLowerCase(),
         orElse: () => null)),
     isDataStale: mapper.applyFromJsonConverter(json['isDataStale']),
     broadcastStatus: mapper.deserialize<BroadcastStatus>(json['broadcastStatus'] as Map<String, dynamic>),
@@ -111,7 +111,7 @@ final _headingbannerMapper = JsonObjectMapper(
 final _broadcastitemMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => BroadcastItem(
     type: mapper.applyFromJsonConverter(BroadcastType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        (value) => value?.toString()?.split('.')?.elementAt(1)?.toLowerCase() == json['type']?.toLowerCase(),
         orElse: () => null)),
     imageUrl: mapper.applyFromJsonConverter(json['imageUrl']),
     item: mapper.deserialize<Item>(json['item'] as Map<String, dynamic>),
@@ -193,7 +193,7 @@ final _draweritemMapper = JsonObjectMapper(
 final _itemMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => Item(
     type: mapper.applyFromJsonConverter(ItemType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        (value) => value?.toString()?.split('.')?.elementAt(1)?.toLowerCase() == json['type']?.toLowerCase(),
         orElse: () => null)),
     data: mapper.applyFromJsonConverter(json['data']),
     isDirectSource: mapper.applyFromJsonConverter(json['isDirectSource']),
@@ -210,7 +210,7 @@ final _itemMapper = JsonObjectMapper(
 final _qurancoursedetailsMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => QuranCourseDetails(
     type: mapper.applyFromJsonConverter(QuranCourseDetailsType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        (value) => value?.toString()?.split('.')?.elementAt(1)?.toLowerCase() == json['type']?.toLowerCase(),
         orElse: () => null)),
     details: mapper.applyFromJsonConverter(json['details']),
   ),
@@ -238,7 +238,7 @@ final _qurancoursecontentMapper = JsonObjectMapper(
 final _qurancourseregistrationMapper = JsonObjectMapper(
   (CustomJsonMapper mapper, Map<String, dynamic> json) => QuranCourseRegistration(
     type: mapper.applyFromJsonConverter(RegistrationType.values.firstWhere(
-        (item) => item.toString().split('.')[1].toLowerCase() == json['type']?.toLowerCase(),
+        (value) => value?.toString()?.split('.')?.elementAt(1)?.toLowerCase() == json['type']?.toLowerCase(),
         orElse: () => null)),
     url: mapper.applyFromJsonConverter(json['url']),
   ),

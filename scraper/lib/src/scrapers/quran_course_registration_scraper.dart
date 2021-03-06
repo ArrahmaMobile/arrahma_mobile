@@ -13,6 +13,7 @@ class QuranCourseRegistrationScraper
   @override
   Future<QuranCourseRegistration> scrape() async {
     final doc = await scraper.navigateTo(registrationUrl);
+    if (doc == null) return null;
     final url = scraper.currentUrl;
     final formContainer = doc.querySelector('#cus2');
     final formIframe = formContainer?.querySelector('iframe');

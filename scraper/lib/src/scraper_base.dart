@@ -58,7 +58,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
 
   @override
   Future<String> download(String url, [String contentType]) async {
-    final response = await client.get(url).catchError((err) => null);
+    final response = await client.get(Uri.parse(url)).catchError((err) => null);
     if (response == null ||
         response.statusCode != 200 ||
         contentType == null ||

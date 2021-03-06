@@ -1,9 +1,7 @@
-import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/controller/data_controller.dart';
 import 'package:arrahma_web_api/controller/status_controller.dart';
 import 'package:arrahma_web_api/services/data_sync_service.dart';
 import 'package:scraper_service/scraper_service.dart';
-import 'package:uuid/uuid.dart';
 
 import 'api.dart';
 import 'arrahmah_config.dart';
@@ -35,8 +33,12 @@ class ArrahmaChannel extends ApplicationChannel {
 
     _broadcastService = BroadcastService(config);
     await _broadcastService.init();
-    _scraperService =
-        ScraperService(await DataSyncService.init('$ScraperService'));
+    _scraperService = ScraperService(
+      await DataSyncService.init('$ScraperService'),
+      errorEmailRecipient: config.errorEmailRecipient,
+      senderEmailUsername: config.senderEmailUsername,
+      senderEmailPassword: config.senderEmailPassword,
+    );
     await _scraperService.init();
   }
 

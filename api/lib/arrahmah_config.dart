@@ -9,4 +9,7 @@ class ArrahmahConfiguration extends Configuration {
   String youtubeChannelId;
   String facebookChannelId;
   String mixlrChannelId;
+  String errorEmailRecipient;
+  String senderEmailUsername;
+  String senderEmailPassword;
 }
