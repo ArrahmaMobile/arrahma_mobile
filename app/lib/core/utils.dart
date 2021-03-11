@@ -58,6 +58,8 @@ class Utils {
         mediaItems: items,
         initialAudioIndex: index,
       ),
+      backgroundColor: Colors.white,
+      title: '',
     );
     return;
   }
@@ -136,7 +138,8 @@ class Utils {
 
   static Widget shareActionButton(String title, List<String> data) {
     return IconButton(
-      icon: const FaIcon(FontAwesomeIcons.shareAlt),
+      icon: const Icon(Icons.share),
+      disabledColor: Colors.grey,
       onPressed: data != null
           ? () {
               Share.shareFiles(

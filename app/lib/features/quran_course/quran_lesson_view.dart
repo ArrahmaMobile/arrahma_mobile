@@ -51,7 +51,11 @@ class _QuranLessonViewState extends State<QuranLessonView> {
   void _navigateToLesson(Lesson lesson, [bool replace = false]) {
     Utils.pushView(
       context,
-      QuranLessonDetailView(surah: widget.surah, lesson: lesson),
+      QuranLessonDetailView(
+        surah: widget.surah,
+        lesson: lesson,
+      ),
+      title: '',
       replace: replace,
       backgroundColor: Colors.white,
     );
