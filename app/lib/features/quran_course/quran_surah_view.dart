@@ -50,12 +50,12 @@ class _QuranSurahViewState extends State<QuranSurahView> {
   void _navigateToLessonView(Surah surah, [bool replace = false]) {
     Utils.pushView(
       context,
-      replace
-          ? widget.referrerTitle ?? widget.content.title ?? surah.name
-          : surah.name ?? widget.content.title,
       QuranLessonView(
         surah: surah,
       ),
+      title: replace
+          ? widget.referrerTitle ?? widget.content.title ?? surah.name
+          : surah.name ?? widget.content.title,
       replace: replace,
     );
   }

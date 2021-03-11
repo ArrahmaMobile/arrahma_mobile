@@ -61,7 +61,7 @@ class MenuItemList extends StatelessWidget {
                             )
                           : null);
           if (itemView != null)
-            Utils.pushView(context, item.title, itemView);
+            Utils.pushView(context, itemView, title: item.title);
           else
             Utils.openUrl(context, TitledItem.fromItem(item.title, item.link),
                 fromMenu: true);

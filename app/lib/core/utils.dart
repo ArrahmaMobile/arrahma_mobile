@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/features/common/basic_webview.dart';
+import 'package:arrahma_mobile_app/features/common/simple_image_view.dart';
 import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
@@ -7,13 +8,18 @@ import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:inherited_state/inherited_state.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:share/share.dart';
 
 class Utils {
-  static void pushView(BuildContext context, String title, Widget view,
-      {bool replace = false, Color backgroundColor}) {
+  static void pushView(BuildContext context, Widget view,
+      {String title,
+      bool replace = false,
+      Color backgroundColor,
+      List<Widget> actions}) {
     NavigationUtils.pushNoResultView(
       context,
       view,
@@ -22,6 +28,7 @@ class Utils {
           ? ThemedAppBar(
               title: title,
               backgroundColor: backgroundColor,
+              actions: actions,
             )
           : null,
       replace: replace,
@@ -47,7 +54,6 @@ class Utils {
       BuildContext context, List<MediaItem> items, int index) {
     Utils.pushView(
       context,
-      null,
       MediaPlayerView(
         mediaItems: items,
         initialAudioIndex: index,
@@ -76,9 +82,9 @@ class Utils {
     if (item.type == ItemType.Pdf) {
       Utils.pushView(
         context,
-        title,
         SimplePdfView(
           url: item.data,
+          title: title,
         ),
       );
       return;
@@ -86,12 +92,9 @@ class Utils {
     if (item.type == ItemType.Image) {
       Utils.pushView(
         context,
-        title,
-        PhotoView(
-          imageProvider: ImageUtils.fromNetworkWithCached(item.data),
-          backgroundDecoration: const BoxDecoration(
-            color: Colors.white,
-          ),
+        SimpleImageView(
+          url: item.data,
+          title: title,
         ),
       );
       return;
@@ -111,19 +114,37 @@ class Utils {
       final tabIndex = courseContentIndex == 2 ? 0 : courseContentIndex;
       Utils.pushView(
         context,
-        course.title,
         QuranCourseView(
           course: course,
           initialTabIndex: tabIndex +
               (course.courseDetails != null ? 1 : 0) +
               (course.registration != null ? 1 : 0),
         ),
+        title: course.title,
       );
     } else {
       if (fromMenu)
-        Utils.pushView(context, title, BasicWebView(url: item.data));
+        Utils.pushView(
+          context,
+          BasicWebView(url: item.data),
+          title: title,
+        );
       else
         Launch.url(item.data);
     }
+  }
+
+  static Widget shareActionButton(String title, List<String> data) {
+    return IconButton(
+      icon: const FaIcon(FontAwesomeIcons.shareAlt),
+      onPressed: data != null
+          ? () {
+              Share.shareFiles(
+                data,
+                text: title,
+              );
+            }
+          : null,
+    );
   }
 }

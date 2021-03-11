@@ -4,10 +4,12 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemedAppBar({
     Key key,
     this.title,
+    this.actions,
     this.backgroundColor,
   }) : super(key: key);
   final String title;
   final Color backgroundColor;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      actions: actions,
     );
   }
 

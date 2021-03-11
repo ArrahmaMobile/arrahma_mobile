@@ -132,16 +132,22 @@ class _HomePageState extends State<HomePage> {
           imageUrl: 'https://arrahma.org/images_n/209.png',
           title: 'OTHER \nCOURSES',
           onTap: () {
-            Utils.pushView(context, 'OTHER COURSES',
-                CourseView(courses: appData.courses.skip(3).take(6).toList()));
+            Utils.pushView(
+              context,
+              CourseView(courses: appData.courses.skip(3).take(6).toList()),
+              title: 'OTHER COURSES',
+            );
           },
         ),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/202.png',
             title: 'ASSORTED LECTURES',
             onTap: () {
-              Utils.pushView(context, 'ASSORTED LECTURES',
-                  QuranCourseView(course: appData.courses[10]));
+              Utils.pushView(
+                context,
+                QuranCourseView(course: appData.courses[10]),
+                title: 'ASSORTED LECTURES',
+              );
             }),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/72.png',
@@ -149,13 +155,13 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Utils.pushView(
                 context,
-                'WEEKLY REMINDERS',
                 CourseView(
                   courses: [
                     appData.courses[9],
                     ...appData.courses.skip(11).toList()
                   ],
                 ),
+                title: 'WEEKLY REMINDERS',
               );
             }),
       ];
@@ -222,6 +228,7 @@ class _HomePageState extends State<HomePage> {
   Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {
     return GridView.count(
       crossAxisCount: 6,
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       childAspectRatio: 1.5,
       children: <Widget>[

@@ -19,10 +19,10 @@ class CourseItem extends StatelessWidget {
         if (course is QuranCourse)
           Utils.pushView(
             context,
-            course.title,
             QuranCourseView(
               course: course,
             ),
+            title: course.title,
           );
         else if (course is StaticQuranCourse) course.onTap();
       },

@@ -76,7 +76,6 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                   onTap: () {
                     Utils.pushView(
                       context,
-                      null,
                       MediaPlayerView(
                           mediaItems: screenState.queue,
                           initialAudioIndex: screenState.queueIndex > 0
