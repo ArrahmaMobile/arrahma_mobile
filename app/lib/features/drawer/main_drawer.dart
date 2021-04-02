@@ -14,6 +14,7 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: MenuItemList(
+        isDrawer: true,
         items: [
           const DrawerItem(title: 'Home'),
           const DrawerItem(title: 'About Us'),

@@ -74,7 +74,6 @@ class Utils {
         mediaItems: items,
         initialAudioIndex: index,
       ),
-      backgroundColor: Colors.white,
       title: '',
     );
     return;

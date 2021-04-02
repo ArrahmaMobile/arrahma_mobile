@@ -22,7 +22,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
     if (widget.lesson.itemGroups.length == 1 &&
         widget.lesson.itemGroups.first.items.length == 1)
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
+        Navigator.maybePop(context);
         onTap(
           context,
           widget.surah.groups.first,

@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 
 class MenuItemList extends StatelessWidget {
-  const MenuItemList({Key key, this.items}) : super(key: key);
+  const MenuItemList({Key key, this.isDrawer = false, this.items})
+      : super(key: key);
 
+  final bool isDrawer;
   final List<DrawerItem> items;
 
   @override
@@ -26,10 +28,10 @@ class MenuItemList extends StatelessWidget {
     return ListTile(
         title: Text(
           item.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: Colors.white,
+            color: isDrawer ? Colors.white : null,
           ),
         ),
         onTap: () {
@@ -37,7 +39,7 @@ class MenuItemList extends StatelessWidget {
           Widget view;
           switch (normalizedTitle) {
             case 'home':
-              Navigator.pop(context);
+              Navigator.maybePop(context);
               return;
             case 'about us':
               view = AboutUsView();

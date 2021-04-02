@@ -359,11 +359,9 @@ packages:
   flutter_framework:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: a59abadbf95268806a4ecaad75fdf798b99d1453
-      url: "git@github.com:SASID-PRO/flutter_framework.git"
-    source: git
+      path: "../../../commercial-project-ideas/flutter_framework"
+      relative: true
+    source: path
     version: "0.0.1"
   flutter_isolate:
     dependency: transitive

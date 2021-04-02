@@ -49,7 +49,7 @@ class _SettingsViewState extends State<SettingsView> {
             title: const Text('Theme Mode'),
             trailing: Text(
               EnumUtils.enumToString(themeMode, true),
-              style: TextStyle(color: appTheme.messageTheme.disabled),
+              style: TextStyle(color: Colors.grey.shade500),
             ),
             onTap: () => _updatePref((pref) => pref.copyWith(
                 themePerference: pref.themePerference.copyWith(
@@ -61,13 +61,8 @@ class _SettingsViewState extends State<SettingsView> {
             ListTile(
               leading: const Icon(Icons.bug_report),
               title: const Text('Report Bug/Feedback'),
-              onTap: () => feedbackService.captureFeedback(
-                context,
-                (feedback) => feedbackService.sendInfo(
-                    context,
-                    SettingsView.FEEDBACK_HOOK,
-                    userPrefCtrl.state.userIdentity),
-              ),
+              onTap: () => feedbackService.sendInfo(context,
+                  SettingsView.FEEDBACK_HOOK, userPrefCtrl.state.userIdentity),
             ),
           ListTile(
             leading: const Icon(Icons.info),

@@ -12,6 +12,7 @@ import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -32,6 +33,8 @@ class _HomePageState extends State<HomePage> {
         items: appData.drawerItems,
       ),
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        brightness: Brightness.dark,
         title: HiddenTap(
           onTrigger: () async {
             if (!AppUtils.isDebug) return;

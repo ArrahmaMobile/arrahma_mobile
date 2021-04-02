@@ -59,7 +59,6 @@ class _QuranLessonViewState extends State<QuranLessonView> {
       ),
       title: '',
       replace: replace,
-      backgroundColor: appTheme.theme.colorScheme.surface,
     );
   }
 }
