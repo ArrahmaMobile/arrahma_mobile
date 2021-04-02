@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
+import 'package:mime/mime.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
+
+import 'models/saved_file.dart';
 
 class SimplePdfView extends StatefulWidget {
   const SimplePdfView({
@@ -25,7 +28,7 @@ class SimplePdfView extends StatefulWidget {
 class _SimplePdfViewState extends State<SimplePdfView> {
   final _apiService = SL.get<ApiService>();
   Future<PdfController> _pdfController;
-  Future<String> _filePathFuture;
+  Future<SavedFile> _filePathFuture;
 
   @override
   void initState() {
@@ -53,11 +56,11 @@ class _SimplePdfViewState extends State<SimplePdfView> {
         viewportFraction: 1);
   }
 
-  Future<String> _saveToFile(
+  Future<SavedFile> _saveToFile(
       Future<KeyValuePair<String, Uint8List>> fileDataFuture) async {
     final data = await fileDataFuture;
     final file = await DefaultCacheManager().putFile(widget.url, data.value);
-    return file.path;
+    return SavedFile(path: file.path, mimeType: lookupMimeType(widget.url));
   }
 
   @override
@@ -68,11 +71,12 @@ class _SimplePdfViewState extends State<SimplePdfView> {
           ThemedAppBar(
             title: widget.title,
             actions: [
-              FutureBuilder<String>(
+              FutureBuilder<SavedFile>(
                 future: _filePathFuture,
                 builder: (_, s) => Utils.shareActionButton(
                   widget.title,
-                  s.data != null ? [s.data] : null,
+                  s.data != null ? [s.data.path] : null,
+                  [s.data?.mimeType],
                 ),
               )
             ],
@@ -80,20 +84,17 @@ class _SimplePdfViewState extends State<SimplePdfView> {
         Expanded(
           child: FutureBuilder<PdfController>(
             future: _pdfController,
-            builder: (_, snapshot) => Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: snapshot.hasError
-                  ? const Center(
-                      child: Text(
-                          'Unable to load document. Please try again later or contact support.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontStyle: FontStyle.italic)))
-                  : snapshot.data == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : PdfView(
-                          controller: snapshot.data,
-                        ),
-            ),
+            builder: (_, snapshot) => snapshot.hasError
+                ? const Center(
+                    child: Text(
+                        'Unable to load document. Please try again later or contact support.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontStyle: FontStyle.italic)))
+                : snapshot.data == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : PdfView(
+                        controller: snapshot.data,
+                      ),
           ),
         ),
       ],

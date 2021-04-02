@@ -36,7 +36,7 @@ class MediaPlayerService {
         // Enable this if you want the Android service to exit the foreground state on pause.
         //androidStopForegroundOnPause: true,
         androidNotificationColor: 0xFF2196f3,
-        androidNotificationIcon: 'mipmap/ic_launcher',
+        androidNotificationIcon: 'mipmap/launcher_icon',
         androidEnableQueue: true,
       );
   }
@@ -46,11 +46,13 @@ class MediaPlayerService {
 
   static Future<void> start(List<MediaItem> items, int index) async {
     await ensureStarted();
+    AudioService.updateQueue(items);
     if (items.isNotEmpty) {
       _lastItems = items;
       _lastIndex = index;
-      AudioService.updateQueue(items);
       AudioService.skipToQueueItem(items[index].id);
+    } else {
+      stop();
     }
   }
 

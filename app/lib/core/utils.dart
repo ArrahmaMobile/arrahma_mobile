@@ -136,7 +136,8 @@ class Utils {
     }
   }
 
-  static Widget shareActionButton(String title, List<String> data) {
+  static Widget shareActionButton(String title, List<String> data,
+      [List<String> mimeTypes]) {
     return IconButton(
       icon: const Icon(Icons.share),
       disabledColor: Colors.grey,
@@ -144,6 +145,7 @@ class Utils {
           ? () {
               Share.shareFiles(
                 data,
+                mimeTypes: mimeTypes,
                 text: title,
               );
             }
