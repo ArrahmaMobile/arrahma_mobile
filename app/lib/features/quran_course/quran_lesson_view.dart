@@ -1,6 +1,7 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'quran_lesson_detail_view.dart';
@@ -49,6 +50,7 @@ class _QuranLessonViewState extends State<QuranLessonView> {
   }
 
   void _navigateToLesson(Lesson lesson, [bool replace = false]) {
+    final appTheme = AppTheme.of(context);
     Utils.pushView(
       context,
       QuranLessonDetailView(
@@ -57,7 +59,7 @@ class _QuranLessonViewState extends State<QuranLessonView> {
       ),
       title: '',
       replace: replace,
-      backgroundColor: Colors.white,
+      backgroundColor: appTheme.theme.colorScheme.surface,
     );
   }
 }

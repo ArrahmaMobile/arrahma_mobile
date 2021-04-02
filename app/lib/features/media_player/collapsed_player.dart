@@ -44,12 +44,9 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
             firstChild: Column(
               children: [
                 const SizedBox(height: 9),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.black, width: 2),
-                    ),
-                  ),
+                Divider(
+                  thickness: 2,
+                  height: 2,
                 ),
                 GestureDetector(
                   child: Padding(

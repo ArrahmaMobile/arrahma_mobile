@@ -15,10 +15,6 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final color = backgroundColor == Colors.white ? Colors.black : Colors.white;
     return AppBar(
-      brightness:
-          backgroundColor == Colors.white ? Brightness.light : Brightness.dark,
-      iconTheme: IconThemeData(color: color),
-      backgroundColor: backgroundColor ?? const Color(0xff124570),
       centerTitle: true,
       title: Text(
         title,
@@ -28,6 +24,8 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      iconTheme: IconThemeData(color: color),
+      backgroundColor: backgroundColor,
       actions: actions,
     );
   }

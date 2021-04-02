@@ -93,7 +93,7 @@ class PositionedAudioTask extends AudioTaskDecorater {
 
   @override
   Future<void> onSkipToQueueItem(String mediaId) async {
-    if (mediaId == context.mediaItem.id) return;
+    if (mediaId == context.mediaItem?.id) return;
     _loadPosition(mediaId);
     super.onSkipToQueueItem(mediaId);
   }

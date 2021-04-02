@@ -59,7 +59,6 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -71,7 +70,6 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -105,7 +103,6 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
         ? Text(
             items.first.data,
             style: const TextStyle(
-              color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -120,7 +117,6 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                   child: Text(
                     group.name,
                     style: const TextStyle(
-                      color: Colors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -134,9 +130,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                           (entry) => IconButton(
                             icon: FaIcon(
                               GroupTypeIconMap[entry.value.type],
-                              color: Colors.black,
                             ),
-                            color: Colors.black,
                             onPressed: () =>
                                 onTap(context, group, entry, items),
                           ),

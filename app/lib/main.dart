@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
 
+import 'core/app_theme.dart';
 import 'core/serialization/mapper.dart';
 import 'services/device_storage_service.dart';
 
@@ -29,6 +30,7 @@ Future main() async {
           baseUrl: 'http://192.168.86.199:8888/api', // 199
         ),
     ],
+    theme: AppThemeUtils.getThemeVariants(),
   );
   final apiService = SL.get<ApiService>();
   final connectivityService = SL.get<ConnectivityService>();
@@ -46,5 +48,12 @@ Future main() async {
   SL.register(() => deviceStorageService);
   SL.register(() => appService);
 
-  runApp(App(dependencies: dependencies));
+  final mainApp = AppStartup.enableFeedback(
+    InheritedState(states: [...dependencies], builder: (_) => const App()),
+  );
+  final appWidget = await AppStartup.verifyBioAuth()
+      ? mainApp
+      : AppStartup.defaultBioAuthFallbackWidget(mainApp);
+
+  runApp(appWidget);
 }

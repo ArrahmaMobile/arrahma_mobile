@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
         items: appData.drawerItems,
       ),
       appBar: AppBar(
-        centerTitle: true,
         title: HiddenTap(
           onTrigger: () async {
             if (!AppUtils.isDebug) return;
@@ -105,10 +104,9 @@ class _HomePageState extends State<HomePage> {
           ),
           Column(
             children: [
-              Divider(
+              const Divider(
                 height: 2,
                 thickness: 2,
-                color: Colors.grey.shade300,
               ),
               const SizedBox(height: 8),
               _socialMedia(context, appData.socialMediaItems),
@@ -124,28 +122,28 @@ class _HomePageState extends State<HomePage> {
   List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
         StaticQuranCourse(
           imageUrl: 'https://arrahma.org/images_n/209.png',
-          title: 'OTHER \nCOURSES',
+          title: 'Other\nCourses',
           onTap: () {
             Utils.pushView(
               context,
               CourseView(courses: appData.courses.skip(3).take(6).toList()),
-              title: 'OTHER COURSES',
+              title: 'Other Courses',
             );
           },
         ),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/202.png',
-            title: 'ASSORTED LECTURES',
+            title: 'Assorted Lectures',
             onTap: () {
               Utils.pushView(
                 context,
                 QuranCourseView(course: appData.courses[10]),
-                title: 'ASSORTED LECTURES',
+                title: 'Assorted Lectures',
               );
             }),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/72.png',
-            title: 'WEEKLY REMINDERS',
+            title: 'Weekly Reminders',
             onTap: () {
               Utils.pushView(
                 context,
@@ -155,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                     ...appData.courses.skip(11).toList()
                   ],
                 ),
-                title: 'WEEKLY REMINDERS',
+                title: 'Weekly Reminders',
               );
             }),
       ];
@@ -176,7 +174,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildQuickLinks(List<QuickLink> quickLinks) {
     return CarouselIndicator(
       autoPlayInterval: const Duration(seconds: 7),
-      aspectRatio: 10,
+      aspectRatio: 8,
       showIndicator: false,
       items: quickLinks
           ?.map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))

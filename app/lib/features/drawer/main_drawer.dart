@@ -18,7 +18,8 @@ class MainDrawer extends StatelessWidget {
           const DrawerItem(title: 'Home'),
           const DrawerItem(title: 'About Us'),
           ...items,
-          const DrawerItem(title: 'Contact Us')
+          const DrawerItem(title: 'Contact Us'),
+          const DrawerItem(title: 'Settings')
         ],
       ),
     );

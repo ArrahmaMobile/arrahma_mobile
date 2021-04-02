@@ -82,8 +82,6 @@ class _QuranCourseViewState extends State<QuranCourseView> {
               Flexible(
                 child: BottomNavigationBar(
                   elevation: 10,
-                  selectedItemColor: const Color(0xff124570),
-                  unselectedItemColor: Colors.black,
                   currentIndex: selectedTabIndex,
                   type: BottomNavigationBarType.fixed,
                   items: [

@@ -4,26 +4,28 @@ import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
+import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
+import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:inherited_state/inherited_state.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:share/share.dart';
 
 class Utils {
   static void pushView(BuildContext context, Widget view,
       {String title,
       bool replace = false,
+      bool keepPadding = false,
       Color backgroundColor,
       List<Widget> actions}) {
     NavigationUtils.pushNoResultView(
       context,
       view,
       safeArea: false,
+      padding: keepPadding ? null : EdgeInsets.zero,
       appBar: title != null
           ? ThemedAppBar(
               title: title,
@@ -32,6 +34,20 @@ class Utils {
             )
           : null,
       replace: replace,
+    );
+  }
+
+  static void pushContactSupportView(BuildContext context) {
+    Utils.pushView(
+      context,
+      const Tawk(
+        directChatLink: 'https://tawk.to/chat/59840e124471ce54db652823/default',
+        visitor: TawkVisitor(
+          name: '',
+          email: '',
+        ),
+      ),
+      title: 'Chat With Us',
     );
   }
 

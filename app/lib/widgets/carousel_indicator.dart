@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 
 class CarouselIndicator extends StatefulWidget {
   const CarouselIndicator({
@@ -26,6 +27,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     return Column(
       children: [
         CarouselSlider(
@@ -46,18 +48,16 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.items?.map((url) {
-                  int index = widget.items.indexOf(url);
+                  final index = widget.items.indexOf(url);
                   return Container(
                     width: 8.0,
                     height: 8.0,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 2.0),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _current == index
-                          ? Color.fromRGBO(0, 0, 0, 0.9)
-                          : Color.fromRGBO(0, 0, 0, 0.4),
-                    ),
+                        shape: BoxShape.circle,
+                        color: appTheme.theme.textTheme.bodyText2.color
+                            .withOpacity(_current == index ? .9 : .4)),
                   );
                 })?.toList() ??
                 [],

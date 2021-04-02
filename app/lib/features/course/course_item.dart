@@ -3,6 +3,7 @@ import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart'
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:recase/recase.dart';
 
 class CourseItem extends StatelessWidget {
   const CourseItem({Key key, this.course}) : super(key: key);
@@ -22,7 +23,7 @@ class CourseItem extends StatelessWidget {
             QuranCourseView(
               course: course,
             ),
-            title: course.title,
+            title: course.title.titleCase,
           );
         else if (course is StaticQuranCourse) course.onTap();
       },
@@ -43,10 +44,11 @@ class CourseItem extends StatelessWidget {
               height: 80,
             ),
           Text(
-            course.title,
+            course.title.titleCase,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
