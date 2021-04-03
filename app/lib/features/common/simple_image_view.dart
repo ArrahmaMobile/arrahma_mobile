@@ -27,7 +27,7 @@ class _SimpleImageViewState extends State<SimpleImageView> {
 
   Future<SavedFile> _findPath(String imageUrl) async {
     final file = await DefaultCacheManager().getSingleFile(imageUrl);
-    return SavedFile(path: file.path, mimeType: lookupMimeType(imageUrl));
+    return SavedFile(path: file.path);
   }
 
   @override

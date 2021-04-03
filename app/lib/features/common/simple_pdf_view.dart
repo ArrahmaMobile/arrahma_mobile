@@ -9,6 +9,7 @@ import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
 import 'package:mime/mime.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:path/path.dart' as path;
 
 import 'models/saved_file.dart';
 
@@ -59,8 +60,12 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   Future<SavedFile> _saveToFile(
       Future<KeyValuePair<String, Uint8List>> fileDataFuture) async {
     final data = await fileDataFuture;
-    final file = await DefaultCacheManager().putFile(widget.url, data.value);
-    return SavedFile(path: file.path, mimeType: lookupMimeType(widget.url));
+    final fileExtension = path.extension(widget.url);
+    final file = await DefaultCacheManager().putFile(widget.url, data.value,
+        fileExtension: !StringUtils.isNullOrEmpty(fileExtension)
+            ? fileExtension.substring(1)
+            : 'pdf');
+    return SavedFile(path: file.path);
   }
 
   @override
