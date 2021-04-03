@@ -361,7 +361,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "585183d7d15912ceeb3ddc6dc948e5e65f2bf366"
+      resolved-ref: dca2f715d3f22d4b132be6ddbb655b5b6033e01e
       url: "git@github.com:SASID-PRO/flutter_framework.git"
     source: git
     version: "0.0.1"

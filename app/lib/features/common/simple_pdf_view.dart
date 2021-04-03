@@ -81,7 +81,6 @@ class _SimplePdfViewState extends State<SimplePdfView> {
                 builder: (_, s) => Utils.shareActionButton(
                   widget.title,
                   s.data != null ? [s.data.path] : null,
-                  [s.data?.mimeType],
                 ),
               )
             ],

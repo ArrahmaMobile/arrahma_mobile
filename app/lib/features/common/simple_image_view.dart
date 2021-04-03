@@ -43,7 +43,6 @@ class _SimpleImageViewState extends State<SimpleImageView> {
                 builder: (_, s) => Utils.shareActionButton(
                   widget.title,
                   s.data != null ? [s.data.path] : null,
-                  [s.data?.mimeType],
                 ),
               )
             ],
