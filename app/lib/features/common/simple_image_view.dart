@@ -4,7 +4,8 @@ import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_framework/flutter_framework.dart';
-import 'package:mime/mime.dart';
+import 'package:arrahma_mobile_app/utils/file_utils.dart' as f;
+import 'package:path/path.dart' as path;
 import 'package:photo_view/photo_view.dart';
 
 class SimpleImageView extends StatefulWidget {
@@ -26,8 +27,14 @@ class _SimpleImageViewState extends State<SimpleImageView> {
   }
 
   Future<SavedFile> _findPath(String imageUrl) async {
+    final fileExtension = path.extension(imageUrl);
+    final normalizedFileExtension = !StringUtils.isNullOrEmpty(fileExtension)
+        ? fileExtension.substring(1)
+        : 'jpg';
     final file = await DefaultCacheManager().getSingleFile(imageUrl);
-    return SavedFile(path: file.path);
+    final tempFile = await f.FileUtils.copyFileToTempPath(
+        file, widget.title, normalizedFileExtension);
+    return SavedFile(path: tempFile.path);
   }
 
   @override

@@ -6,8 +6,8 @@ import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:arrahma_mobile_app/utils/file_utils.dart' as f;
 import 'package:inherited_state/inherited_state.dart';
-import 'package:mime/mime.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:path/path.dart' as path;
 
@@ -61,11 +61,14 @@ class _SimplePdfViewState extends State<SimplePdfView> {
       Future<KeyValuePair<String, Uint8List>> fileDataFuture) async {
     final data = await fileDataFuture;
     final fileExtension = path.extension(widget.url);
+    final normalizedFileExtension = !StringUtils.isNullOrEmpty(fileExtension)
+        ? fileExtension.substring(1)
+        : 'pdf';
     final file = await DefaultCacheManager().putFile(widget.url, data.value,
-        fileExtension: !StringUtils.isNullOrEmpty(fileExtension)
-            ? fileExtension.substring(1)
-            : 'pdf');
-    return SavedFile(path: file.path);
+        fileExtension: normalizedFileExtension);
+    final tempFile = await f.FileUtils.copyFileToTempPath(
+        file, widget.title, normalizedFileExtension);
+    return SavedFile(path: tempFile.path);
   }
 
   @override

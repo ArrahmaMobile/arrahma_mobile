@@ -37,7 +37,7 @@ class AudioPlayerDisplay extends StatelessWidget {
               ),
               if (showCloseButton)
                 GestureDetector(
-                  onTap: onClose, // NEED TO WORK ON
+                  onTap: onClose,
                   child: const Icon(
                     Icons.close,
                     size: 15,

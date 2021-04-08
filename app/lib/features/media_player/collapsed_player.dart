@@ -1,6 +1,5 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_controls.dart';
-import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +43,7 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
             firstChild: Column(
               children: [
                 const SizedBox(height: 9),
-                Divider(
+                const Divider(
                   thickness: 2,
                   height: 2,
                 ),
@@ -57,15 +56,17 @@ class _CollapsedPlayerState extends State<CollapsedPlayer> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                            child: AudioPlayerDisplay(
-                          item: item,
-                          dense: true,
-                          onClose: () {
-                            setState(() {
-                              isClosed = true;
-                            });
-                          },
-                        )),
+                          child: AudioPlayerDisplay(
+                            item: item,
+                            dense: true,
+                            onClose: () {
+                              MediaPlayerService.stop();
+                              setState(() {
+                                isClosed = true;
+                              });
+                            },
+                          ),
+                        ),
                         AudioPlayerControlBar(screenState: screenState),
                       ],
                     ),

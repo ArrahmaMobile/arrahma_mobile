@@ -28,6 +28,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
+    final screenUtils = ScreenUtils.getInstance(context);
     return Column(
       children: [
         CarouselSlider(
@@ -50,10 +51,12 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
             children: widget.items?.map((url) {
                   final index = widget.items.indexOf(url);
                   return Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 2.0),
+                    width: screenUtils.getWidth(8.0),
+                    height: screenUtils.getWidth(8.0),
+                    margin: EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: screenUtils.getWidth(2.0),
+                    ),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: appTheme.theme.textTheme.bodyText2.color

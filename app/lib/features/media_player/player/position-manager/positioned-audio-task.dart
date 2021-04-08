@@ -82,7 +82,9 @@ class PositionedAudioTask extends AudioTaskDecorater {
         ? Duration.zero
         : context.playBackState.currentPosition;
 
-    await _endTaskAtPosition(position);
+    try {
+      await _endTaskAtPosition(position);
+    } finally {}
   }
 
   @override

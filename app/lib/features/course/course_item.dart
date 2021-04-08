@@ -6,11 +6,14 @@ import 'package:flutter_framework/flutter_framework.dart';
 import 'package:recase/recase.dart';
 
 class CourseItem extends StatelessWidget {
-  const CourseItem({Key key, this.course}) : super(key: key);
+  CourseItem({Key key, this.course}) : super(key: key);
   final Course course;
+
+  ScreenUtils _screenUtils;
 
   @override
   Widget build(BuildContext context) {
+    _screenUtils = ScreenUtils.getInstance(context);
     return _buildCourse(context, course);
   }
 
@@ -34,19 +37,20 @@ class CourseItem extends StatelessWidget {
               image: ImageUtils.fromNetworkWithCached(
                 course.imageUrl,
               ),
-              width: 80,
-              height: 80,
+              width: _screenUtils.getWidth(80),
+              height: _screenUtils.getWidth(80),
             )
           else
             Image.asset(
               course.imageUrl,
-              width: 80,
-              height: 80,
+              width: _screenUtils.getWidth(80),
+              height: _screenUtils.getWidth(80),
             ),
           Text(
             course.title.titleCase,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
+              fontSize: _screenUtils.getSp(14),
               fontWeight: FontWeight.bold,
             ),
           ),

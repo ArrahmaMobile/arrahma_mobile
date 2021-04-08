@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final appData = context.on<AppData>();
+    final screenUtils = ScreenUtils.getInstance(context);
     return Scaffold(
       drawer: MainDrawer(
         items: appData.drawerItems,
@@ -69,11 +70,15 @@ class _HomePageState extends State<HomePage> {
                     _buildQuickLinks(appData.quickLinks),
                     _buildBanners(appData.banners),
                     Expanded(
-                      child: CourseView(
-                        courses: [
-                          ...appData.courses.take(3),
-                          ...staticCourses(appData),
-                        ],
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: screenUtils.isSmallScreen() ? 0 : 40.0),
+                        child: CourseView(
+                          courses: [
+                            ...appData.courses.take(3),
+                            ...staticCourses(appData),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -206,6 +211,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildQuickLink(Item link, String title) {
+    final screenUtils = ScreenUtils.getInstance(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: double.infinity),
       child: Card(
@@ -213,7 +219,14 @@ class _HomePageState extends State<HomePage> {
           onTap: () => Utils.openUrl(context, link),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Center(child: Text(title)),
+            child: Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: screenUtils.getSp(14),
+                ),
+              ),
+            ),
           ),
         ),
       ),

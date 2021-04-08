@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -18,6 +19,8 @@ class App extends StatelessWidget {
       darkTheme: themeVariants.dark.theme,
       themeMode:
           userPreferences?.themePerference?.themeMode ?? ThemeMode.system,
+      locale: AppUtils.isDebug ? DevicePreview.locale(context) : null,
+      builder: AppUtils.isDebug ? DevicePreview.appBuilder : null,
       onGenerateRoute: AppRouter.generateRoute,
       // theme: ThemeData(
       //   primaryColor: Colors.red,
