@@ -33,9 +33,9 @@ dependencies:
   font_awesome_flutter: ^8.11.0
   flutter_launcher_icons: ^0.8.1
   flutter_framework:
-    git:
-      url: git@github.com:SASID-PRO/flutter_framework.git
-    # path: ../../../commercial-project-ideas/flutter_framework
+    # git:
+    #   url: git@github.com:SASID-PRO/flutter_framework.git
+    path: ../../../commercial-project-ideas/flutter_framework
   flutter_cache_manager: ^2.1.2
   share: ^2.0.1
 

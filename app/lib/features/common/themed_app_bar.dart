@@ -23,8 +23,13 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
         : Colors.white;
     return AppBar(
       centerTitle: true,
-      systemOverlayStyle: SystemUiOverlayStyle.light,
-      brightness: Brightness.dark,
+      systemOverlayStyle:
+          AppUtils.isIOS && appTheme.isLightMode && hasEmptyTitle
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+      brightness: AppUtils.isIOS && appTheme.isLightMode && hasEmptyTitle
+          ? Brightness.light
+          : Brightness.dark,
       title: Text(
         title,
         style: TextStyle(
