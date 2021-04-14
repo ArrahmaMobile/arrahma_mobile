@@ -33,6 +33,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
           : _getUrl(++juzNumber);
       if (prevUrl == url) break;
       final doc = await scraper.navigateTo(url);
+      if (doc == null) break;
       final pageListParent = doc.querySelector('#containerb .contentdua .next');
       if (pageListParent?.children?.isNotEmpty ?? false) {
         pages = pageListParent
@@ -41,7 +42,6 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
             .map((e) => e.attributes['href'].cleanedUrl.toAbsolute(url))
             .toList();
       }
-      if (doc == null) break;
       var hasTabs = false;
       var body = doc.querySelector(r'#main,#maina,#containerb,#studentportion');
       if (body == null) {
