@@ -34,7 +34,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
 
   @override
   Future<Document> performWork(String url) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 600));
     final normalizedUrl = _baseUrl.resolve(url).toString();
     if (_cachedDocs.containsKey(normalizedUrl)) {
       return _cachedDocs[normalizedUrl];

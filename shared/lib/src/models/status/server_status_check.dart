@@ -6,10 +6,14 @@ class ServerStatus {
     this.status,
     this.isDataStale,
     this.broadcastStatus,
+    this.lastScrapedOn,
+    this.lastScrapeAttemptOn,
   });
   final ServerConnectionStatus status;
   final bool isDataStale;
   final BroadcastStatus broadcastStatus;
+  final DateTime lastScrapedOn;
+  final DateTime lastScrapeAttemptOn;
 }
 
 enum ServerConnectionStatus {

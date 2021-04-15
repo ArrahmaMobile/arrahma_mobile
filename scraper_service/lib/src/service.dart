@@ -14,15 +14,13 @@ class ScraperService {
   static const UPDATE_DURATION = Duration(hours: 4);
 
   ScraperService(this._syncService,
-      {this.errorEmailRecipient,
-      this.senderEmailUsername,
-      this.senderEmailPassword}) {
+      {this.errorEmailRecipient, this.senderEmail, this.senderEmailPassword}) {
     shared.init();
   }
 
   final SyncService _syncService;
   final String errorEmailRecipient;
-  final String senderEmailUsername;
+  final String senderEmail;
   final String senderEmailPassword;
 
   Future<void> init() async {
@@ -31,7 +29,7 @@ class ScraperService {
       final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
       if (lastUpdate != null &&
           DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
-        _updateData(scrapedData.appData);
+        _updateData(scrapedData);
       } else {
         await runScraper();
       }
@@ -40,14 +38,17 @@ class ScraperService {
       _syncService.valueStreamCtrl.stream.listen((data) async {
         if (data == 'reload') {
           final data = await ScraperRunner().get();
-          _updateData(data.appData);
+          _updateData(data);
         }
       });
     }
   }
 
-  AppData _rawData;
-  AppData get data => _rawData;
+  DateTime _lastUpdateAttempt;
+  DateTime get lastUpdateAttempt => _lastUpdateAttempt;
+  ScrapedData _rawData;
+  ScrapedData get scrapedData => _rawData;
+  AppData get data => _rawData?.appData;
 
   String _dataHash;
   String get dataHash => _dataHash;
@@ -69,14 +70,15 @@ class ScraperService {
     _syncService.log('Running scraper...');
     final stopwatch = Stopwatch()..start();
     bool success = true;
+    _lastUpdateAttempt = DateTime.now();
     try {
       final data = await ScraperRunner().run(shouldStore: true);
-      _updateData(data.appData);
+      _updateData(data);
     } catch (err) {
       success = false;
       if (errorEmailRecipient != null)
         await _sendMail(
-            err, errorEmailRecipient, senderEmailUsername, senderEmailPassword);
+            err, errorEmailRecipient, senderEmail, senderEmailPassword);
     } finally {
       stopwatch.stop();
       _syncService.log(success
@@ -86,13 +88,14 @@ class ScraperService {
   }
 
   Future<void> _sendMail(dynamic error, String errorEmailRecipient,
-      String username, String password) async {
+      String senderEmail, String password) async {
     // ignore: deprecated_member_use
-    final smtpServer = gmail(username, password);
+    final smtpServer = gmail(senderEmail, password);
 
     // Create our message.
     final message = Message()
-      ..from = Address('tehtech1337@gmail.com', 'Arrahmah App')
+      ..from = Address(senderEmail, 'Arrahmah App')
+      ..subject = 'Arrahmah App Scraper - Failed'
       ..recipients.add(errorEmailRecipient)
       ..html = """
           <h1>Arrahmah App Scraper Failed.</h1>
@@ -112,9 +115,9 @@ class ScraperService {
     }
   }
 
-  void _updateData(AppData appData) {
-    _rawData = appData;
-    final serializedData = JsonMapper.serialize(_rawData);
+  void _updateData(ScrapedData data) {
+    _rawData = data;
+    final serializedData = JsonMapper.serialize(data);
     _serializedData = serializedData;
     _hash = serializedData;
     _syncService.valueStreamCtrl.add('reload');

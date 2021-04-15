@@ -36,7 +36,7 @@ class ArrahmaChannel extends ApplicationChannel {
     _scraperService = ScraperService(
       await DataSyncService.init('$ScraperService'),
       errorEmailRecipient: config.errorEmailRecipient,
-      senderEmailUsername: config.senderEmailUsername,
+      senderEmail: config.senderEmail,
       senderEmailPassword: config.senderEmailPassword,
     );
     await _scraperService.init();

@@ -10,6 +10,6 @@ class ArrahmahConfiguration extends Configuration {
   String facebookChannelId;
   String mixlrChannelId;
   String errorEmailRecipient;
-  String senderEmailUsername;
+  String senderEmail;
   String senderEmailPassword;
 }
