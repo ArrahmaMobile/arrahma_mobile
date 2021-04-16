@@ -18,7 +18,7 @@ class StatusController extends ResourceController {
     final statusResponse = JsonMapper.serialize(
       ServerStatus(
         status: ServerConnectionStatus.Available,
-        isDataStale: dataHash != null && _scraperService.dataHash != dataHash,
+        isDataStale: dataHash != null && _scraperService.appDataHash != dataHash,
         broadcastStatus: _broadcastService.broadcastStatus,
         lastScrapeAttemptOn: _scraperService.lastUpdateAttempt,
         lastScrapedOn: _scraperService.scrapedData.runMetadata.lastUpdate,

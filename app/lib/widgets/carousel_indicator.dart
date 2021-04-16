@@ -32,7 +32,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
     return Column(
       children: [
         CarouselSlider(
-          items: widget.items,
+          items: widget?.items ?? [],
           options: CarouselOptions(
               autoPlayInterval:
                   widget.autoPlayInterval ?? const Duration(seconds: 4),
@@ -48,21 +48,23 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
         if (widget.showIndicator)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.items?.map((url) {
-                  final index = widget.items.indexOf(url);
-                  return Container(
-                    width: screenUtils.getWidth(8.0),
-                    height: screenUtils.getWidth(8.0),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: screenUtils.getWidth(2.0),
-                    ),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: appTheme.theme.textTheme.bodyText2.color
-                            .withOpacity(_current == index ? .9 : .4)),
-                  );
-                })?.toList() ??
+            children: widget.items?.map(
+                  (url) {
+                    final index = widget.items.indexOf(url);
+                    return Container(
+                      width: screenUtils.getWidth(8.0),
+                      height: screenUtils.getWidth(8.0),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: screenUtils.getWidth(2.0),
+                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: appTheme.theme.textTheme.bodyText2.color
+                              .withOpacity(_current == index ? .9 : .4)),
+                    );
+                  },
+                )?.toList() ??
                 [],
           ),
       ],

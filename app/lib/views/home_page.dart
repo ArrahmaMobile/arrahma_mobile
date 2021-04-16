@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                             top: screenUtils.isSmallScreen() ? 0 : 40.0),
                         child: CourseView(
                           courses: [
-                            ...appData.courses.take(3),
+                            ...appData?.courses?.take(3)?.toList() ?? [],
                             ...staticCourses(appData),
                           ],
                         ),
@@ -174,8 +174,8 @@ class _HomePageState extends State<HomePage> {
     return CarouselIndicator(
       autoPlayInterval: const Duration(seconds: 5),
       items: banners
-          .map((banner) => _buildImageLink(banner.item, banner.imageUrl))
-          .toList(),
+          ?.map((banner) => _buildImageLink(banner.item, banner.imageUrl))
+          ?.toList(),
     );
   }
 
@@ -241,9 +241,10 @@ class _HomePageState extends State<HomePage> {
       childAspectRatio: 1.5,
       children: <Widget>[
         ...socialItems
-            .map((socialMedia) =>
-                _buildSocialImageLink(socialMedia.item, socialMedia.imageUrl))
-            .toList(),
+                ?.map((socialMedia) => _buildSocialImageLink(
+                    socialMedia.item, socialMedia.imageUrl))
+                ?.toList() ??
+            [],
         GestureDetector(
           onTap: () {
             Launch.url('https://mixlr.com/arrahma-live/');

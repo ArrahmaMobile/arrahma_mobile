@@ -13,8 +13,8 @@ class DataController extends ResourceController {
   @Operation.get()
   Future<Response> getData(
       {@Bind.query('If-None-Match') String dataHash}) async {
-    final eTagHeader = {'ETag': _scraperService.dataHash};
-    if (dataHash != null && dataHash == _scraperService.dataHash) {
+    final eTagHeader = {'ETag': _scraperService.appDataHash};
+    if (dataHash != null && dataHash == _scraperService.appDataHash) {
       return Response(HttpStatus.notModified, eTagHeader, null);
     }
     final data = _scraperService.serializedData;

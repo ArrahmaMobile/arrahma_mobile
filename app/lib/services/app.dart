@@ -89,7 +89,8 @@ class AppService extends StoppableService {
     }
     final isStale = status?.isDataStale ?? false;
     await dataFetchTimerHandler(
-        init: init, force: force || isStale || appDataHash == null);
+        init: init,
+        force: force || isStale || appDataHash == null || appData == null);
     return status;
   }
 
@@ -114,7 +115,7 @@ class AppService extends StoppableService {
       try {
         final appDataResponse =
             await apiService.getWithResponse<AppData>('data');
-        if (appDataResponse.isSuccess) {
+        if (appDataResponse.isSuccess && appDataResponse.data != null) {
           appData = appDataResponse.data;
           appDataHash = appDataResponse.headers['etag'];
           await storageService.setWithKey<String>(

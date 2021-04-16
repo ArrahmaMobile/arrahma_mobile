@@ -48,12 +48,12 @@ class ScraperService {
   DateTime get lastUpdateAttempt => _lastUpdateAttempt;
   ScrapedData _rawData;
   ScrapedData get scrapedData => _rawData;
-  AppData get data => _rawData?.appData;
+  AppData get appData => _rawData?.appData;
 
-  String _dataHash;
-  String get dataHash => _dataHash;
-  void set _hash(String data) {
-    _dataHash = md5.convert(utf8.encode(data)).toString();
+  String _appDataHash;
+  String get appDataHash => _appDataHash;
+  void _updateDataHash(String data) {
+    _appDataHash = md5.convert(utf8.encode(data)).toString();
   }
 
   String _serializedData;
@@ -115,11 +115,11 @@ class ScraperService {
     }
   }
 
-  void _updateData(ScrapedData data) {
-    _rawData = data;
-    final serializedData = JsonMapper.serialize(data);
+  void _updateData(ScrapedData updatedScrapedData) {
+    _rawData = updatedScrapedData;
+    final serializedData = JsonMapper.serialize(appData);
     _serializedData = serializedData;
-    _hash = serializedData;
+    _updateDataHash(serializedData);
     _syncService.valueStreamCtrl.add('reload');
   }
 
