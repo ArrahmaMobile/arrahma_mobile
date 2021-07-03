@@ -25,7 +25,9 @@ class _QuranCourseViewState extends State<QuranCourseView> {
 
   int get tabCount => _getTabs().length;
 
-  int get selectedTabIndex => _tabSelected ?? (tabCount ~/ 2);
+  int get selectedTabIndex =>
+      _tabSelected ??
+      ((tabCount / 2).round() - 1).clamp(0, tabCount - 1).toInt();
 
   @override
   void initState() {

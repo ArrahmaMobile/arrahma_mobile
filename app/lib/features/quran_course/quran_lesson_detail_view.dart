@@ -84,7 +84,9 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
               .map((itemEntry) => _buildQuranLessonDetail(
                     context,
                     itemEntry.value,
-                    widget.lesson.itemGroups[itemEntry.key].items,
+                    itemEntry.key < widget.lesson.itemGroups.length
+                        ? widget.lesson.itemGroups[itemEntry.key].items
+                        : [],
                   ))
               .toList()
         ],

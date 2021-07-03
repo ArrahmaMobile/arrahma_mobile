@@ -191,9 +191,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildImageLink(Item item, String imageUrl) {
+    final imageUri = Uri.parse(imageUrl);
+    final imageUriWithCacheBuster = imageUri.replace(
+        queryParameters: <String, String>{
+          ...imageUri.queryParameters,
+          'buster': item.data
+        });
     return GestureDetector(
       onTap: () => Utils.openUrl(context, item),
-      child: _buildImage(imageUrl),
+      child: _buildImage(imageUriWithCacheBuster.toString()),
     );
   }
 

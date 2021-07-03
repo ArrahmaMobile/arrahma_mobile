@@ -90,7 +90,10 @@ class AppService extends StoppableService {
     final isStale = status?.isDataStale ?? false;
     await dataFetchTimerHandler(
         init: init,
-        force: force || isStale || appDataHash == null || appData == null);
+        force: force ||
+            isStale ||
+            appDataHash == null ||
+            (appData == null && !init));
     return status;
   }
 
