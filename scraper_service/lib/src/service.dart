@@ -11,7 +11,7 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class ScraperService {
-  static const UPDATE_DURATION = Duration(hours: 4);
+  static const UPDATE_DURATION = Duration(hours: 1);
 
   ScraperService(this._syncService,
       {this.errorEmailRecipient, this.senderEmail, this.senderEmailPassword}) {
