@@ -10,6 +10,7 @@ import 'package:inherited_state/inherited_state.dart';
 import 'core/app_theme.dart';
 import 'core/serialization/mapper.dart';
 import 'services/device_storage_service.dart';
+import 'widgets/restart_widget.dart';
 
 Future main() async {
   Mapper.init();
@@ -56,7 +57,11 @@ Future main() async {
       ? mainApp
       : AppStartup.defaultBioAuthFallbackWidget(mainApp);
 
-  runApp(AppUtils.isDebug
-      ? DevicePreview(enabled: true, builder: (_) => appWidget)
-      : appWidget);
+  runApp(
+    RestartWidget(
+      child: AppUtils.isDebug
+          ? DevicePreview(enabled: true, builder: (_) => appWidget)
+          : appWidget,
+    ),
+  );
 }

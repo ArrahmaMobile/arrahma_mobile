@@ -9,6 +9,7 @@ import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
+import 'package:arrahma_mobile_app/widgets/restart_widget.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final appService = SL.get<AppService>();
+  bool _registered = false;
+
+  void restartApp() {
+    RestartWidget.restartApp(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!_registered) {
+      _registered = true;
+      ReactiveState.getReactive<AppData>(context)
+          .stateListener
+          .addListener(restartApp);
+    }
+
     final appData = context.on<AppData>();
     final screenUtils = ScreenUtils.getInstance(context);
     return Scaffold(
@@ -302,5 +315,13 @@ class _HomePageState extends State<HomePage> {
             width: 1000,
             fit: BoxFit.contain)
         : Image.asset(imageUrl);
+  }
+
+  @override
+  void dispose() {
+    ReactiveState.getReactive<AppData>(context)
+        .stateListener
+        .removeListener(restartApp);
+    super.dispose();
   }
 }
