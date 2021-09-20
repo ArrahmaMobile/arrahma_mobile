@@ -142,6 +142,7 @@ class ScraperService {
                     url: c.registration.items.first.item.data,
                   )
                 : null,
+            lectures: c.lectures,
             tafseer: c.tafseer,
             tajweed: c.tajweed,
             tests: c.tests,
@@ -149,8 +150,10 @@ class ScraperService {
           ),
         )
         .toList();
-    _serializedV1Data = json.encode(
-        {...serializedDataMap, 'courses': JsonMapper.serialize(quranCousesV1)});
+    _serializedV1Data = json.encode({
+      ...serializedDataMap,
+      'courses': quranCousesV1.map((e) => JsonMapper.serializeToMap(e)).toList()
+    });
     _updateDataHash(serializedData);
     _syncService.valueStreamCtrl.add('reload');
   }
