@@ -12,8 +12,8 @@ import 'package:path/path.dart' as path;
 
 import 'models/saved_file.dart';
 
-class SimplePdfView extends StatefulWidget {
-  const SimplePdfView({
+class SimplePdfViewer extends StatefulWidget {
+  const SimplePdfViewer({
     Key key,
     @required this.url,
     this.title,
@@ -22,10 +22,10 @@ class SimplePdfView extends StatefulWidget {
   final String title;
 
   @override
-  _SimplePdfViewState createState() => _SimplePdfViewState();
+  _SimplePdfViewerState createState() => _SimplePdfViewerState();
 }
 
-class _SimplePdfViewState extends State<SimplePdfView> {
+class _SimplePdfViewerState extends State<SimplePdfViewer> {
   final _apiService = SL.get<ApiService>();
   Future<PdfController> _pdfController;
   Future<SavedFile> _filePathFuture;
@@ -37,7 +37,7 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   }
 
   @override
-  void didUpdateWidget(covariant SimplePdfView oldWidget) {
+  void didUpdateWidget(covariant SimplePdfViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.url != widget.url) {
       _init();
@@ -73,39 +73,19 @@ class _SimplePdfViewState extends State<SimplePdfView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.title != null)
-          ThemedAppBar(
-            title: widget.title,
-            actions: [
-              FutureBuilder<SavedFile>(
-                future: _filePathFuture,
-                builder: (_, s) => Utils.shareActionButton(
-                  widget.title,
-                  s.data?.path != null ? [s.data.path] : null,
+    return FutureBuilder<PdfController>(
+      future: _pdfController,
+      builder: (_, snapshot) => snapshot.hasError
+          ? const Center(
+              child: Text(
+                  'Unable to load document. Please try again later or contact support.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontStyle: FontStyle.italic)))
+          : snapshot.data == null
+              ? const Center(child: CircularProgressIndicator())
+              : PdfView(
+                  controller: snapshot.data,
                 ),
-              )
-            ],
-          ),
-        Flexible(
-          child: FutureBuilder<PdfController>(
-            future: _pdfController,
-            builder: (_, snapshot) => snapshot.hasError
-                ? const Center(
-                    child: Text(
-                        'Unable to load document. Please try again later or contact support.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontStyle: FontStyle.italic)))
-                : snapshot.data == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : PdfView(
-                        controller: snapshot.data,
-                      ),
-          ),
-        ),
-      ],
     );
   }
 }

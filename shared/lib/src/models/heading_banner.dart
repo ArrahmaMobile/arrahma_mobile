@@ -1,4 +1,4 @@
-import 'package:arrahma_shared/shared.dart';
+import 'models.dart';
 
 class HeadingBanner {
   const HeadingBanner({this.imageUrl, this.item});

@@ -67,8 +67,10 @@ class Item {
     this.type,
     this.data,
     this.isDirectSource,
+    this.isExternal,
   });
   final bool isDirectSource;
+  final bool isExternal;
   final ItemType type;
   final String data;
 }
@@ -81,13 +83,23 @@ class MediaItem {
 }
 
 class MediaContent {
-  MediaContent({this.title, this.description, this.items});
+  const MediaContent({this.title, this.description, this.items});
   final String title;
   final String description;
   final List<MediaItem> items;
 }
 
-enum ItemType { Audio, Video, Pdf, Image, WebPage, WebForm, File, Title, Other }
+enum ItemType {
+  Audio,
+  Video,
+  Pdf,
+  Image,
+  WebPage,
+  File,
+  Title,
+  Markdown,
+  Other
+}
 
 class Group {
   const Group({this.name});

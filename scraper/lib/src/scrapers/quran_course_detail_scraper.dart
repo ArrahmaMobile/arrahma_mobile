@@ -3,19 +3,19 @@ import 'package:html2md/html2md.dart' as html2md;
 import 'package:arrahma_shared/shared.dart';
 
 import '../scraper_base.dart';
+import '../utils.dart';
 
-class QuranCourseDetailScraper extends ScraperBase<QuranCourseDetails> {
+class QuranCourseDetailScraper extends ScraperBase<MediaItem> {
   const QuranCourseDetailScraper(IScraper scraper, this.detailUrl)
       : super(scraper);
 
   final String detailUrl;
 
   @override
-  Future<QuranCourseDetails> scrape() async {
+  Future<MediaItem> scrape() async {
     if (detailUrl.endsWith('pdf')) {
-      return QuranCourseDetails(
-        type: QuranCourseDetailsType.Pdf,
-        details: detailUrl,
+      return MediaItem(
+        item: Utils.getItemByUrl(detailUrl),
       );
     }
     final doc = await scraper.navigateTo(detailUrl);
@@ -25,9 +25,13 @@ class QuranCourseDetailScraper extends ScraperBase<QuranCourseDetails> {
         styleOptions: {'headingStyle': 'atx'}, ignore: ['script']);
     bodyMarkdown.replaceAll(RegExp(r'^\*\s+'), '* ');
 
-    return QuranCourseDetails(
-      type: QuranCourseDetailsType.Markdown,
-      details: bodyMarkdown,
+    return MediaItem(
+      item: Item(
+        type: ItemType.Markdown,
+        data: bodyMarkdown,
+        isDirectSource: false,
+        isExternal: false,
+      ),
     );
   }
 }

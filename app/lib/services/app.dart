@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart'
     hide ServerConnectionStatus;
 import 'package:flutter_framework/flutter_framework.dart' as f;
 import 'package:inherited_state/inherited_state.dart';
 
+import 'package:url_launcher/url_launcher.dart' as launcher;
+import 'app_launcher.dart';
 import 'device_storage_service.dart';
 
 class AppService extends StoppableService {
@@ -117,7 +120,7 @@ class AppService extends StoppableService {
         )) {
       try {
         final appDataResponse =
-            await apiService.getWithResponse<AppData>('data');
+            await apiService.getWithResponse<AppData>('data?api-version=2');
         if (appDataResponse.isSuccess && appDataResponse.data != null) {
           appData = appDataResponse.data;
           appDataHash = appDataResponse.headers['etag'];
@@ -137,6 +140,43 @@ class AppService extends StoppableService {
         internal: true,
         timeout: const Duration(seconds: 10));
     return status.data;
+  }
+
+  static Future<bool> launch(String url) async {
+    if (await launcher.canLaunch(url))
+      return await launcher.launch(url,
+          forceSafariVC: false, forceWebView: false);
+    return false;
+  }
+
+  static Future<bool> isAppInstalled(String appPackageNameOrScheme) async {
+    return AppUtils.isIOS
+        ? await launcher.canLaunch(appPackageNameOrScheme)
+        : await AppLauncher.isAppInstalled(appPackageNameOrScheme);
+  }
+
+  static Future<bool> launchApp(String appPackageNameOrScheme) async {
+    return AppUtils.isIOS
+        ? await launcher.launch(appPackageNameOrScheme)
+        : await AppLauncher.launchApp(appPackageNameOrScheme);
+  }
+
+  static Future<bool> launchStore(BuildContext context, String storeId) async {
+    final didLaunch = await launch(AppUtils.isIOS
+        ? 'itms-apps://itunes.apple.com/app/apple-store/id$storeId?mt=8'
+        : 'https://play.google.com/store/apps/details?id=$storeId');
+    if (!didLaunch)
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unable to open app store.')));
+    return didLaunch;
+  }
+
+  static Future<bool> launchAppOrStore(BuildContext context,
+      String appPackageNameOrScheme, String storeId) async {
+    return appPackageNameOrScheme != null &&
+            await isAppInstalled(appPackageNameOrScheme)
+        ? await launchApp(appPackageNameOrScheme)
+        : storeId != null && await launchStore(context, storeId);
   }
 
   @override

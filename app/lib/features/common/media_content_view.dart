@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import 'basic_webview.dart';
-
 class MediaContentView extends StatelessWidget {
   const MediaContentView({
     Key key,
@@ -16,26 +14,24 @@ class MediaContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showForm = content.items?.length == 1 &&
-        content.items.first.item?.type == ItemType.WebForm;
-    final child = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (content.description != null)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: MarkdownBody(
-              data: content.description,
+    if (content.items.length == 1)
+      return Utils.getItemView(
+        TitledItem.fromItem(
+          content.items.first.title,
+          content.items.first.item,
+        ),
+      );
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (content.description != null)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: MarkdownBody(
+                data: content.description,
+              ),
             ),
-          ),
-        if (showForm)
-          Flexible(
-            child: BasicWebView(
-              url: content.items.first.item.data,
-              whitelistedDomains: const ['arrahma.org'],
-            ),
-          )
-        else
           ListView.builder(
             itemCount: content.items?.length ?? 0,
             itemBuilder: (_, index) {
@@ -47,11 +43,13 @@ class MediaContentView extends StatelessWidget {
                 onTap: item.item?.data != null
                     ? () {
                         Utils.openUrl(
-                            context,
-                            TitledItem.fromItem(
-                              title,
-                              item.item,
-                            ));
+                          context,
+                          TitledItem.fromItem(
+                            title,
+                            item.item,
+                          ),
+                          useWebView: true,
+                        );
                       }
                     : null,
               );
@@ -59,12 +57,8 @@ class MediaContentView extends StatelessWidget {
             primary: false,
             shrinkWrap: true,
           ),
-      ],
+        ],
+      ),
     );
-    return showForm
-        ? child
-        : SingleChildScrollView(
-            child: child,
-          );
   }
 }

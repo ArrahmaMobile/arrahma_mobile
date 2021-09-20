@@ -13,11 +13,15 @@ class DataController extends ResourceController {
   @Operation.get()
   Future<Response> getData(
       {@Bind.query('If-None-Match') String dataHash}) async {
+    final rawVersion = request.raw.uri.queryParameters['api-version'];
+    final version = rawVersion != null ? int.tryParse(rawVersion) : null;
     final eTagHeader = {'ETag': _scraperService.appDataHash};
     if (dataHash != null && dataHash == _scraperService.appDataHash) {
       return Response(HttpStatus.notModified, eTagHeader, null);
     }
-    final data = _scraperService.serializedData;
+    final data = version == null || version == 1
+        ? _scraperService.serializedV1Data
+        : _scraperService.serializedData;
     print(
         '[${DataSyncService.instanceId}] ${data.length > 1000 ? data.substring(0, 1000) : data}');
     return Response.ok(data, headers: eTagHeader);

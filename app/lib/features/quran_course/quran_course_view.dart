@@ -1,11 +1,9 @@
-import 'package:arrahma_mobile_app/features/quran_course/quran_details_view.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_registration_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'quran_surah_view.dart';
 import '../common/media_content_view.dart';
+import 'quran_surah_view.dart';
 
 class QuranCourseView extends StatefulWidget {
   const QuranCourseView({
@@ -38,12 +36,12 @@ class _QuranCourseViewState extends State<QuranCourseView> {
   List<Widget> _getTabs() {
     return [
       if (widget.course.courseDetails != null)
-        QuranDetailsView(
-          courseDetails: widget.course.courseDetails,
+        MediaContentView(
+          content: widget.course.courseDetails,
         ),
       if (widget.course.registration != null)
-        QuranRegistrationView(
-          registration: widget.course.registration,
+        MediaContentView(
+          content: widget.course.registration,
         ),
       if (widget.course.tafseer != null)
         QuranSurahView(
@@ -58,7 +56,9 @@ class _QuranCourseViewState extends State<QuranCourseView> {
           content: widget.course.lectures,
         ),
       if (widget.course.tests != null)
-        MediaContentView(content: widget.course.tests)
+        MediaContentView(content: widget.course.tests),
+      if (widget.course.otherContent != null)
+        MediaContentView(content: widget.course.otherContent)
     ];
   }
 
@@ -71,7 +71,12 @@ class _QuranCourseViewState extends State<QuranCourseView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(child: _getTab(selectedTabIndex)),
+        Expanded(
+          child: KeyedSubtree(
+            key: ValueKey(selectedTabIndex),
+            child: _getTab(selectedTabIndex),
+          ),
+        ),
         if (tabCount > 1)
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -88,18 +93,18 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                   type: BottomNavigationBarType.fixed,
                   items: [
                     if (widget.course.courseDetails != null)
-                      const BottomNavigationBarItem(
-                        icon: Icon(
+                      BottomNavigationBarItem(
+                        icon: const Icon(
                           Icons.library_books,
                         ),
-                        label: 'Details',
+                        label: widget.course.courseDetails.title,
                       ),
                     if (widget.course.registration != null)
-                      const BottomNavigationBarItem(
-                        icon: Icon(
+                      BottomNavigationBarItem(
+                        icon: const Icon(
                           Icons.app_registration,
                         ),
-                        label: 'Registration',
+                        label: widget.course.registration.title,
                       ),
                     if (widget.course.tafseer != null)
                       const BottomNavigationBarItem(
@@ -128,6 +133,13 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                           FontAwesomeIcons.edit,
                         ),
                         label: 'Tests',
+                      ),
+                    if (widget.course.otherContent != null)
+                      BottomNavigationBarItem(
+                        icon: const Icon(
+                          FontAwesomeIcons.table,
+                        ),
+                        label: widget.course.otherContent.title,
                       ),
                   ],
                   onTap: (index) {

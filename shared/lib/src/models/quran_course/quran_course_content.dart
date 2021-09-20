@@ -1,4 +1,4 @@
-import 'package:arrahma_shared/src/models/models.dart';
+import '../models.dart';
 
 class QuranCourseContent {
   const QuranCourseContent({

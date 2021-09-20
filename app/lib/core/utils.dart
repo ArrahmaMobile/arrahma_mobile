@@ -10,6 +10,7 @@ import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'package:inherited_state/inherited_state.dart';
 import 'package:share/share.dart';
@@ -79,8 +80,39 @@ class Utils {
     return;
   }
 
+  static Widget getItemView(Item item) {
+    final typeName = EnumUtils.enumToString(item.type);
+    final title = item is TitledItem ? item.title : typeName;
+    switch (item.type) {
+      case ItemType.Pdf:
+        return SimplePdfView(url: item.data);
+      case ItemType.Image:
+        return SimpleImageView(url: item.data);
+      case ItemType.Markdown:
+        return Markdown(data: item.data);
+      case ItemType.Audio:
+        return MediaPlayerView(
+          mediaItems: [
+            MediaItem(
+              title: title,
+              album: typeName,
+              id: item.data,
+            )
+          ],
+        );
+      case ItemType.WebPage:
+        return BasicWebView(
+          url: item.data,
+          whitelistedDomains: const ['arrahma.org'],
+        );
+
+      default:
+        return null;
+    }
+  }
+
   static void openUrl(BuildContext context, Item item,
-      {bool fromMenu = false}) {
+      {bool useWebView = false}) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
     if (item.type == ItemType.Audio) {
@@ -140,7 +172,7 @@ class Utils {
         title: course.title,
       );
     } else {
-      if (fromMenu)
+      if (useWebView)
         Utils.pushView(
           context,
           BasicWebView(url: item.data),

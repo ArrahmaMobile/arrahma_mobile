@@ -55,7 +55,9 @@ class ArrahmaChannel extends ApplicationChannel {
     router
         .route('/status')
         .link(() => StatusController(_scraperService, _broadcastService));
-    router.route('/data').link(() => DataController(_scraperService));
+    router
+        .route('/data/[:version]')
+        .link(() => DataController(_scraperService));
 
     return router;
   }

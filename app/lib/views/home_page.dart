@@ -253,6 +253,10 @@ class _HomePageState extends State<HomePage> {
             [],
         GestureDetector(
           onTap: () {
+            // AppService.launchAppOrStore(
+            //     context,
+            //     AppUtils.isIOS ? 'mixlr://' : 'com.mixlr.android',
+            //     AppUtils.isIOS ? '583705714' : 'com.mixlr.android');
             Launch.url('https://mixlr.com/arrahma-live/');
           },
           child: _buildSocialMediaItem(

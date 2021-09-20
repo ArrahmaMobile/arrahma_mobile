@@ -1,4 +1,4 @@
-import '../../shared.dart';
+import 'models.dart';
 
 class QuickLink {
   const QuickLink({this.title, this.link});

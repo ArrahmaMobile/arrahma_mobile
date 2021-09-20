@@ -67,10 +67,8 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Adv Taleemul Quran',
         imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        courseDetails: QuranCourseDetails(),
-        registration: QuranCourseRegistration(
-          url: '',
-        ),
+        courseDetails: MediaContent(),
+        registration: MediaContent(),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -109,10 +107,8 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Taleemul Quran',
         imageUrl: 'assets/images/courses/taleemul_quran.png',
-        courseDetails: QuranCourseDetails(),
-        registration: QuranCourseRegistration(
-          url: '',
-        ),
+        courseDetails: MediaContent(),
+        registration: MediaContent(),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -151,10 +147,8 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Fehmul Quran',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetails: QuranCourseDetails(),
-        registration: QuranCourseRegistration(
-          url: '',
-        ),
+        courseDetails: MediaContent(),
+        registration: MediaContent(),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -193,10 +187,8 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Course In Pashtu ',
         imageUrl: 'assets/images/courses/course_in_pashtu.png',
-        courseDetails: QuranCourseDetails(),
-        registration: QuranCourseRegistration(
-          url: '',
-        ),
+        courseDetails: MediaContent(),
+        registration: MediaContent(),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -239,22 +231,22 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Ahsanul Bayan',
         imageUrl: 'assets/images/courses/ahsanul_bayan.png',
-        courseDetails: QuranCourseDetails(),
+        courseDetails: MediaContent(),
       ),
       QuranCourse(
         title: 'Al Furqan',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetails: QuranCourseDetails(),
+        courseDetails: MediaContent(),
       ),
       QuranCourse(
         title: 'Seerah',
         imageUrl: 'assets/images/courses/seerah.png',
-        courseDetails: QuranCourseDetails(),
+        courseDetails: MediaContent(),
       ),
       QuranCourse(
         title: 'Al Misbah (Whatsapp Program)',
         imageUrl: 'assets/images/courses/al_misbah.png',
-        courseDetails: QuranCourseDetails(),
+        courseDetails: MediaContent(),
       ),
       QuranCourse(
         title: 'Weekly Gems',

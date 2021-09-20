@@ -3,15 +3,14 @@ import 'package:arrahma_shared/shared.dart';
 import '../scraper_base.dart';
 import '../utils.dart';
 
-class QuranCourseRegistrationScraper
-    extends ScraperBase<QuranCourseRegistration> {
+class QuranCourseRegistrationScraper extends ScraperBase<MediaItem> {
   const QuranCourseRegistrationScraper(IScraper scraper, this.registrationUrl)
       : super(scraper);
 
   final String registrationUrl;
 
   @override
-  Future<QuranCourseRegistration> scrape() async {
+  Future<MediaItem> scrape() async {
     final doc = await scraper.navigateTo(registrationUrl);
     if (doc == null) return null;
     final url = scraper.currentUrl;
@@ -22,9 +21,8 @@ class QuranCourseRegistrationScraper
         : null;
 
     return formSrc != null
-        ? QuranCourseRegistration(
-            type: RegistrationType.WebForm,
-            url: formSrc,
+        ? MediaItem(
+            item: Utils.getItemByUrl(formSrc),
           )
         : null;
   }

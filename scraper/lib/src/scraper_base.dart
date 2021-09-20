@@ -137,12 +137,16 @@ class Scraper extends Worker<String, Document> implements IScraper {
       }).toList(),
       socialMediaItems:
           document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-        final link = socialMediaItem.attributes['href'].toAbsolute(baseUrl);
         final imageUrl = socialMediaItem
             .querySelector('img')
             ?.attributes['src']
             ?.toAbsolute(baseUrl)
             ?.removeQueryString();
+        final whatsAppMessage =
+            'Assalamualaikum, I want to join the Arrahmah WhatsApp group. My name is {name} and my number is {number}.';
+        final link = imageUrl.contains('whatsapp')
+            ? 'https://wa.me/17323050744?text=${Uri.encodeQueryComponent(whatsAppMessage)}'
+            : socialMediaItem.attributes['href'].toAbsolute(baseUrl);
         return SocialMediaItem(
             item: Utils.getItemByUrl(link), imageUrl: imageUrl);
       }).toList(),

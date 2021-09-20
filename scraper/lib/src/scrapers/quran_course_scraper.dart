@@ -52,49 +52,79 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
           ),
         )
         .toList();
-    final itemLinkMap =
-        items.fold<Map<String, String>>(<String, String>{}, (map, item) {
-      map[item.name.toUpperCase()] = item.links.first;
-      return map;
+
+    Future<MediaItem> courseDetails;
+    Future<MediaItem> registration;
+    Future<QuranCourseContent> tafseer;
+    Future<QuranCourseContent> tajweed;
+    Future<QuranCourseContent> lectures;
+    Future<MediaContent> tests;
+    var otherContents = <MediaContent>[];
+
+    items.forEach((item) {
+      if (item.links?.isEmpty ?? true) return;
+      switch (item.name.toUpperCase()) {
+        case 'COURSE DETAIL':
+        case 'PROGRAM DETAIL':
+          courseDetails =
+              QuranCourseDetailScraper(scraper, item.links.first).scrape();
+          break;
+        case 'REGISTRATION':
+          registration =
+              QuranCourseRegistrationScraper(scraper, item.links.first)
+                  .scrape();
+          break;
+        case 'TAFSEER LINK':
+          tafseer =
+              QuranCourseJuzTemplateScraper(scraper, item.links.first).scrape();
+          break;
+        case 'TAJWEED LINK':
+          tajweed = QuranCourseSurahTemplateScraper(scraper, item.links.first)
+              .scrape();
+          break;
+        case 'LECTURES':
+          lectures = scrapeContent(item.links.first);
+          break;
+        case 'TESTS':
+          tests = MediaScraper(scraper, item.links.first).scrape();
+          break;
+        default:
+          otherContents.add(
+            MediaContent(
+              title: item.name
+                  .replaceAll('COURSE', '')
+                  .replaceAll('LINK', '')
+                  .trim(),
+              items: [MediaItem(item: Utils.getItemByUrl(item.links.first))],
+            ),
+          );
+          break;
+      }
     });
 
-    final courseDetailLink =
-        itemLinkMap['COURSE DETAIL'] ?? itemLinkMap['PROGRAM DETAIL'];
-    final courseDetails = courseDetailLink != null
-        ? QuranCourseDetailScraper(scraper, courseDetailLink).scrape()
-        : null;
-
-    final registrationLink = itemLinkMap['REGISTRATION'];
-    final registration = registrationLink != null
-        ? QuranCourseRegistrationScraper(scraper, registrationLink).scrape()
-        : null;
-
-    final tafseerLink = itemLinkMap['TAFSEER LINK'];
-    final tafseer = tafseerLink != null
-        ? QuranCourseJuzTemplateScraper(scraper, tafseerLink).scrape()
-        : null;
-
-    final tajweedLink = itemLinkMap['TAJWEED LINK'];
-    final tajweed = tajweedLink != null
-        ? QuranCourseSurahTemplateScraper(scraper, tajweedLink).scrape()
-        : null;
-
-    final lecutresLink = itemLinkMap['LECTURES'];
-    final lectures = lecutresLink != null ? scrapeContent(lecutresLink) : null;
-
-    final testsLink = itemLinkMap['TESTS'];
-    final tests =
-        testsLink != null ? MediaScraper(scraper, testsLink).scrape() : null;
-
+    final courseDetailsVal = await courseDetails;
+    final registrationVal = await registration;
     return QuranCourse(
       title: normalizedTitle,
       imageUrl: imageUrl,
-      courseDetails: await courseDetails,
-      registration: await registration,
+      courseDetails: courseDetailsVal != null
+          ? MediaContent(title: 'Details', items: [courseDetailsVal])
+          : null,
+      registration: registrationVal != null
+          ? MediaContent(title: 'Registration', items: [registrationVal])
+          : registrationVal,
       tafseer: await tafseer,
       tajweed: await tajweed,
       lectures: await lectures,
       tests: await tests,
+      otherContent: otherContents.length == 1
+          ? otherContents.first
+          : otherContents.isNotEmpty
+              ? MediaContent(
+                  title: 'Other',
+                  items: otherContents.expand((c) => c.items).toList(),
+                )
+              : null,
     );
   }
 

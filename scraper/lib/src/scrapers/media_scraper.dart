@@ -116,7 +116,10 @@ class MediaScraper extends ScraperBase<MediaContent> {
         items: [
           MediaItem(
             item: Item(
-                isDirectSource: true, type: ItemType.WebForm, data: formSrc),
+              isDirectSource: true,
+              type: ItemType.WebPage,
+              data: formSrc,
+            ),
           )
         ],
       );

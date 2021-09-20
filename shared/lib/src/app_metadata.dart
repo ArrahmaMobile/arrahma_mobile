@@ -1,5 +1,6 @@
 import 'models/models.dart';
 import 'models/quick_link.dart';
+import 'models/quran_course/v2/quran_course.dart';
 
 class AppData {
   const AppData({

@@ -74,7 +74,7 @@ class MenuItemList extends StatelessWidget {
             );
           else
             Utils.openUrl(context, TitledItem.fromItem(item.title, item.link),
-                fromMenu: true);
+                useWebView: true);
         });
   }
 }

@@ -1,4 +1,4 @@
-import '../../shared.dart';
+import 'models.dart';
 
 class DrawerItem {
   const DrawerItem({

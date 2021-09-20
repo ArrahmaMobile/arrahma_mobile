@@ -59,6 +59,9 @@ class ScraperService {
   String _serializedData;
   String get serializedData => _serializedData;
 
+  String _serializedV1Data;
+  String get serializedV1Data => _serializedV1Data;
+
   Timer _updateTimer;
 
   void setupUpdateTimer() {
@@ -117,8 +120,37 @@ class ScraperService {
 
   void _updateData(ScrapedData updatedScrapedData) {
     _rawData = updatedScrapedData;
-    final serializedData = JsonMapper.serialize(appData);
+    final serializedDataMap = JsonMapper.serializeToMap(appData);
+    final serializedData = json.encode(serializedDataMap);
     _serializedData = serializedData;
+    final quranCousesV1 = appData.courses
+        .map(
+          (c) => QuranCourseV1(
+            title: c.title,
+            imageUrl: c.imageUrl,
+            courseDetails: (c.courseDetails?.items?.isNotEmpty ?? false)
+                ? QuranCourseDetails(
+                    type: c.courseDetails.items.first.item.type == ItemType.Pdf
+                        ? QuranCourseDetailsType.Pdf
+                        : QuranCourseDetailsType.Markdown,
+                    details: c.courseDetails.items.first.item.data,
+                  )
+                : null,
+            registration: (c.registration?.items?.isNotEmpty ?? false)
+                ? QuranCourseRegistration(
+                    type: RegistrationType.WebForm,
+                    url: c.registration.items.first.item.data,
+                  )
+                : null,
+            tafseer: c.tafseer,
+            tajweed: c.tajweed,
+            tests: c.tests,
+            otherContent: c.otherContent,
+          ),
+        )
+        .toList();
+    _serializedV1Data = json.encode(
+        {...serializedDataMap, 'courses': JsonMapper.serialize(quranCousesV1)});
     _updateDataHash(serializedData);
     _syncService.valueStreamCtrl.add('reload');
   }

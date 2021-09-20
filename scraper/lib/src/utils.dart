@@ -15,6 +15,11 @@ class Utils {
         : url;
   }
 
+  static bool isExternalLink(String urlString, {Uri url}) {
+    url ??= Uri.parse(urlString);
+    return !url.host.contains('arrahma.org');
+  }
+
   static String enumToString(Object enumVal) {
     final description = enumVal.toString();
     final indexOfDot = description.indexOf('.');
@@ -50,7 +55,12 @@ class Utils {
       }
       type ??= ItemType.WebPage;
     }
-    return Item(data: url, type: type, isDirectSource: isDirectSource);
+    return Item(
+      data: url,
+      type: type,
+      isDirectSource: isDirectSource,
+      isExternal: Utils.isExternalLink(url, url: parsedUri),
+    );
   }
 }
 
@@ -76,10 +86,11 @@ extension StringUtils on String {
     final parsedBaseUrl = Uri.parse(baseUrl);
     final host = parsedUrl.host.trim().isEmpty
         ? parsedBaseUrl.host
-        : parsedUrl.host.substring(parsedUrl.host.contains('arrahma.org') &&
-                parsedUrl.host.startsWith('www')
-            ? 4
-            : 0);
+        : parsedUrl.host.substring(
+            !Utils.isExternalLink(this, url: parsedUrl) &&
+                    parsedUrl.host.startsWith('www')
+                ? 4
+                : 0);
     return parsedBaseUrl
         .resolve(this)
         .replace(scheme: 'https', host: host)
