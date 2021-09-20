@@ -231,8 +231,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildQuickLink(Item link, String title) {
     final screenUtils = ScreenUtils.getInstance(context);
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: double.infinity),
+    return FittedBox(
       child: Card(
         child: InkWell(
           onTap: () => Utils.openUrl(context, link),
@@ -241,6 +240,8 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: Text(
                 title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
                 style: TextStyle(
                   fontSize: screenUtils.getSp(14),
                 ),

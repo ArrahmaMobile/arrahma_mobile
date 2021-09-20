@@ -13,7 +13,8 @@ class DataController extends ResourceController {
   @Operation.get()
   Future<Response> getData(
       {@Bind.query('If-None-Match') String dataHash}) async {
-    final rawVersion = request.raw.uri.queryParameters['api-version'];
+    final rawVersion = request.raw.uri.queryParameters['api-version'] ??
+        request.raw.headers['accept-version'];
     final version = rawVersion != null ? int.tryParse(rawVersion) : null;
     final eTagHeader = {'ETag': _scraperService.appDataHash};
     if (dataHash != null && dataHash == _scraperService.appDataHash) {

@@ -37,6 +37,8 @@ class AppService extends StoppableService {
   // TODO(shah): Abstract into cached timer service
   Timer _dataFetchTimer;
   Timer _statusCheckTimer;
+  bool get justUpdated =>
+      RS.getReactiveFromRoot<AppMetadata>().state.isUpdated && _appData == null;
 
   final _broadcastStatusNotifier =
       ValueNotifier<BroadcastStatus>(const BroadcastStatus.init());
@@ -96,7 +98,8 @@ class AppService extends StoppableService {
         force: force ||
             isStale ||
             appDataHash == null ||
-            (appData == null && !init));
+            (appData == null && !init) ||
+            justUpdated);
     return status;
   }
 
@@ -119,6 +122,9 @@ class AppService extends StoppableService {
             date.difference(lastFetchDate) > FETCH_INTERVAL*/
         )) {
       try {
+        if (justUpdated) {
+          logger.verbose('App was updated. Refetching data...');
+        }
         final appDataResponse =
             await apiService.getWithResponse<AppData>('data?api-version=2');
         if (appDataResponse.isSuccess && appDataResponse.data != null) {
