@@ -37,8 +37,8 @@ class AppService extends StoppableService {
   // TODO(shah): Abstract into cached timer service
   Timer _dataFetchTimer;
   Timer _statusCheckTimer;
-  bool get justUpdated =>
-      RS.getReactiveFromRoot<AppMetadata>().state.isUpdated && _appData == null;
+  bool _isUpdated;
+  bool get justUpdated => _isUpdated && _appData == null;
 
   final _broadcastStatusNotifier =
       ValueNotifier<BroadcastStatus>(const BroadcastStatus.init());
@@ -46,6 +46,7 @@ class AppService extends StoppableService {
       _broadcastStatusNotifier;
 
   Future<AppData> initApp() async {
+    _isUpdated = (await storageService.get<AppMetadata>()).isUpdated;
     // _dataFetchTimer = Timer.periodic(
     //     FETCH_INTERVAL + const Duration(seconds: 10),
     //     (_) => dataFetchTimerHandler());
