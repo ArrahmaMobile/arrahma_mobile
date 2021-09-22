@@ -103,7 +103,6 @@ class Utils {
       case ItemType.WebPage:
         return BasicWebView(
           url: item.data,
-          whitelistedDomains: const ['arrahma.org'],
         );
 
       default:

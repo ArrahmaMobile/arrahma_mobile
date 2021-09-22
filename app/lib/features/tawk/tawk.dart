@@ -50,7 +50,6 @@ class _TawkState extends State<Tawk> {
   Widget build(BuildContext context) {
     return BasicWebView(
       url: widget.directChatLink,
-      whitelistedDomains: const ['tawk.to'],
       onLoad: (controller) {
         if (widget.visitor != null) {
           _setUser(controller, widget.visitor);

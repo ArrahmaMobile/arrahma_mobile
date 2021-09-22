@@ -92,8 +92,8 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
           otherContents.add(
             MediaContent(
               title: item.name
-                  .replaceAll('COURSE', '')
-                  .replaceAll('LINK', '')
+                  .replaceAll('Course', '')
+                  .replaceAll('Link', '')
                   .trim(),
               items: [MediaItem(item: Utils.getItemByUrl(item.links.first))],
             ),

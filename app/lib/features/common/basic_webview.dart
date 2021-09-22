@@ -4,7 +4,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 class BasicWebView extends StatefulWidget {
   const BasicWebView({
     @required this.url,
-    this.whitelistedDomains,
     this.onLoad,
     this.onLinkTap,
     this.placeholder,
@@ -21,7 +20,6 @@ class BasicWebView extends StatefulWidget {
 
   /// Render your own loading widget.
   final Widget placeholder;
-  final List<String> whitelistedDomains;
 
   @override
   _BasicWebViewState createState() => _BasicWebViewState();
@@ -44,18 +42,11 @@ class _BasicWebViewState extends State<BasicWebView> {
             });
           },
           navigationDelegate: (NavigationRequest request) {
-            final uri = Uri.parse(request.url);
-            if (request.url == 'about:blank' ||
-                (widget.whitelistedDomains?.any((d) => uri.host.endsWith(d)) ??
-                    true)) {
-              return NavigationDecision.navigate;
-            }
-
             if (widget.onLinkTap != null) {
               widget.onLinkTap(_controller, request.url);
             }
 
-            return NavigationDecision.prevent;
+            return NavigationDecision.navigate;
           },
           onPageFinished: (_) {
             if (widget.onLoad != null) {
