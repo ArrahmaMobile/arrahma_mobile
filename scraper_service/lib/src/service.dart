@@ -25,9 +25,17 @@ class ScraperService {
 
   Future<void> init() async {
     if (_syncService.isMain) {
-      final scrapedData = await ScraperRunner().get();
+      ScrapedData scrapedData = null;
+      try {
+        scrapedData = await ScraperRunner().get();
+      } catch (err) {
+        await _sendMail(err);
+        _syncService.log(err.toString());
+      }
       final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
-      if (lastUpdate != null &&
+      if (scrapedData != null &&
+          lastUpdate != null &&
+          scrapedData.appData != null &&
           DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
         _updateData(scrapedData);
       } else {
@@ -79,9 +87,8 @@ class ScraperService {
       _updateData(data);
     } catch (err) {
       success = false;
-      if (errorEmailRecipient != null)
-        await _sendMail(
-            err, errorEmailRecipient, senderEmail, senderEmailPassword);
+      await _sendMail(err);
+      _syncService.log(err.toString());
     } finally {
       stopwatch.stop();
       _syncService.log(success
@@ -90,7 +97,14 @@ class ScraperService {
     }
   }
 
-  Future<void> _sendMail(dynamic error, String errorEmailRecipient,
+  Future<bool> _sendMail(dynamic error) async {
+    if (errorEmailRecipient != null)
+      return await _sendMailRaw(
+          error, errorEmailRecipient, senderEmail, senderEmailPassword);
+    return false;
+  }
+
+  Future<bool> _sendMailRaw(dynamic error, String errorEmailRecipient,
       String senderEmail, String password) async {
     // ignore: deprecated_member_use
     final smtpServer = gmail(senderEmail, password);
@@ -110,12 +124,14 @@ class ScraperService {
       final sendReport =
           await send(message, smtpServer, timeout: Duration(seconds: 15));
       _syncService.log('Message sent: ' + sendReport.toString());
+      return true;
     } on MailerException catch (e) {
       _syncService.log('Message not sent.');
       for (var p in e.problems) {
         _syncService.log('Problem: ${p.code}: ${p.msg}');
       }
     }
+    return false;
   }
 
   void _updateData(ScrapedData updatedScrapedData) {

@@ -77,6 +77,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
   Future<AppData> initiate() async {
     final doc = await navigateTo('');
     if (doc == null) return null;
+
     return AppData(
       logoUrl: document
           .querySelector('.header img')
@@ -87,16 +88,20 @@ class Scraper extends Worker<String, Document> implements IScraper {
           .querySelectorAll('#message1 > *')
           .asMap()
           .entries
-          .map((messageEntry) => QuickLink(
-                title: messageEntry.value.parentNode.nodes
-                    .whereType<Text>()
-                    .elementAt(messageEntry.key)
-                    .text
-                    .cleanedText,
-                link: Utils.getItemByUrl(
-                    messageEntry.value.attributes['href'].toAbsolute(baseUrl)),
-              ))
-          .toList(),
+          .map((messageEntry) {
+        final title = messageEntry.value.parentNode.nodes
+            .whereType<Text>()
+            .elementAt(messageEntry.key)
+            .text
+            .cleanedText;
+        return QuickLink(
+          title: title.isEmpty ? messageEntry.value.text.cleanedText : title,
+          link: Utils.getItemByUrl(messageEntry.value
+              .querySelector('a')
+              ?.attributes['href']
+              ?.toAbsolute(baseUrl)),
+        );
+      }).toList(),
       banners: document
           .querySelectorAll('#slider a')
           .map((banner) => HeadingBanner(
