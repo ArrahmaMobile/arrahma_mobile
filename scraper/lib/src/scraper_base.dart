@@ -96,8 +96,9 @@ class Scraper extends Worker<String, Document> implements IScraper {
             .cleanedText;
         return QuickLink(
           title: title.isEmpty ? messageEntry.value.text.cleanedText : title,
-          link: Utils.getItemByUrl(messageEntry.value
-              .querySelector('a')
+          link: Utils.getItemByUrl((messageEntry.value.localName == 'a'
+                  ? messageEntry.value
+                  : messageEntry.value.querySelector('a'))
               ?.attributes['href']
               ?.toAbsolute(baseUrl)),
         );
