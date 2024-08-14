@@ -12,7 +12,7 @@ class QuranCourseDetailScraper extends ScraperBase<MediaItem> {
   final String detailUrl;
 
   @override
-  Future<MediaItem> scrape() async {
+  Future<MediaItem?> scrape() async {
     if (detailUrl.endsWith('pdf')) {
       return MediaItem(
         item: Utils.getItemByUrl(detailUrl),
@@ -20,7 +20,8 @@ class QuranCourseDetailScraper extends ScraperBase<MediaItem> {
     }
     final doc = await scraper.navigateTo(detailUrl);
     if (doc == null) return null;
-    final bodyHtml = doc.querySelector('#main').outerHtml;
+    final bodyHtml = doc.querySelector('#main')?.outerHtml;
+    if (bodyHtml == null) return null;
     final bodyMarkdown = html2md.convert(bodyHtml,
         styleOptions: {'headingStyle': 'atx'}, ignore: ['script']);
     bodyMarkdown.replaceAll(RegExp(r'^\*\s+'), '* ');

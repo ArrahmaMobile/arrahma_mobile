@@ -16,53 +16,56 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
   @override
   Future<List<QuranCourse>> scrape() async {
     final doc = await scraper.navigateTo('');
-    final rootUrl = scraper.currentUrl;
+    final rootUrl = scraper.baseUrl;
     if (doc == null) return [];
     final courseList = doc.querySelectorAll('.column5 .box2');
     final quranCourseList = <QuranCourse>[];
     for (final course in courseList) {
-      quranCourseList.add(await scrapeCourse(rootUrl, course));
+      final quranCourse = await scrapeCourse(rootUrl, course);
+      if (quranCourse != null) {
+        quranCourseList.add(quranCourse);
+      }
     }
     quranCourseList.add(QuranCourse(
-      title: 'Sunnah, Dua, and Zikr',
+      title: 'Weekly Reminder',
       imageUrl: 'assets/images/weekly_dua_sunnat.png',
       lectures: await scrapeContent('https://arrahma.org/sunnah/sunnah.php'),
     ));
     return quranCourseList;
   }
 
-  Future<QuranCourse> scrapeCourse(String rootUrl, Element course) async {
-    final title = course.querySelector('.box_h').text.cleanedText;
-    final subStrIndex = title.indexOf('(') - 1;
+  Future<QuranCourse?> scrapeCourse(String rootUrl, Element course) async {
+    final title = course.querySelector('.box_h')?.text.cleanedText;
+    final subStrIndex = title != null ? title.indexOf('(') - 1 : -1;
     final normalizedTitle =
-        subStrIndex >= 0 ? title.substring(0, subStrIndex) : title;
+        subStrIndex >= 0 ? title?.substring(0, subStrIndex) : title;
     final imageUrl = course
         .querySelector('img')
-        .attributes['src']
-        .toAbsolute(rootUrl)
+        ?.attributes['src']
+        ?.toAbsolute(rootUrl)
         .removeQueryString();
 
     final items = course
         .querySelectorAll('a')
-        .where((e) => e.text?.trim()?.isNotEmpty ?? false)
+        .where((e) => e.text.trim().isNotEmpty && e.attributes['href'] != null)
         .map(
           (i) => CourseLinkItem(
             name: i.text.cleanedText.titleCase,
-            links: [i.attributes['href'].toAbsolute(scraper.currentUrl)],
+            links: [i.attributes['href']!.toAbsolute(rootUrl)],
           ),
         )
         .toList();
 
-    Future<MediaItem> courseDetails;
-    Future<MediaItem> registration;
-    Future<QuranCourseContent> tafseer;
-    Future<QuranCourseContent> tajweed;
-    Future<QuranCourseContent> lectures;
-    Future<MediaContent> tests;
+    Future<MediaItem?>? courseDetails;
+    Future<MediaItem?>? registration;
+    Future<QuranCourseContent?>? tafseer;
+    Future<QuranCourseContent?>? tajweed;
+    Future<QuranCourseContent?>? lectures;
+    Future<MediaContent?>? tests;
     var otherContents = <MediaContent>[];
 
     items.forEach((item) {
-      if (item.links?.isEmpty ?? true) return;
+      if (item.links.isEmpty) return;
       switch (item.name.toUpperCase()) {
         case 'COURSE DETAIL':
         case 'PROGRAM DETAIL':
@@ -105,14 +108,14 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
     final courseDetailsVal = await courseDetails;
     final registrationVal = await registration;
     return QuranCourse(
-      title: normalizedTitle,
-      imageUrl: imageUrl,
+      title: normalizedTitle ?? 'No Title',
+      imageUrl: imageUrl ?? '',
       courseDetails: courseDetailsVal != null
           ? MediaContent(title: 'Details', items: [courseDetailsVal])
           : null,
       registration: registrationVal != null
           ? MediaContent(title: 'Registration', items: [registrationVal])
-          : registrationVal,
+          : null,
       tafseer: await tafseer,
       tajweed: await tajweed,
       lectures: await lectures,
@@ -122,13 +125,16 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
           : otherContents.isNotEmpty
               ? MediaContent(
                   title: 'Other',
-                  items: otherContents.expand((c) => c.items).toList(),
+                  items: otherContents
+                      .where((c) => c.items != null)
+                      .expand((c) => c.items!)
+                      .toList(),
                 )
               : null,
     );
   }
 
-  Future<QuranCourseContent> scrapeContent(String url) async {
+  Future<QuranCourseContent?> scrapeContent(String url) async {
     final doc = await scraper.navigateTo(url);
     final isSurahPage = doc?.querySelector(r'[id$="ayahc"]') != null;
     return await (isSurahPage

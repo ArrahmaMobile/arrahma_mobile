@@ -5,8 +5,50 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dart",
-            "program": "bin/main.dart",
+            "name": "api",
+            "cwd": "api",
+            "request": "launch",
+            "program": "bin/server.dart",
+            "type": "dart",
+            "env": {
+                "DEBUG": "true"
+            }
+        },
+        {
+            "name": "app",
+            "cwd": "app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "app (profile mode)",
+            "cwd": "app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "app (release mode)",
+            "cwd": "app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "scraper",
+            "cwd": "scraper",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "scraper_service",
+            "cwd": "scraper_service",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shared",
+            "cwd": "shared",
             "request": "launch",
             "type": "dart"
         }

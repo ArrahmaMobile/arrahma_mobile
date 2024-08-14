@@ -1,27 +1,26 @@
-import 'dart:convert';
-
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/api.dart';
+import 'package:conduit_core/conduit_core.dart';
 import 'package:uuid/uuid.dart';
 
 class DataSyncService implements SyncService {
   static const idFilePath = 'data/mainId.txt';
   static final _fileService = FileService();
-  static ApplicationMessageHub messageHub;
-  static bool _isMain;
-  static String _mainId;
-  static String _id;
-  static String get instanceId => _id;
+  static late ApplicationMessageHub messageHub;
+  static bool? _isMain;
+  static String? _mainId;
+  static String? _id;
+  static String get instanceId => _id!;
   static Future<DataSyncService> init(String taskName) async {
     _id ??= Uuid().v4();
     _mainId ??= await _fileService.read(idFilePath);
     if (_mainId == null) {
       _mainId = _id;
-      await _fileService.write(idFilePath, _id);
+      await _fileService.write(idFilePath, _id!);
     }
     _isMain ??= _mainId == _id;
     return DataSyncService._internal(
-        _id, _isMain, StreamController<String>.broadcast(), taskName);
+        _id!, _isMain!, StreamController<String>.broadcast(), taskName);
   }
 
   DataSyncService._internal(
@@ -31,11 +30,7 @@ class DataSyncService implements SyncService {
     if (isMain) {
       valueStreamCtrl.stream.listen(
         (data) {
-          messageHub.add({
-            'origin': _id,
-            'taskName': taskName,
-            'data': data is String ? data : json.encode(data)
-          });
+          messageHub.add({'origin': _id, 'taskName': taskName, 'data': data});
           log('Sent data.');
         },
         onError: (err) => log(err),
@@ -46,7 +41,7 @@ class DataSyncService implements SyncService {
           if (event is Map &&
               event['origin'] != _id &&
               event['taskName'] == taskName) {
-            final data = event['data'] as String;
+            final data = event['data'].toString();
             valueStreamCtrl.add(data);
             log('Recieved data.');
           }
@@ -58,7 +53,7 @@ class DataSyncService implements SyncService {
 
   @override
   void log(String message) {
-    print('[$id] | $taskName | $message');
+    print('${isMain ? '[MAIN] ' : ''}[$id] | $taskName | $message');
   }
 
   @override

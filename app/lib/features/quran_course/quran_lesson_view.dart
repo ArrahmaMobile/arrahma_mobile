@@ -1,16 +1,15 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'quran_lesson_detail_view.dart';
 
 class QuranLessonView extends StatefulWidget {
   const QuranLessonView({
-    Key key,
-    @required this.surah,
-  }) : super(key: key);
+    super.key,
+    required this.surah,
+  });
   final Surah surah;
 
   @override
@@ -33,12 +32,12 @@ class _QuranLessonViewState extends State<QuranLessonView> {
       itemBuilder: (_, index) {
         final lesson = widget.surah.lessons[index];
         return ListTile(
-          leading: const FaIcon(FontAwesomeIcons.solidStickyNote),
+          leading: const FaIcon(FontAwesomeIcons.solidNoteSticky),
           title: Text(lesson.title ??
               (lesson.lessonNum != null && lesson.ayahNum != null
                   ? 'Lesson ${lesson.lessonNum}: Ayah ${lesson.ayahNum}'
                   : 'Part ${index + 1}')),
-          subtitle: lesson.uploadDate != null ? Text(lesson.uploadDate) : null,
+          subtitle: lesson.uploadDate != null ? Text(lesson.uploadDate!) : null,
           onTap: () => _navigateToLesson(lesson),
         );
       },
@@ -50,7 +49,6 @@ class _QuranLessonViewState extends State<QuranLessonView> {
   }
 
   void _navigateToLesson(Lesson lesson, [bool replace = false]) {
-    final appTheme = AppTheme.of(context);
     Utils.pushView(
       context,
       QuranLessonDetailView(

@@ -3,7 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class BasicWebView extends StatefulWidget {
   const BasicWebView({
-    @required this.url,
+    required this.url,
     this.onLoad,
     this.onLinkTap,
     this.placeholder,
@@ -13,50 +13,58 @@ class BasicWebView extends StatefulWidget {
   final String url;
 
   /// Called right after the widget is rendered.
-  final Function(WebViewController controller) onLoad;
+  final Function(WebViewController controller)? onLoad;
 
   /// Called when a link pressed.
-  final Function(WebViewController controller, String url) onLinkTap;
+  final Function(WebViewController controller, String url)? onLinkTap;
 
   /// Render your own loading widget.
-  final Widget placeholder;
+  final Widget? placeholder;
 
   @override
   _BasicWebViewState createState() => _BasicWebViewState();
 }
 
 class _BasicWebViewState extends State<BasicWebView> {
-  WebViewController _controller;
+  late WebViewController _controller;
   bool _isLoading = true;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            setState(() {
-              _controller = webViewController;
-            });
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
           },
-          navigationDelegate: (NavigationRequest request) {
-            if (widget.onLinkTap != null) {
-              widget.onLinkTap(_controller, request.url);
-            }
-
-            return NavigationDecision.navigate;
-          },
-          onPageFinished: (_) {
-            if (widget.onLoad != null) {
-              widget.onLoad(_controller);
-            }
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            widget.onLoad?.call(_controller);
 
             setState(() {
               _isLoading = false;
             });
           },
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            widget.onLinkTap?.call(_controller, request.url);
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        WebViewWidget(
+          controller: _controller,
         ),
         if (_isLoading)
           widget.placeholder ??

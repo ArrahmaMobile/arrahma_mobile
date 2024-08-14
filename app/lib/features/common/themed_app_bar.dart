@@ -4,14 +4,14 @@ import 'package:flutter_framework/flutter_framework.dart';
 
 class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemedAppBar({
-    Key key,
-    this.title,
+    super.key,
+    required this.title,
     this.actions,
     this.backgroundColor,
-  }) : super(key: key);
+  });
   final String title;
-  final Color backgroundColor;
-  final List<Widget> actions;
+  final Color? backgroundColor;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final hasEmptyTitle = title == '';
     final color = hasEmptyTitle
-        ? ColorUtils.getContrastColor(appTheme.theme.colorScheme.surface)
+        ? ColorUtils.getContrastColor(appTheme.theme!.colorScheme.surface)
         : Colors.white;
     return AppBar(
       centerTitle: true,
@@ -27,9 +27,9 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
           AppUtils.isIOS && appTheme.isLightMode && hasEmptyTitle
               ? SystemUiOverlayStyle.dark
               : SystemUiOverlayStyle.light,
-      brightness: AppUtils.isIOS && appTheme.isLightMode && hasEmptyTitle
-          ? Brightness.light
-          : Brightness.dark,
+      // brightness: AppUtils.isIOS && appTheme.isLightMode && hasEmptyTitle
+      //     ? Brightness.light
+      //     : Brightness.dark,
       title: Text(
         title,
         style: TextStyle(
@@ -40,7 +40,7 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       iconTheme: IconThemeData(color: color),
       backgroundColor: backgroundColor ??
-          (hasEmptyTitle ? appTheme.theme.colorScheme.surface : null),
+          (hasEmptyTitle ? appTheme.theme!.colorScheme.surface : null),
       actions: actions,
     );
   }

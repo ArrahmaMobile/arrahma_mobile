@@ -1,43 +1,45 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:scraper/src/utc_exception.dart';
+
 abstract class Worker<TJob, TResult> {
   Worker({
-    this.maxSimultaneousJobCount,
+    required this.maxSimultaneousJobCount,
   });
 
   final int maxSimultaneousJobCount;
 
   // ignore: prefer_collection_literals
-  final _inQueue = LinkedHashMap<TJob, Completer<TResult>>();
+  final _inQueue = LinkedHashMap<TJob, Completer<TResult?>>();
   // ignore: prefer_collection_literals
-  final _inProgress = LinkedHashMap<TJob, Completer<TResult>>();
+  final _inProgress = LinkedHashMap<TJob, Completer<TResult?>>();
 
-  Future<TResult> performWork(TJob job);
+  Future<TResult?> performWork(TJob job);
 
-  Future<TResult> add(TJob job) {
+  Future<TResult?> add(TJob job) {
     return process(job);
   }
 
-  Future<TResult> process(TJob job) {
+  Future<TResult?> process(TJob job) {
     if (_inProgress.length >= maxSimultaneousJobCount) {
       return queue(job);
     }
     return start(job);
   }
 
-  Future<TResult> queue(TJob job) {
-    if (_inQueue.containsKey(job)) return _inQueue[job].future;
-    final completer = Completer<TResult>();
+  Future<TResult?> queue(TJob job) {
+    if (_inQueue.containsKey(job)) return _inQueue[job]!.future;
+    final completer = Completer<TResult?>();
     _inQueue[job] = completer;
     return completer.future;
   }
 
-  Future<TResult> start(TJob job) async {
-    if (_inProgress.containsKey(job)) return _inProgress[job].future;
+  Future<TResult?> start(TJob job) async {
+    if (_inProgress.containsKey(job)) return _inProgress[job]!.future;
     final inQueueJob = _inQueue[job];
     if (inQueueJob != null) _inQueue.remove(job);
-    final completer = inQueueJob ?? Completer<TResult>();
+    final completer = inQueueJob ?? Completer<TResult?>();
     _inProgress[job] = completer;
 
     try {
@@ -45,6 +47,9 @@ abstract class Worker<TJob, TResult> {
       completer.complete(result);
       return result;
     } catch (err) {
+      if (err is UnableToContinueException) {
+        throw err;
+      }
       completer.completeError(err);
     } finally {
       _inProgress.remove(job);

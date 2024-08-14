@@ -9,24 +9,24 @@ class ContactUsView extends StatefulWidget {
 }
 
 class _ContactUsViewState extends State<ContactUsView> {
-  TapGestureRecognizer _openPhone;
-  TapGestureRecognizer _openUstazanaEmail;
-  TapGestureRecognizer _openGeneralInquiriesEmail;
+  TapGestureRecognizer? _openPhone;
+  TapGestureRecognizer? _openUstazanaEmail;
+  TapGestureRecognizer? _openGeneralInquiriesEmail;
 
   @override
   void initState() {
     super.initState();
     _openPhone = TapGestureRecognizer()
       ..onTap = () {
-        launch('tel:+1-(732)-443-0519');
+        launchUrl(Uri.parse('tel:+1-(732)-443-0519'));
       };
     _openUstazanaEmail = TapGestureRecognizer()
       ..onTap = () {
-        launch('mailto:ustazanajihahashmi@gmail.com');
+        launchUrl(Uri.parse('mailto:ustazanajihahashmi@gmail.com'));
       };
     _openGeneralInquiriesEmail = TapGestureRecognizer()
       ..onTap = () {
-        launch('mailto:arrahmaclass@gmail.com');
+        launchUrl(Uri.parse('mailto:arrahmaclass@gmail.com'));
       };
   }
 
@@ -46,7 +46,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
                 children: <TextSpan>[
                   const TextSpan(text: 'Help Desk #'),
                   TextSpan(
@@ -69,7 +69,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
                 children: <TextSpan>[
                   const TextSpan(
                       text:
@@ -93,7 +93,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
                 children: <TextSpan>[
                   const TextSpan(text: 'For general Inquiries:'),
                   TextSpan(
@@ -115,7 +115,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
                 children: <TextSpan>[
                   const TextSpan(
                       text:

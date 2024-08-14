@@ -8,16 +8,16 @@ import 'package:path/path.dart' as path;
 import 'package:photo_view/photo_view.dart';
 
 class SimpleImageView extends StatefulWidget {
-  const SimpleImageView({Key key, this.title, this.url}) : super(key: key);
+  const SimpleImageView({super.key, this.title, required this.url});
   final String url;
-  final String title;
+  final String? title;
 
   @override
   _SimpleImageViewState createState() => _SimpleImageViewState();
 }
 
 class _SimpleImageViewState extends State<SimpleImageView> {
-  Future<SavedFile> _filePathFuture;
+  late Future<SavedFile> _filePathFuture;
 
   @override
   void initState() {
@@ -31,9 +31,11 @@ class _SimpleImageViewState extends State<SimpleImageView> {
         ? fileExtension.substring(1)
         : 'jpg';
     final file = await DefaultCacheManager().getSingleFile(imageUrl);
+    final fileName = widget.title ?? path.basenameWithoutExtension(imageUrl);
+
     final tempFile = await FileUtils.copyFileToTempPath(
-        file, widget.title, normalizedFileExtension);
-    return SavedFile(path: tempFile?.path);
+        file, fileName, normalizedFileExtension);
+    return SavedFile(path: tempFile.path);
   }
 
   @override
@@ -43,13 +45,13 @@ class _SimpleImageViewState extends State<SimpleImageView> {
       children: [
         if (widget.title != null)
           ThemedAppBar(
-            title: widget.title,
+            title: widget.title!,
             actions: [
               FutureBuilder<SavedFile>(
                 future: _filePathFuture,
                 builder: (_, s) => Utils.shareActionButton(
-                  widget.title,
-                  s.data?.path != null ? [s.data.path] : null,
+                  widget.title!,
+                  s.data?.path != null ? [s.data!.path] : null,
                 ),
               )
             ],
@@ -58,7 +60,7 @@ class _SimpleImageViewState extends State<SimpleImageView> {
           child: PhotoView(
             imageProvider: ImageUtils.fromNetworkWithCached(widget.url),
             backgroundDecoration: BoxDecoration(
-              color: appTheme.theme.colorScheme.surface,
+              color: appTheme.theme!.colorScheme.surface,
             ),
           ),
         ),

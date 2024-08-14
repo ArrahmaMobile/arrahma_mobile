@@ -2,20 +2,18 @@ import 'package:arrahma_shared/shared.dart';
 
 class Utils {
   static String cleanText(String text) {
-    return text?.replaceAll(RegExp(r'\s+'), ' ')?.trim();
+    return text.replaceAll(RegExp(r'\s+'), ' ').trim();
   }
 
   static String toAlphaNumeric(String text) {
-    return text?.replaceAll(RegExp('[^\\w-.&\\/\\s\'()]'), '')?.trim();
+    return text.replaceAll(RegExp('[^\\w-.&\\/\\s\'()]'), '').trim();
   }
 
   static String cleanUrl(String url) {
-    return (url?.toLowerCase()?.startsWith('.http') ?? false)
-        ? url.substring(1)
-        : url;
+    return url.toLowerCase().startsWith('.http') ? url.substring(1) : url;
   }
 
-  static bool isExternalLink(String urlString, {Uri url}) {
+  static bool isExternalLink(String urlString, {Uri? url}) {
     url ??= Uri.parse(urlString);
     return !url.host.contains('arrahma.org');
   }
@@ -26,11 +24,12 @@ class Utils {
     return description.substring(indexOfDot + 1);
   }
 
-  static Item getItemByUrl(String url) {
+  static Item? getItemByUrl(String? url) {
+    if (url == null) return null;
     final parsedUri = Uri.parse(url);
     final isDirectSource = parsedUri.pathSegments.isNotEmpty &&
         parsedUri.pathSegments.last.contains('.');
-    ItemType type;
+    ItemType? type;
     if (isDirectSource) {
       final lastSegment = parsedUri.pathSegments.last.toLowerCase();
       if (lastSegment.endsWith('.pdf')) {
@@ -65,7 +64,7 @@ class Utils {
 }
 
 extension StringUtils on String {
-  bool get isNullOrWhitespace => this?.trim()?.isEmpty ?? true;
+  bool get isNullOrWhitespace => this.trim().isEmpty;
   String get cleanedText => Utils.cleanText(this);
   String get alphaNumeric => Utils.toAlphaNumeric(this);
   String get cleanedUrl => Utils.cleanUrl(this);

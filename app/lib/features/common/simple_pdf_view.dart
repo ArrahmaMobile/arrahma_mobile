@@ -7,28 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:path/path.dart' as path;
+import 'package:pdfx/pdfx.dart';
 
 import 'models/saved_file.dart';
 
 class SimplePdfView extends StatefulWidget {
   const SimplePdfView({
-    Key key,
-    @required this.url,
+    super.key,
+    required this.url,
     this.title,
-  }) : super(key: key);
+  });
   final String url;
-  final String title;
+  final String? title;
 
   @override
   _SimplePdfViewState createState() => _SimplePdfViewState();
 }
 
 class _SimplePdfViewState extends State<SimplePdfView> {
-  final _apiService = SL.get<ApiService>();
-  Future<PdfController> _pdfController;
-  Future<SavedFile> _filePathFuture;
+  final _apiService = SL.get<ApiService>()!;
+  late Future<PdfController> _pdfController;
+  late Future<SavedFile> _filePathFuture;
 
   @override
   void initState() {
@@ -52,23 +52,23 @@ class _SimplePdfViewState extends State<SimplePdfView> {
     final result = _apiService.downloadFile(widget.url);
     _filePathFuture = _saveToFile(result);
     return PdfController(
-        document: PdfDocument.openData((await result).value),
+        document: PdfDocument.openData((await result).value!),
         viewportFraction: 1);
   }
 
   Future<SavedFile> _saveToFile(
-      Future<KeyValuePair<String, Uint8List>> fileDataFuture) async {
+      Future<KeyValuePair<String?, Uint8List?>> fileDataFuture) async {
     final data = await fileDataFuture;
     final fileExtension = path.extension(widget.url);
     final fileName = path.basenameWithoutExtension(widget.url);
     final normalizedFileExtension = !StringUtils.isNullOrEmpty(fileExtension)
         ? fileExtension.substring(1)
         : 'pdf';
-    final file = await DefaultCacheManager().putFile(widget.url, data.value,
+    final file = await DefaultCacheManager().putFile(widget.url, data.value!,
         fileExtension: normalizedFileExtension);
     final tempFile = await FileUtils.copyFileToTempPath(
         file, widget.title ?? fileName, normalizedFileExtension);
-    return SavedFile(path: tempFile?.path);
+    return SavedFile(path: tempFile.path);
   }
 
   @override
@@ -78,13 +78,13 @@ class _SimplePdfViewState extends State<SimplePdfView> {
       children: [
         if (widget.title != null)
           ThemedAppBar(
-            title: widget.title,
+            title: widget.title!,
             actions: [
               FutureBuilder<SavedFile>(
                 future: _filePathFuture,
                 builder: (_, s) => Utils.shareActionButton(
-                  widget.title,
-                  s.data?.path != null ? [s.data.path] : null,
+                  widget.title!,
+                  s.data?.path != null ? [s.data!.path] : null,
                 ),
               )
             ],
@@ -100,9 +100,36 @@ class _SimplePdfViewState extends State<SimplePdfView> {
                         style: TextStyle(fontStyle: FontStyle.italic)))
                 : snapshot.data == null
                     ? const Center(child: CircularProgressIndicator())
-                    : PdfView(
-                        controller: snapshot.data,
-                      ),
+                    : Stack(children: [
+                        PdfView(
+                          controller: snapshot.data!,
+                          backgroundDecoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        Positioned(
+                          top: 6,
+                          right: 6,
+                          child: PdfPageNumber(
+                            controller: snapshot.data!,
+                            // When `loadingState != PdfLoadingState.success`  `pagesCount` equals null_
+                            builder: (_, state, loadingState, pagesCount) =>
+                                Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: Text(
+                                '${snapshot.data!.page}/${pagesCount ?? 0}',
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
           ),
         ),
       ],

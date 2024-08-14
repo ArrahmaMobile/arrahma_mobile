@@ -5,9 +5,9 @@ import 'menu_item_list.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({
-    Key key,
-    this.items,
-  }) : super(key: key);
+    super.key,
+    required this.items,
+  });
   final List<DrawerItem> items;
 
   @override

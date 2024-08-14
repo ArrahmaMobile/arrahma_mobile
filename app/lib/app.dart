@@ -5,8 +5,8 @@ import 'package:inherited_state/inherited_state.dart';
 import 'router/router.dart';
 
 class App extends StatelessWidget {
-  const App({Key key, this.dependencies}) : super(key: key);
-  final List<Inject> dependencies;
+  const App({super.key, this.dependencies});
+  final List<Inject>? dependencies;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,7 @@ class App extends StatelessWidget {
       color: Colors.white,
       theme: themeVariants.light.theme,
       darkTheme: themeVariants.dark.theme,
-      themeMode:
-          userPreferences?.themePerference?.themeMode ?? ThemeMode.system,
+      themeMode: ThemeMode.dark,
       locale: AppUtils.isDebug ? DevicePreview.locale(context) : null,
       builder: AppUtils.isDebug ? DevicePreview.appBuilder : null,
       onGenerateRoute: AppRouter.generateRoute,

@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:arrahma_shared/shared.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart'
     hide ServerConnectionStatus;
 import 'package:flutter_framework/flutter_framework.dart' as f;
 import 'package:inherited_state/inherited_state.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'package:url_launcher/url_launcher.dart' as launcher;
 import 'app_launcher.dart';
@@ -25,20 +25,23 @@ class AppService extends StoppableService {
   final DeviceStorageService deviceStorageService;
 
   static const LAST_FETCH_DATE_KEY = 'LAST_FETCH_DATE';
-  static const FETCH_INTERVAL = Duration(hours: 1);
-  static const STATUS_CHECK_INTERVAL = Duration(seconds: 30);
+  static const STATUS_CHECK_INTERVAL = Duration(minutes: 1);
 
-  AppData _appData;
-  AppData get appData => _appData;
+  final audioPlayer = AudioPlayer();
 
-  String _appDataHash;
-  String get appDataHash => _appDataHash;
+  AppData? _appData;
+  AppData? get appData => _appData;
+
+  String? _appDataHash;
+  String? get appDataHash => _appDataHash;
 
   // TODO(shah): Abstract into cached timer service
-  Timer _dataFetchTimer;
-  Timer _statusCheckTimer;
-  bool _isUpdated;
-  bool get justUpdated => _isUpdated && _appData == null;
+  Timer? _dataFetchTimer;
+  Timer? _statusCheckTimer;
+  bool? _isUpdated;
+  bool get justUpdated => _isUpdated == true && _appData == null;
+
+  late EnvironmentConfig _lastEnv;
 
   final _broadcastStatusNotifier =
       ValueNotifier<BroadcastStatus>(const BroadcastStatus.init());
@@ -46,7 +49,7 @@ class AppService extends StoppableService {
       _broadcastStatusNotifier;
 
   Future<AppData> initApp() async {
-    _isUpdated = (await storageService.get<AppMetadata>()).isUpdated;
+    _isUpdated = (await storageService.get<AppMetadata>())?.isUpdated;
     // _dataFetchTimer = Timer.periodic(
     //     FETCH_INTERVAL + const Duration(seconds: 10),
     //     (_) => dataFetchTimerHandler());
@@ -56,13 +59,17 @@ class AppService extends StoppableService {
     _appDataHash ??= await deviceStorageService.loadAppDataHash();
 
     await _setupData().catchError((dynamic _) => null);
-    apiService.environmentConfigCtrl.stateListener
+    _lastEnv = apiService.environmentConfigCtrl!.state!;
+    apiService.environmentConfigCtrl!.stateListener
         .addListener(_onEnvironmentUpdate);
     _appData ??= await deviceStorageService.loadAppData();
-    return _appData;
+    return _appData!;
   }
 
   void _onEnvironmentUpdate() {
+    if (_lastEnv.baseUrl == apiService.environmentConfigCtrl!.state!.baseUrl)
+      return;
+    _lastEnv = apiService.environmentConfigCtrl!.state!;
     _setupData(init: false, force: true);
   }
 
@@ -70,30 +77,37 @@ class AppService extends StoppableService {
     await statusCheckTimerHandler(init: init, force: force);
   }
 
-  Future<AppData> dataFetchTimerHandler(
+  Future<AppData?> dataFetchTimerHandler(
       {bool init = false, bool force = false}) async {
-    final appDataInfo = await getData(force: force);
+    final appDataInfo = force
+        ? await getData(force: force)
+        : _appData != null && _appDataHash != null
+            ? KeyValuePair(_appDataHash!, _appData!)
+            : null;
     if (appDataInfo?.value != null) {
-      deviceStorageService.saveAppData(appDataInfo.value);
+      deviceStorageService.saveAppData(appDataInfo!.value);
       deviceStorageService.saveAppDataHash(appDataInfo.key);
       if (!init)
         RS.getReactiveFromRoot<AppData>().setState((data) => appDataInfo.value);
       _appData = appDataInfo.value;
       _appDataHash = appDataInfo.key;
     }
-    return appDataInfo.value;
+    return appDataInfo?.value;
   }
 
-  Future<ServerStatus> statusCheckTimerHandler(
+  Future<ServerStatus?> statusCheckTimerHandler(
       {bool init = true, bool force = false}) async {
     final status = await getStatus();
-    _broadcastStatusNotifier.value = status.broadcastStatus;
     if (status != null) {
+      _broadcastStatusNotifier.value = status.broadcastStatus;
       final serverStatus =
           f.ServerConnectionStatus(status: STATUS_MAP[status.status]);
       connectivityService.updateServerStatus(serverStatus);
     }
     final isStale = status?.isDataStale ?? false;
+    if (isStale)
+      logger.verbose(
+          'Data with hash $_appDataHash is stale; ${status?.lastDataHash != null ? 'New hash: ${status!.lastDataHash}; ' : ''}fetching...');
     await dataFetchTimerHandler(
         init: init,
         force: force ||
@@ -110,9 +124,9 @@ class AppService extends StoppableService {
     ServerConnectionStatus.Unavailable: ServerConnectionState.Unavailable,
   };
 
-  Future<KeyValuePair<String, AppData>> getData({bool force = false}) async {
-    AppData appData;
-    String appDataHash;
+  Future<KeyValuePair<String, AppData>?> getData({bool force = false}) async {
+    AppData? appData;
+    String? appDataHash;
     final lastFetchDate = DateTime.tryParse(
         await storageService.getWithKey<String>(LAST_FETCH_DATE_KEY) ?? '');
     final date = DateTime.now().toUtc();
@@ -129,19 +143,21 @@ class AppService extends StoppableService {
         final appDataResponse =
             await apiService.getWithResponse<AppData>('data?api-version=2');
         if (appDataResponse.isSuccess && appDataResponse.data != null) {
-          appData = appDataResponse.data;
-          appDataHash = appDataResponse.headers['etag'];
+          appData = appDataResponse.data!;
+          appDataHash = appDataResponse.headers!['etag']!;
+
           await storageService.setWithKey<String>(
               LAST_FETCH_DATE_KEY, date.toIso8601String());
+          return KeyValuePair(appDataHash, appData);
         }
       } catch (err) {
         logger.error('Unable to get app data.', err);
       }
     }
-    return KeyValuePair(appDataHash, appData);
+    return null;
   }
 
-  Future<ServerStatus> getStatus() async {
+  Future<ServerStatus?> getStatus() async {
     final status = await apiService.getWithResponse<ServerStatus>(
         'status${appDataHash != null ? '?dataHash=$appDataHash' : ''}',
         internal: true,
@@ -179,7 +195,7 @@ class AppService extends StoppableService {
   }
 
   static Future<bool> launchAppOrStore(BuildContext context,
-      String appPackageNameOrScheme, String storeId) async {
+      String? appPackageNameOrScheme, String? storeId) async {
     return appPackageNameOrScheme != null &&
             await isAppInstalled(appPackageNameOrScheme)
         ? await launchApp(appPackageNameOrScheme)
@@ -188,7 +204,7 @@ class AppService extends StoppableService {
 
   @override
   void dispose() {
-    apiService.environmentConfigCtrl.stateListener
+    apiService.environmentConfigCtrl!.stateListener
         .removeListener(_onEnvironmentUpdate);
     _dataFetchTimer?.cancel();
     _statusCheckTimer?.cancel();

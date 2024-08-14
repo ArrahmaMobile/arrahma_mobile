@@ -5,19 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:recase/recase.dart';
 
-class CourseItem extends StatelessWidget {
-  CourseItem({Key key, this.course}) : super(key: key);
+class CourseItem extends StatefulWidget {
+  const CourseItem({super.key, required this.course});
   final Course course;
 
-  ScreenUtils _screenUtils;
+  @override
+  State<CourseItem> createState() => _CourseItemState();
+}
+
+class _CourseItemState extends State<CourseItem> {
+  late ScreenUtils _screenUtils;
 
   @override
   Widget build(BuildContext context) {
-    _screenUtils = ScreenUtils.getInstance(context);
-    return _buildCourse(context, course);
+    _screenUtils = ScreenUtils.getInstance(context)!;
+    return _buildCourse(context, widget.course);
   }
 
   Widget _buildCourse(BuildContext context, Course course) {
+    final isNetworkImage = course.imageUrl.startsWith('http');
     return GestureDetector(
       onTap: () {
         if (course is QuranCourse)
@@ -32,7 +38,7 @@ class CourseItem extends StatelessWidget {
       },
       child: Column(
         children: <Widget>[
-          if (course.imageUrl.startsWith('http'))
+          if (isNetworkImage)
             Image(
               image: ImageUtils.fromNetworkWithCached(
                 course.imageUrl,
@@ -43,15 +49,20 @@ class CourseItem extends StatelessWidget {
           else
             Image.asset(
               course.imageUrl,
-              width: _screenUtils.getWidth(80),
-              height: _screenUtils.getWidth(80),
+              width: _screenUtils.getWidth(68),
+              height: _screenUtils.getWidth(68),
             ),
-          Text(
-            course.title.titleCase,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: _screenUtils.getSp(14),
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: isNetworkImage
+                ? EdgeInsets.zero
+                : const EdgeInsets.only(top: 8.0),
+            child: Text(
+              course.title.titleCase,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: _screenUtils.getSp(14),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

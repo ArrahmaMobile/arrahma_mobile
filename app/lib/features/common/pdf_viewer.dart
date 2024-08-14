@@ -1,34 +1,31 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:arrahma_mobile_app/core/utils.dart';
-import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:inherited_state/inherited_state.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:path/path.dart' as path;
+import 'package:pdfx/pdfx.dart';
 
 import 'models/saved_file.dart';
 
 class SimplePdfViewer extends StatefulWidget {
   const SimplePdfViewer({
-    Key key,
-    @required this.url,
+    super.key,
+    required this.url,
     this.title,
-  }) : super(key: key);
+  });
   final String url;
-  final String title;
+  final String? title;
 
   @override
   _SimplePdfViewerState createState() => _SimplePdfViewerState();
 }
 
 class _SimplePdfViewerState extends State<SimplePdfViewer> {
-  final _apiService = SL.get<ApiService>();
-  Future<PdfController> _pdfController;
-  Future<SavedFile> _filePathFuture;
+  final _apiService = SL.get<ApiService>()!;
+  late Future<PdfController> _pdfController;
 
   @override
   void initState() {
@@ -49,26 +46,33 @@ class _SimplePdfViewerState extends State<SimplePdfViewer> {
   }
 
   Future<PdfController> _loadPdf() async {
-    final result = _apiService.downloadFile(widget.url);
-    _filePathFuture = _saveToFile(result);
-    return PdfController(
-        document: PdfDocument.openData((await result).value),
-        viewportFraction: 1);
+    final cacheManager = DefaultCacheManager();
+    final file = await cacheManager.getFileFromCache(widget.url);
+
+    if (file != null && await file.file.exists()) {
+      // Use the cached file if it exists
+      return PdfController(document: PdfDocument.openFile(file.file.path));
+    } else {
+      final result = _apiService.downloadFile(widget.url);
+      _saveToFile(result);
+      return PdfController(
+        document: PdfDocument.openData((await result).value!),
+        viewportFraction: 1,
+      );
+    }
   }
 
   Future<SavedFile> _saveToFile(
-      Future<KeyValuePair<String, Uint8List>> fileDataFuture) async {
+      Future<KeyValuePair<String?, Uint8List?>> fileDataFuture) async {
     final data = await fileDataFuture;
     final fileExtension = path.extension(widget.url);
-    final fileName = path.basenameWithoutExtension(widget.url);
+    // final fileName = path.basenameWithoutExtension(widget.url);
     final normalizedFileExtension = !StringUtils.isNullOrEmpty(fileExtension)
         ? fileExtension.substring(1)
         : 'pdf';
-    final file = await DefaultCacheManager().putFile(widget.url, data.value,
+    final file = await DefaultCacheManager().putFile(widget.url, data.value!,
         fileExtension: normalizedFileExtension);
-    final tempFile = await FileUtils.copyFileToTempPath(
-        file, widget.title ?? fileName, normalizedFileExtension);
-    return SavedFile(path: tempFile?.path);
+    return SavedFile(path: file.path);
   }
 
   @override
@@ -84,7 +88,7 @@ class _SimplePdfViewerState extends State<SimplePdfViewer> {
           : snapshot.data == null
               ? const Center(child: CircularProgressIndicator())
               : PdfView(
-                  controller: snapshot.data,
+                  controller: snapshot.data!,
                 ),
     );
   }

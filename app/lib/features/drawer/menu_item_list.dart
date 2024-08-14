@@ -1,17 +1,14 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/common/media_content_view.dart';
-import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_surah_view.dart';
 import 'package:arrahma_mobile_app/views/about_us_view.dart';
 import 'package:arrahma_mobile_app/views/contact_us_view.dart';
 import 'package:arrahma_mobile_app/views/settings_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_framework/flutter_framework.dart';
 
 class MenuItemList extends StatelessWidget {
-  const MenuItemList({Key key, this.isDrawer = false, this.items})
-      : super(key: key);
+  const MenuItemList({super.key, this.isDrawer = false, required this.items});
 
   final bool isDrawer;
   final List<DrawerItem> items;
@@ -36,7 +33,7 @@ class MenuItemList extends StatelessWidget {
         ),
         onTap: () {
           final normalizedTitle = item.title.toLowerCase();
-          Widget view;
+          Widget? view;
           switch (normalizedTitle) {
             case 'home':
               Navigator.maybePop(context);
@@ -54,16 +51,16 @@ class MenuItemList extends StatelessWidget {
           final itemView = view ??
               ((item.children?.isNotEmpty ?? false)
                   ? MenuItemList(
-                      items: item.children,
+                      items: item.children!,
                     )
-                  : item.content?.surahs?.isNotEmpty ?? false
+                  : item.content?.surahs.isNotEmpty ?? false
                       ? QuranSurahView(
-                          content: item.content,
+                          content: item.content!,
                           referrerTitle: item.title,
                         )
                       : item.media != null
                           ? MediaContentView(
-                              content: item.media,
+                              content: item.media!,
                             )
                           : null);
           if (itemView != null)
@@ -72,8 +69,8 @@ class MenuItemList extends StatelessWidget {
               itemView,
               title: item.title,
             );
-          else
-            Utils.openUrl(context, TitledItem.fromItem(item.title, item.link),
+          else if (item.link != null)
+            Utils.openUrl(context, TitledItem.fromItem(item.title, item.link!),
                 useWebView: true);
         });
   }

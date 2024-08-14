@@ -11,7 +11,7 @@ class MediaScraper extends ScraperBase<MediaContent> {
   final String url;
 
   @override
-  Future<MediaContent> scrape() async {
+  Future<MediaContent?> scrape() async {
     final doc = await scraper.navigateTo(url);
     if (doc == null) return null;
     final hasImageViewer = doc.querySelector('#sv-container') != null;
@@ -22,9 +22,10 @@ class MediaScraper extends ScraperBase<MediaContent> {
               pathSegments: parsedUrl.pathSegments
                   .take(parsedUrl.pathSegments.length - 1)
                   .toList()
-                    ..add('gallery.xml'))
+                ..add('gallery.xml'))
           .toString();
       final xmlStr = await scraper.download(galleryDataUrl, 'application/xml');
+      if (xmlStr == null) return null;
       final doc = XmlDocument.parse(xmlStr);
       final images = doc.rootElement
           .findElements('image')
@@ -34,6 +35,7 @@ class MediaScraper extends ScraperBase<MediaContent> {
               .toAbsolute(url))
           .map((i) => Utils.getItemByUrl(i))
           .toList();
+
       return MediaContent(
           items: images.map((i) => MediaItem(item: i)).toList());
     } else if (doc.querySelector('#ramadancontainer') != null) {
@@ -56,8 +58,10 @@ class MediaScraper extends ScraperBase<MediaContent> {
         items: mediaItems.toList(),
       );
     } else if (doc.querySelector('#studentportion') != null) {
-      final title =
-          doc.querySelector('#studentportion #studentheading').text.cleanedText;
+      final title = doc
+          .querySelector('#studentportion #studentheading')
+          ?.text
+          .cleanedText;
       final desEl = doc
           .querySelector(
               '#studentportion #testins, #studentportion #weeklyupdatetable')
@@ -65,27 +69,28 @@ class MediaScraper extends ScraperBase<MediaContent> {
       if (desEl != null) {
         desEl.querySelectorAll('#testselectbox').forEach((e) => e.remove());
       }
-      final descriptionMd = html2md.convert(desEl?.innerHtml);
+      final descriptionMd =
+          desEl?.innerHtml != null ? html2md.convert(desEl!.innerHtml) : null;
       final content = MediaContent(
         title: title,
         description: descriptionMd,
         items: [],
       );
       final items = doc.querySelectorAll('#studentportion #studentlink p');
-      if (items?.isNotEmpty ?? false) {
-        content.items.addAll(items.where((i) => i.children.isNotEmpty).map((i) {
+      if (items.isNotEmpty) {
+        content.items!.addAll(items.where((i) => i.children.isNotEmpty).map((i) {
           return MediaItem(
             title: i.text.cleanedText,
             item: Utils.getItemByUrl(
-              i.querySelector('a').attributes['href']?.toAbsolute(url),
+              i.querySelector('a')?.attributes['href']?.toAbsolute(url),
             ),
           );
-        }));
+        }).where((i) => i.item != null));
       } else {
         final sections = doc.querySelectorAll('#studentportion #studentrbox');
         sections.forEach((s) {
-          final title = s.querySelector('#studenttestprep1').text.cleanedText;
-          content.items.add(MediaItem(
+          final title = s.querySelector('#studenttestprep1')?.text.cleanedText;
+          content.items!.add(MediaItem(
             title: title,
           ));
           final options = s
@@ -93,26 +98,31 @@ class MediaScraper extends ScraperBase<MediaContent> {
               .map((o) => MediaItem(
                     title: o.text.cleanedText,
                     item: Utils.getItemByUrl(
-                        o.attributes['value'].toAbsolute(url)),
-                  ));
-          content.items.addAll(options);
+                        o.attributes['value']?.toAbsolute(url)),
+                  ))
+              .where((i) => i.item != null)
+              .toList();
+          content.items!.addAll(options);
         });
       }
 
       return content;
     } else if (doc.querySelector('#containerm') != null) {
       return MediaContent(
-        title: doc.querySelector('#containerm #heading1')?.text?.cleanedText,
+        title: doc.querySelector('#containerm #heading1')?.text.cleanedText,
         description: html2md.convert(
             '<div>${doc.querySelectorAll('#containerm p, #containerm a').map((i) => i.outerHtml).join('\n')}</div>'),
+        items: [],
       );
     } else if (doc.querySelector('#containerd') != null) {
       final formContainer = doc.querySelector('#containerd');
+      if (formContainer == null) return null;
       final formIframe = formContainer.querySelector('iframe');
-      final formSrc = formIframe.attributes['src'].toAbsolute(url);
+      final formSrc = formIframe?.attributes['src']?.toAbsolute(url);
+      if (formSrc == null) return null;
       return MediaContent(
-        title: formContainer.querySelector('h1').text.cleanedText,
-        description: formContainer.querySelector('h4').text.cleanedText,
+        title: formContainer.querySelector('h1')?.text.cleanedText,
+        description: formContainer.querySelector('h4')?.text.cleanedText,
         items: [
           MediaItem(
             item: Item(

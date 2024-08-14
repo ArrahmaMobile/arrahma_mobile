@@ -6,21 +6,22 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 class MediaContentView extends StatelessWidget {
   const MediaContentView({
-    Key key,
-    this.content,
-  }) : super(key: key);
+    super.key,
+    required this.content,
+  });
 
   final MediaContent content;
 
   @override
   Widget build(BuildContext context) {
-    if (content.items.length == 1)
+    if (content.items?.length == 1 && content.items!.first.item != null)
       return Utils.getItemView(
         TitledItem.fromItem(
-          content.items.first.title,
-          content.items.first.item,
+          content.items!.first.title ??
+              '${EnumUtils.enumToString(content.items!.first.item!.type)} 1',
+          content.items!.first.item!,
         ),
-      );
+      )!;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -29,15 +30,15 @@ class MediaContentView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: MarkdownBody(
-                data: content.description,
+                data: content.description!,
               ),
             ),
           ListView.builder(
-            itemCount: content.items?.length ?? 0,
+            itemCount: content.items!.length,
             itemBuilder: (_, index) {
-              final item = content.items[index];
+              final item = content.items![index];
               final title = item.title ??
-                  '${EnumUtils.enumToString(item.item.type)} ${index + 1}';
+                  '${EnumUtils.enumToString(item.item!.type)} ${index + 1}';
               return ListTile(
                 title: Text(title),
                 onTap: item.item?.data != null
@@ -46,7 +47,7 @@ class MediaContentView extends StatelessWidget {
                           context,
                           TitledItem.fromItem(
                             title,
-                            item.item,
+                            item.item!,
                           ),
                           useWebView: true,
                         );

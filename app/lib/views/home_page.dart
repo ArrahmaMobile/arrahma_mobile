@@ -1,7 +1,7 @@
-import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/core/utils.dart';
-import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
+import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
+import 'package:arrahma_mobile_app/features/dua/dua_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
@@ -9,10 +9,8 @@ import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
-import 'package:arrahma_mobile_app/widgets/restart_widget.dart';
 import 'package:arrahma_shared/shared.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter/services.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,43 +22,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final appService = SL.get<AppService>();
-  bool _registered = false;
-
-  void restartApp() {
-    RestartWidget.restartApp(context);
-  }
+  final appService = SL.get<AppService>()!;
 
   @override
   Widget build(BuildContext context) {
-    if (!_registered) {
-      _registered = true;
-      ReactiveState.getReactive<AppData>(context)
-          .stateListener
-          .addListener(restartApp);
-    }
-
     final appData = context.on<AppData>();
-    final screenUtils = ScreenUtils.getInstance(context);
+    final screenUtils = ScreenUtils.getInstance(context)!;
     return Scaffold(
       drawer: MainDrawer(
         items: appData.drawerItems,
       ),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        brightness: Brightness.dark,
+        // brightness: Brightness.dark,
         title: HiddenTap(
           onTrigger: () async {
             if (!AppUtils.isDebug) return;
             final currentEnv = context.once<EnvironmentConfig>();
-            final envs = SL.get<EnvironmentService>().getEnvironments();
+            final envs = SL.get<EnvironmentService>()!.getEnvironments();
             if ((envs?.length ?? -1) <= 1) return;
             final envNames = envs.map((e) => e.name).toList();
             final nextEnv =
                 envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
             RS.set<EnvironmentConfig>(context, (_) => nextEnv);
             final success = await SL
-                .get<DeviceStorageService>()
+                .get<DeviceStorageService>()!
                 .saveEnvironmentName(nextEnv.name);
             if (success) print('Switched env to ${nextEnv.name}');
           },
@@ -88,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                             top: screenUtils.isSmallScreen() ? 0 : 40.0),
                         child: CourseView(
                           courses: [
-                            ...appData?.courses?.take(3)?.toList() ?? [],
+                            ...appData.courses.take(3).toList(),
                             ...staticCourses(appData),
                           ],
                         ),
@@ -112,6 +98,7 @@ class _HomePageState extends State<HomePage> {
                             visitor: TawkVisitor(
                               name: '',
                               email: '',
+                              hash: 'default',
                             ),
                           ),
                           title: 'Chat With Us',
@@ -125,14 +112,16 @@ class _HomePageState extends State<HomePage> {
           ),
           Column(
             children: [
-              const Divider(
-                height: 2,
-                thickness: 2,
-              ),
-              const SizedBox(height: 8),
-              _socialMedia(context, appData.socialMediaItems),
-              _buildAudioPlayer(),
-              const SizedBox(height: 8),
+              _buildFooter(Column(
+                children: [
+                  const Divider(
+                    height: 2,
+                    thickness: 2,
+                  ),
+                  const SizedBox(height: 8),
+                  _socialMedia(context, appData.socialMediaItems),
+                ],
+              )),
             ],
           ),
         ],
@@ -147,48 +136,35 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Utils.pushView(
               context,
-              CourseView(courses: appData.courses.skip(3).take(6).toList()),
+              CourseView(courses: appData.courses.skip(3).toList()),
               title: 'Other Courses',
             );
           },
         ),
         StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/202.png',
-            title: 'Assorted Lectures',
+            title: 'Duas & Dhikr',
             onTap: () {
               Utils.pushView(
                 context,
-                QuranCourseView(course: appData.courses[10]),
-                title: 'Assorted Lectures',
-              );
-            }),
-        StaticQuranCourse(
-            imageUrl: 'https://arrahma.org/images_n/72.png',
-            title: 'Weekly Reminders',
-            onTap: () {
-              Utils.pushView(
-                context,
-                CourseView(
-                  courses: [
-                    appData.courses[9],
-                    ...appData.courses.skip(11).toList()
-                  ],
-                ),
-                title: 'Weekly Reminders',
+                DuaView(),
+                title: 'Duas & Dhikr',
               );
             }),
       ];
 
-  Widget _buildAudioPlayer() {
-    return const CollapsedPlayer();
+  Widget _buildFooter(Widget defaultFooter) {
+    return HomePageFooter(
+      defaultFooter: defaultFooter,
+    );
   }
 
   Widget _buildBanners(List<HeadingBanner> banners) {
     return CarouselIndicator(
       autoPlayInterval: const Duration(seconds: 5),
       items: banners
-          ?.map((banner) => _buildImageLink(banner.item, banner.imageUrl))
-          ?.toList(),
+          .map((banner) => _buildImageLink(banner.item, banner.imageUrl))
+          .toList(),
     );
   }
 
@@ -198,8 +174,9 @@ class _HomePageState extends State<HomePage> {
       aspectRatio: 8,
       showIndicator: false,
       items: quickLinks
-          ?.map((quickLink) => _buildQuickLink(quickLink.link, quickLink.title))
-          ?.toList(),
+          .where((quickLink) => quickLink.link != null)
+          .map((quickLink) => _buildQuickLink(quickLink.link!, quickLink.title))
+          .toList(),
     );
   }
 
@@ -211,7 +188,7 @@ class _HomePageState extends State<HomePage> {
           'buster': item.data
         });
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, item),
+      onTap: () => Utils.openUrl(context, item.copyWith(imageUrl: imageUrl)),
       child: _buildImage(imageUriWithCacheBuster.toString()),
     );
   }
@@ -224,13 +201,15 @@ class _HomePageState extends State<HomePage> {
               ? 'YouTube'
               : item.data.contains('facebook')
                   ? 'Facebook'
-                  : null,
+                  : item.data.contains('mixlr')
+                      ? 'Mixlr'
+                      : 'Website',
           imageUrl),
     );
   }
 
   Widget _buildQuickLink(Item link, String title) {
-    final screenUtils = ScreenUtils.getInstance(context);
+    final screenUtils = ScreenUtils.getInstance(context)!;
     return FittedBox(
       child: Card(
         child: InkWell(
@@ -287,8 +266,12 @@ class _HomePageState extends State<HomePage> {
         final child = Padding(
           padding: const EdgeInsets.all(2.0),
           child: Badge(
-            content: const Text('LIVE'),
-            offset: const Offset(5, 0),
+            constraints: const BoxConstraints(maxWidth: 32),
+            content: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: const Text('LIVE'),
+            ),
+            offset: const Offset(0, -8),
             enabled: label != null && label == 'YouTube'
                 ? status.isYoutubeLive
                 : label == 'Facebook'
@@ -320,9 +303,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    ReactiveState.getReactive<AppData>(context)
-        .stateListener
-        .removeListener(restartApp);
     super.dispose();
   }
 }

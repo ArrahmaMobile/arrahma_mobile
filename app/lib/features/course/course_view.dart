@@ -3,7 +3,7 @@ import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 
 class CourseView extends StatelessWidget {
-  const CourseView({Key key, @required this.courses}) : super(key: key);
+  const CourseView({super.key, required this.courses});
   final List<Course> courses;
 
   @override

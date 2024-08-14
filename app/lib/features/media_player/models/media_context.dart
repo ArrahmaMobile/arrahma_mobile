@@ -2,10 +2,10 @@ import 'media_data.dart';
 
 class MediaContext {
   const MediaContext({
-    this.mediaItems,
-    this.index,
-    this.totalDuration,
-    this.playedDuration,
+    required this.mediaItems,
+    required this.index,
+    required this.totalDuration,
+    required this.playedDuration,
   });
   final List<MediaData> mediaItems;
   final int index;

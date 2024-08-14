@@ -1,17 +1,18 @@
-import 'models/models.dart';
-import 'models/quick_link.dart';
-import 'models/quran_course/v2/quran_course.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 
+import 'models/models.dart';
+
+@jsonSerializable
 class AppData {
   const AppData({
-    this.logoUrl,
-    this.aboutUsMarkdown,
-    this.banners,
-    this.broadcastItems,
-    this.courses,
-    this.socialMediaItems,
-    this.quickLinks,
-    this.drawerItems,
+    required this.logoUrl,
+    required this.aboutUsMarkdown,
+    required this.banners,
+    required this.broadcastItems,
+    required this.courses,
+    required this.socialMediaItems,
+    required this.quickLinks,
+    required this.drawerItems,
   });
   final List<DrawerItem> drawerItems;
   final List<QuickLink> quickLinks;

@@ -1,30 +1,34 @@
-import 'package:simple_json_mapper/simple_json_mapper.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 
-@JObj()
+@jsonSerializable
 class ServerStatus {
   const ServerStatus({
-    this.status,
-    this.isDataStale,
-    this.broadcastStatus,
-    this.lastScrapedOn,
-    this.lastScrapeAttemptOn,
+    required this.status,
+    required this.isDataStale,
+    required this.broadcastStatus,
+    required this.lastScrapedOn,
+    required this.lastScrapeAttemptOn,
+    this.lastDataHash,
   });
   final ServerConnectionStatus status;
   final bool isDataStale;
   final BroadcastStatus broadcastStatus;
   final DateTime lastScrapedOn;
   final DateTime lastScrapeAttemptOn;
+  final String? lastDataHash;
 }
 
+@jsonSerializable
 enum ServerConnectionStatus {
   Available,
   Maintenance,
   Unavailable,
 }
 
+@jsonSerializable
 class BroadcastStatus {
   const BroadcastStatus(
-      {this.isYoutubeLive, this.isFacebookLive, this.isMixlrLive});
+      {required this.isYoutubeLive, required this.isFacebookLive, required this.isMixlrLive});
   const BroadcastStatus.init()
       : isFacebookLive = false,
         isYoutubeLive = false,

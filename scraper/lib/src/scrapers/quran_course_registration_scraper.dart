@@ -10,14 +10,15 @@ class QuranCourseRegistrationScraper extends ScraperBase<MediaItem> {
   final String registrationUrl;
 
   @override
-  Future<MediaItem> scrape() async {
+  Future<MediaItem?> scrape() async {
     final doc = await scraper.navigateTo(registrationUrl);
     if (doc == null) return null;
-    final url = scraper.currentUrl;
+
+    final url = Uri.parse(scraper.baseUrl).resolve(registrationUrl).toString();
     final formContainer = doc.querySelector('#cus2');
     final formIframe = formContainer?.querySelector('iframe');
     final formSrc = formIframe != null
-        ? formIframe.attributes['src'].toAbsolute(url)
+        ? formIframe.attributes['src']?.toAbsolute(url)
         : null;
 
     return formSrc != null

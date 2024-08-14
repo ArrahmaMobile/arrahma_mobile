@@ -7,19 +7,19 @@ import 'quran_surah_view.dart';
 
 class QuranCourseView extends StatefulWidget {
   const QuranCourseView({
-    Key key,
-    @required this.course,
+    super.key,
+    required this.course,
     this.initialTabIndex,
-  }) : super(key: key);
+  });
   final QuranCourse course;
-  final int initialTabIndex;
+  final int? initialTabIndex;
 
   @override
   _QuranCourseViewState createState() => _QuranCourseViewState();
 }
 
 class _QuranCourseViewState extends State<QuranCourseView> {
-  int _tabSelected;
+  int? _tabSelected;
 
   int get tabCount => _getTabs().length;
 
@@ -37,28 +37,28 @@ class _QuranCourseViewState extends State<QuranCourseView> {
     return [
       if (widget.course.courseDetails != null)
         MediaContentView(
-          content: widget.course.courseDetails,
+          content: widget.course.courseDetails!,
         ),
       if (widget.course.registration != null)
         MediaContentView(
-          content: widget.course.registration,
+          content: widget.course.registration!,
         ),
       if (widget.course.tafseer != null)
         QuranSurahView(
-          content: widget.course.tafseer,
+          content: widget.course.tafseer!,
         ),
       if (widget.course.tajweed != null)
         QuranSurahView(
-          content: widget.course.tajweed,
+          content: widget.course.tajweed!,
         ),
       if (widget.course.lectures != null)
         QuranSurahView(
-          content: widget.course.lectures,
+          content: widget.course.lectures!,
         ),
       if (widget.course.tests != null)
-        MediaContentView(content: widget.course.tests),
+        MediaContentView(content: widget.course.tests!),
       if (widget.course.otherContent != null)
-        MediaContentView(content: widget.course.otherContent)
+        MediaContentView(content: widget.course.otherContent!)
     ];
   }
 
@@ -97,14 +97,14 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                         icon: const Icon(
                           Icons.library_books,
                         ),
-                        label: widget.course.courseDetails.title,
+                        label: widget.course.courseDetails!.title,
                       ),
                     if (widget.course.registration != null)
                       BottomNavigationBarItem(
                         icon: const Icon(
                           Icons.app_registration,
                         ),
-                        label: widget.course.registration.title,
+                        label: widget.course.registration!.title,
                       ),
                     if (widget.course.tafseer != null)
                       const BottomNavigationBarItem(
@@ -116,7 +116,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                     if (widget.course.tajweed != null)
                       const BottomNavigationBarItem(
                         icon: Icon(
-                          FontAwesomeIcons.quran,
+                          FontAwesomeIcons.bookQuran,
                         ),
                         label: 'Tajweed',
                       ),
@@ -139,7 +139,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                         icon: const Icon(
                           FontAwesomeIcons.table,
                         ),
-                        label: widget.course.otherContent.title,
+                        label: widget.course.otherContent!.title,
                       ),
                   ],
                   onTap: (index) {

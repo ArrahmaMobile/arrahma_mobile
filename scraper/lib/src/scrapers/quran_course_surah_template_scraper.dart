@@ -14,7 +14,7 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
   static const INTRO_TOKEN = 'Introduction';
 
   @override
-  Future<QuranCourseContent> scrape() async {
+  Future<QuranCourseContent?> scrape() async {
     final url = contentUrl.toString();
     final doc = await scraper.navigateTo(url);
     if (doc == null) return null;
@@ -25,7 +25,7 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
       title: (body.querySelector('#mainheading1') ??
               body.querySelector('#mainheading2'))
           ?.text
-          ?.cleanedText,
+          .cleanedText,
       surahs: [],
     );
 
@@ -34,9 +34,9 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
       return CourseLinkItem(
         name: i.text.cleanedText,
         links: links
-            .map((link) =>
-                link != null ? link.attributes['href'].toAbsolute(url) : null)
+            .map((link) => link.attributes['href']?.toAbsolute(url))
             .where((l) => l != null)
+            .cast<String>()
             .toList(),
       );
     }).toList();
@@ -44,12 +44,15 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
     final surahs = await Future.wait(
         items.where((i) => i.links.isNotEmpty).map((item) async {
       final linkItem = Utils.getItemByUrl(item.links.first);
-      final doc = linkItem.type == ItemType.WebPage
+      final doc = linkItem?.type == ItemType.WebPage
           ? await scraper.navigateTo(item.links.first)
           : null;
       if (doc == null) {
-        final linkItems =
-            item.links.map((link) => Utils.getItemByUrl(link)).toList();
+        final linkItems = item.links
+            .map((link) => Utils.getItemByUrl(link))
+            .where((l) => l != null)
+            .cast<Item>()
+            .toList();
         return Surah(
           name: item.name,
           groups: linkItems
@@ -59,17 +62,19 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
             Lesson(title: item.name, itemGroups: [GroupItem(items: linkItems)]),
           ],
         );
-      } else {
+      } else if (linkItem != null) {
         final content = await QuranCourseJuzTemplateScraper(
                 scraper, linkItem.data,
                 useHeading: true)
             .scrape();
-        return (content?.surahs?.isNotEmpty ?? false)
-            ? content.surahs.first.update(name: item.name)
+        return (content?.surahs.isNotEmpty ?? false)
+            ? content!.surahs.first.update(name: item.name)
             : null;
       }
+
+      return null;
     }));
-    content.surahs.addAll(surahs.where((s) => s != null));
+    content.surahs.addAll(surahs.where((s) => s != null).cast());
 
     return content;
   }

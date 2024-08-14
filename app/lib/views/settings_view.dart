@@ -12,10 +12,10 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  final storageService = SL.get<IStorageService>();
-  final feedbackService = SL.get<FeedbackService>();
+  final storageService = SL.get<IStorageService>()!;
+  final feedbackService = SL.get<FeedbackService>()!;
 
-  ReactiveController<UserPreferences> userPrefCtrl;
+  late ReactiveController<UserPreferences> userPrefCtrl;
 
   @override
   void didChangeDependencies() {
@@ -37,7 +37,7 @@ class _SettingsViewState extends State<SettingsView> {
     final themeMode = userPrefCtrl.state.themePerference.themeMode;
     return SingleChildScrollView(
       padding:
-          appTheme.pagePadding.add(const EdgeInsets.symmetric(vertical: 20)),
+          appTheme.pagePadding?.add(const EdgeInsets.symmetric(vertical: 20)),
       child: Column(
         children: [
           ListTile(
@@ -54,7 +54,8 @@ class _SettingsViewState extends State<SettingsView> {
             onTap: () => _updatePref((pref) => pref.copyWith(
                 themePerference: pref.themePerference.copyWith(
                     themeMode: ThemeMode.values[
-                        (themeMode.index + 1) % ThemeMode.values.length]))),
+                        (ThemeMode.values.indexOf(themeMode) + 1) %
+                            ThemeMode.values.length]))),
           ),
           const Divider(thickness: 2),
           if (!AppUtils.isWeb)
@@ -62,7 +63,7 @@ class _SettingsViewState extends State<SettingsView> {
               leading: const Icon(Icons.bug_report),
               title: const Text('Report Bug/Feedback'),
               onTap: () => feedbackService.sendInfo(context,
-                  SettingsView.FEEDBACK_HOOK, userPrefCtrl.state.userIdentity),
+                  SettingsView.FEEDBACK_HOOK, userPrefCtrl.state.userIdentity!),
             ),
           ListTile(
             leading: const Icon(Icons.info),
@@ -73,7 +74,7 @@ class _SettingsViewState extends State<SettingsView> {
                 onSend: () => feedbackService.sendInfo(
                     context,
                     SettingsView.FEEDBACK_HOOK,
-                    userPrefCtrl.state.userIdentity),
+                    userPrefCtrl.state.userIdentity!),
               ),
               padding: EdgeInsets.zero,
             ),

@@ -1,11 +1,11 @@
-import 'package:simple_json_mapper/simple_json_mapper.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 import '../app_metadata.dart';
 import '../run_metadata.dart';
 
-@JObj()
+@jsonSerializable
 class ScrapedData {
-  const ScrapedData({this.appData, this.runMetadata});
+  const ScrapedData({required this.appData, required this.runMetadata});
   final AppData appData;
   final RunMetadata runMetadata;
 }

@@ -13,6 +13,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.Audio,
           data: 'http://arrahma.org/taf2019mp3/juz3/june26_20-imran33-44.mp3',
+          isDirectSource: true,
         ),
       ),
       HeadingBanner(
@@ -20,6 +21,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'http://www.arrahma.org/tazkeer_n/tazkeer.php',
+          isDirectSource: false,
         ),
       ),
       HeadingBanner(
@@ -28,6 +30,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
           type: ItemType.Audio,
           data:
               'https://filedn.com/lYVXaQXjsnDpmndt09ArOXz/tarbiyyatimp3/fastsofshawal.mp3',
+          isDirectSource: true,
         ),
       ),
     ];
@@ -38,6 +41,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://www.facebook.com/arrahmah.islamic.institute/',
+          isDirectSource: false,
         ),
       ),
       BroadcastItem(
@@ -45,6 +49,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://mixlr.com/arrahma-live/',
+          isDirectSource: false,
         ),
       ),
       BroadcastItem(
@@ -52,6 +57,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+          isDirectSource: false,
         ),
       ),
       BroadcastItem(
@@ -59,6 +65,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'tel:+1 712 432 1001#491760789',
+          isDirectSource: false,
         ),
       ),
     ];
@@ -67,20 +74,22 @@ class DeviceStorageService extends BaseDeviceStorageService {
       QuranCourse(
         title: 'Adv Taleemul Quran',
         imageUrl: 'assets/images/courses/adv_taleemul_quran.png',
-        courseDetails: MediaContent(),
-        registration: MediaContent(),
         tajweed: QuranCourseContent(
+          id: 'tajweed',
+          title: 'Tajweed',
           surahs: [
             Surah(
               name: 'Surah Al-Baqarah',
               arabicName: 'الفاتحۃ',
               description: 'The Openisssng',
+              groups: [],
               lessons: [
                 Lesson(
                   title: 'Lessssson',
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  itemGroups: [],
                 )
               ],
             ),
@@ -98,17 +107,22 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  title: '',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             )
           ],
+          id: '',
         ),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Taleemul Quran',
         imageUrl: 'assets/images/courses/taleemul_quran.png',
-        courseDetails: MediaContent(),
-        registration: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        registration: MediaContent(items: []),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -121,10 +135,14 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             ),
           ],
+          id: '',
+          title: '',
         ),
         tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
@@ -138,17 +156,22 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  title: '',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             )
           ],
+          id: '',
         ),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Fehmul Quran',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetails: MediaContent(),
-        registration: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        registration: MediaContent(items: []),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -161,10 +184,14 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             ),
           ],
+          id: '',
+          title: '',
         ),
         tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
@@ -178,17 +205,22 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  title: '',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             )
           ],
+          id: '',
         ),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Course In Pashtu ',
         imageUrl: 'assets/images/courses/course_in_pashtu.png',
-        courseDetails: MediaContent(),
-        registration: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        registration: MediaContent(items: []),
         tajweed: QuranCourseContent(
           surahs: [
             Surah(
@@ -201,10 +233,14 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             ),
           ],
+          id: '',
+          title: '',
         ),
         tafseer: QuranCourseContent(
           title: 'Surah Al-Bassssssqarah',
@@ -218,51 +254,65 @@ class DeviceStorageService extends BaseDeviceStorageService {
                   lessonNum: '1',
                   ayahNum: '1-3',
                   uploadDate: '08/17/2020',
+                  title: '',
+                  itemGroups: [],
                 )
               ],
+              groups: [],
             )
           ],
+          id: '',
         ),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Ilmul Yaqeen',
         imageUrl: 'assets/images/courses/ilmul_yaqeen.png',
+        lectures: null,
       ),
       QuranCourse(
         title: 'Ahsanul Bayan',
         imageUrl: 'assets/images/courses/ahsanul_bayan.png',
-        courseDetails: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Al Furqan',
         imageUrl: 'assets/images/courses/fehmul_quran.png',
-        courseDetails: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Seerah',
         imageUrl: 'assets/images/courses/seerah.png',
-        courseDetails: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Al Misbah (Whatsapp Program)',
         imageUrl: 'assets/images/courses/al_misbah.png',
-        courseDetails: MediaContent(),
+        courseDetails: MediaContent(items: []),
+        lectures: null,
       ),
       QuranCourse(
         title: 'Weekly Gems',
         imageUrl: 'assets/images/courses/weekly_gems.png',
+        lectures: null,
       ),
       QuranCourse(
         title: 'Assorted Lectures',
         imageUrl: 'assets/images/courses/assorted_letures.png',
+        lectures: null,
       ),
       QuranCourse(
         title: 'Tazkeer',
         imageUrl: 'assets/images/courses/tazkeer.png',
+        lectures: null,
       ),
       QuranCourse(
-        title: 'Weekly Dua, Sunnah & Zikr',
+        title: 'Weekly Reminder',
         imageUrl: 'assets/images/courses/weekly_dua_sunnat_zikr.png',
+        lectures: null,
       )
     ];
 
@@ -272,6 +322,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://www.youtube.com/c/arrahmahislamicinstitute',
+          isDirectSource: false,
         ),
       ),
       SocialMediaItem(
@@ -279,6 +330,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://www.facebook.com/arrahmah.islamic.institute',
+          isDirectSource: false,
         ),
       ),
       SocialMediaItem(
@@ -286,6 +338,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'http://arrahma.org/images/whatsapp.png',
+          isDirectSource: false,
         ),
       ),
       SocialMediaItem(
@@ -293,6 +346,7 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://twitter.com/ArrahmahIslamic',
+          isDirectSource: false,
         ),
       ),
       SocialMediaItem(
@@ -300,23 +354,27 @@ class DeviceStorageService extends BaseDeviceStorageService {
         item: Item(
           type: ItemType.WebPage,
           data: 'https://www.instagram.com/arrahmah_islamic_institute',
+          isDirectSource: false,
         ),
       ),
     ];
 
-    return await storage.get<AppData>(
+    return (await storage.get<AppData>(
       defaultFn: () => const AppData(
         banners: banners,
         broadcastItems: broadcasts,
         quickLinks: [],
         courses: courses,
         socialMediaItems: socialMediaItems,
+        logoUrl: '',
+        aboutUsMarkdown: '',
+        drawerItems: [],
       ),
-    );
+    ))!;
   }
 
-  Future<String> loadAppDataHash() async {
-    return storage.getWithKey(APP_DATA_HASH_KEY);
+  Future<String?> loadAppDataHash() async {
+    return await storage.getWithKey(APP_DATA_HASH_KEY);
   }
 
   Future<bool> saveAppDataHash(String appDataHash) async {

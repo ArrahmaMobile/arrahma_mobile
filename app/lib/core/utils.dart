@@ -8,20 +8,20 @@ import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
 import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-
 import 'package:inherited_state/inherited_state.dart';
 import 'package:share/share.dart';
 
 class Utils {
   static void pushView(BuildContext context, Widget view,
-      {String title,
+      {String? title,
       bool replace = false,
       bool keepPadding = false,
-      Color backgroundColor,
-      List<Widget> actions}) {
+      Color? backgroundColor,
+      List<Widget>? actions}) {
     NavigationUtils.pushNoResultView(
       context,
       view,
@@ -46,6 +46,7 @@ class Utils {
         visitor: TawkVisitor(
           name: '',
           email: '',
+          hash: 'default',
         ),
       ),
       title: 'Chat With Us',
@@ -80,7 +81,7 @@ class Utils {
     return;
   }
 
-  static Widget getItemView(Item item) {
+  static Widget? getItemView(Item item) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
     switch (item.type) {
@@ -122,6 +123,7 @@ class Utils {
               title: title,
               album: typeName,
               id: item.data,
+              artUri: item.imageUrl != null ? Uri.parse(item.imageUrl!) : null,
             )
           ],
           0);
@@ -150,12 +152,15 @@ class Utils {
 
     final appData = context.on<AppData>();
     final courseContents = appData.courses
-        .fold<List<QuranCourseContent>>(<QuranCourseContent>[],
-            (allC, c) => allC..addAll([c.tafseer, c.tajweed, c.lectures]))
+        .fold<List<QuranCourseContent>>(
+            <QuranCourseContent>[],
+            (allC, c) => allC
+              ..addAll([c.tafseer, c.tajweed, c.lectures]
+                  .where((c) => c != null)
+                  .cast()))
         .asMap()
         .entries
-        .firstWhere((cEntry) => cEntry.value?.id == item.data,
-            orElse: () => null);
+        .firstWhereOrNull((cEntry) => cEntry.value.id == item.data);
     if (courseContents != null) {
       final course = appData.courses[courseContents.key ~/ 3];
       final courseContentIndex = courseContents.key % 3;
@@ -182,8 +187,8 @@ class Utils {
     }
   }
 
-  static Widget shareActionButton(String title, List<String> data,
-      [List<String> mimeTypes]) {
+  static Widget shareActionButton(String title, List<String>? data,
+      [List<String>? mimeTypes]) {
     return IconButton(
       icon: const Icon(Icons.share),
       disabledColor: Colors.grey,

@@ -3,7 +3,7 @@ import 'dart:io';
 class FileService {
   const FileService();
 
-  Future<String> read(String filePath) async {
+  Future<String?> read(String filePath) async {
     final file = File(filePath);
     final hasData = await file.exists();
     if (!hasData) return null;
@@ -20,6 +20,8 @@ class FileService {
   }
 
   Future<void> delete(String filePath) async {
-    return await File(filePath).delete().catchError((_) {});
+    await File(filePath).delete().catchError((_) {
+      return _;
+    });
   }
 }

@@ -7,15 +7,15 @@ import 'package:html/dom.dart';
 import 'package:scraper/src/scrapers/about_us_scraper.dart';
 import 'package:scraper/src/scrapers/media_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_scraper.dart';
-import 'package:arrahma_shared/src/app_metadata.dart';
+import 'package:scraper/src/utc_exception.dart';
 import 'package:scraper/src/worker.dart';
+import 'package:collection/collection.dart';
 import 'utils.dart';
 
 abstract class IScraper {
-  Document get document;
-  String get currentUrl;
-  Future<Document> navigateTo(String relativeUrl);
-  Future<String> download(String url, [String contentType]);
+  String get baseUrl;
+  Future<Document?> navigateTo(String relativeUrl);
+  Future<String?> download(String url, [String contentType]);
 }
 
 class Scraper extends Worker<String, Document> implements IScraper {
@@ -26,143 +26,180 @@ class Scraper extends Worker<String, Document> implements IScraper {
   final _baseUrl = Uri.parse('https://arrahma.org');
   String get baseUrl => _baseUrl.toString();
 
-  String _currentUrl;
-  @override
-  String get currentUrl => _currentUrl;
-  @override
-  Document get document => _cachedDocs[currentUrl];
+  int _rateLimitCount = 0;
 
   @override
-  Future<Document> performWork(String url) async {
+  Future<Document?> performWork(String url) async {
     await Future.delayed(const Duration(milliseconds: 600));
     final normalizedUrl = _baseUrl.resolve(url).toString();
     if (_cachedDocs.containsKey(normalizedUrl)) {
-      return _cachedDocs[normalizedUrl];
+      return _cachedDocs[normalizedUrl]!;
     }
     try {
       print('Navigating to $normalizedUrl');
       final html = await download(normalizedUrl, 'text/html');
       if (html == null) return null;
       final document = parse(html);
-      if (document == null) {
-        print('Unable to parse html content from $url');
-        return null;
-      }
       _cachedDocs[normalizedUrl] = document;
-      _currentUrl = normalizedUrl;
       return document;
     } catch (err) {
+      print('Error occurred while parsing html content: $err');
       return null;
     }
   }
 
   @override
-  Future<String> download(String url, [String contentType]) async {
-    final response = await client.get(Uri.parse(url)).catchError((err) => null);
-    if (response == null ||
-        response.statusCode != 200 ||
-        contentType == null ||
-        !response.headers['content-type'].startsWith(contentType)) {
-      print('Unable to download data from $url');
+  Future<String?> download(String url, [String? contentType]) async {
+    try {
+      final response = await client.get(Uri.parse(url));
+      if (response.statusCode != 200 ||
+          contentType == null ||
+          !response.headers['content-type']!.startsWith(contentType)) {
+        print('Unable to download data from $url');
+        return null;
+      }
+      if (response.statusCode == 429) {
+        _rateLimitCount++;
+        if (_rateLimitCount > 5) {
+          throw UnableToContinueException('Rate limited');
+        }
+        print('Rate limited, waiting for 5 seconds');
+        await Future.delayed(const Duration(seconds: 5));
+        return download(url, contentType);
+      }
+      return response.body;
+    } catch (err) {
+      print('Error occurred: $err');
+      if (err is UnableToContinueException) {
+        throw err;
+      }
       return null;
     }
-    return response.body;
   }
 
   @override
-  Future<Document> navigateTo(String url) async {
+  Future<Document?> navigateTo(String url) async {
     return add(url);
   }
 
   Future<AppData> initiate() async {
     final doc = await navigateTo('');
-    if (doc == null) return null;
+
+    if (doc == null) {
+      throw Exception('Unable to navigate to the home page');
+    }
 
     return AppData(
-      logoUrl: document
-          .querySelector('.header img')
-          .attributes['src']
-          .toAbsolute(baseUrl)
-          .removeQueryString(),
-      quickLinks: document
+      logoUrl: doc
+              .querySelector('.header img')
+              ?.attributes['src']
+              ?.toAbsolute(baseUrl)
+              .removeQueryString() ??
+          '',
+      quickLinks: doc
           .querySelectorAll('#message1 > *')
           .asMap()
           .entries
           .map((messageEntry) {
-        final title = messageEntry.value.parentNode.nodes
-            .whereType<Text>()
-            .elementAt(messageEntry.key)
-            .text
-            .cleanedText;
-        return QuickLink(
-          title: title.isEmpty ? messageEntry.value.text.cleanedText : title,
-          link: Utils.getItemByUrl((messageEntry.value.localName == 'a'
-                  ? messageEntry.value
-                  : messageEntry.value.querySelector('a'))
-              ?.attributes['href']
-              ?.toAbsolute(baseUrl)),
-        );
-      }).toList(),
-      banners: document
-          .querySelectorAll('#slider a')
-          .map((banner) => HeadingBanner(
-                imageUrl: banner
-                    .querySelector('img')
-                    .attributes['src']
-                    .toAbsolute(baseUrl)
-                    .removeQueryString(),
-                item: Utils.getItemByUrl(
-                    banner.attributes['href'].toAbsolute(baseUrl)),
-              ))
+            final title = messageEntry.value.parentNode!.nodes
+                .whereType<Text>()
+                .elementAt(messageEntry.key)
+                .text
+                .cleanedText;
+            final url = (messageEntry.value.localName == 'a'
+                    ? messageEntry.value
+                    : messageEntry.value.querySelector('a'))
+                ?.attributes['href']
+                ?.toAbsolute(baseUrl);
+            if (url == null) return null;
+            return QuickLink(
+              title:
+                  title.isEmpty ? messageEntry.value.text.cleanedText : title,
+              link: Utils.getItemByUrl(url),
+            );
+          })
+          .where((quickLink) => quickLink != null)
+          .cast<QuickLink>()
           .toList(),
-      broadcastItems: document.querySelectorAll('.column6 .box4').map((banner) {
-        final aTag = banner.querySelector('a');
-        final link =
-            aTag != null ? aTag.attributes['href'].toAbsolute(baseUrl) : null;
-        final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
-        final type = host != null
-            ? BroadcastType.values.firstWhere(
-                (type) => type.toString().split('.')[1].toLowerCase() == host,
-                orElse: () => null)
-            : null;
-        return BroadcastItem(
-          type: type ?? BroadcastType.Other,
-          item: link != null
-              ? Utils.getItemByUrl(link)
-              : Item(
-                  isDirectSource: true,
-                  type: ItemType.Other,
-                  data: 'tel:7124321001;ext=491760789',
-                ),
-          imageUrl: banner
-              .querySelector('img')
-              ?.attributes['src']
-              ?.toAbsolute(baseUrl)
-              ?.removeQueryString(),
-        );
-      }).toList(),
-      socialMediaItems:
-          document.querySelectorAll('.column3footer a').map((socialMediaItem) {
-        final imageUrl = socialMediaItem
-            .querySelector('img')
-            ?.attributes['src']
-            ?.toAbsolute(baseUrl)
-            ?.removeQueryString();
-        final whatsAppMessage =
-            'Assalamualaikum, I want to join the Arrahmah WhatsApp group. My name is {name} and my number is {number}.';
-        final link = imageUrl.contains('whatsapp')
-            ? 'https://wa.me/17323050744?text=${Uri.encodeQueryComponent(whatsAppMessage)}'
-            : socialMediaItem.attributes['href'].toAbsolute(baseUrl);
-        return SocialMediaItem(
-            item: Utils.getItemByUrl(link), imageUrl: imageUrl);
-      }).toList(),
+      banners: doc
+          .querySelectorAll('#slider a')
+          .map((banner) {
+            final imageUrl = banner
+                .querySelector('img')
+                ?.attributes['src']
+                ?.toAbsolute(baseUrl)
+                .removeQueryString();
+            final link = banner.attributes['href']?.toAbsolute(baseUrl);
+            if (imageUrl == null || link == null) return null;
+            return HeadingBanner(
+              imageUrl: imageUrl,
+              item: Utils.getItemByUrl(link)!,
+            );
+          })
+          .where((banner) => banner != null)
+          .cast<HeadingBanner>()
+          .toList(),
+      broadcastItems: doc
+          .querySelectorAll('.column6 .box4')
+          .map((banner) {
+            final aTag = banner.querySelector('a');
+            final link = aTag != null
+                ? aTag.attributes['href']?.toAbsolute(baseUrl)
+                : null;
+            final host =
+                link != null ? Uri.parse(link).host.split('.')[0] : null;
+            final type = host != null
+                ? BroadcastType.values.firstWhereOrNull((type) =>
+                    type.toString().split('.')[1].toLowerCase() == host)
+                : null;
+            final imageUrl = banner
+                .querySelector('img')
+                ?.attributes['src']
+                ?.toAbsolute(baseUrl)
+                .removeQueryString();
+            if (link == null || imageUrl == null) {
+              return null;
+            }
+            return BroadcastItem(
+              type: type ?? BroadcastType.Other,
+              item: Utils.getItemByUrl(link)!,
+              imageUrl: imageUrl,
+            );
+          })
+          .where((item) => item != null)
+          .cast<BroadcastItem>()
+          .toList(),
+      socialMediaItems: doc
+          .querySelectorAll('.column3footer a')
+          .map((socialMediaItem) {
+            final imageUrl = socialMediaItem
+                .querySelector('img')
+                ?.attributes['src']
+                ?.toAbsolute(baseUrl)
+                .removeQueryString();
+            if (imageUrl == null) {
+              return null;
+            }
+            final whatsAppMessage =
+                'Assalamualaikum, I want to join the Arrahmah WhatsApp group. My name is {name} and my number is {number}.';
+            final link = imageUrl.contains('whatsapp')
+                ? 'https://wa.me/17323050744?text=${Uri.encodeQueryComponent(whatsAppMessage)}'
+                : socialMediaItem.attributes['href']?.toAbsolute(baseUrl);
+            if (link == null) return null;
+            return SocialMediaItem(
+                item: Utils.getItemByUrl(link)!, imageUrl: imageUrl);
+          })
+          .where((item) => item != null)
+          .cast<SocialMediaItem>()
+          .toList(),
       drawerItems: (await performAsyncOp(
-        document.querySelectorAll('#container_nav ul#nav > li'),
+        doc.querySelectorAll('#container_nav ul#nav > li'),
         scrapeDrawerItem,
       ))
           .where((i) => i != null)
+          .cast<DrawerItem>()
           .toList(),
-      aboutUsMarkdown: await AboutUsScraper(this).scrape(),
+      aboutUsMarkdown: await AboutUsScraper(this).scrape() ?? '',
       courses: await QuranCourseScraper(this).scrape(),
     );
   }
@@ -176,13 +213,15 @@ class Scraper extends Worker<String, Document> implements IScraper {
     return result;
   }
 
-  Future<DrawerItem> scrapeDrawerItem(Element item) async {
+  Future<DrawerItem?> scrapeDrawerItem(Element item) async {
     final firstChild = item.children.first;
     final anchorTag =
         firstChild.localName == 'a' ? firstChild : item.querySelector('a');
+    final linkUrl = anchorTag?.attributes['href']?.toAbsolute(baseUrl);
+    if (anchorTag == null || linkUrl == null) return null;
     final link = Utils.getItemByUrl(
-      anchorTag.attributes['href'].toAbsolute(baseUrl),
-    );
+      linkUrl,
+    )!;
     final url = Uri.parse(link.data);
     // if (!['tests.php', '#', '.php#'].any((end) => url.toString().endsWith(end)))
     //   return null;
@@ -207,12 +246,13 @@ class Scraper extends Worker<String, Document> implements IScraper {
         scrapeDrawerItem,
       ))
           .where((i) => i != null)
+          .cast<DrawerItem>()
           .toList(),
     );
     if (drawerItem.content == null &&
         drawerItem.media == null &&
-        drawerItem.children.isEmpty &&
-        drawerItem.link.type == ItemType.WebPage &&
+        (drawerItem.children?.isEmpty ?? true) &&
+        drawerItem.link?.type == ItemType.WebPage &&
         !isLinkExternal) return null;
     return drawerItem;
   }
@@ -221,7 +261,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
 abstract class ScraperBase<T> {
   const ScraperBase(this.scraper);
   final IScraper scraper;
-  Future<T> scrape();
+  Future<T?> scrape();
 }
 
 class AdHocScraper<T> extends ScraperBase<T> {

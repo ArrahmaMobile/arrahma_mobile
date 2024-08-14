@@ -17,7 +17,7 @@ class ScraperRunner {
     return scrapedData;
   }
 
-  Future<ScrapedData> get() async {
+  Future<ScrapedData?> get() async {
     return SerializationService.deserializeScrapedData(
         await _fileService.read(FILE_PATH));
   }

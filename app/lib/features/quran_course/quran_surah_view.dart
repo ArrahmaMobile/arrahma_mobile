@@ -7,12 +7,12 @@ import 'quran_lesson_view.dart';
 
 class QuranSurahView extends StatefulWidget {
   const QuranSurahView({
-    Key key,
-    @required this.content,
+    super.key,
+    required this.content,
     this.referrerTitle,
-  }) : super(key: key);
+  });
   final QuranCourseContent content;
-  final String referrerTitle;
+  final String? referrerTitle;
 
   @override
   _QuranSurahViewState createState() => _QuranSurahViewState();
@@ -36,7 +36,7 @@ class _QuranSurahViewState extends State<QuranSurahView> {
         return ListTile(
           leading: const FaIcon(FontAwesomeIcons.book),
           title: Text('${surah.name} ${surah.arabicName ?? ''}'),
-          subtitle: surah.description != null ? Text(surah.description) : null,
+          subtitle: surah.description != null ? Text(surah.description!) : null,
           onTap: () => _navigateToLessonView(surah),
         );
       },

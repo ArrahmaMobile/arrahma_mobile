@@ -1,12 +1,12 @@
-import 'package:simple_json_mapper/simple_json_mapper.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 
-@JObj()
+@jsonSerializable
 
 /// Use [TawkVisitor] to set the visitor name and email.
 class TawkVisitor {
   const TawkVisitor({
-    this.name,
-    this.email,
+    required this.name,
+    required this.email,
     this.hash,
   });
 
@@ -17,5 +17,5 @@ class TawkVisitor {
   final String email;
 
   /// [Secure mode](https://developer.tawk.to/jsapi/#SecureMode).
-  final String hash;
+  final String? hash;
 }

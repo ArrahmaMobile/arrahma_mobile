@@ -5,6 +5,7 @@ import 'package:arrahma_shared/shared.dart';
 
 import '../utils.dart';
 import '../scraper_base.dart';
+import 'package:collection/collection.dart';
 
 class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
   QuranCourseJuzTemplateScraper(IScraper scraper, String contentUrl,
@@ -18,12 +19,12 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
   static const INTRO_TOKEN = 'Introduction';
 
   @override
-  Future<QuranCourseContent> scrape() async {
-    var juzNumber = 0;
-    List<String> pages;
-    var url, prevUrl;
+  Future<QuranCourseContent?> scrape() async {
+    int juzNumber = 0;
+    List<String>? pages;
+    String? url, prevUrl;
 
-    QuranCourseContent content;
+    QuranCourseContent? content;
     do {
       prevUrl = url;
       url = pages != null
@@ -32,14 +33,17 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
               : prevUrl
           : _getUrl(++juzNumber);
       if (prevUrl == url) break;
+      if (url == null) break;
       final doc = await scraper.navigateTo(url);
       if (doc == null) break;
       final pageListParent = doc.querySelector('#containerb .contentdua .next');
-      if (pageListParent?.children?.isNotEmpty ?? false) {
+      if (pageListParent?.children.isNotEmpty ?? false) {
         pages = pageListParent
-            .querySelectorAll('a')
+            ?.querySelectorAll('a')
             .where((p) => !['next', 'prev'].any((t) => p.text.contains(t)))
-            .map((e) => e.attributes['href'].cleanedUrl.toAbsolute(url))
+            .map((e) => e.attributes['href']?.cleanedUrl.toAbsolute(url!))
+            .where((p) => p != null)
+            .cast<String>()
             .toList();
       }
       var hasTabs = false;
@@ -55,7 +59,7 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
           body.querySelector('#mainheadingdua');
       content ??= QuranCourseContent(
         id: url,
-        title: titleEl?.text?.cleanedText,
+        title: titleEl?.text.cleanedText,
         surahs: [],
       );
 
@@ -69,12 +73,13 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
                   !['titledivision3', 'grammartopic3']
                       .any((id) => e.id == id) &&
                   (e.localName != 'img' ||
-                      !e.attributes['src'].contains('speaker')))
+                      !(e.attributes['src']?.contains('speaker') ?? false)))
               .toList()
           : allNodes;
-      final firstHeading = allNodes.asMap().entries.firstWhere(
-          (entry) => entry.value.id == 'mainheading2',
-          orElse: () => null);
+      final firstHeading = allNodes
+          .asMap()
+          .entries
+          .firstWhereOrNull((entry) => entry.value.id == 'mainheading2');
       final hasIntro = juzNumber == 1 &&
           firstHeading != null &&
           firstHeading.value.text.cleanedText.toUpperCase() ==
@@ -94,29 +99,32 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       final surahNodes = allNodes.asMap().entries.where((entry) => entry
           .value.id
           .startsWith((isGroupedByHeading ? 'mainheading2' : 'surahname')));
-      Surah previousSurahOnPage;
-      final surahs = (isOldLayout ? [MapEntry(-1, titleEl)] : surahNodes)
-          .map((e) {
-            final title = e.value?.text?.cleanedText;
-            var surah = _extractLessons(
-              url,
-              allNodes,
-              e.key,
-              previousSurahOnPage: previousSurahOnPage,
-              isGroupedByHeading: isGroupedByHeading,
-              isOldLayout: isOldLayout,
-            );
-            if (surah == null) return null;
-            surah = previousSurahOnPage = Surah(
-                name: title.isNullOrWhitespace ? null : title,
-                lessons: surah.lessons,
-                groups: surah.groups);
-            return surah;
-          })
-          .where((s) => s != null)
-          .toList();
+      Surah? previousSurahOnPage;
+      final surahs =
+          (isOldLayout ? [MapEntry(-1, titleEl)] : surahNodes.toList())
+              .map((e) {
+                final title = e.value?.text.cleanedText;
+                var surah = _extractLessons(
+                  url!,
+                  allNodes,
+                  e.key,
+                  previousSurahOnPage: previousSurahOnPage,
+                  isGroupedByHeading: isGroupedByHeading,
+                  isOldLayout: isOldLayout,
+                );
+                if (surah == null) return null;
+                surah = previousSurahOnPage = Surah(
+                    name: (title?.isNullOrWhitespace ?? true) ? null : title,
+                    lessons: surah.lessons,
+                    groups: surah.groups);
+                return surah;
+              })
+              .where((s) => s != null)
+              .cast<Surah>()
+              .toList();
       if (content.surahs.isNotEmpty &&
           surahs.isNotEmpty &&
+          surahs.first.name != null &&
           content.surahs.last.name == surahs.first.name) {
         content.surahs.last.lessons.addAll(surahs.first.lessons);
         surahs.removeAt(0);
@@ -127,25 +135,25 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
     return content;
   }
 
-  Surah _extractLessons(String url, List<Element> nodes, int index,
-      {Surah previousSurahOnPage,
+  Surah? _extractLessons(String url, List<Element> nodes, int index,
+      {Surah? previousSurahOnPage,
       bool isGroupedByHeading = false,
       bool isOldLayout = false}) {
     final lessons = <Lesson>[];
-    final groups = <Group>[];
+    final groups = <Group?>[];
     final groupNameSet = <String>{};
 
-    String title;
-    List<List<Item>> groupItems;
+    String? title;
+    List<List<Item>> groupItems = [];
     var allowNullLesson = false;
-    final addPreviousLesson = () => !title.isNullOrWhitespace || allowNullLesson
-        ? lessons.add(Lesson(
-            title: title,
-            itemGroups: groupItems
-                .map((group) => GroupItem(items: group ?? []))
-                .toList(),
-          ))
-        : null;
+    final addPreviousLesson =
+        () => !(title?.isNullOrWhitespace ?? true) || allowNullLesson
+            ? lessons.add(Lesson(
+                title: title,
+                itemGroups:
+                    groupItems.map((group) => GroupItem(items: group)).toList(),
+              ))
+            : null;
 
     var skipCount = 0, skipped = 0;
     while (++index < nodes.length &&
@@ -183,8 +191,10 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
         skipped = 0;
         if (element.id == 'duatopica') {
           final link = element.querySelector('a');
-          final duaUrl = link.attributes['href']?.cleanedUrl?.toAbsolute(url);
-          if (duaUrl != null) groupItems.add([Utils.getItemByUrl(duaUrl)]);
+          if (link == null) continue;
+          final duaUrl = link.attributes['href']?.cleanedUrl.toAbsolute(url);
+          final item = duaUrl != null ? Utils.getItemByUrl(duaUrl) : null;
+          if (item != null) groupItems.add([item]);
         }
       } else if (['ayahb', 'hb', 'tajweedd', 'topic1', 'grammartopic4']
               .any((id) => element.id.endsWith(id)) ||
@@ -196,25 +206,28 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
             ? element
                 .querySelectorAll('a > img')
                 .map((tag) =>
-                    tag.parent.attributes['href'].cleanedUrl.toAbsolute(url))
+                    tag.parent?.attributes['href']?.cleanedUrl.toAbsolute(url))
                 .toList()
             : <String>[];
-        groupItems.add(links.map((l) => Utils.getItemByUrl(l)).toList());
+        groupItems.add(links
+            .map((l) => Utils.getItemByUrl(l))
+            .where((i) => i != null)
+            .cast<Item>()
+            .toList());
       } else if (url.contains('dua') && element.localName == 'img') {
         addPreviousLesson();
         allowNullLesson = true;
-        final imageUrl = element.attributes['src'].toAbsolute(url);
+        final imageUrl = element.attributes['src']?.toAbsolute(url);
         groupItems = [];
-        groupItems.add([Utils.getItemByUrl(imageUrl)]);
+        final item = imageUrl != null ? Utils.getItemByUrl(imageUrl) : null;
+        if (item != null) groupItems.add([item]);
       }
     }
     addPreviousLesson();
     groups.asMap().entries.forEach((groupEntry) {
-      final lesson = lessons.firstWhere(
-          (l) =>
-              groupEntry.key < l.itemGroups.length &&
-              l.itemGroups[groupEntry.key].items.isNotEmpty,
-          orElse: () => null);
+      final lesson = lessons.firstWhereOrNull((l) =>
+          groupEntry.key < l.itemGroups.length &&
+          l.itemGroups[groupEntry.key].items.isNotEmpty);
       if (lesson != null) {
         final group =
             getGroupByItem(lesson.itemGroups[groupEntry.key].items.first);
@@ -223,10 +236,11 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
       }
     });
     final maxGroupsLesson = _getMax(lessons, (l) => l.itemGroups.length);
-    lessons.forEach((l) {
-      final diff = maxGroupsLesson.itemGroups.length - l.itemGroups.length;
-      l.itemGroups.addAll(List.filled(diff.abs(), GroupItem(items: [])));
-    });
+    if (lessons.isNotEmpty && maxGroupsLesson != null)
+      lessons.forEach((l) {
+        final diff = maxGroupsLesson.itemGroups.length - l.itemGroups.length;
+        l.itemGroups.addAll(List.filled(diff.abs(), GroupItem(items: [])));
+      });
     if (lessons.isEmpty) return null;
     if (previousSurahOnPage != null && groups.isEmpty) {
       groups.addAll(previousSurahOnPage.groups);
@@ -242,16 +256,15 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
           .toList();
 
       indexes.forEach((index) {
-        final firstFilledGroup = lessons.firstWhere(
-            (l) => l.itemGroups[index].items.isNotEmpty,
-            orElse: () => null);
+        final firstFilledGroup = lessons
+            .firstWhereOrNull((l) => l.itemGroups[index].items.isNotEmpty);
         final diff = groups.length - (index + 1);
         final hasFilled = !diff.isNegative;
         if (firstFilledGroup == null) {
           final removeGroup = groups.length == lessons.first.itemGroups.length;
           lessons.forEach((l) => l.itemGroups.removeAt(index));
           if (removeGroup) groups.removeAt(index);
-        } else if (firstFilledGroup != null) {
+        } else {
           if (!hasFilled) {
             groups.addAll(List.filled(diff.abs(), null));
           }
@@ -292,8 +305,8 @@ class QuranCourseJuzTemplateScraper extends ScraperBase<QuranCourseContent> {
     return url;
   }
 
-  T _getMax<T>(List<T> items, int Function(T) maxSelector) {
-    T max;
+  T? _getMax<T>(List<T> items, int Function(T) maxSelector) {
+    T? max;
     for (final item in items) {
       if (max == null || maxSelector(item) > maxSelector(max)) max = item;
     }

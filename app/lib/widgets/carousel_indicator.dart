@@ -5,16 +5,16 @@ import 'package:flutter_framework/flutter_framework.dart';
 
 class CarouselIndicator extends StatefulWidget {
   const CarouselIndicator({
-    Key key,
-    @required this.items,
+    super.key,
+    required this.items,
     this.showIndicator = true,
     this.aspectRatio,
     this.autoPlayInterval,
-  }) : super(key: key);
+  });
   final List<Widget> items;
   final bool showIndicator;
-  final double aspectRatio;
-  final Duration autoPlayInterval;
+  final double? aspectRatio;
+  final Duration? autoPlayInterval;
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +28,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context);
-    final screenUtils = ScreenUtils.getInstance(context);
+    final screenUtils = ScreenUtils.getInstance(context)!;
     return Column(
       children: [
         CarouselSlider(
@@ -60,8 +60,8 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
                       ),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: appTheme.theme.textTheme.bodyText2.color
-                              .withOpacity(_current == index ? .9 : .4)),
+                          color: appTheme.theme!.textTheme.bodyMedium?.color
+                              ?.withOpacity(_current == index ? .9 : .4)),
                     );
                   },
                 )?.toList() ??

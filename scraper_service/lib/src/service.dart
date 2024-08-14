@@ -4,77 +4,95 @@ import 'package:crypto/crypto.dart';
 
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_shared/shared.dart' as shared;
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:scraper_service/scraper_runner.dart';
-import 'package:simple_json_mapper/simple_json_mapper.dart';
 
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class ScraperService {
-  static const UPDATE_DURATION = Duration(hours: 1);
-
-  ScraperService(this._syncService,
-      {this.errorEmailRecipient, this.senderEmail, this.senderEmailPassword}) {
-    shared.init();
-  }
+  static const Duration updateDuration = Duration(hours: 1);
 
   final SyncService _syncService;
-  final String errorEmailRecipient;
-  final String senderEmail;
-  final String senderEmailPassword;
+  final String? errorEmailRecipient;
+  final String? senderEmail;
+  final String? senderEmailPassword;
 
-  Future<void> init() async {
-    if (_syncService.isMain) {
-      ScrapedData scrapedData = null;
+  late Timer _updateTimer;
+  late DateTime _lastUpdateAttempt;
+  late ScrapedData _rawData;
+  late String _appDataHash;
+  late String _serializedData;
+  late String _serializedV1Data;
+
+  ScraperService._(
+    this._syncService, {
+    this.errorEmailRecipient,
+    this.senderEmail,
+    this.senderEmailPassword,
+  }) {
+    shared.main();
+  }
+
+  DateTime get lastUpdateAttempt => _lastUpdateAttempt;
+  ScrapedData get scrapedData => _rawData;
+  AppData get appData => _rawData.appData;
+  String get appDataHash => _appDataHash;
+  String get serializedData => _serializedData;
+  String get serializedV1Data => _serializedV1Data;
+
+  static Future<ScraperService> create({
+    required SyncService syncService,
+    String? errorEmailRecipient,
+    String? senderEmail,
+    String? senderEmailPassword,
+  }) async {
+    final service = ScraperService._(
+      syncService,
+      errorEmailRecipient: errorEmailRecipient,
+      senderEmail: senderEmail,
+      senderEmailPassword: senderEmailPassword,
+    );
+
+    if (syncService.isMain) {
+      ScrapedData? scrapedData;
       try {
+        syncService.log('Fetching cached data...');
         scrapedData = await ScraperRunner().get();
-      } catch (err) {
-        await _sendMail(err);
-        _syncService.log(err.toString());
+        if (scrapedData?.runMetadata.lastUpdate != null)
+          service._lastUpdateAttempt = scrapedData!.runMetadata.lastUpdate;
+      } catch (err, s) {
+        await service._sendMail('Failed to fetch cached data', err, s);
+        syncService.log(s.toString());
       }
-      final lastUpdate = scrapedData?.runMetadata?.lastUpdate;
-      if (scrapedData != null &&
-          lastUpdate != null &&
-          scrapedData.appData != null &&
-          DateTime.now().difference(lastUpdate) <= UPDATE_DURATION) {
-        _updateData(scrapedData);
+      final lastUpdate = scrapedData?.runMetadata.lastUpdate;
+      final hasData = scrapedData != null;
+      final isNotStale = lastUpdate != null &&
+          DateTime.now().difference(lastUpdate).compareTo(updateDuration) < 0;
+      if (hasData && isNotStale) {
+        syncService.log('Using cached data.');
+        service._updateData(scrapedData);
       } else {
-        await runScraper();
+        syncService.log(
+            'Cached data is ${!hasData ? 'not found' : 'stale'}. Running scraper...');
+        await service.runScraper();
       }
-      setupUpdateTimer();
+      service._setupUpdateTimer();
     } else {
-      _syncService.valueStreamCtrl.stream.listen((data) async {
+      syncService.valueStreamCtrl.stream.listen((data) async {
         if (data == 'reload') {
-          final data = await ScraperRunner().get();
-          _updateData(data);
+          final scrapedData = await ScraperRunner().get();
+          service._updateData(scrapedData!);
         }
       });
     }
+
+    return service;
   }
 
-  DateTime _lastUpdateAttempt;
-  DateTime get lastUpdateAttempt => _lastUpdateAttempt;
-  ScrapedData _rawData;
-  ScrapedData get scrapedData => _rawData;
-  AppData get appData => _rawData?.appData;
-
-  String _appDataHash;
-  String get appDataHash => _appDataHash;
-  void _updateDataHash(String data) {
-    _appDataHash = md5.convert(utf8.encode(data)).toString();
-  }
-
-  String _serializedData;
-  String get serializedData => _serializedData;
-
-  String _serializedV1Data;
-  String get serializedV1Data => _serializedV1Data;
-
-  Timer _updateTimer;
-
-  void setupUpdateTimer() {
+  void _setupUpdateTimer() {
     _updateTimer =
-        Timer.periodic(UPDATE_DURATION, (timer) async => await runScraper());
+        Timer.periodic(updateDuration, (timer) async => await runScraper());
   }
 
   Future<void> runScraper() async {
@@ -85,10 +103,10 @@ class ScraperService {
     try {
       final data = await ScraperRunner().run(shouldStore: true);
       _updateData(data);
-    } catch (err) {
+    } catch (err, s) {
       success = false;
-      await _sendMail(err);
-      _syncService.log(err.toString());
+      await _sendMail('Failed to scraped data.', err, s);
+      _syncService.log(s.toString());
     } finally {
       stopwatch.stop();
       _syncService.log(success
@@ -97,19 +115,27 @@ class ScraperService {
     }
   }
 
-  Future<bool> _sendMail(dynamic error) async {
-    if (errorEmailRecipient != null)
-      return await _sendMailRaw(
-          error, errorEmailRecipient, senderEmail, senderEmailPassword);
+  Future<bool> _sendMail(
+      String message, dynamic error, StackTrace stack) async {
+    if (errorEmailRecipient != null &&
+        senderEmail != null &&
+        senderEmailPassword != null) {
+      return await _sendMailRaw('''
+          <h1>Arrahmah App Scraper Failed.</h1>
+          <p>${DateTime.now()}</p>
+          <p>$message</p>
+          <p>Refer to the stack trace of the failure:</p>
+          <pre>${error.toString()}</pre>
+          <pre>$stack</pre>
+''', errorEmailRecipient!, senderEmail!, senderEmailPassword!);
+    }
     return false;
   }
 
   Future<bool> _sendMailRaw(dynamic error, String errorEmailRecipient,
       String senderEmail, String password) async {
-    // ignore: deprecated_member_use
     final smtpServer = gmail(senderEmail, password);
 
-    // Create our message.
     final message = Message()
       ..from = Address(senderEmail, 'Arrahmah App')
       ..subject = 'Arrahmah App Scraper - Failed'
@@ -136,26 +162,27 @@ class ScraperService {
 
   void _updateData(ScrapedData updatedScrapedData) {
     _rawData = updatedScrapedData;
-    final serializedDataMap = JsonMapper.serializeToMap(appData);
+    final serializedDataMap = JsonMapper.toMap(appData)!;
     final serializedData = json.encode(serializedDataMap);
     _serializedData = serializedData;
-    final quranCousesV1 = appData.courses
+    final quranCoursesV1 = appData.courses
         .map(
           (c) => QuranCourseV1(
             title: c.title,
             imageUrl: c.imageUrl,
             courseDetails: (c.courseDetails?.items?.isNotEmpty ?? false)
                 ? QuranCourseDetails(
-                    type: c.courseDetails.items.first.item.type == ItemType.Pdf
-                        ? QuranCourseDetailsType.Pdf
-                        : QuranCourseDetailsType.Markdown,
-                    details: c.courseDetails.items.first.item.data,
+                    type:
+                        c.courseDetails!.items?.first.item!.type == ItemType.Pdf
+                            ? QuranCourseDetailsType.Pdf
+                            : QuranCourseDetailsType.Markdown,
+                    details: c.courseDetails!.items!.first.item!.data,
                   )
                 : null,
             registration: (c.registration?.items?.isNotEmpty ?? false)
                 ? QuranCourseRegistration(
                     type: RegistrationType.WebForm,
-                    url: c.registration.items.first.item.data,
+                    url: c.registration!.items!.first.item!.data,
                   )
                 : null,
             lectures: c.lectures,
@@ -168,14 +195,21 @@ class ScraperService {
         .toList();
     _serializedV1Data = json.encode({
       ...serializedDataMap,
-      'courses': quranCousesV1.map((e) => JsonMapper.serializeToMap(e)).toList()
+      'courses': quranCoursesV1.map((e) => JsonMapper.toMap(e)).toList()
     });
     _updateDataHash(serializedData);
-    _syncService.valueStreamCtrl.add('reload');
+    _syncService.log('Data updated.');
+    if (!_syncService.isMain)
+      _lastUpdateAttempt = updatedScrapedData.runMetadata.lastUpdate;
+    if (_syncService.isMain) _syncService.valueStreamCtrl.add('reload');
+  }
+
+  void _updateDataHash(String data) {
+    _appDataHash = md5.convert(utf8.encode(data)).toString();
   }
 
   void dispose() {
-    _updateTimer?.cancel();
+    _updateTimer.cancel();
   }
 }
 

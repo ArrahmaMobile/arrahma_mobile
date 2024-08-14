@@ -1,28 +1,28 @@
 // import 'course_tafseer.dart';
 
-import 'package:simple_json_mapper/simple_json_mapper.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 import '../../models.dart';
 import '../course.dart';
 
-@JObj()
+@jsonSerializable
 class QuranCourse extends Course {
   const QuranCourse({
-    String title,
-    String imageUrl,
+    required super.title,
+    required super.imageUrl,
     this.courseDetails,
-    this.lectures,
+    required this.lectures,
     this.registration,
     this.tafseer,
     this.tajweed,
     this.tests,
     this.otherContent,
-  }) : super(title: title, imageUrl: imageUrl);
-  final MediaContent courseDetails;
-  final MediaContent registration;
-  final QuranCourseContent tafseer;
-  final QuranCourseContent tajweed;
-  final QuranCourseContent lectures;
-  final MediaContent tests;
-  final MediaContent otherContent;
+  });
+  final MediaContent? courseDetails;
+  final MediaContent? registration;
+  final QuranCourseContent? tafseer;
+  final QuranCourseContent? tajweed;
+  final QuranCourseContent? lectures;
+  final MediaContent? tests;
+  final MediaContent? otherContent;
 }

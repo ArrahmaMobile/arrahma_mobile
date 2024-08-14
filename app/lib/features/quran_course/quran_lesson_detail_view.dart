@@ -1,13 +1,11 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_framework/flutter_framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class QuranLessonDetailView extends StatefulWidget {
   const QuranLessonDetailView(
-      {Key key, @required this.surah, @required this.lesson})
-      : super(key: key);
+      {super.key, required this.surah, required this.lesson});
   final Surah surah;
   final Lesson lesson;
 
@@ -25,7 +23,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
         Navigator.maybePop(context);
         onTap(
           context,
-          widget.surah.groups.first,
+          widget.surah.groups.first!,
           MapEntry(0, widget.lesson.itemGroups.first.items.first),
           widget.lesson.itemGroups.first.items,
         );
@@ -54,7 +52,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                    widget.surah.name,
+                    widget.surah.name!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -66,7 +64,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    widget.lesson.title,
+                    widget.lesson.title!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 16,
@@ -83,7 +81,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
               .entries
               .map((itemEntry) => _buildQuranLessonDetail(
                     context,
-                    itemEntry.value,
+                    itemEntry.value!,
                     itemEntry.key < widget.lesson.itemGroups.length
                         ? widget.lesson.itemGroups[itemEntry.key].items
                         : [],
@@ -95,7 +93,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
   }
 
   String _getTitle(String groupName, int index, bool hasMore) {
-    return '${widget.lesson.title != null ? '${widget.lesson.title} - ' : ''}${widget.lesson?.title?.startsWith(groupName) ?? false ? '' : '$groupName '}${hasMore ? 'Pt. ${index + 1}' : ''}';
+    return '${widget.lesson.title != null ? '${widget.lesson.title} - ' : ''}${widget.lesson.title?.startsWith(groupName) ?? false ? '' : '$groupName '}${hasMore ? 'Pt. ${index + 1}' : ''}';
   }
 
   Widget _buildQuranLessonDetail(
@@ -160,7 +158,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                     ),
                   )
                   .toList(),
-              widget.surah.name),
+              widget.surah.name!),
           entry.key);
       return;
     }
