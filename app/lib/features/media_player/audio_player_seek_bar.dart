@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
+import 'package:inherited_state/inherited_state.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -67,6 +70,10 @@ class _AudioPlayerRemainingTimerState extends State<AudioPlayerRemainingTimer> {
               PositionData(
                   position, bufferedPosition, duration ?? Duration.zero),
               state));
+
+  final storageService = SL.get<IStorageService>()!;
+  final throttler = Throttler(milliseconds: 1000);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<MapEntry<PositionData, PlayerState>>(
@@ -75,13 +82,28 @@ class _AudioPlayerRemainingTimerState extends State<AudioPlayerRemainingTimer> {
         final positionData = snapshot.data?.key;
         final duration = positionData?.duration ?? Duration.zero;
         final position = positionData?.position ?? Duration.zero;
+
+        final finished = position >= duration;
+
+        throttler.run(() {
+          final id = widget.player.sequenceState?.currentSource?.tag?.id;
+          final key = '${lastAudioPositionKeyPrefix}_$id';
+          if (id != null)
+            storageService.setWithKey<int>(
+                key, finished ? 0 : position.inMilliseconds);
+        });
+
         return AnimatedCrossFade(
-          crossFadeState: (!(snapshot.data?.value.playing ?? false)) && widget.showCloseButton
+          crossFadeState: (!(snapshot.data?.value.playing ?? false)) &&
+                  widget.showCloseButton
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 200),
-          firstChild: RemainingTimer(
-            remaining: duration - position,
+          firstChild: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: RemainingTimer(
+              remaining: duration - position,
+            ),
           ),
           secondChild: widget.showCloseButton
               ? IconButton(

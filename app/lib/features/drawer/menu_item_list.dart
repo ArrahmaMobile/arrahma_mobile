@@ -28,7 +28,6 @@ class MenuItemList extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: isDrawer ? Colors.white : null,
           ),
         ),
         onTap: () {

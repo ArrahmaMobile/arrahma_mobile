@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       color: Colors.white,
       theme: themeVariants.light.theme,
       darkTheme: themeVariants.dark.theme,
-      themeMode: ThemeMode.dark,
+      themeMode: userPreferences.themePerference.themeMode,
       locale: AppUtils.isDebug ? DevicePreview.locale(context) : null,
       builder: AppUtils.isDebug ? DevicePreview.appBuilder : null,
       onGenerateRoute: AppRouter.generateRoute,

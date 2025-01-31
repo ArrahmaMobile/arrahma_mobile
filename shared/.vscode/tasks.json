@@ -4,7 +4,7 @@
         {
             "label": "Get Packages",
             "type": "shell",
-            "command": "pub get",
+            "command": "dart pub get",
             "problemMatcher": [
                 "$dart-pub-build_runner"
             ],
@@ -13,7 +13,7 @@
         {
             "label": "Run JSON Generator",
             "type": "shell",
-            "command": "pub run build_runner watch --delete-conflicting-outputs",
+            "command": "dart pub run build_runner watch --delete-conflicting-outputs",
             "dependsOn": [
                 "Get Packages",
             ],

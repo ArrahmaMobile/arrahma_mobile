@@ -2,13 +2,13 @@ pkill dart
 git reset --hard HEAD
 git pull
 cd ../shared
-pub get
-pub run build_runner build --delete-conflicting-outputs
+dart pub get
+dart pub run build_runner build --delete-conflicting-outputs
 cd ../scraper
-pub get
+dart pub get
 cd ../scraper_service
-pub get
+dart pub get
 cd ../api
-pub upgrade
-pub get
+dart pub upgrade
+dart pub get
 ./restart.sh

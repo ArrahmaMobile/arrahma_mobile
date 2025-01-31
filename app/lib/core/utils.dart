@@ -151,7 +151,11 @@ class Utils {
     }
 
     final appData = context.on<AppData>();
-    final courseContents = appData.courses
+    final courses = <QuranCourse>[
+      ...appData.courses,
+      ...(appData.otherCourseGroups?.expand((o) => o.courses) ?? <QuranCourse>[])
+    ];
+    final courseContents = courses
         .fold<List<QuranCourseContent>>(
             <QuranCourseContent>[],
             (allC, c) => allC
@@ -162,7 +166,7 @@ class Utils {
         .entries
         .firstWhereOrNull((cEntry) => cEntry.value.id == item.data);
     if (courseContents != null) {
-      final course = appData.courses[courseContents.key ~/ 3];
+      final course = courses[courseContents.key ~/ 3];
       final courseContentIndex = courseContents.key % 3;
       final tabIndex = courseContentIndex == 2 ? 0 : courseContentIndex;
       Utils.pushView(

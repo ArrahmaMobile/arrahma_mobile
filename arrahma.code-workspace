@@ -16,7 +16,7 @@
 			"path": "shared"
 		},
 		{
-			"path": "..\\..\\commercial-project-ideas\\flutter_framework"
+			"path": "../flutter_framework"
 		}
 	],
 	"settings": {}

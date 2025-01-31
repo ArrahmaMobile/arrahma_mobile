@@ -1,4 +1,5 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
+import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,15 @@ class _CourseItemState extends State<CourseItem> {
             ),
             title: course.title.titleCase,
           );
-        else if (course is StaticQuranCourse) course.onTap();
+        if (course is QuranCourseGroup)
+          Utils.pushView(
+            context,
+            CourseView(
+              courses: course.courses,
+            ),
+            title: course.title.titleCase,
+          );
+        if (course is StaticQuranCourse) course.onTap();
       },
       child: Column(
         children: <Widget>[

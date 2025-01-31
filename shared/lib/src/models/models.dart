@@ -14,5 +14,6 @@ export 'quick_link.dart';
 export 'drawer_item.dart';
 export 'quran_course/quran_course.dart';
 export 'quran_course/v2/quran_course.dart';
+export 'quran_course/v2/dua_category.dart';
 
 export 'status/server_status_check.dart';

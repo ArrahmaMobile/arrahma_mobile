@@ -44,7 +44,7 @@ class QuranCourseSurahTemplateScraper extends ScraperBase<QuranCourseContent> {
     final surahs = await Future.wait(
         items.where((i) => i.links.isNotEmpty).map((item) async {
       final linkItem = Utils.getItemByUrl(item.links.first);
-      final doc = linkItem?.type == ItemType.WebPage
+      final doc = linkItem?.type == ItemType.WebPage && !item.links.first.contains('/duas/pages/')
           ? await scraper.navigateTo(item.links.first)
           : null;
       if (doc == null) {

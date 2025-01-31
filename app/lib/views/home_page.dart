@@ -1,7 +1,7 @@
 import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
-import 'package:arrahma_mobile_app/features/dua/dua_view.dart';
+import 'package:arrahma_mobile_app/features/dua/dua_category_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
 import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
@@ -74,7 +74,8 @@ class _HomePageState extends State<HomePage> {
                             top: screenUtils.isSmallScreen() ? 0 : 40.0),
                         child: CourseView(
                           courses: [
-                            ...appData.courses.take(3).toList(),
+                            ...appData.courses.toList(),
+                            ...(appData.otherCourseGroups?.toList() ?? []),
                             ...staticCourses(appData),
                           ],
                         ),
@@ -131,24 +132,12 @@ class _HomePageState extends State<HomePage> {
 
   List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
         StaticQuranCourse(
-          imageUrl: 'https://arrahma.org/images_n/209.png',
-          title: 'Other\nCourses',
-          onTap: () {
-            Utils.pushView(
-              context,
-              CourseView(courses: appData.courses.skip(3).toList()),
-              title: 'Other Courses',
-            );
-          },
-        ),
-        StaticQuranCourse(
             imageUrl: 'https://arrahma.org/images_n/202.png',
             title: 'Duas & Dhikr',
             onTap: () {
               Utils.pushView(
                 context,
-                DuaView(),
-                title: 'Duas & Dhikr',
+                const DuaCategoryView(),
               );
             }),
       ];
@@ -213,7 +202,7 @@ class _HomePageState extends State<HomePage> {
     return FittedBox(
       child: Card(
         child: InkWell(
-          onTap: () => Utils.openUrl(context, link),
+          onTap: () => Utils.openUrl(context, TitledItem.fromItem(title, link)),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Center(

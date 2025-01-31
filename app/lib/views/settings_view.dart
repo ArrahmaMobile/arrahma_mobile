@@ -27,7 +27,7 @@ class _SettingsViewState extends State<SettingsView> {
       UserPreferences Function(UserPreferences) prefUpdateFn) {
     userPrefCtrl.setState((pref) => prefUpdateFn(pref));
     final pref = userPrefCtrl.state;
-    storageService.set(pref);
+    storageService.set<UserPreferences>(pref);
     return pref;
   }
 

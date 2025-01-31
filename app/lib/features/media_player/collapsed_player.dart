@@ -2,6 +2,7 @@ import 'package:arrahma_mobile_app/core/utils.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_control_buttons.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_media_display.dart';
 import 'package:arrahma_mobile_app/features/media_player/audio_player_seek_bar.dart';
+import 'package:arrahma_mobile_app/features/media_player/models/extended_media_item.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
         stream: _sequenceStateWithEvent,
         builder: (_, snapshot) {
           final playerState = snapshot.data;
-          final item = playerState?.key?.currentSource?.tag as MediaItem?;
+          final item = playerState?.key?.currentSource?.tag as ExtendedMediaItem?;
           final state = playerState?.value;
           final finished = state?.processingState != null &&
               [ProcessingState.completed, ProcessingState.idle]

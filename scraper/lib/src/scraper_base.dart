@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import 'package:scraper/src/scrapers/about_us_scraper.dart';
+import 'package:scraper/src/scrapers/dua_scraper.dart';
 import 'package:scraper/src/scrapers/media_scraper.dart';
 import 'package:scraper/src/scrapers/quran_course_scraper.dart';
 import 'package:scraper/src/utc_exception.dart';
@@ -89,118 +90,147 @@ class Scraper extends Worker<String, Document> implements IScraper {
       throw Exception('Unable to navigate to the home page');
     }
 
-    return AppData(
-      logoUrl: doc
-              .querySelector('.header img')
+    final logoUrl = doc
+            .querySelector('.header img')
+            ?.attributes['src']
+            ?.toAbsolute(baseUrl)
+            .removeQueryString() ??
+        '';
+
+    final quickLinks = doc
+        .querySelectorAll('#message1 > *')
+        .asMap()
+        .entries
+        .map((messageEntry) {
+          final title = messageEntry.value.parentNode!.nodes
+              .whereType<Text>()
+              .elementAt(messageEntry.key)
+              .text
+              .cleanedText;
+          final url = (messageEntry.value.localName == 'a'
+                  ? messageEntry.value
+                  : messageEntry.value.querySelector('a'))
+              ?.attributes['href']
+              ?.toAbsolute(baseUrl);
+          if (url == null) return null;
+          return QuickLink(
+            title: title.isEmpty ? messageEntry.value.text.cleanedText : title,
+            link: Utils.getItemByUrl(url),
+          );
+        })
+        .where((quickLink) => quickLink != null)
+        .cast<QuickLink>()
+        .toList();
+
+    final banners = doc
+        .querySelectorAll('#slider a')
+        .map((banner) {
+          final imageUrl = banner
+              .querySelector('img')
               ?.attributes['src']
               ?.toAbsolute(baseUrl)
-              .removeQueryString() ??
-          '',
-      quickLinks: doc
-          .querySelectorAll('#message1 > *')
-          .asMap()
-          .entries
-          .map((messageEntry) {
-            final title = messageEntry.value.parentNode!.nodes
-                .whereType<Text>()
-                .elementAt(messageEntry.key)
-                .text
-                .cleanedText;
-            final url = (messageEntry.value.localName == 'a'
-                    ? messageEntry.value
-                    : messageEntry.value.querySelector('a'))
-                ?.attributes['href']
-                ?.toAbsolute(baseUrl);
-            if (url == null) return null;
-            return QuickLink(
-              title:
-                  title.isEmpty ? messageEntry.value.text.cleanedText : title,
-              link: Utils.getItemByUrl(url),
-            );
-          })
-          .where((quickLink) => quickLink != null)
-          .cast<QuickLink>()
-          .toList(),
-      banners: doc
-          .querySelectorAll('#slider a')
-          .map((banner) {
-            final imageUrl = banner
-                .querySelector('img')
-                ?.attributes['src']
-                ?.toAbsolute(baseUrl)
-                .removeQueryString();
-            final link = banner.attributes['href']?.toAbsolute(baseUrl);
-            if (imageUrl == null || link == null) return null;
-            return HeadingBanner(
-              imageUrl: imageUrl,
-              item: Utils.getItemByUrl(link)!,
-            );
-          })
-          .where((banner) => banner != null)
-          .cast<HeadingBanner>()
-          .toList(),
-      broadcastItems: doc
-          .querySelectorAll('.column6 .box4')
-          .map((banner) {
-            final aTag = banner.querySelector('a');
-            final link = aTag != null
-                ? aTag.attributes['href']?.toAbsolute(baseUrl)
-                : null;
-            final host =
-                link != null ? Uri.parse(link).host.split('.')[0] : null;
-            final type = host != null
-                ? BroadcastType.values.firstWhereOrNull((type) =>
-                    type.toString().split('.')[1].toLowerCase() == host)
-                : null;
-            final imageUrl = banner
-                .querySelector('img')
-                ?.attributes['src']
-                ?.toAbsolute(baseUrl)
-                .removeQueryString();
-            if (link == null || imageUrl == null) {
-              return null;
-            }
-            return BroadcastItem(
-              type: type ?? BroadcastType.Other,
-              item: Utils.getItemByUrl(link)!,
-              imageUrl: imageUrl,
-            );
-          })
-          .where((item) => item != null)
-          .cast<BroadcastItem>()
-          .toList(),
-      socialMediaItems: doc
-          .querySelectorAll('.column3footer a')
-          .map((socialMediaItem) {
-            final imageUrl = socialMediaItem
-                .querySelector('img')
-                ?.attributes['src']
-                ?.toAbsolute(baseUrl)
-                .removeQueryString();
-            if (imageUrl == null) {
-              return null;
-            }
-            final whatsAppMessage =
-                'Assalamualaikum, I want to join the Arrahmah WhatsApp group. My name is {name} and my number is {number}.';
-            final link = imageUrl.contains('whatsapp')
-                ? 'https://wa.me/17323050744?text=${Uri.encodeQueryComponent(whatsAppMessage)}'
-                : socialMediaItem.attributes['href']?.toAbsolute(baseUrl);
-            if (link == null) return null;
-            return SocialMediaItem(
-                item: Utils.getItemByUrl(link)!, imageUrl: imageUrl);
-          })
-          .where((item) => item != null)
-          .cast<SocialMediaItem>()
-          .toList(),
-      drawerItems: (await performAsyncOp(
-        doc.querySelectorAll('#container_nav ul#nav > li'),
-        scrapeDrawerItem,
-      ))
-          .where((i) => i != null)
-          .cast<DrawerItem>()
-          .toList(),
-      aboutUsMarkdown: await AboutUsScraper(this).scrape() ?? '',
-      courses: await QuranCourseScraper(this).scrape(),
+              .removeQueryString();
+          final link = banner.attributes['href']?.toAbsolute(baseUrl);
+          if (imageUrl == null || link == null) return null;
+          return HeadingBanner(
+            imageUrl: imageUrl,
+            item: Utils.getItemByUrl(link)!,
+          );
+        })
+        .where((banner) => banner != null)
+        .cast<HeadingBanner>()
+        .toList();
+
+    final broadcastItems = doc
+        .querySelectorAll('.column6 .box4')
+        .map((banner) {
+          final aTag = banner.querySelector('a');
+          final link = aTag != null
+              ? aTag.attributes['href']?.toAbsolute(baseUrl)
+              : null;
+          final host = link != null ? Uri.parse(link).host.split('.')[0] : null;
+          final type = host != null
+              ? BroadcastType.values.firstWhereOrNull(
+                  (type) => type.toString().split('.')[1].toLowerCase() == host)
+              : null;
+          final imageUrl = banner
+              .querySelector('img')
+              ?.attributes['src']
+              ?.toAbsolute(baseUrl)
+              .removeQueryString();
+          if (link == null || imageUrl == null) {
+            return null;
+          }
+          return BroadcastItem(
+            type: type ?? BroadcastType.Other,
+            item: Utils.getItemByUrl(link)!,
+            imageUrl: imageUrl,
+          );
+        })
+        .where((item) => item != null)
+        .cast<BroadcastItem>()
+        .toList();
+
+    final socialMediaItems = doc
+        .querySelectorAll('.column3footer a')
+        .map((socialMediaItem) {
+          final imageUrl = socialMediaItem
+              .querySelector('img')
+              ?.attributes['src']
+              ?.toAbsolute(baseUrl)
+              .removeQueryString();
+          if (imageUrl == null) {
+            return null;
+          }
+          final whatsAppMessage =
+              'Assalamualaikum, I want to join the Arrahmah WhatsApp group. My name is {name} and my number is {number}.';
+          final link = imageUrl.contains('whatsapp')
+              ? 'https://wa.me/17323050744?text=${Uri.encodeQueryComponent(whatsAppMessage)}'
+              : socialMediaItem.attributes['href']?.toAbsolute(baseUrl);
+          if (link == null) return null;
+          return SocialMediaItem(
+              item: Utils.getItemByUrl(link)!, imageUrl: imageUrl);
+        })
+        .where((item) => item != null)
+        .cast<SocialMediaItem>()
+        .toList();
+
+    final drawerItems = (await performAsyncOp(
+      doc.querySelectorAll('#container_nav ul#nav > li'),
+      scrapeDrawerItem,
+    ))
+        .where((i) => i != null)
+        .cast<DrawerItem>()
+        .toList();
+
+    final aboutUsMarkdown = await AboutUsScraper(this).scrape() ?? '';
+
+    final quranCourseList = await QuranCourseScraper(this).scrape();
+
+    final duaCategories = await DuaScraper(this).scrape();
+
+    final otherCourseList = quranCourseList.sublist(3);
+    quranCourseList.removeRange(3, quranCourseList.length);
+
+    final otherCourseGroups = [
+      QuranCourseGroup(
+        title: 'Other Courses',
+        imageUrl: 'https://arrahma.org/images_n/209.png',
+        courses: otherCourseList,
+      )
+    ];
+
+    return AppData(
+      logoUrl: logoUrl,
+      quickLinks: quickLinks,
+      banners: banners,
+      broadcastItems: broadcastItems,
+      socialMediaItems: socialMediaItems,
+      drawerItems: drawerItems,
+      aboutUsMarkdown: aboutUsMarkdown,
+      courses: quranCourseList,
+      otherCourseGroups: otherCourseGroups,
+      duaCategories: duaCategories,
     );
   }
 

@@ -25,7 +25,8 @@ class AppService extends StoppableService {
   final DeviceStorageService deviceStorageService;
 
   static const LAST_FETCH_DATE_KEY = 'LAST_FETCH_DATE';
-  static const STATUS_CHECK_INTERVAL = Duration(minutes: 1);
+  static const STATUS_CHECK_INTERVAL = Duration(minutes: 10);
+  static const STATUS_CHECK_FAIL_INTERVAL = Duration(minutes: 1);
 
   final audioPlayer = AudioPlayer();
 
@@ -53,17 +54,31 @@ class AppService extends StoppableService {
     // _dataFetchTimer = Timer.periodic(
     //     FETCH_INTERVAL + const Duration(seconds: 10),
     //     (_) => dataFetchTimerHandler());
-    _statusCheckTimer = Timer.periodic(
-        STATUS_CHECK_INTERVAL + const Duration(seconds: 1),
-        (_) => statusCheckTimerHandler());
+    _setupTimer(false);
     _appDataHash ??= await deviceStorageService.loadAppDataHash();
+    _appData ??= await deviceStorageService.loadAppData();
 
-    await _setupData().catchError((dynamic _) => null);
+    await _setupData().catchError((e) {
+      if (_appDataHash == null) {
+        logger.verbose('Error initializing app data.');
+        _setupTimer(true);
+      }
+    });
     _lastEnv = apiService.environmentConfigCtrl!.state!;
     apiService.environmentConfigCtrl!.stateListener
         .addListener(_onEnvironmentUpdate);
-    _appData ??= await deviceStorageService.loadAppData();
+
+    _appData ??= deviceStorageService.getDefaultAppData();
     return _appData!;
+  }
+
+  void _setupTimer(bool failed) {
+    _statusCheckTimer?.cancel();
+    _statusCheckTimer = Timer.periodic(
+        failed
+            ? STATUS_CHECK_FAIL_INTERVAL
+            : (STATUS_CHECK_INTERVAL + const Duration(seconds: 1)),
+        (_) => statusCheckTimerHandler());
   }
 
   void _onEnvironmentUpdate() {
@@ -96,7 +111,7 @@ class AppService extends StoppableService {
   }
 
   Future<ServerStatus?> statusCheckTimerHandler(
-      {bool init = true, bool force = false}) async {
+      {bool init = false, bool force = false}) async {
     final status = await getStatus();
     if (status != null) {
       _broadcastStatusNotifier.value = status.broadcastStatus;
@@ -113,7 +128,7 @@ class AppService extends StoppableService {
         force: force ||
             isStale ||
             appDataHash == null ||
-            (appData == null && !init) ||
+            appData == null ||
             justUpdated);
     return status;
   }

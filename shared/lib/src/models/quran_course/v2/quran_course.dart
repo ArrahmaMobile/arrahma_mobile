@@ -1,9 +1,6 @@
-// import 'course_tafseer.dart';
-
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 import '../../models.dart';
-import '../course.dart';
 
 @jsonSerializable
 class QuranCourse extends Course {
@@ -25,4 +22,14 @@ class QuranCourse extends Course {
   final QuranCourseContent? lectures;
   final MediaContent? tests;
   final MediaContent? otherContent;
+}
+
+@jsonSerializable
+class QuranCourseGroup extends Course {
+  const QuranCourseGroup({
+    required super.title,
+    required super.imageUrl,
+    required this.courses,
+  });
+  final List<QuranCourse> courses;
 }

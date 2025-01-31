@@ -6,7 +6,11 @@ class DeviceStorageService extends BaseDeviceStorageService {
 
   static const APP_DATA_HASH_KEY = 'AppDataHash';
 
-  Future<AppData> loadAppData() async {
+  Future<AppData?> loadAppData() async {
+    return await storage.get<AppData>(defaultFn: () => getDefaultAppData());
+  }
+
+  AppData getDefaultAppData() {
     const banners = [
       HeadingBanner(
         imageUrl: 'assets/images/home_page_images/front_page_banner1.jpg',
@@ -359,18 +363,17 @@ class DeviceStorageService extends BaseDeviceStorageService {
       ),
     ];
 
-    return (await storage.get<AppData>(
-      defaultFn: () => const AppData(
-        banners: banners,
-        broadcastItems: broadcasts,
-        quickLinks: [],
-        courses: courses,
-        socialMediaItems: socialMediaItems,
-        logoUrl: '',
-        aboutUsMarkdown: '',
-        drawerItems: [],
-      ),
-    ))!;
+    return const AppData(
+      banners: banners,
+      broadcastItems: broadcasts,
+      quickLinks: [],
+      courses: courses,
+      socialMediaItems: socialMediaItems,
+      logoUrl: '',
+      aboutUsMarkdown: '',
+      drawerItems: [],
+      duaCategories: [],
+    );
   }
 
   Future<String?> loadAppDataHash() async {

@@ -26,6 +26,7 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
         quranCourseList.add(quranCourse);
       }
     }
+
     quranCourseList.add(QuranCourse(
       title: 'Weekly Reminder',
       imageUrl: 'assets/images/weekly_dua_sunnat.png',

@@ -31,7 +31,7 @@ class ScraperService {
     this.senderEmail,
     this.senderEmailPassword,
   }) {
-    shared.main();
+    shared.initializeJsonMapper();
   }
 
   DateTime get lastUpdateAttempt => _lastUpdateAttempt;
@@ -165,7 +165,12 @@ class ScraperService {
     final serializedDataMap = JsonMapper.toMap(appData)!;
     final serializedData = json.encode(serializedDataMap);
     _serializedData = serializedData;
-    final quranCoursesV1 = appData.courses
+    final courses = <QuranCourse>[
+      ...appData.courses,
+      ...(appData.otherCourseGroups?.expand((o) => o.courses) ??
+          <QuranCourse>[])
+    ];
+    final quranCoursesV1 = courses
         .map(
           (c) => QuranCourseV1(
             title: c.title,
