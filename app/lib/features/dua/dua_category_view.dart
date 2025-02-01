@@ -63,6 +63,23 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
           Expanded(
             child: CustomScrollView(
               slivers: [
+                if (searchQuery.isNotEmpty &&
+                    filteredCategories.isEmpty &&
+                    filteredDuas.isEmpty)
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: Text(
+                        'No results found for "$searchQuery"',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey[900],
+                        ),
+                      ),
+                    ),
+                  ),
                 if (countInGrid > 0)
                   SliverPadding(
                     padding: const EdgeInsets.all(8.0),
@@ -147,8 +164,15 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                       if (index >= filteredCategories.length - countInGrid)
                         return null;
                       final category = filteredCategories[index + countInGrid];
-                      return _buildListTile(category, category.title.titleCase,
-                          category.titleUrdu, index + countInGrid + 1);
+                      return _buildListTile(
+                          category,
+                          category.title.titleCase.isEmpty
+                              ? category.duas.first.title ?? category.title
+                              : category.title.titleCase,
+                          category.titleUrdu.titleCase.isEmpty
+                              ? category.duas.first.titleUrdu ?? category.titleUrdu
+                              : category.titleUrdu.titleCase,
+                          index + countInGrid + 1);
                     },
                     childCount: allCategories != null
                         ? filteredCategories.length > countInGrid
@@ -173,24 +197,26 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                       ),
                     ),
                   ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      if (index >= filteredDuas.length) return null;
-                      final duaEntry = filteredDuas[index];
-                      final catIndex = allCategories!.indexOf(duaEntry.key);
-                      return _buildListTile(
-                        duaEntry.key,
-                        duaEntry.value.title?.titleCase ??
-                            '${duaEntry.key.title.titleCase} - Dua ${index + 1}',
-                        duaEntry.value.titleUrdu ?? duaEntry.key.titleUrdu,
-                        catIndex + 1,
-                        index,
-                      );
-                    },
-                    childCount: allCategories != null ? filteredDuas.length : 0,
+                if (searchQuery.isNotEmpty && filteredDuas.isNotEmpty)
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index >= filteredDuas.length) return null;
+                        final duaEntry = filteredDuas[index];
+                        final catIndex = allCategories!.indexOf(duaEntry.key);
+                        return _buildListTile(
+                          duaEntry.key,
+                          duaEntry.value.title?.titleCase ??
+                              '${duaEntry.key.title.titleCase} - Dua ${index + 1}',
+                          duaEntry.value.titleUrdu ?? duaEntry.key.titleUrdu,
+                          catIndex + 1,
+                          index,
+                        );
+                      },
+                      childCount:
+                          allCategories != null ? filteredDuas.length : 0,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

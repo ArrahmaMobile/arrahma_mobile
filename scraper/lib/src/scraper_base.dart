@@ -212,6 +212,13 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final otherCourseList = quranCourseList.sublist(3);
     quranCourseList.removeRange(3, quranCourseList.length);
 
+    final quran102 = quranCourseList.firstWhere(
+      (c) => c.title.trim().toLowerCase() == 'quran 102',
+    );
+
+    quranCourseList.remove(quran102);
+    quranCourseList.insert(0, quran102);
+
     final otherCourseGroups = [
       QuranCourseGroup(
         title: 'Other Courses',

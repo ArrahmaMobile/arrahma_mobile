@@ -35,9 +35,10 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_launcher_icons: ^0.13.1
   flutter_framework:
-    # git:
-    #   url: git@github.com:SASID-PRO/flutter_framework.git
-    path: ../../flutter_framework
+    git:
+      url: git@github.com:SASID-PRO/flutter_framework.git
+      ref: null-safety
+    # path: ../../flutter_framework
   flutter_cache_manager: ^3.4.0
   share: ^2.0.4
 

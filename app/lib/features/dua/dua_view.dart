@@ -1,6 +1,7 @@
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recase/recase.dart';
 import 'package:share/share.dart';
 
 class DuaView extends StatefulWidget {
@@ -24,75 +25,74 @@ class _DuaViewState extends State<DuaView> {
       appBar: AppBar(
         title: const SelectableText('Duas'),
         actions: [
-          //Share button
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               final dua = widget.category.duas[selectedindex];
-              Share.share(_buildShareText(), subject: dua.title ?? widget.category.title);
+              Share.share(_buildShareText(),
+                  subject: dua.title ?? widget.category.title);
             },
           ),
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-
-            // Shared category heading (EN)
-            SelectableText(
-              widget.category.title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[900],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              if (widget.category.title.isNotEmpty) const SizedBox(height: 16),
+              if (widget.category.title.isNotEmpty)
+                SelectableText(
+                  widget.category.title.titleCase,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[900],
+                  ),
+                ),
+              if (widget.category.title.isNotEmpty) const SizedBox(height: 8),
+              if (widget.category.titleUrdu.isNotEmpty)
+                SelectableText(
+                  widget.category.titleUrdu,
+                  textAlign: TextAlign.center,
+                  textDirection: TextDirection.rtl,
+                  style: GoogleFonts.gulzar(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[900],
+                  ),
+                ),
+              if (widget.category.titleUrdu.isNotEmpty)
+                const SizedBox(height: 16),
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      selectedindex = page;
+                    });
+                  },
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.category.duas.length,
+                  itemBuilder: (context, index) {
+                    final dua = widget.category.duas[index];
+                    return DuaPage(
+                      dua: dua,
+                    );
+                  },
+                ),
               ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // Shared category heading (Urdu)
-            SelectableText(
-              widget.category.titleUrdu,
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-              style: GoogleFonts.gulzar(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[900],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  runSpacing: 8.0,
+                  children: _buildPageIndicator(),
+                ),
               ),
-            ),
-
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (int page) {
-                  setState(() {
-                    selectedindex = page;
-                  });
-                },
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.category.duas.length,
-                itemBuilder: (context, index) {
-                  final dua = widget.category.duas[index];
-                  return DuaPage(
-                    dua: dua,
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 8.0,
-                children: _buildPageIndicator(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -461,9 +461,11 @@ packages:
   flutter_framework:
     dependency: "direct main"
     description:
-      path: "../../flutter_framework"
-      relative: true
-    source: path
+      path: "."
+      ref: null-safety
+      resolved-ref: ba389cfb44c884e4d33b7718d4e50df119e433e1
+      url: "git@github.com:SASID-PRO/flutter_framework.git"
+    source: git
     version: "0.0.1"
   flutter_launcher_icons:
     dependency: "direct main"

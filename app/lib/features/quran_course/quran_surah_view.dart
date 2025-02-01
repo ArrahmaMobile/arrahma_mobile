@@ -53,9 +53,11 @@ class _QuranSurahViewState extends State<QuranSurahView> {
       QuranLessonView(
         surah: surah,
       ),
-      title: replace
-          ? widget.referrerTitle ?? widget.content.title ?? surah.name
-          : surah.name ?? widget.content.title,
+      title: [
+        if (replace) widget.referrerTitle,
+        if (replace) widget.content.title,
+        surah.name
+      ].firstWhere((element) => element?.isNotEmpty == true, orElse: () => ''),
       replace: replace,
     );
   }

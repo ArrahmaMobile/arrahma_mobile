@@ -14,108 +14,110 @@ class AudioPlayerControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          width: 46,
-        ),
-        IconButton(
-          icon: const Icon(Icons.volume_up),
-          onPressed: () {
-            showSliderDialog(
-              context: context,
-              title: 'Adjust volume',
-              divisions: 10,
-              min: 0.0,
-              max: 1.0,
-              stream: player.volumeStream,
-              onChanged: player.setVolume,
-            );
-          },
-        ),
-        StreamBuilder<SequenceState?>(
-          stream: player.sequenceStateStream,
-          builder: (context, snapshot) => IconButton(
-            icon: const Icon(Icons.skip_previous),
-            onPressed: player.hasPrevious
-                ? () async {
-                    await player.seekToPrevious();
-                    storageService.setWithKey(
-                        lastPlayedIndexKey, player.currentIndex);
-                  }
-                : null,
+    return FittedBox(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 46,
           ),
-        ),
-        StreamBuilder<PlayerState>(
-          stream: player.playerStateStream,
-          builder: (context, snapshot) {
-            final playerState = snapshot.data;
-            final processingState = playerState?.processingState;
-            final playing = playerState?.playing;
-            if (processingState == ProcessingState.loading ||
-                processingState == ProcessingState.buffering) {
-              return Container(
-                margin: const EdgeInsets.all(8.0),
-                width: 64.0,
-                height: 64.0,
-                child: const CircularProgressIndicator(),
-              );
-            } else if (playing != true) {
-              return IconButton(
-                icon: const Icon(Icons.play_arrow),
-                iconSize: 64.0,
-                onPressed: player.play,
-              );
-            } else if (processingState != ProcessingState.completed) {
-              return IconButton(
-                icon: const Icon(Icons.pause),
-                iconSize: 64.0,
-                onPressed: player.pause,
-              );
-            } else {
-              return IconButton(
-                icon: const Icon(Icons.replay),
-                iconSize: 64.0,
-                onPressed: () => player.seek(Duration.zero,
-                    index: player.effectiveIndices!.first),
-              );
-            }
-          },
-        ),
-        StreamBuilder<SequenceState?>(
-          stream: player.sequenceStateStream,
-          builder: (context, snapshot) => IconButton(
-            icon: const Icon(Icons.skip_next),
-            onPressed: player.hasNext
-                ? () async {
-                    await player.seekToNext();
-                    storageService.setWithKey(
-                        lastPlayedIndexKey, player.currentIndex);
-                  }
-                : null,
-          ),
-        ),
-        StreamBuilder<double>(
-          stream: player.speedStream,
-          builder: (context, snapshot) => IconButton(
-            icon: Text('${snapshot.data?.toStringAsFixed(1)}x',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+          IconButton(
+            icon: const Icon(Icons.volume_up),
             onPressed: () {
               showSliderDialog(
                 context: context,
-                title: 'Adjust speed',
-                divisions: 15,
-                min: 0.5,
-                max: 2,
-                stream: player.speedStream,
-                onChanged: player.setSpeed,
+                title: 'Adjust volume',
+                divisions: 10,
+                min: 0.0,
+                max: 1.0,
+                stream: player.volumeStream,
+                onChanged: player.setVolume,
               );
             },
           ),
-        ),
-        OfflineStorageButton(player: player),
-      ],
+          StreamBuilder<SequenceState?>(
+            stream: player.sequenceStateStream,
+            builder: (context, snapshot) => IconButton(
+              icon: const Icon(Icons.skip_previous),
+              onPressed: player.hasPrevious
+                  ? () async {
+                      await player.seekToPrevious();
+                      storageService.setWithKey(
+                          lastPlayedIndexKey, player.currentIndex);
+                    }
+                  : null,
+            ),
+          ),
+          StreamBuilder<PlayerState>(
+            stream: player.playerStateStream,
+            builder: (context, snapshot) {
+              final playerState = snapshot.data;
+              final processingState = playerState?.processingState;
+              final playing = playerState?.playing;
+              if (processingState == ProcessingState.loading ||
+                  processingState == ProcessingState.buffering) {
+                return Container(
+                  margin: const EdgeInsets.all(8.0),
+                  width: 64.0,
+                  height: 64.0,
+                  child: const CircularProgressIndicator(),
+                );
+              } else if (playing != true) {
+                return IconButton(
+                  icon: const Icon(Icons.play_arrow),
+                  iconSize: 64.0,
+                  onPressed: player.play,
+                );
+              } else if (processingState != ProcessingState.completed) {
+                return IconButton(
+                  icon: const Icon(Icons.pause),
+                  iconSize: 64.0,
+                  onPressed: player.pause,
+                );
+              } else {
+                return IconButton(
+                  icon: const Icon(Icons.replay),
+                  iconSize: 64.0,
+                  onPressed: () => player.seek(Duration.zero,
+                      index: player.effectiveIndices!.first),
+                );
+              }
+            },
+          ),
+          StreamBuilder<SequenceState?>(
+            stream: player.sequenceStateStream,
+            builder: (context, snapshot) => IconButton(
+              icon: const Icon(Icons.skip_next),
+              onPressed: player.hasNext
+                  ? () async {
+                      await player.seekToNext();
+                      storageService.setWithKey(
+                          lastPlayedIndexKey, player.currentIndex);
+                    }
+                  : null,
+            ),
+          ),
+          StreamBuilder<double>(
+            stream: player.speedStream,
+            builder: (context, snapshot) => IconButton(
+              icon: Text('${snapshot.data?.toStringAsFixed(1)}x',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              onPressed: () {
+                showSliderDialog(
+                  context: context,
+                  title: 'Adjust speed',
+                  divisions: 15,
+                  min: 0.5,
+                  max: 2,
+                  stream: player.speedStream,
+                  onChanged: player.setSpeed,
+                );
+              },
+            ),
+          ),
+          OfflineStorageButton(player: player),
+        ],
+      ),
     );
   }
 }

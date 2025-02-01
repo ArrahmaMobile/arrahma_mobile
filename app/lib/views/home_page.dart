@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                         child: CourseView(
                           courses: [
                             ...appData.courses.toList(),
-                            ...(appData.otherCourseGroups?.toList() ?? []),
+                            ...(appData.otherCourseGroups?.toList() ?? <QuranCourseGroup>[]),
                             ...staticCourses(appData),
                           ],
                         ),
