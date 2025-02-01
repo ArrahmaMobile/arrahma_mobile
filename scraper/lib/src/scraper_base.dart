@@ -210,14 +210,14 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final duaCategories = await DuaScraper(this).scrape();
 
     final otherCourseList = quranCourseList.sublist(3);
-    quranCourseList.removeRange(3, quranCourseList.length);
 
-    final quran102 = quranCourseList.firstWhere(
+    final quran102 = quranCourseList.firstWhereOrNull(
       (c) => c.title.trim().toLowerCase() == 'quran 102',
     );
 
-    quranCourseList.remove(quran102);
-    quranCourseList.insert(0, quran102);
+    quranCourseList.removeRange(3, quranCourseList.length);
+
+    if (quran102 != null) quranCourseList.insert(0, quran102);
 
     final otherCourseGroups = [
       QuranCourseGroup(
