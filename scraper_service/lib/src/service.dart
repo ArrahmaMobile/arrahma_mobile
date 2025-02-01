@@ -22,8 +22,8 @@ class ScraperService {
   late DateTime _lastUpdateAttempt;
   late ScrapedData _rawData;
   late String _appDataHash;
-  late String _serializedData;
-  late String _serializedV1Data;
+  late Map<String, dynamic> _serializedData;
+  late Map<String, dynamic> _serializedV1Data;
 
   ScraperService._(
     this._syncService, {
@@ -38,8 +38,8 @@ class ScraperService {
   ScrapedData get scrapedData => _rawData;
   AppData get appData => _rawData.appData;
   String get appDataHash => _appDataHash;
-  String get serializedData => _serializedData;
-  String get serializedV1Data => _serializedV1Data;
+  Map<String, dynamic> get serializedData => _serializedData;
+  Map<String, dynamic> get serializedV1Data => _serializedV1Data;
 
   static Future<ScraperService> create({
     required SyncService syncService,
@@ -163,8 +163,7 @@ class ScraperService {
   void _updateData(ScrapedData updatedScrapedData) {
     _rawData = updatedScrapedData;
     final serializedDataMap = JsonMapper.toMap(appData)!;
-    final serializedData = json.encode(serializedDataMap);
-    _serializedData = serializedData;
+    _serializedData = serializedDataMap;
     final courses = <QuranCourse>[
       ...appData.courses,
       ...(appData.otherCourseGroups?.expand((o) => o.courses) ??
@@ -198,11 +197,11 @@ class ScraperService {
           ),
         )
         .toList();
-    _serializedV1Data = json.encode({
+    _serializedV1Data = {
       ...serializedDataMap,
       'courses': quranCoursesV1.map((e) => JsonMapper.toMap(e)).toList()
-    });
-    _updateDataHash(serializedData);
+    };
+    _updateDataHash(json.encode(_serializedData));
     _syncService.log('Data updated.');
     if (!_syncService.isMain)
       _lastUpdateAttempt = updatedScrapedData.runMetadata.lastUpdate;

@@ -1,4 +1,3 @@
-
 import 'package:arrahma_web_api/api.dart';
 import 'package:arrahma_web_api/services/data_sync_service.dart';
 import 'package:conduit_core/conduit_core.dart';
@@ -24,7 +23,7 @@ class DataController extends ResourceController {
         ? _scraperService.serializedV1Data
         : _scraperService.serializedData;
     print(
-        '[${DataSyncService.instanceId}] ${data.length > 1000 ? data.substring(0, 1000) : data}');
+        '[${DataSyncService.instanceId}] [${_scraperService.scrapedData.runMetadata.lastUpdate}] [${_scraperService.appDataHash}] Data sent with version $version.');
     return Response.ok(data, headers: eTagHeader);
   }
 }

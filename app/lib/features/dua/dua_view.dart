@@ -15,12 +15,20 @@ class DuaView extends StatefulWidget {
 }
 
 class _DuaViewState extends State<DuaView> {
-  final PageController _pageController = PageController(initialPage: 0);
+  late PageController _pageController;
 
   int selectedindex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: widget.duaIndex);
+    selectedindex = widget.duaIndex;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const SelectableText('Duas'),
@@ -48,7 +56,7 @@ class _DuaViewState extends State<DuaView> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[900],
+                    color: theme.primaryColor,
                   ),
                 ),
               if (widget.category.title.isNotEmpty) const SizedBox(height: 8),
@@ -60,7 +68,7 @@ class _DuaViewState extends State<DuaView> {
                   style: GoogleFonts.gulzar(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[900],
+                    color: theme.primaryColor,
                   ),
                 ),
               if (widget.category.titleUrdu.isNotEmpty)
@@ -151,9 +159,9 @@ class _DuaViewState extends State<DuaView> {
     return '''
 $text
 
-ArRahmah App ©
-https://apps.apple.com/us/app/arrahma/id1557155100
-https://arrahma.org/
+Sent by: ArRahmah Duaa App ©️ 
+ArRahmah Islamic Institute 2009  
+[www.arrahma.org]
 ''';
   }
 }
@@ -179,7 +187,6 @@ class DuaPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
               ),
             ),
           if (dua.title != null) const SizedBox(height: 8),
@@ -192,7 +199,6 @@ class DuaPage extends StatelessWidget {
               style: GoogleFonts.gulzar(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
               ),
             ),
           if (dua.titleUrdu != null) const SizedBox(height: 24),
@@ -204,7 +210,6 @@ class DuaPage extends StatelessWidget {
             textDirection: TextDirection.rtl,
             style: GoogleFonts.scheherazadeNew(
               fontSize: 22,
-              color: Colors.black,
             ),
           ),
           const SizedBox(height: 16),
@@ -215,7 +220,6 @@ class DuaPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.black87,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -229,7 +233,6 @@ class DuaPage extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: GoogleFonts.gulzar(
                 fontSize: 16,
-                color: Colors.black87,
               ),
             ),
         ],

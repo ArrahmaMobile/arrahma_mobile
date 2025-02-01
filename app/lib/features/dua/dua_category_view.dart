@@ -26,6 +26,7 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     countInGrid = defaultCountInGrid;
     final appData = context.on<AppData>();
     _appData = appData;
@@ -69,13 +70,12 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      color: Colors.white,
                       child: Text(
                         'No results found for "$searchQuery"',
                         style: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
-                          color: Colors.grey[900],
+                          color: theme.splashColor,
                         ),
                       ),
                     ),
@@ -143,17 +143,16 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                       ),
                     ),
                   ),
-                if (searchQuery.isNotEmpty && filteredCategories.isNotEmpty)
+                if (searchQuery.isNotEmpty && filteredCategories.isNotEmpty && filteredCategories.length > countInGrid)
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      color: Colors.white,
                       child: Text(
                         "Categories",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue[900],
+                          color: theme.primaryColor,
                         ),
                       ),
                     ),
@@ -186,13 +185,12 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      color: Colors.white,
                       child: Text(
                         "Duas",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue[900],
+                          color: theme.primaryColor,
                         ),
                       ),
                     ),

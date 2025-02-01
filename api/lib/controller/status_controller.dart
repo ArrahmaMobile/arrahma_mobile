@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:arrahma_shared/shared.dart';
 import 'package:arrahma_web_api/services/broadcast_service.dart';
@@ -15,7 +16,7 @@ class StatusController extends ResourceController {
 
   @Operation.get()
   Future<Response> getStatus({@Bind.query('dataHash') String? dataHash}) async {
-    final statusResponse = JsonMapper.serialize(
+    final statusResponse = JsonMapper.toMap(
       ServerStatus(
         status: ServerConnectionStatus.Available,
         isDataStale:
@@ -27,7 +28,7 @@ class StatusController extends ResourceController {
       ),
     );
     print(
-        '[${DataSyncService.instanceId}] ${statusResponse.length > 1000 ? statusResponse.substring(0, 1000) : statusResponse}');
+        '[${DataSyncService.instanceId}] [$dataHash] ${json.encode(statusResponse)}');
     return Response.ok(statusResponse);
   }
 }
