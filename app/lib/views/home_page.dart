@@ -3,11 +3,11 @@ import 'package:arrahma_mobile_app/features/course/course_view.dart';
 import 'package:arrahma_mobile_app/features/drawer/main_drawer.dart';
 import 'package:arrahma_mobile_app/features/dua/dua_category_view.dart';
 import 'package:arrahma_mobile_app/features/media_player/collapsed_player.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
 import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
+import 'package:arrahma_mobile_app/views/data_loading_banner.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart' hide Badge;
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             if (!AppUtils.isDebug) return;
             final currentEnv = context.once<EnvironmentConfig>();
             final envs = SL.get<EnvironmentService>()!.getEnvironments();
-            if ((envs?.length ?? -1) <= 1) return;
+            if ((envs.length) <= 1) return;
             final envNames = envs.map((e) => e.name).toList();
             final nextEnv =
                 envs[(envNames.indexOf(currentEnv.name) + 1) % envs.length];
@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> {
           },
           child: SizedBox(
             height: 56,
-            child:
-                _buildImage(appData?.logoUrl ?? 'assets/images/logo_full.png'),
+            child: _buildImage(appData.logoUrl),
           ),
         ),
       ),
@@ -66,6 +65,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Column(
                   children: [
+                    // DataLoadingBanner(),
                     _buildQuickLinks(appData.quickLinks),
                     _buildBanners(appData.banners),
                     Expanded(
@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                         child: CourseView(
                           courses: [
                             ...appData.courses.toList(),
-                            ...(appData.otherCourseGroups?.toList() ?? <QuranCourseGroup>[]),
+                            ...(appData.otherCourseGroups?.toList() ??
+                                <QuranCourseGroup>[]),
                             ...staticCourses(appData),
                           ],
                         ),
@@ -229,10 +230,9 @@ class _HomePageState extends State<HomePage> {
       childAspectRatio: 1.5,
       children: <Widget>[
         ...socialItems
-                ?.map((socialMedia) => _buildSocialImageLink(
-                    socialMedia.item, socialMedia.imageUrl))
-                ?.toList() ??
-            [],
+            .map((socialMedia) =>
+                _buildSocialImageLink(socialMedia.item, socialMedia.imageUrl))
+            .toList(),
         GestureDetector(
           onTap: () {
             // AppService.launchAppOrStore(

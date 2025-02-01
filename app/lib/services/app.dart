@@ -49,6 +49,9 @@ class AppService extends StoppableService {
   ValueListenable<BroadcastStatus> get broadcastStatusListenable =>
       _broadcastStatusNotifier;
 
+  final _dataLoadingNotifier = ValueNotifier<bool>(false);
+  ValueListenable<bool> get dataLoadingListenable => _dataLoadingNotifier;
+
   Future<AppData> initApp() async {
     _isUpdated = (await storageService.get<AppMetadata>())?.isUpdated;
     // _dataFetchTimer = Timer.periodic(
@@ -152,6 +155,7 @@ class AppService extends StoppableService {
             date.difference(lastFetchDate) > FETCH_INTERVAL*/
         )) {
       try {
+        _dataLoadingNotifier.value = true;
         if (justUpdated) {
           logger.verbose('App was updated. Refetching data...');
         }
@@ -167,6 +171,8 @@ class AppService extends StoppableService {
         }
       } catch (err) {
         logger.error('Unable to get app data.', err);
+      } finally {
+        _dataLoadingNotifier.value = false;
       }
     }
     return null;
