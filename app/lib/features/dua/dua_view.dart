@@ -66,6 +66,7 @@ class _DuaViewState extends State<DuaView> {
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
                   style: GoogleFonts.gulzar(
+                    height: 1.8,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: theme.primaryColor,
@@ -197,6 +198,7 @@ class DuaPage extends StatelessWidget {
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
               style: GoogleFonts.gulzar(
+                height: 1.8,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -209,6 +211,7 @@ class DuaPage extends StatelessWidget {
             textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
             style: GoogleFonts.scheherazadeNew(
+              height: 2,
               fontSize: 22,
             ),
           ),
@@ -232,6 +235,7 @@ class DuaPage extends StatelessWidget {
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
               style: GoogleFonts.gulzar(
+                height: 1.8,
                 fontSize: 16,
               ),
             ),
