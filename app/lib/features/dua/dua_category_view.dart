@@ -143,7 +143,9 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                       ),
                     ),
                   ),
-                if (searchQuery.isNotEmpty && filteredCategories.isNotEmpty && filteredCategories.length > countInGrid)
+                if (searchQuery.isNotEmpty &&
+                    filteredCategories.isNotEmpty &&
+                    filteredCategories.length > countInGrid)
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -169,9 +171,10 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                               ? category.duas.first.title ?? category.title
                               : category.title.titleCase,
                           category.titleUrdu.titleCase.isEmpty
-                              ? category.duas.first.titleUrdu ?? category.titleUrdu
+                              ? category.duas.first.titleUrdu ??
+                                  category.titleUrdu
                               : category.titleUrdu.titleCase,
-                          index + countInGrid + 1);
+                          (index + countInGrid + 1).toString());
                     },
                     childCount: allCategories != null
                         ? filteredCategories.length > countInGrid
@@ -205,10 +208,10 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                         return _buildListTile(
                           duaEntry.key,
                           duaEntry.value.title?.titleCase ??
-                              '${duaEntry.key.title.titleCase} - Dua ${index + 1}',
+                              '${duaEntry.key.title.titleCase} - Dua ${duaEntry.value.id}',
                           duaEntry.value.titleUrdu ?? duaEntry.key.titleUrdu,
-                          catIndex + 1,
-                          index,
+                          '${catIndex + 1}.${duaEntry.value.id}',
+                          int.parse(duaEntry.value.id) - 1,
                         );
                       },
                       childCount:
@@ -224,7 +227,7 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
   }
 
   Widget _buildListTile(
-      DuaCategory category, String title, String titleUrdu, int leadingCount,
+      DuaCategory category, String title, String titleUrdu, String leadingCount,
       [int index = 0]) {
     return ListTile(
       onTap: () {
@@ -244,11 +247,19 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
           fontSize: 16,
         ),
       ),
-      leading: Text(
-        leadingCount.toString(),
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
+      leading: SizedBox(
+        width: 30,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Center(
+            child: Text(
+              leadingCount.toString(),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
       ),
     );
