@@ -211,13 +211,19 @@ class Scraper extends Worker<String, Document> implements IScraper {
 
     final otherCourseList = quranCourseList.sublist(3);
 
-    final quran102 = quranCourseList.firstWhereOrNull(
-      (c) => c.title.trim().toLowerCase() == 'quran 102',
-    );
+    const courseOrder = ['quran 102', 'quran 101', 'taleemul quran'];
 
-    quranCourseList.removeRange(3, quranCourseList.length);
+    final courseList = courseOrder
+        .map((element) {
+          return quranCourseList.firstWhereOrNull(
+            (c) => c.title.trim().toLowerCase() == element,
+          );
+        })
+        .where((c) => c != null)
+        .cast<QuranCourse>()
+        .toList();
 
-    if (quran102 != null) quranCourseList.insert(0, quran102);
+    courseList.forEach((c) => quranCourseList.remove(c));
 
     final otherCourseGroups = [
       QuranCourseGroup(
@@ -235,7 +241,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
       socialMediaItems: socialMediaItems,
       drawerItems: drawerItems,
       aboutUsMarkdown: aboutUsMarkdown,
-      courses: quranCourseList,
+      courses: [...courseList, ...quranCourseList].sublist(3),
       otherCourseGroups: otherCourseGroups,
       duaCategories: duaCategories,
     );

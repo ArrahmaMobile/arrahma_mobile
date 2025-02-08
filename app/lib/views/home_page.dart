@@ -74,10 +74,10 @@ class _HomePageState extends State<HomePage> {
                             top: screenUtils.isSmallScreen() ? 0 : 40.0),
                         child: CourseView(
                           courses: [
+                            ...staticCourses(appData),
                             ...appData.courses.toList(),
                             ...(appData.otherCourseGroups?.toList() ??
                                 <QuranCourseGroup>[]),
-                            ...staticCourses(appData),
                           ],
                         ),
                       ),
