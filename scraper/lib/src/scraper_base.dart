@@ -209,8 +209,6 @@ class Scraper extends Worker<String, Document> implements IScraper {
 
     final duaCategories = await DuaScraper(this).scrape();
 
-    final otherCourseList = quranCourseList.sublist(3);
-
     const courseOrder = ['quran 102', 'quran 101', 'taleemul quran'];
 
     final courseList = courseOrder
@@ -225,11 +223,13 @@ class Scraper extends Worker<String, Document> implements IScraper {
 
     courseList.forEach((c) => quranCourseList.remove(c));
 
+    final allCourses = [...courseList, ...quranCourseList];
+
     final otherCourseGroups = [
       QuranCourseGroup(
         title: 'Other Courses',
         imageUrl: 'https://arrahma.org/images_n/209.png',
-        courses: otherCourseList,
+        courses: allCourses.sublist(3),
       )
     ];
 
@@ -241,7 +241,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
       socialMediaItems: socialMediaItems,
       drawerItems: drawerItems,
       aboutUsMarkdown: aboutUsMarkdown,
-      courses: [...courseList, ...quranCourseList].sublist(3),
+      courses: allCourses.sublist(0, 3),
       otherCourseGroups: otherCourseGroups,
       duaCategories: duaCategories,
     );
