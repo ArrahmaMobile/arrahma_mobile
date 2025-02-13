@@ -1,7 +1,6 @@
 import 'package:arrahma_mobile_app/app.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_shared/shared.dart';
-import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';

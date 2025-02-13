@@ -7,7 +7,6 @@ import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
 import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_mobile_app/services/device_storage_service.dart';
-import 'package:arrahma_mobile_app/views/data_loading_banner.dart';
 import 'package:arrahma_mobile_app/widgets/carousel_indicator.dart';
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart' hide Badge;
@@ -28,6 +27,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final appData = context.on<AppData>();
     final screenUtils = ScreenUtils.getInstance(context)!;
+    if (appService.firstDataFetchFailed)
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Failed to load data'),
+              Center(
+                child: ValueListenableBuilder(
+                  valueListenable: appService.dataLoadingListenable,
+                  builder: (_, loading, __) {
+                    return loading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            'Retrying every 10 seconds',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     return Scaffold(
       drawer: MainDrawer(
         items: appData.drawerItems,

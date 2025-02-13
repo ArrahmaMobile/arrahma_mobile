@@ -28,6 +28,9 @@ class AppService extends StoppableService {
   static const STATUS_CHECK_INTERVAL = Duration(minutes: 10);
   static const STATUS_CHECK_FAIL_INTERVAL = Duration(minutes: 1);
 
+  bool _firstDataFetchFailed = false;
+  bool get firstDataFetchFailed => _firstDataFetchFailed;
+
   final audioPlayer = AudioPlayer();
 
   AppData? _appData;
@@ -71,6 +74,10 @@ class AppService extends StoppableService {
     apiService.environmentConfigCtrl!.stateListener
         .addListener(_onEnvironmentUpdate);
 
+    if (_appData == null) {
+      _firstDataFetchFailed = true;
+      logger.verbose('First data fetch failed.');
+    }
     _appData ??= deviceStorageService.getDefaultAppData();
     return _appData!;
   }
@@ -159,9 +166,11 @@ class AppService extends StoppableService {
         if (justUpdated) {
           logger.verbose('App was updated. Refetching data...');
         }
-        final appDataResponse =
-            await apiService.getWithResponse<AppData>('data?api-version=2');
+        final appDataResponse = await apiService.getWithResponse<AppData>(
+            'data?api-version=2',
+            timeout: const Duration(seconds: 60));
         if (appDataResponse.isSuccess && appDataResponse.data != null) {
+          _firstDataFetchFailed = false;
           appData = appDataResponse.data!;
           appDataHash = appDataResponse.headers!['etag']!;
 
