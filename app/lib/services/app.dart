@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart'
     hide ServerConnectionStatus;
 import 'package:flutter_framework/flutter_framework.dart' as f;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inherited_state/inherited_state.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -60,16 +61,19 @@ class AppService extends StoppableService {
     // _dataFetchTimer = Timer.periodic(
     //     FETCH_INTERVAL + const Duration(seconds: 10),
     //     (_) => dataFetchTimerHandler());
-    _setupTimer(false);
+    _setupIntervalTimer(false);
     _appDataHash ??= await deviceStorageService.loadAppDataHash();
     _appData ??= await deviceStorageService.loadAppData();
 
-    await _setupData().catchError((e) {
+    try {
+      await statusCheckTimerHandler(init: true, force: false);
+    } catch (err) {
       if (_appDataHash == null) {
-        logger.verbose('Error initializing app data.');
-        _setupTimer(true);
+        logger.verbose('Error initializing app data.', err);
+        _setupIntervalTimer(true);
       }
-    });
+    }
+
     _lastEnv = apiService.environmentConfigCtrl!.state!;
     apiService.environmentConfigCtrl!.stateListener
         .addListener(_onEnvironmentUpdate);
@@ -82,7 +86,7 @@ class AppService extends StoppableService {
     return _appData!;
   }
 
-  void _setupTimer(bool failed) {
+  void _setupIntervalTimer(bool failed) {
     _statusCheckTimer?.cancel();
     _statusCheckTimer = Timer.periodic(
         failed
@@ -95,11 +99,7 @@ class AppService extends StoppableService {
     if (_lastEnv.baseUrl == apiService.environmentConfigCtrl!.state!.baseUrl)
       return;
     _lastEnv = apiService.environmentConfigCtrl!.state!;
-    _setupData(init: false, force: true);
-  }
-
-  Future<void> _setupData({bool init = true, bool force = false}) async {
-    await statusCheckTimerHandler(init: init, force: force);
+    statusCheckTimerHandler(init: false, force: true);
   }
 
   Future<AppData?> dataFetchTimerHandler(
@@ -166,6 +166,17 @@ class AppService extends StoppableService {
         if (justUpdated) {
           logger.verbose('App was updated. Refetching data...');
         }
+        // Show toast or snackbar telling user that data is being fetched
+        Fluttertoast.showToast(
+          msg: 'New data is being fetched...',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
         final appDataResponse = await apiService.getWithResponse<AppData>(
             'data?api-version=2',
             timeout: const Duration(seconds: 60));
