@@ -20,8 +20,10 @@ class FileService {
   }
 
   Future<void> delete(String filePath) async {
-    await File(filePath).delete().catchError((_) {
-      return _;
-    });
+    try {
+      await File(filePath).delete();
+    } catch (err) {
+      print(err);
+    }
   }
 }
