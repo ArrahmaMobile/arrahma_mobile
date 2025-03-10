@@ -91,7 +91,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
     }
 
     final logoUrl = doc
-            .querySelector('.header img')
+            .querySelector('.header .headerimg img')
             ?.attributes['src']
             ?.toAbsolute(baseUrl)
             .removeQueryString() ??
