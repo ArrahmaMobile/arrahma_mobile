@@ -24,7 +24,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
   final Client client;
   final _cachedDocs = <String, Document>{};
 
-  final _baseUrl = Uri.parse('https://arrahma.org');
+  final _baseUrl = Uri.parse('https://arrahmah.org');
   String get baseUrl => _baseUrl.toString();
 
   int _rateLimitCount = 0;
@@ -228,7 +228,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
     final otherCourseGroups = [
       QuranCourseGroup(
         title: 'Other Courses',
-        imageUrl: 'https://arrahma.org/images_n/209.png',
+        imageUrl: 'https://arrahmah.org/images_n/209.png',
         courses: allCourses.sublist(3),
       )
     ];
@@ -269,7 +269,7 @@ class Scraper extends Worker<String, Document> implements IScraper {
     // if (!['tests.php', '#', '.php#'].any((end) => url.toString().endsWith(end)))
     //   return null;
     final pathSegments = url.pathSegments;
-    final isLinkExternal = !url.host.contains('arrahma.org');
+    final isLinkExternal = !url.host.contains('arrahmah.org');
     final isLinkToContent = !isLinkExternal &&
         pathSegments.isNotEmpty &&
         pathSegments.first != 'index.php' &&

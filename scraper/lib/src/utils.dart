@@ -15,7 +15,7 @@ class Utils {
 
   static bool isExternalLink(String urlString, {Uri? url}) {
     url ??= Uri.parse(urlString);
-    return !url.host.contains('arrahma.org');
+    return !url.host.contains('arrahmah.org');
   }
 
   static String enumToString(Object enumVal) {

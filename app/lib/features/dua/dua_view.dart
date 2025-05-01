@@ -162,7 +162,7 @@ $text
 
 Sent by: ArRahmah Duaa App ©️ 
 ArRahmah Islamic Institute 2009  
-[www.arrahma.org]
+[www.arrahmah.org]
 ''';
   }
 }

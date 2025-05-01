@@ -30,7 +30,7 @@ class QuranCourseScraper extends ScraperBase<List<QuranCourse>> {
     quranCourseList.add(QuranCourse(
       title: 'Weekly Reminder',
       imageUrl: 'assets/images/weekly_dua_sunnat.png',
-      lectures: await scrapeContent('https://arrahma.org/sunnah/sunnah.php'),
+      lectures: await scrapeContent('https://arrahmah.org/sunnah/sunnah.php'),
     ));
     return quranCourseList;
   }
