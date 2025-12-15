@@ -164,9 +164,8 @@ class ArrahmahAPIServer {
       const versionParam = req.query['api-version'] || req.headers['accept-version'];
       const version = versionParam ? parseInt(versionParam.toString(), 10) : null;
 
-      // For now, we only support the new format (no v1 legacy support needed)
-      // If version 1 is requested, we could transform the data, but for now just return the new format
-      const responseData = this.cachedData;
+      // Return just the data part (unwrapped), matching the existing API structure
+      const responseData = this.cachedData?.data;
 
       console.log(`[data] Sending data - Version: ${version || 'latest'}, Hash: ${this.dataHash}`);
 
