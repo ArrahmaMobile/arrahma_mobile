@@ -199,20 +199,4 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
     return sections;
   }
 
-  /**
-   * Create lessons from items (currently unused, kept for future use)
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private _createLessonsFromItems(items: Item[]) {
-    return items.map((item, index) => ({
-      title: `Resource ${index + 1}`,
-      groups: [{
-        title: 'Resources',
-        items: [{
-          title: 'Link',
-          items: [item],
-        }],
-      }],
-    }));
-  }
 }
