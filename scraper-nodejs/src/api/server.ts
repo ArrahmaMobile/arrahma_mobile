@@ -41,7 +41,7 @@ class ArrahmahAPIServer {
     this.port = port;
     this.dataPath = path.join(__dirname, '../../data/scraped_data.json');
     this.scheduler = new ScraperScheduler({
-      runOnStart: true,
+      runOnStart: false, // Don't run on start to avoid conflicts
       maxRetries: 3,
       retryDelay: 60000,
       onScraperStart: () => {
