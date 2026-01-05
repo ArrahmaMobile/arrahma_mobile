@@ -244,10 +244,58 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
   private extractSocialMediaItems($: any): SocialMediaItem[] {
     const socialMediaItems: SocialMediaItem[] = [];
 
-    // Social media platforms
+    // Try new HTML structure first (.service-item)
+    $('.service-item').each((_: any, el: any) => {
+      const $el = $(el);
+      const $link = $el.find('a').first();
+
+      if ($link.length === 0) return;
+
+      const link = $link.attr('href');
+      if (!link) return;
+
+      // Extract icon/image - could be an img tag or an i tag (font-awesome icon)
+      const $img = $link.find('img');
+      const $icon = $link.find('i');
+
+      let imageUrl = '';
+
+      if ($img.length > 0) {
+        // For Mixlr, use the favicon from the img tag
+        const src = $img.attr('src');
+        if (src) {
+          imageUrl = normalizeUrl(toAbsoluteUrl(src, this.baseUrl), this.baseUrl);
+        }
+      } else if ($icon.length > 0) {
+        // For Font Awesome icons, create a placeholder that the app will handle
+        const classes = $icon.attr('class') || '';
+        if (classes.includes('fa-youtube')) {
+          imageUrl = 'icon:youtube';
+        } else if (classes.includes('fa-facebook')) {
+          imageUrl = 'icon:facebook';
+        } else if (classes.includes('fa-microphone')) {
+          imageUrl = 'icon:microphone';
+        } else {
+          imageUrl = 'icon:default';
+        }
+      }
+
+      if (imageUrl) {
+        socialMediaItems.push({
+          item: createItem(toAbsoluteUrl(link, this.baseUrl)),
+          imageUrl,
+        });
+      }
+    });
+
+    // If new structure found items, return them
+    if (socialMediaItems.length > 0) {
+      return socialMediaItems;
+    }
+
+    // Fallback to old selector (.column3footer a)
     const platforms = ['facebook', 'twitter', 'x.com', 'instagram', 'tiktok', 'whatsapp'];
 
-    // Try old selector first
     $('.column3footer a').each((_: any, el: any) => {
       const $el = $(el);
       const link = $el.attr('href');
@@ -270,35 +318,6 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
         });
       }
     });
-
-    // If not found, try general social media links
-    if (socialMediaItems.length === 0) {
-      platforms.forEach((platform) => {
-        $(`a[href*="${platform}"]`).each((_: any, el: any) => {
-          const $el = $(el);
-          const link = $el.attr('href');
-
-          if (link) {
-            const imageUrl = $el.find('img').attr('src') || '';
-
-            socialMediaItems.push({
-              item: createItem(toAbsoluteUrl(link, this.baseUrl)),
-              imageUrl: imageUrl
-                ? normalizeUrl(toAbsoluteUrl(imageUrl, this.baseUrl), this.baseUrl)
-                : '',
-            });
-          }
-        });
-      });
-
-      // Remove duplicates
-      const seen = new Set<string>();
-      return socialMediaItems.filter((item) => {
-        if (seen.has(item.item.data)) return false;
-        seen.add(item.item.data);
-        return true;
-      });
-    }
 
     return socialMediaItems;
   }

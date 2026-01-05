@@ -319,11 +319,26 @@ class _HomePageState extends State<HomePage> {
       defaultImage = 'assets/images/social_media/web.png';
     }
 
+    // Handle icon: prefix from scraper for Font Awesome icons
+    String finalImageUrl;
+    if (imageUrl != null && imageUrl.startsWith('icon:')) {
+      final iconType = imageUrl.substring(5); // Remove 'icon:' prefix
+      if (iconType == 'youtube') {
+        finalImageUrl = 'assets/images/social_media/youtube.png';
+      } else if (iconType == 'facebook') {
+        finalImageUrl = 'assets/images/social_media/facebook.png';
+      } else if (iconType == 'microphone') {
+        finalImageUrl = 'assets/images/social_media/mixlr.png';
+      } else {
+        finalImageUrl = defaultImage;
+      }
+    } else {
+      finalImageUrl = imageUrl != null && imageUrl.isNotEmpty ? imageUrl : defaultImage;
+    }
+
     return GestureDetector(
       onTap: () => Utils.openUrl(context, item),
-      child: _buildSocialMediaItem(
-          platform,
-          imageUrl != null && imageUrl.isNotEmpty ? imageUrl : defaultImage),
+      child: _buildSocialMediaItem(platform, finalImageUrl),
     );
   }
 
@@ -362,17 +377,6 @@ class _HomePageState extends State<HomePage> {
             .map((socialMedia) =>
                 _buildSocialImageLink(socialMedia.item, socialMedia.imageUrl))
             .toList(),
-        GestureDetector(
-          onTap: () {
-            // AppService.launchAppOrStore(
-            //     context,
-            //     AppUtils.isIOS ? 'mixlr://' : 'com.mixlr.android',
-            //     AppUtils.isIOS ? '583705714' : 'com.mixlr.android');
-            Launch.url('https://mixlr.com/arrahma-live/');
-          },
-          child: _buildSocialMediaItem(
-              'Mixlr', 'assets/images/social_media/mixlr.png'),
-        ),
       ],
     );
   }
