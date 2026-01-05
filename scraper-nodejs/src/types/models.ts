@@ -100,6 +100,8 @@ export interface MediaContent {
 
 /** Quran course content structure - matches Dart QuranCourseContent (moved here before DrawerItem) */
 export interface QuranCourseContent {
+  id: string;
+  title?: string | null;
   surahs: Surah[];
 }
 

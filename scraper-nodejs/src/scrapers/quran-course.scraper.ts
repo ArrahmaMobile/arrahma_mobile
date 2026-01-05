@@ -140,6 +140,8 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
           // For now, create empty surahs structure
           // TODO: Properly scrape tafseer content
           course.tafseer = {
+            id: 'tafseer',
+            title: 'Tafseer',
             surahs: [],
           };
         }
@@ -148,6 +150,8 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
           // For now, create empty surahs structure
           // TODO: Properly scrape tajweed content
           course.tajweed = {
+            id: 'tajweed',
+            title: 'Tajweed',
             surahs: [],
           };
         }
@@ -156,6 +160,8 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
           // For now, create empty surahs structure
           // TODO: Properly scrape lecture content
           course.lectures = {
+            id: 'lectures',
+            title: 'Lectures',
             surahs: [],
           };
         }

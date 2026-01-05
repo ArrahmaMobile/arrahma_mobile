@@ -135,6 +135,8 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
     console.log(`  ✓ Total: ${allSurahs.length} surahs, ${totalLessons} lessons from all Juz pages`);
 
     return {
+      id: title.toLowerCase().replace(/\s+/g, '-'),
+      title: title,
       surahs: allSurahs,
     };
   }
@@ -142,7 +144,7 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
   /**
    * Scrape new Bootstrap structure (col-12 col-md-5 for titles, col-12 col-md-7 for items)
    */
-  private scrapeNewStructure($: cheerio.CheerioAPI, _title: string): QuranCourseContent | null {
+  private scrapeNewStructure($: cheerio.CheerioAPI, title: string): QuranCourseContent | null {
     const surahs: Surah[] = [];
     let currentSurah: Surah | null = null;
     const allLessons: Lesson[] = [];
@@ -275,6 +277,8 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
     }
 
     const content: QuranCourseContent = {
+      id: title.toLowerCase().replace(/\s+/g, '-'),
+      title: title,
       surahs,
     };
 
