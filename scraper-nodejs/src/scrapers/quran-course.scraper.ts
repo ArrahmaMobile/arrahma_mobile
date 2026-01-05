@@ -163,12 +163,10 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
         if (testItems.length > 0) {
           // Tests use MediaContent, not QuranCourseContent
           course.tests = {
-            items: testItems.map((item: any) => ({
-              isDirectSource: true,
-              isExternal: false,
-              type: 'WebPage',
-              data: item.href,
+            items: testItems.map((item: Item) => ({
+              item: item,
               imageUrl: null,
+              title: null,
             })),
           };
         }
@@ -176,12 +174,10 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
         if (otherItems.length > 0) {
           // Other content uses MediaContent, not QuranCourseContent
           course.otherContent = {
-            items: otherItems.map((item: any) => ({
-              isDirectSource: true,
-              isExternal: false,
-              type: 'WebPage',
-              data: item.href,
+            items: otherItems.map((item: Item) => ({
+              item: item,
               imageUrl: null,
+              title: null,
             })),
           };
         }

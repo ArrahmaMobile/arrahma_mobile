@@ -84,10 +84,18 @@ export interface Surah {
   lessons: Lesson[];
 }
 
+/** Media item - matches Dart MediaItem */
+export interface MediaItem {
+  item?: Item | null;
+  imageUrl?: string | null;
+  title?: string | null;
+}
+
 /** Media content - matches Dart MediaContent (moved here before DrawerItem) */
 export interface MediaContent {
-  // Can contain various properties
-  [key: string]: any;
+  title?: string | null;
+  description?: string | null;
+  items?: MediaItem[] | null;
 }
 
 /** Quran course content structure - matches Dart QuranCourseContent (moved here before DrawerItem) */
