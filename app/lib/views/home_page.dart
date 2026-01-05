@@ -178,8 +178,94 @@ class _HomePageState extends State<HomePage> {
     return CarouselIndicator(
       autoPlayInterval: const Duration(seconds: 5),
       items: banners
-          .map((banner) => _buildImageLink(banner.item, banner.imageUrl))
+          .map((banner) => _buildBanner(banner))
           .toList(),
+    );
+  }
+
+  Widget _buildBanner(HeadingBanner banner) {
+    // Check if this is a basic banner image that needs text overlay
+    final isBasicBanner = banner.imageUrl.contains(RegExp(r'banner\d*\.jpg', caseSensitive: false));
+    final hasText = (banner.heading != null && banner.heading!.isNotEmpty) ||
+                    (banner.title != null && banner.title!.isNotEmpty);
+
+    if (isBasicBanner && hasText) {
+      return _buildBannerWithText(banner);
+    } else {
+      return _buildImageLink(banner.item, banner.imageUrl);
+    }
+  }
+
+  Widget _buildBannerWithText(HeadingBanner banner) {
+    final screenUtils = ScreenUtils.getInstance(context)!;
+
+    return GestureDetector(
+      onTap: () => Utils.openUrl(context, banner.item),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _buildImage(banner.imageUrl),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.3),
+                  Colors.black.withValues(alpha: 0.6),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (banner.heading != null && banner.heading!.isNotEmpty)
+                  Text(
+                    banner.heading!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenUtils.getSp(16),
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(1, 1),
+                          blurRadius: 3.0,
+                          color: Colors.black.withValues(alpha: 0.8),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (banner.heading != null && banner.heading!.isNotEmpty &&
+                    banner.title != null && banner.title!.isNotEmpty)
+                  const SizedBox(height: 8),
+                if (banner.title != null && banner.title!.isNotEmpty)
+                  Text(
+                    banner.title!,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenUtils.getSp(20),
+                      fontWeight: FontWeight.w600,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(1, 1),
+                          blurRadius: 3.0,
+                          color: Colors.black.withValues(alpha: 0.8),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -208,18 +294,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSocialImageLink(Item item, String imageUrl) {
+  Widget _buildSocialImageLink(Item item, String? imageUrl) {
+    // Determine platform and default image
+    final String platform;
+    final String defaultImage;
+
+    if (item.data.contains('youtube')) {
+      platform = 'YouTube';
+      defaultImage = 'assets/images/social_media/youtube.png';
+    } else if (item.data.contains('facebook')) {
+      platform = 'Facebook';
+      defaultImage = 'assets/images/social_media/facebook.png';
+    } else if (item.data.contains('mixlr')) {
+      platform = 'Mixlr';
+      defaultImage = 'assets/images/social_media/mixlr.png';
+    } else if (item.data.contains('instagram')) {
+      platform = 'Instagram';
+      defaultImage = 'assets/images/social_media/instagram.png';
+    } else if (item.data.contains('twitter') || item.data.contains('x.com')) {
+      platform = 'Twitter';
+      defaultImage = 'assets/images/social_media/twitter.png';
+    } else {
+      platform = 'Website';
+      defaultImage = 'assets/images/social_media/web.png';
+    }
+
     return GestureDetector(
       onTap: () => Utils.openUrl(context, item),
       child: _buildSocialMediaItem(
-          item.data.contains('youtube')
-              ? 'YouTube'
-              : item.data.contains('facebook')
-                  ? 'Facebook'
-                  : item.data.contains('mixlr')
-                      ? 'Mixlr'
-                      : 'Website',
-          imageUrl),
+          platform,
+          imageUrl != null && imageUrl.isNotEmpty ? imageUrl : defaultImage),
     );
   }
 

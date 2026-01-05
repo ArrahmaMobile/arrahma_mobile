@@ -4,7 +4,14 @@ import 'models.dart';
 
 @jsonSerializable
 class HeadingBanner {
-  const HeadingBanner({required this.imageUrl, required this.item});
+  const HeadingBanner({
+    required this.imageUrl,
+    required this.item,
+    this.heading,
+    this.title,
+  });
   final String imageUrl;
   final Item item;
+  final String? heading;
+  final String? title;
 }
