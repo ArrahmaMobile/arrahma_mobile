@@ -68,6 +68,8 @@ class _CourseItemState extends State<CourseItem> {
             child: Text(
               course.title.titleCase,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: _screenUtils.getSp(14),
                 fontWeight: FontWeight.bold,

@@ -12,9 +12,9 @@ class CourseView extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       crossAxisCount: 3,
       crossAxisSpacing: 20,
-      mainAxisSpacing: 8,
+      mainAxisSpacing: 12,
       shrinkWrap: true,
-      childAspectRatio: .90,
+      childAspectRatio: 0.75,
       children: courses.map((c) => CourseItem(course: c)).toList(),
     );
   }
