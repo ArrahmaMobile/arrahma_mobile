@@ -400,6 +400,7 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
   private async populateDrawerContent(items: DrawerItem[]): Promise<void> {
     for (const item of items) {
       // Check if this is a course page (contains juz in the URL)
+      if (!item.link) continue; // Skip if no link
       const url = item.link.data;
 
       // Match patterns like:
@@ -407,7 +408,7 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
       // /pashtu2025/juz1.php, /quran_english/juz5.php, etc.
       const juzMatch = url.match(/\/([\w-]+)\/(juz\d+|surah\d+)\.php/i);
 
-      if (juzMatch && !item.link.isExternal) {
+      if (juzMatch && item.link && !item.link.isExternal) {
         try {
           // Always scrape from juz1.php for the course (or the actual URL if it's already juz1)
           const contentUrl = url.replace(/\/(juz|surah)\d+\.php/i, '/juz1.php');

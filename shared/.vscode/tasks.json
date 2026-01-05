@@ -13,7 +13,7 @@
         {
             "label": "Run JSON Generator",
             "type": "shell",
-            "command": "dart pub run build_runner watch --delete-conflicting-outputs",
+            "command": "dart run build_runner watch --delete-conflicting-outputs",
             "dependsOn": [
                 "Get Packages",
             ],

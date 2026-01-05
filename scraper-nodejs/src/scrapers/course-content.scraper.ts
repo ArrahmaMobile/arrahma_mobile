@@ -5,12 +5,12 @@
 
 import * as cheerio from 'cheerio';
 import { BaseScraper } from '../core/scraper-base';
-import { CourseContent, Surah, Lesson, ItemGroup, Item } from '../types/models';
+import { QuranCourseContent, Surah, Lesson, ItemGroup, Item } from '../types/models';
 import { createItem } from '../utils/content-type.utils';
 import { toAbsoluteUrl } from '../utils/url.utils';
 import { cleanText } from '../utils/text.utils';
 
-export class CourseContentScraper extends BaseScraper<CourseContent | null> {
+export class CourseContentScraper extends BaseScraper<QuranCourseContent | null> {
   private url: string;
 
   constructor(httpClient: any, url: string) {
@@ -18,7 +18,7 @@ export class CourseContentScraper extends BaseScraper<CourseContent | null> {
     this.url = url;
   }
 
-  async scrape(): Promise<CourseContent | null> {
+  async scrape(): Promise<QuranCourseContent | null> {
     try {
       const $ = await this.navigateTo(this.url);
       if (!$) {
@@ -67,7 +67,7 @@ export class CourseContentScraper extends BaseScraper<CourseContent | null> {
   /**
    * Scrape all available Juz pages sequentially
    */
-  private async scrapeAllJuzPages($: cheerio.CheerioAPI, title: string): Promise<CourseContent | null> {
+  private async scrapeAllJuzPages($: cheerio.CheerioAPI, title: string): Promise<QuranCourseContent | null> {
     const allSurahs: Surah[] = [];
     const juzPages: string[] = [];
 
@@ -135,8 +135,6 @@ export class CourseContentScraper extends BaseScraper<CourseContent | null> {
     console.log(`  ✓ Total: ${allSurahs.length} surahs, ${totalLessons} lessons from all Juz pages`);
 
     return {
-      id: this.url,
-      title,
       surahs: allSurahs,
     };
   }
@@ -144,7 +142,7 @@ export class CourseContentScraper extends BaseScraper<CourseContent | null> {
   /**
    * Scrape new Bootstrap structure (col-12 col-md-5 for titles, col-12 col-md-7 for items)
    */
-  private scrapeNewStructure($: cheerio.CheerioAPI, title: string): CourseContent | null {
+  private scrapeNewStructure($: cheerio.CheerioAPI, _title: string): QuranCourseContent | null {
     const surahs: Surah[] = [];
     let currentSurah: Surah | null = null;
     const allLessons: Lesson[] = [];
@@ -276,9 +274,7 @@ export class CourseContentScraper extends BaseScraper<CourseContent | null> {
       });
     }
 
-    const content: CourseContent = {
-      id: this.url,
-      title,
+    const content: QuranCourseContent = {
       surahs,
     };
 

@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "../flutter_framework"
+		},
+		{
+			"path": "scraper-nodejs"
 		}
 	],
 	"settings": {}

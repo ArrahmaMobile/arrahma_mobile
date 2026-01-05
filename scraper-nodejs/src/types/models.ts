@@ -84,25 +84,23 @@ export interface Surah {
   lessons: Lesson[];
 }
 
-/** Course content */
-export interface CourseContent {
-  id: string;
-  title: string;
-  surahs: Surah[];
-}
-
-/** Media content (placeholder for now) */
+/** Media content - matches Dart MediaContent (moved here before DrawerItem) */
 export interface MediaContent {
-  // TODO: Define based on actual media content structure
+  // Can contain various properties
   [key: string]: any;
 }
 
-/** Navigation drawer item */
+/** Quran course content structure - matches Dart QuranCourseContent (moved here before DrawerItem) */
+export interface QuranCourseContent {
+  surahs: Surah[];
+}
+
+/** Navigation drawer item - matches Dart DrawerItem */
 export interface DrawerItem {
   title: string;
-  link: Item;
-  media: MediaContent | null;
-  content: CourseContent | null;
+  link?: Item | null; // Changed to optional to match Dart
+  media?: MediaContent | null;
+  content?: QuranCourseContent | null; // Changed from CourseContent to QuranCourseContent
   children?: DrawerItem[];
 }
 
@@ -124,52 +122,29 @@ export interface QuranCourseLesson {
   groups: QuranCourseLessonGroup[];
 }
 
-/** Quran course registration */
+/** Quran course registration - matches Dart QuranCourseRegistration */
 export interface QuranCourseRegistration {
-  item?: Item;
+  type: string; // RegistrationType as string
+  url: string;
 }
 
-/** Quran course detail */
-export interface QuranCourseDetail {
-  detailMarkdown?: string;
+/** Quran course details - matches Dart QuranCourseDetails */
+export interface QuranCourseDetails {
+  type: string; // QuranCourseDetailsType as string
+  details: string; // markdown or HTML content
 }
 
-/** Quran course tafseer */
-export interface QuranCourseTafseer {
-  lessons: QuranCourseLesson[];
-}
-
-/** Quran course tajweed */
-export interface QuranCourseTajweed {
-  lessons: QuranCourseLesson[];
-}
-
-/** Quran course lectures */
-export interface QuranCourseLectures {
-  lessons: QuranCourseLesson[];
-}
-
-/** Quran course tests */
-export interface QuranCourseTests {
-  lessons: QuranCourseLesson[];
-}
-
-/** Quran course other materials */
-export interface QuranCourseOther {
-  lessons: QuranCourseLesson[];
-}
-
-/** Complete Quran course */
+/** Complete Quran course - matches Dart QuranCourseV1 */
 export interface QuranCourse {
   title: string;
   imageUrl: string;
-  registration?: QuranCourseRegistration;
-  detail?: QuranCourseDetail;
-  tafseer?: QuranCourseTafseer;
-  tajweed?: QuranCourseTajweed;
-  lectures?: QuranCourseLectures;
-  tests?: QuranCourseTests;
-  other?: QuranCourseOther;
+  courseDetails?: QuranCourseDetails | null; // Changed from 'detail' to 'courseDetails'
+  lectures?: QuranCourseContent | null;
+  registration?: QuranCourseRegistration | null;
+  tafseer?: QuranCourseContent | null;
+  tajweed?: QuranCourseContent | null;
+  tests?: MediaContent | null;
+  otherContent?: MediaContent | null; // Changed from 'other' to 'otherContent'
 }
 
 /** Group of Quran courses */
@@ -179,7 +154,7 @@ export interface QuranCourseGroup {
   courses: QuranCourse[];
 }
 
-/** Dua (prayer) */
+/** Dua (prayer) - matches Dart Dua model */
 export interface Dua {
   id: string;
   title?: string | null;
@@ -190,14 +165,14 @@ export interface Dua {
   notes?: string | null;
 }
 
-/** Dua category */
+/** Dua category - matches Dart DuaCategory model */
 export interface DuaCategory {
   title: string;
-  titleUrdu?: string;
-  imageUrl?: string;
+  titleUrdu: string; // Required in Dart, not optional
+  imageUrl?: string | null;
   notes?: string | null;
-  duas?: Dua[];
-  categories?: DuaCategory[];
+  duas: Dua[]; // Required in Dart, not optional
+  categories?: DuaCategory[] | null;
 }
 
 /** Main application data */
@@ -214,14 +189,14 @@ export interface AppData {
   duaCategories: DuaCategory[];
 }
 
-/** Metadata about scraping run */
+/** Metadata about scraping run - matches Dart RunMetadata model */
 export interface RunMetadata {
-  timestamp: string;
-  version: string;
+  lastUpdate: string; // ISO timestamp
+  updateFrequency?: number; // Duration in milliseconds (optional)
 }
 
-/** Complete scraped data output */
+/** Complete scraped data output - matches Dart ScrapedData model */
 export interface ScrapedData {
-  data: AppData;
-  metadata: RunMetadata;
+  appData: AppData; // Changed from 'data' to 'appData' to match Dart
+  runMetadata: RunMetadata; // Changed from 'metadata' to 'runMetadata' to match Dart
 }

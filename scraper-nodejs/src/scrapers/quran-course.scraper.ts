@@ -123,44 +123,66 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
         };
 
         if (detailUrl) {
-          course.detail = {
-            detailMarkdown: detailUrl, // Store URL for now, could be scraped later
+          course.courseDetails = {
+            type: 'markdown', // or 'html' depending on the content type
+            details: detailUrl, // Store URL for now, could be scraped later
           };
         }
 
         if (registrationUrl) {
           course.registration = {
-            item: createItem(registrationUrl),
+            type: 'url', // RegistrationType
+            url: registrationUrl,
           };
         }
 
         if (tafseerItems.length > 0) {
+          // For now, create empty surahs structure
+          // TODO: Properly scrape tafseer content
           course.tafseer = {
-            lessons: this.createLessonsFromItems(tafseerItems),
+            surahs: [],
           };
         }
 
         if (tajweedItems.length > 0) {
+          // For now, create empty surahs structure
+          // TODO: Properly scrape tajweed content
           course.tajweed = {
-            lessons: this.createLessonsFromItems(tajweedItems),
+            surahs: [],
           };
         }
 
         if (lectureItems.length > 0) {
+          // For now, create empty surahs structure
+          // TODO: Properly scrape lecture content
           course.lectures = {
-            lessons: this.createLessonsFromItems(lectureItems),
+            surahs: [],
           };
         }
 
         if (testItems.length > 0) {
+          // Tests use MediaContent, not QuranCourseContent
           course.tests = {
-            lessons: this.createLessonsFromItems(testItems),
+            items: testItems.map((item: any) => ({
+              isDirectSource: true,
+              isExternal: false,
+              type: 'WebPage',
+              data: item.href,
+              imageUrl: null,
+            })),
           };
         }
 
         if (otherItems.length > 0) {
-          course.other = {
-            lessons: this.createLessonsFromItems(otherItems),
+          // Other content uses MediaContent, not QuranCourseContent
+          course.otherContent = {
+            items: otherItems.map((item: any) => ({
+              isDirectSource: true,
+              isExternal: false,
+              type: 'WebPage',
+              data: item.href,
+              imageUrl: null,
+            })),
           };
         }
 
@@ -182,9 +204,10 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
   }
 
   /**
-   * Create lessons from items
+   * Create lessons from items (currently unused, kept for future use)
    */
-  private createLessonsFromItems(items: Item[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _createLessonsFromItems(items: Item[]) {
     return items.map((item, index) => ({
       title: `Resource ${index + 1}`,
       groups: [{

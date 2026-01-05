@@ -96,10 +96,10 @@ class ArrahmahScraper {
    */
   async saveToFile(appData: AppData, outputPath: string = config.outputPath): Promise<void> {
     const scrapedData: ScrapedData = {
-      data: appData,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        version: '1.0.0',
+      appData: appData, // Changed from 'data' to 'appData'
+      runMetadata: { // Changed from 'metadata' to 'runMetadata'
+        lastUpdate: new Date().toISOString(), // Changed from 'timestamp' to 'lastUpdate'
+        updateFrequency: 2 * 60 * 60 * 1000, // 2 hours in milliseconds (optional)
       },
     };
 

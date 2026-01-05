@@ -1,6 +1,7 @@
 /**
  * Express API server for Arrahmah data
  * Replicates the functionality of the existing Dart API
+ * Integrated with automatic scraping every 2 hours
  */
 
 import express, { Request, Response, NextFunction } from 'express';
@@ -9,6 +10,7 @@ import crypto from 'crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ScrapedData } from '../types/models';
+import { ScraperScheduler } from '../services/scraper-scheduler';
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -32,11 +34,21 @@ class ArrahmahAPIServer {
   private lastUpdateAttempt: string = new Date().toISOString();
   private readonly dataPath: string;
   private readonly port: number;
+  private scheduler: ScraperScheduler;
 
   constructor(port: number = 8888) {
     this.app = express();
     this.port = port;
     this.dataPath = path.join(__dirname, '../../data/scraped_data.json');
+    this.scheduler = new ScraperScheduler({
+      runOnStart: true,
+      maxRetries: 3,
+      retryDelay: 60000,
+      onScraperStart: () => {
+        // Update last attempt timestamp when scraper starts
+        this.lastUpdateAttempt = new Date().toISOString();
+      },
+    });
     this.setupMiddleware();
     this.setupRoutes();
   }
@@ -73,6 +85,12 @@ class ArrahmahAPIServer {
     // Data endpoint
     router.get('/data/:version?', this.getData.bind(this));
 
+    // Scraper status endpoint
+    router.get('/scraper-status', this.getScraperStatus.bind(this));
+
+    // Manual scraper trigger endpoint (for admin use)
+    router.post('/trigger-scrape', this.triggerScrape.bind(this));
+
     // Mount router at /api
     this.app.use('/api', router);
 
@@ -96,7 +114,7 @@ class ArrahmahAPIServer {
       this.cachedData = JSON.parse(fileContent);
 
       // Calculate hash of the data
-      const dataString = JSON.stringify(this.cachedData?.data);
+      const dataString = JSON.stringify(this.cachedData?.appData);
       this.dataHash = crypto.createHash('md5').update(dataString).digest('hex');
 
       console.log(`Data loaded successfully. Hash: ${this.dataHash}`);
@@ -129,7 +147,7 @@ class ArrahmahAPIServer {
         status: 'Available',
         isDataStale: dataHashParam !== undefined && this.dataHash !== dataHashParam,
         broadcastStatus,
-        lastScrapedOn: this.cachedData?.metadata.timestamp || new Date().toISOString(),
+        lastScrapedOn: this.cachedData?.runMetadata.lastUpdate || new Date().toISOString(),
         lastScrapeAttemptOn: this.lastUpdateAttempt,
         lastDataHash: this.dataHash,
       };
@@ -164,8 +182,8 @@ class ArrahmahAPIServer {
       const versionParam = req.query['api-version'] || req.headers['accept-version'];
       const version = versionParam ? parseInt(versionParam.toString(), 10) : null;
 
-      // Return just the data part (unwrapped), matching the existing API structure
-      const responseData = this.cachedData?.data;
+      // Return just the appData part (unwrapped), matching the existing API structure
+      const responseData = this.cachedData?.appData;
 
       console.log(`[data] Sending data - Version: ${version || 'latest'}, Hash: ${this.dataHash}`);
 
@@ -178,6 +196,44 @@ class ArrahmahAPIServer {
   }
 
   /**
+   * GET /api/scraper-status
+   * Returns the current status of the scraper scheduler
+   */
+  private async getScraperStatus(_req: Request, res: Response): Promise<void> {
+    try {
+      const status = this.scheduler.getStatus();
+      res.json({
+        ...status,
+        statusSummary: this.scheduler.getStatusSummary(),
+      });
+    } catch (error) {
+      console.error('Error in getScraperStatus:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  /**
+   * POST /api/trigger-scrape
+   * Manually trigger a scraper run
+   */
+  private async triggerScrape(_req: Request, res: Response): Promise<void> {
+    try {
+      // Trigger the scraper asynchronously
+      this.scheduler.triggerManualRun().catch(err => {
+        console.error('Error in manual scraper run:', err);
+      });
+
+      res.json({
+        message: 'Scraper run triggered successfully',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error in triggerScrape:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  /**
    * Start the server
    */
   public async start(): Promise<void> {
@@ -185,15 +241,35 @@ class ArrahmahAPIServer {
       // Load data initially
       await this.loadData();
 
+      // Start the scheduler
+      await this.scheduler.start();
+
       this.app.listen(this.port, () => {
-        console.log(`🚀 Arrahmah API server running on port ${this.port}`);
+        console.log(`\n${'='.repeat(60)}`);
+        console.log(`🚀 Arrahmah API Server Started`);
+        console.log(`${'='.repeat(60)}`);
         console.log(`📊 Data endpoint: http://localhost:${this.port}/api/data`);
         console.log(`📡 Status endpoint: http://localhost:${this.port}/api/status`);
+        console.log(`🔧 Scraper status: http://localhost:${this.port}/api/scraper-status`);
+        console.log(`⚡ Trigger scrape: POST http://localhost:${this.port}/api/trigger-scrape`);
+        console.log(`❤️  Health check: http://localhost:${this.port}/health`);
+        console.log(`${'='.repeat(60)}`);
+        console.log(`🕐 Automatic scraping: Every 2 hours`);
+        console.log(`🔄 Auto-retry on failure: Yes (3 attempts)`);
+        console.log(`${'='.repeat(60)}\n`);
       });
     } catch (error) {
       console.error('Failed to start server:', error);
       process.exit(1);
     }
+  }
+
+  /**
+   * Stop the server and scheduler
+   */
+  public stop(): void {
+    this.scheduler.stop();
+    console.log('🛑 Server stopped');
   }
 }
 
