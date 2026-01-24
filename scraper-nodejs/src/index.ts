@@ -92,14 +92,15 @@ class ArrahmahScraper {
   }
 
   /**
-   * Save scraped data to JSON file
+   * Save scraped data to JSON file (atomic write)
+   * Uses a temporary file and rename to prevent corruption during writes
    */
   async saveToFile(appData: AppData, outputPath: string = config.outputPath): Promise<void> {
     const scrapedData: ScrapedData = {
-      appData: appData, // Changed from 'data' to 'appData'
-      runMetadata: { // Changed from 'metadata' to 'runMetadata'
-        lastUpdate: new Date().toISOString(), // Changed from 'timestamp' to 'lastUpdate'
-        updateFrequency: 2 * 60 * 60 * 1000, // 2 hours in milliseconds (optional)
+      appData: appData,
+      runMetadata: {
+        lastUpdate: new Date().toISOString(),
+        updateFrequency: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
       },
     };
 
@@ -107,10 +108,32 @@ class ArrahmahScraper {
     const dir = path.dirname(outputPath);
     await fs.mkdir(dir, { recursive: true });
 
-    // Write to file
-    await fs.writeFile(outputPath, JSON.stringify(scrapedData, null, 2), 'utf-8');
+    // Atomic write: write to temp file, then rename
+    // This prevents corruption if the file is being read while writing
+    const tempPath = `${outputPath}.tmp`;
+    const jsonContent = JSON.stringify(scrapedData, null, 2);
 
-    console.log(`\n💾 Data saved to: ${outputPath}`);
+    try {
+      // Write to temporary file
+      await fs.writeFile(tempPath, jsonContent, 'utf-8');
+
+      // Validate JSON before renaming
+      JSON.parse(jsonContent);
+
+      // Atomically replace the old file with the new one
+      await fs.rename(tempPath, outputPath);
+
+      console.log(`\n💾 Data saved successfully to: ${outputPath}`);
+      console.log(`📊 Data size: ${(jsonContent.length / 1024).toFixed(2)} KB`);
+    } catch (error) {
+      // Clean up temp file if something went wrong
+      try {
+        await fs.unlink(tempPath);
+      } catch {
+        // Ignore cleanup errors
+      }
+      throw error;
+    }
   }
 }
 

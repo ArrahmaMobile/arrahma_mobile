@@ -472,16 +472,17 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
           // Always scrape from juz1.php for the course (or the actual URL if it's already juz1)
           const contentUrl = url.replace(/\/(juz|surah)\d+\.php/i, '/juz1.php');
 
-          console.log(`  Scraping content: ${item.title} from ${contentUrl}`);
+          console.log(`  📖 Scraping content: ${item.title}`);
           const scraper = new CourseContentScraper(this.httpClient, contentUrl);
           const content = await scraper.scrape();
           if (content && content.surahs.length > 0) {
             item.content = content;
+            console.log(`  ✓ Content loaded for ${item.title} (${content.surahs.length} surahs)`);
           } else {
-            console.warn(`  No content found for ${item.title}`);
+            console.warn(`  ⚠️  No content available for ${item.title} (may be under construction)`);
           }
         } catch (error) {
-          console.error(`  Failed to scrape content for ${item.title}:`, error);
+          console.error(`  ❌ Failed to scrape content for ${item.title}:`, error);
         }
       }
 

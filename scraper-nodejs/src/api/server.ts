@@ -103,9 +103,23 @@ class ArrahmahAPIServer {
     // Mount router at /api
     this.app.use('/api', router);
 
-    // Health check endpoint
-    this.app.get('/health', (_req: Request, res: Response) => {
-      res.json({ status: 'ok' });
+    // Health check endpoint with detailed diagnostics
+    this.app.get('/health', async (_req: Request, res: Response) => {
+      const health = {
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        memory: {
+          used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+          total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+          unit: 'MB',
+        },
+        dataAvailable: this.cachedData !== null,
+        dataHash: this.dataHash ? this.dataHash.substring(0, 12) + '...' : null,
+        lastUpdate: this.cachedData?.runMetadata?.lastUpdate || null,
+        scheduler: this.scheduler.getStatus(),
+      };
+      res.json(health);
     });
 
     // 404 handler
@@ -143,11 +157,52 @@ class ArrahmahAPIServer {
    */
   private async loadData(): Promise<void> {
     try {
+      // Check if file exists
+      try {
+        await fs.access(this.dataPath);
+      } catch {
+        console.warn(`Data file not found at ${this.dataPath}`);
+        // File doesn't exist - this is OK on first run
+        this.cachedData = null;
+        this.dataHash = '';
+        this.lastDataChangeTimestamp = null;
+        return;
+      }
+
+      // Read file content
       const fileContent = await fs.readFile(this.dataPath, 'utf-8');
-      this.cachedData = JSON.parse(fileContent);
+
+      // Validate file is not empty
+      if (!fileContent || fileContent.trim().length === 0) {
+        console.warn('Data file is empty');
+        this.cachedData = null;
+        this.dataHash = '';
+        this.lastDataChangeTimestamp = null;
+        return;
+      }
+
+      // Parse JSON with validation
+      let parsedData: ScrapedData;
+      try {
+        parsedData = JSON.parse(fileContent);
+      } catch (parseError) {
+        console.error('Failed to parse JSON data:', parseError);
+        console.warn('Data file may be corrupted or incomplete');
+        // Don't throw - keep using old cached data if available
+        return;
+      }
+
+      // Validate structure
+      if (!parsedData || !parsedData.appData) {
+        console.warn('Invalid data structure - missing appData');
+        return;
+      }
+
+      // Data is valid - update cache
+      this.cachedData = parsedData;
 
       // Calculate hash of the data
-      const dataString = JSON.stringify(this.cachedData?.appData);
+      const dataString = JSON.stringify(this.cachedData.appData);
       const newHash = crypto.createHash('md5').update(dataString).digest('hex');
 
       // Load previous hash metadata
@@ -165,17 +220,17 @@ class ArrahmahAPIServer {
           lastChanged: now,
         });
 
-        console.log(`Data hash changed! New hash: ${newHash}, Changed at: ${now}`);
+        console.log(`✓ Data hash changed! New hash: ${newHash.substring(0, 12)}..., Changed at: ${now}`);
       } else {
         // Hash unchanged - use existing timestamp
         this.lastDataChangeTimestamp = previousMetadata.lastChanged;
       }
 
       this.dataHash = newHash;
-      console.log(`Data loaded successfully. Hash: ${this.dataHash}, Last changed: ${this.lastDataChangeTimestamp}`);
+      console.log(`✓ Data loaded successfully. Hash: ${this.dataHash.substring(0, 12)}..., Last changed: ${this.lastDataChangeTimestamp}`);
     } catch (error) {
-      console.error('Error loading data:', error);
-      throw error;
+      console.error('Unexpected error loading data:', error);
+      // Don't throw - allow server to continue with cached data
     }
   }
 
@@ -190,6 +245,12 @@ class ArrahmahAPIServer {
       // Reload data to get latest
       await this.loadData();
 
+      // Determine server status
+      let serverStatus: 'Available' | 'Maintenance' | 'Unavailable' = 'Available';
+      if (!this.cachedData) {
+        serverStatus = 'Maintenance'; // No data available yet
+      }
+
       // For now, broadcast status is always false
       // In the future, this could check actual broadcast platforms
       const broadcastStatus: BroadcastStatus = {
@@ -199,16 +260,16 @@ class ArrahmahAPIServer {
       };
 
       const statusResponse: ServerStatus = {
-        status: 'Available',
+        status: serverStatus,
         isDataStale: dataHashParam !== undefined && this.dataHash !== dataHashParam,
         broadcastStatus,
-        lastScrapedOn: this.cachedData?.runMetadata.lastUpdate || new Date().toISOString(),
+        lastScrapedOn: this.cachedData?.runMetadata?.lastUpdate || this.lastUpdateAttempt,
         lastScrapeAttemptOn: this.lastUpdateAttempt,
-        lastDataHash: this.dataHash,
+        lastDataHash: this.dataHash || null,
         lastDataChangeOn: this.lastDataChangeTimestamp,
       };
 
-      console.log(`[status] dataHash=${dataHashParam}, isStale=${statusResponse.isDataStale}`);
+      console.log(`[status] dataHash=${dataHashParam}, isStale=${statusResponse.isDataStale}, status=${serverStatus}`);
       res.json(statusResponse);
     } catch (error) {
       console.error('Error in getStatus:', error);
@@ -225,11 +286,21 @@ class ArrahmahAPIServer {
       // Reload data to get latest
       await this.loadData();
 
+      // Check if data is available
+      if (!this.cachedData || !this.cachedData.appData) {
+        console.warn('[data] No data available yet - server in maintenance mode');
+        res.status(503).json({
+          error: 'Service temporarily unavailable',
+          message: 'Data is being loaded. Please try again in a few moments.',
+        });
+        return;
+      }
+
       // Check If-None-Match header for ETag
       const ifNoneMatch = req.headers['if-none-match'];
 
       if (ifNoneMatch && ifNoneMatch === this.dataHash) {
-        console.log(`[data] 304 Not Modified - Hash matches: ${this.dataHash}`);
+        console.log(`[data] 304 Not Modified - Hash matches: ${this.dataHash.substring(0, 12)}...`);
         res.status(304).setHeader('ETag', this.dataHash).send();
         return;
       }
@@ -239,9 +310,9 @@ class ArrahmahAPIServer {
       const version = versionParam ? parseInt(versionParam.toString(), 10) : null;
 
       // Return just the appData part (unwrapped), matching the existing API structure
-      const responseData = this.cachedData?.appData;
+      const responseData = this.cachedData.appData;
 
-      console.log(`[data] Sending data - Version: ${version || 'latest'}, Hash: ${this.dataHash}`);
+      console.log(`[data] Sending data - Version: ${version || 'latest'}, Hash: ${this.dataHash.substring(0, 12)}...`);
 
       res.setHeader('ETag', this.dataHash);
       res.json(responseData);
@@ -294,8 +365,13 @@ class ArrahmahAPIServer {
    */
   public async start(): Promise<void> {
     try {
-      // Load data initially
+      // Load data initially (don't fail if data doesn't exist)
       await this.loadData();
+
+      // Warn if no data is available
+      if (!this.cachedData) {
+        console.warn('\n⚠️  No data available on startup. Server will be in maintenance mode until first scrape completes.\n');
+      }
 
       // Start the scheduler
       await this.scheduler.start();

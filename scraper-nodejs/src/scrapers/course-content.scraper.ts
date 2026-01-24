@@ -22,7 +22,18 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
     try {
       const $ = await this.navigateTo(this.url);
       if (!$) {
-        console.error(`Failed to load course page: ${this.url}`);
+        console.warn(`  ⚠️  Failed to load course page: ${this.url}`);
+        return null;
+      }
+
+      // Check if page contains actual course content
+      // Look for common indicators that the page is valid
+      const hasContent = $('.container.my-3').length > 0 ||
+                        $('.row.g-2.border').length > 0 ||
+                        $('#selectJuz').length > 0;
+
+      if (!hasContent) {
+        console.warn(`  ⚠️  Page does not contain recognizable course structure: ${this.url}`);
         return null;
       }
 
@@ -44,22 +55,22 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       // Check if this page has a Juz selector dropdown
       const $juzSelect = $('#selectJuz');
       if ($juzSelect.length > 0) {
-        console.log(`  Found Juz selector - scraping all available Juz pages`);
+        console.log(`  📚 Found Juz selector - scraping all available Juz pages`);
         return await this.scrapeAllJuzPages($, title);
       }
 
       // Single page scraping (existing logic)
-      console.log(`  Scraping NEW Bootstrap structure for ${this.url}`);
+      console.log(`  📄 Scraping NEW Bootstrap structure for ${this.url}`);
       const content = this.scrapeNewStructure($, title);
 
       if (!content || content.surahs.length === 0) {
-        console.warn(`  No lessons found for ${this.url}`);
+        console.warn(`  ⚠️  No lessons found for ${this.url} (page may be under construction)`);
         return null;
       }
 
       return content;
     } catch (error) {
-      console.error(`Error scraping course content from ${this.url}:`, error);
+      console.error(`  ❌ Error scraping course content from ${this.url}:`, error);
       return null;
     }
   }
