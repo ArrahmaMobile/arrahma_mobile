@@ -132,29 +132,30 @@ export interface QuranCourseLesson {
   groups: QuranCourseLessonGroup[];
 }
 
-/** Quran course registration - matches Dart QuranCourseRegistration */
-export interface QuranCourseRegistration {
-  type: string; // RegistrationType as string
+/** Course button/action types */
+export type CourseButtonType = 'details' | 'register' | 'join' | 'link';
+
+/** Generic course button/action */
+export interface CourseButton {
+  label: string; // Button text (e.g., "Details", "Join Now", "Reg.closed")
+  type: CourseButtonType;
+  isActive: boolean; // true if clickable/open, false if closed/disabled
   url: string;
 }
 
-/** Quran course details - matches Dart QuranCourseDetails */
-export interface QuranCourseDetails {
-  type: string; // QuranCourseDetailsType as string
-  details: string; // markdown or HTML content
+/** Generic course section (Tafseer, Tajweed, Tests, etc.) */
+export interface CourseSection {
+  label: string; // Section label (e.g., "Tafseer", "Tajweed", "Tests")
+  icon?: string | null; // Optional icon identifier
+  content?: QuranCourseContent | MediaContent | null; // Content can be either type
 }
 
-/** Complete Quran course - matches Dart QuranCourseV1 */
+/** Complete Quran course - Generic V2 structure */
 export interface QuranCourse {
   title: string;
   imageUrl: string;
-  courseDetails?: QuranCourseDetails | null; // Changed from 'detail' to 'courseDetails'
-  lectures?: QuranCourseContent | null;
-  registration?: QuranCourseRegistration | null;
-  tafseer?: QuranCourseContent | null;
-  tajweed?: QuranCourseContent | null;
-  tests?: MediaContent | null;
-  otherContent?: MediaContent | null; // Changed from 'other' to 'otherContent'
+  buttons: CourseButton[]; // All action buttons (Details, Register, etc.)
+  sections: CourseSection[]; // All content sections (Tafseer, Tajweed, Tests, etc.)
 }
 
 /** Group of Quran courses */

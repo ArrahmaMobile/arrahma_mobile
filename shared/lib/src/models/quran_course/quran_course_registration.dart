@@ -10,4 +10,5 @@ class QuranCourseRegistration {
 @jsonSerializable
 enum RegistrationType {
   WebForm,
+  url, // Maps to backend "url" type
 }

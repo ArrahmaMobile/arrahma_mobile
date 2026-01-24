@@ -9,6 +9,7 @@ class ServerStatus {
     required this.lastScrapedOn,
     required this.lastScrapeAttemptOn,
     this.lastDataHash,
+    this.lastDataChangeOn,
   });
   final ServerConnectionStatus status;
   final bool isDataStale;
@@ -16,6 +17,7 @@ class ServerStatus {
   final DateTime lastScrapedOn;
   final DateTime lastScrapeAttemptOn;
   final String? lastDataHash;
+  final DateTime? lastDataChangeOn;
 }
 
 @jsonSerializable

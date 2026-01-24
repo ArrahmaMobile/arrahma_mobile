@@ -6,14 +6,13 @@ export 'quran_course/course.dart';
 export 'broadcast_item.dart';
 export 'quran_course/quran_course_registration.dart';
 export 'heading_banner.dart';
-export 'quran_course/quran_course_tafseer.dart';
-export 'quran_course/quran_course_tajweed.dart';
 export 'social_media_item.dart';
 export 'surah.dart';
 export 'quick_link.dart';
 export 'drawer_item.dart';
 export 'quran_course/quran_course.dart';
-export 'quran_course/v2/quran_course.dart';
-export 'quran_course/v2/dua_category.dart';
+export 'quran_course/dua_category.dart';
+export 'quran_course/course_button.dart';
+export 'quran_course/course_section.dart';
 
 export 'status/server_status_check.dart';

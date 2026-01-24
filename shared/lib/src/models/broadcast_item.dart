@@ -3,7 +3,7 @@ import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'models.dart';
 
 @jsonSerializable
-enum BroadcastType { Phone, Facebook, Youtube, Mixlr, Other }
+enum BroadcastType { Phone, Facebook, YouTube, Mixlr, Other }
 
 @jsonSerializable
 class BroadcastItem {

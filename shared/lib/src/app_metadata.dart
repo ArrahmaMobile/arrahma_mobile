@@ -1,4 +1,3 @@
-import 'package:arrahma_shared/src/models/quran_course/v2/dua_category.dart';
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 import 'models/models.dart';

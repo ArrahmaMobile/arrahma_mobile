@@ -8,4 +8,8 @@ class QuranCourseDetails {
 }
 
 @jsonSerializable
-enum QuranCourseDetailsType { Pdf, Markdown }
+enum QuranCourseDetailsType {
+  Pdf,
+  Markdown,
+  markdown, // Maps to backend "markdown" type (lowercase)
+}

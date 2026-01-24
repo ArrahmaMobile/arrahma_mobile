@@ -23,7 +23,6 @@ class ScraperService {
   late ScrapedData _rawData;
   late String _appDataHash;
   late Map<String, dynamic> _serializedData;
-  late Map<String, dynamic> _serializedV1Data;
 
   ScraperService._(
     this._syncService, {
@@ -39,7 +38,6 @@ class ScraperService {
   AppData get appData => _rawData.appData;
   String get appDataHash => _appDataHash;
   Map<String, dynamic> get serializedData => _serializedData;
-  Map<String, dynamic> get serializedV1Data => _serializedV1Data;
 
   static Future<ScraperService> create({
     required SyncService syncService,
@@ -164,43 +162,6 @@ class ScraperService {
     _rawData = updatedScrapedData;
     final serializedDataMap = JsonMapper.toMap(appData)!;
     _serializedData = serializedDataMap;
-    final courses = <QuranCourse>[
-      ...appData.courses,
-      ...(appData.otherCourseGroups?.expand((o) => o.courses) ??
-          <QuranCourse>[])
-    ];
-    final quranCoursesV1 = courses
-        .map(
-          (c) => QuranCourseV1(
-            title: c.title,
-            imageUrl: c.imageUrl,
-            courseDetails: (c.courseDetails?.items?.isNotEmpty ?? false)
-                ? QuranCourseDetails(
-                    type:
-                        c.courseDetails!.items?.first.item!.type == ItemType.Pdf
-                            ? QuranCourseDetailsType.Pdf
-                            : QuranCourseDetailsType.Markdown,
-                    details: c.courseDetails!.items!.first.item!.data,
-                  )
-                : null,
-            registration: (c.registration?.items?.isNotEmpty ?? false)
-                ? QuranCourseRegistration(
-                    type: RegistrationType.WebForm,
-                    url: c.registration!.items!.first.item!.data,
-                  )
-                : null,
-            lectures: c.lectures,
-            tafseer: c.tafseer,
-            tajweed: c.tajweed,
-            tests: c.tests,
-            otherContent: c.otherContent,
-          ),
-        )
-        .toList();
-    _serializedV1Data = {
-      ...serializedDataMap,
-      'courses': quranCoursesV1.map((e) => JsonMapper.toMap(e)).toList()
-    };
     _updateDataHash(json.encode(_serializedData));
     _syncService.log('Data updated.');
     if (!_syncService.isMain)

@@ -1,20 +1,21 @@
 /**
  * Quran Course scraper - extracts course information from homepage
+ * V2: Generic structure with buttons and sections
  */
 
 import { BaseScraper } from '../core/scraper-base';
-import { QuranCourse, Item } from '../types/models';
+import { QuranCourse, CourseButton, CourseSection as CourseSectionModel, Item, CourseButtonType } from '../types/models';
 import { toAbsoluteUrl, normalizeUrl } from '../utils/url.utils';
 import { cleanText } from '../utils/text.utils';
 import { createItem } from '../utils/content-type.utils';
 
-export interface CourseSection {
+export interface HomepageSection {
   title: string;
   courses: QuranCourse[];
 }
 
-export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
-  async scrape(): Promise<CourseSection[]> {
+export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
+  async scrape(): Promise<HomepageSection[]> {
     console.log('Scraping Quran courses...');
 
     const $ = await this.navigateTo('');
@@ -23,7 +24,7 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
       return [];
     }
 
-    const sections: CourseSection[] = [];
+    const sections: HomepageSection[] = [];
     let currentSectionTitle = 'COURSES WE OFFER'; // Default for first section
     let currentCourses: QuranCourse[] = [];
 
@@ -60,34 +61,48 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
 
         const absoluteImageUrl = normalizeUrl(toAbsoluteUrl(imageUrl, this.baseUrl), this.baseUrl);
 
-        // Extract Details and Registration links
+        // Extract ALL buttons
+        const courseButtons: CourseButton[] = [];
         const buttons = $courseItem.find('.position-absolute a');
-        let detailUrl: string | undefined;
-        let registrationUrl: string | undefined;
 
         buttons.each((_: any, btn: any) => {
           const $btn = $(btn);
-          const text = cleanText($btn.text());
+          const label = cleanText($btn.text());
           const href = $btn.attr('href');
 
-          if (!href || href === '#') return;
+          if (!label) return;
 
-          if (text.toLowerCase().includes('detail')) {
-            detailUrl = toAbsoluteUrl(href, this.baseUrl);
-          } else if (text.toLowerCase().includes('join') || text.toLowerCase().includes('reg')) {
-            if (!text.toLowerCase().includes('closed')) {
-              registrationUrl = toAbsoluteUrl(href, this.baseUrl);
-            }
+          const lowerLabel = label.toLowerCase();
+          let buttonType: CourseButtonType = 'link';
+          let url = href && href !== '#' ? toAbsoluteUrl(href, this.baseUrl) : '#';
+
+          // Determine button type
+          if (lowerLabel.includes('detail')) {
+            buttonType = 'details';
+          } else if (lowerLabel.includes('join')) {
+            buttonType = 'join';
+          } else if (lowerLabel.includes('reg')) {
+            buttonType = 'register';
           }
+
+          // Determine if button is active (clickable)
+          // Inactive if: contains "closed" OR has no valid href
+          const isActive = !lowerLabel.includes('closed') && !!(href && href !== '#');
+
+          courseButtons.push({
+            label,
+            type: buttonType,
+            isActive,
+            url,
+          });
         });
 
         // Extract links from bordered sections
+        const courseSections: CourseSectionModel[] = [];
         const linkSections = $courseItem.find('.d-flex.border-top');
-        const tafseerItems: Item[] = [];
-        const tajweedItems: Item[] = [];
-        const testItems: Item[] = [];
-        const lectureItems: Item[] = [];
-        const otherItems: Item[] = [];
+
+        // Group items by section type
+        const sectionMap = new Map<string, Item[]>();
 
         linkSections.each((_: any, section: any) => {
           const $section = $(section);
@@ -96,23 +111,46 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
             const linkText = cleanText($link.text());
             const href = $link.attr('href');
 
-            if (!href || href === '#') return;
+            if (!href || href === '#' || !linkText) return;
 
             const absoluteUrl = toAbsoluteUrl(href, this.baseUrl);
             const item = createItem(absoluteUrl);
 
             const lowerText = linkText.toLowerCase();
+            let sectionKey = 'Other';
+
             if (lowerText.includes('tafseer')) {
-              tafseerItems.push(item);
+              sectionKey = 'Tafseer';
             } else if (lowerText.includes('tajweed')) {
-              tajweedItems.push(item);
-            } else if (lowerText.includes('test')) {
-              testItems.push(item);
+              sectionKey = 'Tajweed';
+            } else if (lowerText.includes('latest')) {
+              // Check 'latest' before 'test' since 'latest' contains 'test'
+              sectionKey = 'Latest Lecture';
             } else if (lowerText.includes('lect') || lowerText.includes('lecture')) {
-              lectureItems.push(item);
-            } else {
-              otherItems.push(item);
+              sectionKey = 'Lectures';
+            } else if (lowerText.includes('test')) {
+              sectionKey = 'Tests';
             }
+
+            if (!sectionMap.has(sectionKey)) {
+              sectionMap.set(sectionKey, []);
+            }
+            sectionMap.get(sectionKey)!.push(item);
+          });
+        });
+
+        // Convert map to sections array
+        sectionMap.forEach((items, label) => {
+          courseSections.push({
+            label,
+            icon: this.getIconForSection(label),
+            content: {
+              items: items.map((item: Item) => ({
+                item,
+                imageUrl: null,
+                title: null,
+              })),
+            },
           });
         });
 
@@ -120,73 +158,9 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
         const course: QuranCourse = {
           title,
           imageUrl: absoluteImageUrl,
+          buttons: courseButtons,
+          sections: courseSections,
         };
-
-        if (detailUrl) {
-          course.courseDetails = {
-            type: 'markdown', // or 'html' depending on the content type
-            details: detailUrl, // Store URL for now, could be scraped later
-          };
-        }
-
-        if (registrationUrl) {
-          course.registration = {
-            type: 'url', // RegistrationType
-            url: registrationUrl,
-          };
-        }
-
-        if (tafseerItems.length > 0) {
-          // For now, create empty surahs structure
-          // TODO: Properly scrape tafseer content
-          course.tafseer = {
-            id: 'tafseer',
-            title: 'Tafseer',
-            surahs: [],
-          };
-        }
-
-        if (tajweedItems.length > 0) {
-          // For now, create empty surahs structure
-          // TODO: Properly scrape tajweed content
-          course.tajweed = {
-            id: 'tajweed',
-            title: 'Tajweed',
-            surahs: [],
-          };
-        }
-
-        if (lectureItems.length > 0) {
-          // For now, create empty surahs structure
-          // TODO: Properly scrape lecture content
-          course.lectures = {
-            id: 'lectures',
-            title: 'Lectures',
-            surahs: [],
-          };
-        }
-
-        if (testItems.length > 0) {
-          // Tests use MediaContent, not QuranCourseContent
-          course.tests = {
-            items: testItems.map((item: Item) => ({
-              item: item,
-              imageUrl: null,
-              title: null,
-            })),
-          };
-        }
-
-        if (otherItems.length > 0) {
-          // Other content uses MediaContent, not QuranCourseContent
-          course.otherContent = {
-            items: otherItems.map((item: Item) => ({
-              item: item,
-              imageUrl: null,
-              title: null,
-            })),
-          };
-        }
 
         currentCourses.push(course);
       });
@@ -205,4 +179,17 @@ export class QuranCourseScraper extends BaseScraper<CourseSection[]> {
     return sections;
   }
 
+  /**
+   * Get icon identifier for a section label
+   */
+  private getIconForSection(label: string): string | null {
+    const lower = label.toLowerCase();
+    if (lower.includes('tafseer')) return 'book';
+    if (lower.includes('tajweed')) return 'quran';
+    // Check 'latest' before 'test' since 'latest' contains 'test'
+    if (lower.includes('latest')) return 'broadcast';
+    if (lower.includes('lecture')) return 'book';
+    if (lower.includes('test')) return 'edit';
+    return null;
+  }
 }

@@ -4,3 +4,4 @@ dist/
 .DS_Store
 .env
 data/scraped_data.json
+.playwright-mcp/

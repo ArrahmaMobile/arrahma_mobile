@@ -3,16 +3,13 @@ import 'package:arrahma_mobile_app/features/common/simple_image_view.dart';
 import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
-import 'package:arrahma_mobile_app/features/quran_course/quran_course_view.dart';
 import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
 import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
 import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:inherited_state/inherited_state.dart';
 import 'package:share/share.dart';
 
 class Utils {
@@ -150,45 +147,18 @@ class Utils {
       return;
     }
 
-    final appData = context.on<AppData>();
-    final courses = <QuranCourse>[
-      ...appData.courses,
-      ...(appData.otherCourseGroups?.expand((o) => o.courses) ?? <QuranCourse>[])
-    ];
-    final courseContents = courses
-        .fold<List<QuranCourseContent>>(
-            <QuranCourseContent>[],
-            (allC, c) => allC
-              ..addAll([c.tafseer, c.tajweed, c.lectures]
-                  .where((c) => c != null)
-                  .cast()))
-        .asMap()
-        .entries
-        .firstWhereOrNull((cEntry) => cEntry.value.id == item.data);
-    if (courseContents != null) {
-      final course = courses[courseContents.key ~/ 3];
-      final courseContentIndex = courseContents.key % 3;
-      final tabIndex = courseContentIndex == 2 ? 0 : courseContentIndex;
+    // Note: Legacy deep-linking to course sections has been removed
+    // with the new generic course model. Course sections now use MediaContent
+    // instead of QuranCourseContent, so we can't match by content ID anymore.
+    // For now, just open items in web view or external browser.
+    if (useWebView)
       Utils.pushView(
         context,
-        QuranCourseView(
-          course: course,
-          initialTabIndex: tabIndex +
-              (course.courseDetails != null ? 1 : 0) +
-              (course.registration != null ? 1 : 0),
-        ),
-        title: course.title,
+        BasicWebView(url: item.data),
+        title: title,
       );
-    } else {
-      if (useWebView)
-        Utils.pushView(
-          context,
-          BasicWebView(url: item.data),
-          title: title,
-        );
-      else
-        Launch.url(item.data);
-    }
+    else
+      Launch.url(item.data);
   }
 
   static Widget shareActionButton(String title, List<String>? data,

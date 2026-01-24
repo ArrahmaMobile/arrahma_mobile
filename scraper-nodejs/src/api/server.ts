@@ -25,14 +25,22 @@ interface ServerStatus {
   lastScrapedOn: string;
   lastScrapeAttemptOn: string;
   lastDataHash: string | null;
+  lastDataChangeOn: string | null; // When the hash actually changed
+}
+
+interface HashMetadata {
+  hash: string;
+  lastChanged: string;
 }
 
 class ArrahmahAPIServer {
   private app: express.Application;
   private cachedData: ScrapedData | null = null;
   private dataHash: string = '';
+  private lastDataChangeTimestamp: string | null = null;
   private lastUpdateAttempt: string = new Date().toISOString();
   private readonly dataPath: string;
+  private readonly hashMetadataPath: string;
   private readonly port: number;
   private scheduler: ScraperScheduler;
 
@@ -40,6 +48,7 @@ class ArrahmahAPIServer {
     this.app = express();
     this.port = port;
     this.dataPath = path.join(__dirname, '../../data/scraped_data.json');
+    this.hashMetadataPath = path.join(__dirname, '../../data/hash_metadata.json');
     this.scheduler = new ScraperScheduler({
       runOnStart: false, // Don't run on start to avoid conflicts
       maxRetries: 3,
@@ -106,6 +115,30 @@ class ArrahmahAPIServer {
   }
 
   /**
+   * Load hash metadata from file
+   */
+  private async loadHashMetadata(): Promise<HashMetadata | null> {
+    try {
+      const fileContent = await fs.readFile(this.hashMetadataPath, 'utf-8');
+      return JSON.parse(fileContent);
+    } catch (error) {
+      // File doesn't exist yet, return null
+      return null;
+    }
+  }
+
+  /**
+   * Save hash metadata to file
+   */
+  private async saveHashMetadata(metadata: HashMetadata): Promise<void> {
+    try {
+      await fs.writeFile(this.hashMetadataPath, JSON.stringify(metadata, null, 2), 'utf-8');
+    } catch (error) {
+      console.error('Error saving hash metadata:', error);
+    }
+  }
+
+  /**
    * Load scraped data from file
    */
   private async loadData(): Promise<void> {
@@ -115,9 +148,31 @@ class ArrahmahAPIServer {
 
       // Calculate hash of the data
       const dataString = JSON.stringify(this.cachedData?.appData);
-      this.dataHash = crypto.createHash('md5').update(dataString).digest('hex');
+      const newHash = crypto.createHash('md5').update(dataString).digest('hex');
 
-      console.log(`Data loaded successfully. Hash: ${this.dataHash}`);
+      // Load previous hash metadata
+      const previousMetadata = await this.loadHashMetadata();
+
+      // Check if hash has changed
+      if (!previousMetadata || previousMetadata.hash !== newHash) {
+        // Hash changed - update timestamp
+        const now = new Date().toISOString();
+        this.lastDataChangeTimestamp = now;
+
+        // Save new hash metadata
+        await this.saveHashMetadata({
+          hash: newHash,
+          lastChanged: now,
+        });
+
+        console.log(`Data hash changed! New hash: ${newHash}, Changed at: ${now}`);
+      } else {
+        // Hash unchanged - use existing timestamp
+        this.lastDataChangeTimestamp = previousMetadata.lastChanged;
+      }
+
+      this.dataHash = newHash;
+      console.log(`Data loaded successfully. Hash: ${this.dataHash}, Last changed: ${this.lastDataChangeTimestamp}`);
     } catch (error) {
       console.error('Error loading data:', error);
       throw error;
@@ -150,6 +205,7 @@ class ArrahmahAPIServer {
         lastScrapedOn: this.cachedData?.runMetadata.lastUpdate || new Date().toISOString(),
         lastScrapeAttemptOn: this.lastUpdateAttempt,
         lastDataHash: this.dataHash,
+        lastDataChangeOn: this.lastDataChangeTimestamp,
       };
 
       console.log(`[status] dataHash=${dataHashParam}, isStale=${statusResponse.isDataStale}`);

@@ -182,9 +182,11 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
 
   /**
    * Extract broadcast items (YouTube, Facebook, Mixlr, etc.)
+   * Targets ONLY the broadcast section with 4 service items
    */
   private extractBroadcastItems($: any): BroadcastItem[] {
     const broadcastItems: BroadcastItem[] = [];
+    const seen = new Set<string>();
 
     // Known broadcast platforms
     const platforms = [
@@ -194,74 +196,35 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
       { domain: 'mixlr.com', type: BroadcastType.Mixlr },
     ];
 
-    // Try old selector first
-    $('.column6 .box4').each((_: any, el: any) => {
-      const $el = $(el);
-      const link = $el.find('a').attr('href');
-      const imageUrl = $el.find('img').attr('src');
-
-      if (link && imageUrl) {
-        const platform = platforms.find((p) => link.includes(p.domain));
-        if (platform) {
-          broadcastItems.push({
-            type: platform.type,
-            item: createItem(toAbsoluteUrl(link, this.baseUrl)),
-            imageUrl: normalizeUrl(toAbsoluteUrl(imageUrl, this.baseUrl), this.baseUrl),
-          });
-        }
-      }
-    });
-
-    // If not found, try to find broadcast links in general
-    if (broadcastItems.length === 0) {
-      $('a[href*="youtube"], a[href*="facebook"], a[href*="mixlr"]').each((_: any, el: any) => {
-        const $el = $(el);
-        const link = $el.attr('href');
-
-        if (link) {
-          const platform = platforms.find((p) => link.includes(p.domain));
-          if (platform) {
-            const imageUrl = $el.find('img').attr('src') || $el.closest('div').find('img').attr('src');
-
-            broadcastItems.push({
-              type: platform.type,
-              item: createItem(toAbsoluteUrl(link, this.baseUrl)),
-              imageUrl: imageUrl
-                ? normalizeUrl(toAbsoluteUrl(imageUrl, this.baseUrl), this.baseUrl)
-                : '',
-            });
-          }
-        }
-      });
-    }
-
-    return broadcastItems;
-  }
-
-  /**
-   * Extract social media items
-   */
-  private extractSocialMediaItems($: any): SocialMediaItem[] {
-    const socialMediaItems: SocialMediaItem[] = [];
-
-    // Try new HTML structure first (.service-item)
+    // Target ONLY the .service-item elements (new website structure)
+    // These are the 4 broadcast cards: Mixlr Live, Youtube Live, FaceBook Live, Quran 102
     $('.service-item').each((_: any, el: any) => {
       const $el = $(el);
       const $link = $el.find('a').first();
 
-      if ($link.length === 0) return;
+      if (!$link.length) return;
 
       const link = $link.attr('href');
       if (!link) return;
 
-      // Extract icon/image - could be an img tag or an i tag (font-awesome icon)
+      // Normalize URL for deduplication
+      const absoluteUrl = toAbsoluteUrl(link, this.baseUrl);
+      const normalizedUrl = normalizeUrl(absoluteUrl, this.baseUrl);
+
+      // Skip if we've already seen this URL
+      if (seen.has(normalizedUrl)) return;
+
+      // Check if this is a broadcast platform
+      const platform = platforms.find((p) => link.includes(p.domain));
+      if (!platform) return;
+
+      // Get image URL (could be img tag or icon)
       const $img = $link.find('img');
       const $icon = $link.find('i');
 
       let imageUrl = '';
 
       if ($img.length > 0) {
-        // For Mixlr, use the favicon from the img tag
         const src = $img.attr('src');
         if (src) {
           imageUrl = normalizeUrl(toAbsoluteUrl(src, this.baseUrl), this.baseUrl);
@@ -280,6 +243,83 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
         }
       }
 
+      // Add to seen set
+      seen.add(normalizedUrl);
+
+      broadcastItems.push({
+        type: platform.type,
+        item: createItem(absoluteUrl),
+        imageUrl,
+      });
+    });
+
+    // Fallback to old selector if new structure not found
+    if (broadcastItems.length === 0) {
+      $('.column6 .box4').each((_: any, el: any) => {
+        const $el = $(el);
+        const link = $el.find('a').attr('href');
+        const imageUrl = $el.find('img').attr('src');
+
+        if (link && imageUrl) {
+          const absoluteUrl = toAbsoluteUrl(link, this.baseUrl);
+          const normalizedUrl = normalizeUrl(absoluteUrl, this.baseUrl);
+
+          // Skip duplicates
+          if (seen.has(normalizedUrl)) return;
+
+          const platform = platforms.find((p) => link.includes(p.domain));
+          if (platform) {
+            seen.add(normalizedUrl);
+            broadcastItems.push({
+              type: platform.type,
+              item: createItem(absoluteUrl),
+              imageUrl: normalizeUrl(toAbsoluteUrl(imageUrl, this.baseUrl), this.baseUrl),
+            });
+          }
+        }
+      });
+    }
+
+    return broadcastItems;
+  }
+
+  /**
+   * Extract social media items from header
+   */
+  private extractSocialMediaItems($: any): SocialMediaItem[] {
+    const socialMediaItems: SocialMediaItem[] = [];
+
+    // Target the header social media links (.social-links)
+    $('.social-links a').each((_: any, el: any) => {
+      const $link = $(el);
+      const link = $link.attr('href');
+
+      if (!link) return;
+
+      // Extract icon classes to determine the platform
+      const $icon = $link.find('i');
+      let imageUrl = '';
+
+      if ($icon.length > 0) {
+        const classes = $icon.attr('class') || '';
+
+        // Map icon classes to platform identifiers
+        if (classes.includes('bi-youtube') || classes.includes('fa-youtube')) {
+          imageUrl = 'icon:youtube';
+        } else if (classes.includes('bi-twitter-x') || classes.includes('fa-twitter') || classes.includes('fa-x-twitter')) {
+          imageUrl = 'icon:twitter';
+        } else if (classes.includes('bi-facebook') || classes.includes('fa-facebook')) {
+          imageUrl = 'icon:facebook';
+        } else if (classes.includes('fa-tiktok')) {
+          imageUrl = 'icon:tiktok';
+        } else if (classes.includes('bi-instagram') || classes.includes('fa-instagram')) {
+          imageUrl = 'icon:instagram';
+        } else {
+          // Fallback to a generic icon
+          imageUrl = 'icon:default';
+        }
+      }
+
       if (imageUrl) {
         socialMediaItems.push({
           item: createItem(toAbsoluteUrl(link, this.baseUrl)),
@@ -288,12 +328,12 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
       }
     });
 
-    // If new structure found items, return them
+    // If header social links found, return them
     if (socialMediaItems.length > 0) {
       return socialMediaItems;
     }
 
-    // Fallback to old selector (.column3footer a)
+    // Fallback to old selector (.column3footer a) for backward compatibility
     const platforms = ['facebook', 'twitter', 'x.com', 'instagram', 'tiktok', 'whatsapp'];
 
     $('.column3footer a').each((_: any, el: any) => {
