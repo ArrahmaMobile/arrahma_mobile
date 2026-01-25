@@ -93,11 +93,11 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
     });
 
     if (juzPages.length === 0) {
-      console.warn('  No Juz pages found in selector');
+      console.warn('  ⚠️  No Juz pages found in selector');
       return null;
     }
 
-    console.log(`  Found ${juzPages.length} Juz pages to scrape`);
+    console.log(`  📋 Found ${juzPages.length} Juz pages to scrape`);
 
     // Determine the base URL for Juz pages
     const baseUrl = this.url.substring(0, this.url.lastIndexOf('/') + 1);
@@ -107,19 +107,19 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       const juzPage = juzPages[i];
       const juzUrl = baseUrl + juzPage;
 
-      console.log(`    Scraping Juz ${i + 1}/${juzPages.length}: ${juzPage}`);
+      console.log(`    📑 Scraping Juz ${i + 1}/${juzPages.length}: ${juzPage}`);
 
       try {
         const $juzDoc = await this.navigateTo(juzUrl);
 
         if (!$juzDoc) {
-          console.log(`    Failed to load Juz page ${juzPage} - stopping`);
+          console.warn(`    ⚠️  Failed to load Juz page ${juzPage} - stopping`);
           break;
         }
 
         // Check if this page still has the selector (if not, content is not available yet)
         if ($juzDoc('#selectJuz').length === 0) {
-          console.log(`    Juz page ${juzPage} doesn't have selector - content not available, stopping`);
+          console.warn(`    ⏹️  Juz page ${juzPage} doesn't have selector - content not available, stopping`);
           break;
         }
 
@@ -129,16 +129,16 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
           allSurahs.push(...juzContent.surahs);
           console.log(`    ✓ Added ${juzContent.surahs.length} surahs from Juz ${i + 1}`);
         } else {
-          console.log(`    No content found in Juz ${i + 1}`);
+          console.warn(`    ⚠️  No content found in Juz ${i + 1}`);
         }
       } catch (error) {
-        console.error(`    Error scraping Juz page ${juzPage}:`, error);
+        console.error(`    ❌ Error scraping Juz page ${juzPage}:`, error);
         // Continue to next page on error
       }
     }
 
     if (allSurahs.length === 0) {
-      console.warn('  No surahs found across all Juz pages');
+      console.warn('  ⚠️  No surahs found across all Juz pages');
       return null;
     }
 
