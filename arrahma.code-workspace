@@ -1,16 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "scraper"
-		},
-		{
-			"path": "api"
-		},
-		{
 			"path": "app"
-		},
-		{
-			"path": "scraper_service"
 		},
 		{
 			"path": "shared"

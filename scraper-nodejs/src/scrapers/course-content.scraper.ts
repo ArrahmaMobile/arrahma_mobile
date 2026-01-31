@@ -61,13 +61,15 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
 
       // Single page scraping (existing logic)
       console.log(`  📄 Scraping NEW Bootstrap structure for ${this.url}`);
-      const content = this.scrapeNewStructure($, title);
+      const rawData = this.scrapeNewStructureRaw($, title);
 
-      if (!content || content.surahs.length === 0) {
+      if (!rawData || rawData.surahs.length === 0) {
         console.warn(`  ⚠️  No lessons found for ${this.url} (page may be under construction)`);
         return null;
       }
 
+      // Convert to final structure
+      const content = this.convertRawDataToContent(rawData, title, rawData.groupNames);
       return content;
     } catch (error) {
       console.error(`  ❌ Error scraping course content from ${this.url}:`, error);
@@ -80,7 +82,10 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
    */
   private async scrapeAllJuzPages($: cheerio.CheerioAPI, title: string): Promise<QuranCourseContent | null> {
     const allSurahs: Surah[] = [];
+    const allPracticeWords: Item[] = [];
+    const allIntroductionLessons: Lesson[] = [];
     const juzPages: string[] = [];
+    const scrapedUrls = new Set<string>(); // Track already scraped URLs
 
     // Extract all Juz page URLs from the dropdown
     $('#selectJuz option').each((_: any, option: any) => {
@@ -107,7 +112,14 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       const juzPage = juzPages[i];
       const juzUrl = baseUrl + juzPage;
 
+      // Skip if we've already scraped this URL
+      if (scrapedUrls.has(juzPage)) {
+        console.log(`    ⏭️  Skipping Juz ${i + 1}/${juzPages.length}: ${juzPage} (already scraped)`);
+        continue;
+      }
+
       console.log(`    📑 Scraping Juz ${i + 1}/${juzPages.length}: ${juzPage}`);
+      scrapedUrls.add(juzPage);
 
       try {
         const $juzDoc = await this.navigateTo(juzUrl);
@@ -123,11 +135,19 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
           break;
         }
 
-        // Scrape content from this Juz page
-        const juzContent = this.scrapeNewStructure($juzDoc, title);
-        if (juzContent && juzContent.surahs.length > 0) {
-          allSurahs.push(...juzContent.surahs);
-          console.log(`    ✓ Added ${juzContent.surahs.length} surahs from Juz ${i + 1}`);
+        // Scrape raw content from this Juz page (returns temporary structure)
+        const juzRawData = this.scrapeNewStructureRaw($juzDoc, title);
+        if (juzRawData) {
+          if (juzRawData.surahs.length > 0) {
+            allSurahs.push(...juzRawData.surahs);
+          }
+          if (juzRawData.practiceWords.length > 0) {
+            allPracticeWords.push(...juzRawData.practiceWords);
+          }
+          if (juzRawData.introductionLessons.length > 0) {
+            allIntroductionLessons.push(...juzRawData.introductionLessons);
+          }
+          console.log(`    ✓ Added ${juzRawData.surahs.length} surahs from Juz ${i + 1}`);
         } else {
           console.warn(`    ⚠️  No content found in Juz ${i + 1}`);
         }
@@ -142,23 +162,31 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       return null;
     }
 
-    const totalLessons = allSurahs.reduce((sum, s) => sum + s.lessons.length, 0);
-    console.log(`  ✓ Total: ${allSurahs.length} surahs, ${totalLessons} lessons from all Juz pages`);
+    // Convert to final structure
+    const content = this.convertRawDataToContent(
+      {
+        surahs: allSurahs,
+        practiceWords: allPracticeWords,
+        introductionLessons: allIntroductionLessons,
+        groupNames: ['Root words', 'Translation', 'Tafseer', 'Ref. Material']
+      },
+      title,
+      ['Root words', 'Translation', 'Tafseer', 'Ref. Material']
+    );
 
-    return {
-      id: title.toLowerCase().replace(/\s+/g, '-'),
-      title: title,
-      surahs: allSurahs,
-    };
+    return content;
   }
 
   /**
    * Scrape new Bootstrap structure (col-12 col-md-5 for titles, col-12 col-md-7 for items)
+   * Returns raw data before conversion to final structure
    */
-  private scrapeNewStructure($: cheerio.CheerioAPI, title: string): QuranCourseContent | null {
+  private scrapeNewStructureRaw($: cheerio.CheerioAPI, _title: string): { surahs: Surah[], practiceWords: Item[], introductionLessons: Lesson[], groupNames: string[] } | null {
     const surahs: Surah[] = [];
     let currentSurah: Surah | null = null;
-    const allLessons: Lesson[] = [];
+    const introductionLessons: Lesson[] = [];
+    const practiceWords: Item[] = [];
+    let isInIntroduction = false;
 
     // First, extract column headers to determine group names
     let groupNames: string[] = [];
@@ -177,59 +205,166 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       groupNames = ['Root words', 'Translation', 'Tafseer', 'Ref. Material'];
     }
 
-    // Find all containers that might have lesson rows
-    const $containers = $('.container.my-3').toArray();
+    // Find all containers that might have lesson rows (including my-4 for practice words)
+    const $containers = $('.container.my-3, .container.my-4').toArray();
 
-    for (const container of $containers) {
-      const $container = $(container);
+    // Also find standalone rows that are not in containers (for surah headers)
+    const $standaloneRows: any[] = [];
+    $('body > .row, .col-12.col-md-9 > .row').each((_: any, row: any) => {
+      const $row = $(row);
+      // Only include rows that are styled as headers (have background colors)
+      const style = $row.attr('style') || '';
+      if (style.includes('#0a2e4f') || style.includes('#ecece3')) {
+        $standaloneRows.push(row);
+      }
+    });
 
-      // Check if this is a Juz/Surah header
-      const $juzHeader = $container.find('.row').first();
-      const headerText = cleanText($juzHeader.text());
+    // Combine containers and standalone rows into a single list, maintaining document order
+    const allElements: Array<{ type: 'container' | 'row', element: any }> = [];
 
-      // Detect Juz header (e.g., "Juz 1 الم")
-      if (headerText.match(/^Juz \d+/i) || headerText.match(/^الم|^يس|^حم/)) {
-        // Save previous surah if exists
-        if (currentSurah && currentSurah.lessons.length > 0) {
-          surahs.push(currentSurah);
+    $containers.forEach(c => allElements.push({ type: 'container', element: c }));
+    $standaloneRows.forEach(r => allElements.push({ type: 'row', element: r }));
+
+    // Sort by position in document
+    allElements.sort((a, b) => {
+      const aIndex = $(a.element).index();
+      const bIndex = $(b.element).index();
+      return aIndex - bIndex;
+    });
+
+    for (const item of allElements) {
+      if (item.type === 'row') {
+        // Process standalone row (header only)
+        const $row = $(item.element);
+        const rowText = cleanText($row.text());
+        const bgStyle = $row.attr('style') || '';
+
+        // Check if this is a Juz header
+        const hasJuzStyling = bgStyle.includes('#0a2e4f');
+        if (hasJuzStyling && rowText.match(/^Juz \d+/i)) {
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+          }
+          isInIntroduction = false;
+          currentSurah = null;
+          continue;
         }
 
-        // Create new surah for this Juz
-        currentSurah = {
-          name: headerText,
-          arabicName: null,
-          description: null,
-          groups: groupNames.map(name => ({ name })),
-          lessons: [],
-        };
-        continue;
-      }
-
-      // Check if this is a Surah name header
-      if (headerText.match(/^Surah /i) || headerText.match(/^[A-Z][a-z]+-/)) {
-        // This is a surah name - update current surah or create new one
-        if (!currentSurah) {
+        // Check if this is a Surah header
+        const hasSurahStyling = bgStyle.includes('#ecece3');
+        if (hasSurahStyling && $row.find('strong').length > 0) {
+          const surahText = cleanText($row.find('strong').text());
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+          }
           currentSurah = {
-            name: headerText,
+            name: surahText,
             arabicName: null,
             description: null,
             groups: groupNames.map(name => ({ name })),
             lessons: [],
           };
-        } else {
-          currentSurah.name = headerText;
+          isInIntroduction = false;
+          continue;
+        }
+
+        // Check if this is Introduction header
+        if ($row.find('strong').text().trim() === 'Introduction') {
+          isInIntroduction = true;
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+            currentSurah = null;
+          }
+          continue;
         }
         continue;
       }
 
-      // Extract lesson from this container
-      const $lessonRow = $container.find('.row.g-2.border').first();
-      if ($lessonRow.length > 0) {
-        const $titleCol = $lessonRow.find('.col-12.col-md-5').first();
+      // Process container
+      const $container = $(item.element);
+
+      // Check if this is the practice words section (container.my-4)
+      if ($container.hasClass('my-4')) {
+        const containerText = cleanText($container.text());
+        if (containerText.toLowerCase().includes('practice words')) {
+          // Extract all PDF links from this section
+          const links = $container.find('a').toArray();
+          for (const link of links) {
+            const $link = $(link);
+            const href = $link.attr('href');
+            if (href && (href.toLowerCase().includes('.pdf') || $link.find('img[alt*="pdf"]').length > 0)) {
+              const absoluteUrl = toAbsoluteUrl(href, this.baseUrl);
+              practiceWords.push(createItem(absoluteUrl));
+            }
+          }
+        }
+        continue;
+      }
+
+      // Process all rows in this container to handle multiple headers
+      const $rows = $container.find('.row').toArray();
+
+      for (const row of $rows) {
+        const $row = $(row);
+        const rowText = cleanText($row.text());
+
+        // Check if this is an "Introduction" header
+        if ($row.find('strong').text().trim() === 'Introduction') {
+          isInIntroduction = true;
+          // Mark that we're no longer in a surah section
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+            currentSurah = null;
+          }
+          continue;
+        }
+
+        // Check if this is a Juz header (styled with dark blue background)
+        const bgStyle = $row.attr('style') || '';
+        const hasJuzStyling = bgStyle.includes('#0a2e4f') || bgStyle.includes('0a2e4f');
+
+        if (hasJuzStyling && rowText.match(/^Juz \d+/i)) {
+          // Save previous surah if exists
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+          }
+
+          // Juz headers don't create surahs yet - wait for Surah header
+          isInIntroduction = false;
+          currentSurah = null;
+          continue;
+        }
+
+        // Check if this is a Surah header (styled with light beige background)
+        const hasSurahStyling = bgStyle.includes('#ecece3') || bgStyle.includes('ecece3');
+
+        if (hasSurahStyling && $row.find('strong').length > 0) {
+          // This is a surah name header
+          const surahText = cleanText($row.find('strong').text());
+
+          // Save previous surah if exists
+          if (currentSurah && currentSurah.lessons.length > 0) {
+            surahs.push(currentSurah);
+          }
+
+          // Create new surah
+          currentSurah = {
+            name: surahText,
+            arabicName: null,
+            description: null,
+            groups: groupNames.map(name => ({ name })),
+            lessons: [],
+          };
+          isInIntroduction = false;
+          continue;
+        }
+
+        // Check if this is a lesson row (has col-12 col-md-5 for title)
+        const $titleCol = $row.find('.col-12.col-md-5').first();
         const lessonTitle = cleanText($titleCol.text());
 
-        if (lessonTitle) {
-          const $itemsContainer = $lessonRow.find('.col-12.col-md-7').first();
+        if (lessonTitle && $row.hasClass('border')) {
+          const $itemsContainer = $row.find('.col-12.col-md-7').first();
           const itemGroups: ItemGroup[] = [];
 
           if ($itemsContainer.length > 0) {
@@ -262,10 +397,11 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
             itemGroups,
           };
 
-          if (currentSurah) {
+          // Add to introduction lessons if we're in that section
+          if (isInIntroduction) {
+            introductionLessons.push(lesson);
+          } else if (currentSurah) {
             currentSurah.lessons.push(lesson);
-          } else {
-            allLessons.push(lesson);
           }
         }
       }
@@ -276,26 +412,97 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
       surahs.push(currentSurah);
     }
 
-    // If we have lessons but no surahs, create a default surah
-    if (surahs.length === 0 && allLessons.length > 0) {
-      surahs.push({
-        name: 'Course Content',
+    const totalLessons = surahs.reduce((sum, s) => sum + s.lessons.length, 0);
+    const practiceWordsCount = practiceWords.length;
+    const introLessonsCount = introductionLessons.length;
+
+    console.log(`  Scraped: ${surahs.length} surahs, ${totalLessons} lessons, ${introLessonsCount} intro lessons, ${practiceWordsCount} practice PDFs`);
+
+    return {
+      surahs,
+      practiceWords,
+      introductionLessons,
+      groupNames
+    };
+  }
+
+  /**
+   * Convert raw scraped data into final QuranCourseContent structure
+   */
+  private convertRawDataToContent(
+    rawData: { surahs: Surah[], practiceWords: Item[], introductionLessons: Lesson[], groupNames: string[] },
+    title: string,
+    groupNames: string[]
+  ): QuranCourseContent {
+    // Convert special sections into regular Surahs
+    const finalSurahs = this.convertSpecialSectionsToSurahs(
+      rawData.surahs,
+      rawData.practiceWords,
+      rawData.introductionLessons,
+      groupNames
+    );
+
+    const totalLessons = finalSurahs.reduce((sum, s) => sum + s.lessons.length, 0);
+    console.log(`  Final: ${finalSurahs.length} surahs (including special sections), ${totalLessons} total lessons`);
+
+    return {
+      id: title.toLowerCase().replace(/\s+/g, '-'),
+      title: title,
+      surahs: finalSurahs,
+    };
+  }
+
+  /**
+   * Convert practice words and introduction lessons into regular Surahs
+   * so they can be displayed in the app without special handling
+   */
+  private convertSpecialSectionsToSurahs(
+    surahs: Surah[],
+    practiceWords: Item[],
+    introductionLessons: Lesson[],
+    groupNames: string[]
+  ): Surah[] {
+    const specialSurahs: Surah[] = [];
+
+    // Convert introduction lessons into a Surah
+    if (introductionLessons.length > 0) {
+      specialSurahs.push({
+        name: 'Introduction',
         arabicName: null,
         description: null,
         groups: groupNames.map(name => ({ name })),
-        lessons: allLessons,
+        lessons: introductionLessons,
       });
     }
 
-    const content: QuranCourseContent = {
-      id: title.toLowerCase().replace(/\s+/g, '-'),
-      title: title,
-      surahs,
-    };
+    // Convert practice words into a Surah with a single lesson
+    if (practiceWords.length > 0) {
+      // Group practice words into item groups (one group per practice word)
+      const itemGroups: ItemGroup[] = practiceWords.map(item => ({
+        items: [item]
+      }));
 
-    const totalLessons = surahs.reduce((sum, s) => sum + s.lessons.length, 0);
-    console.log(`  Scraped: ${surahs.length} surahs, ${totalLessons} total lessons`);
+      // Pad with empty groups to match the number of columns
+      while (itemGroups.length < groupNames.length) {
+        itemGroups.push({ items: [] });
+      }
 
-    return content;
+      specialSurahs.push({
+        name: 'Practice Words',
+        arabicName: null,
+        description: null,
+        groups: groupNames.map(name => ({ name })),
+        lessons: [{
+          title: 'Practice Word PDFs',
+          lessonNum: null,
+          ayahNum: null,
+          uploadDate: null,
+          itemGroups,
+        }],
+      });
+    }
+
+    // Return special surahs first, then regular surahs
+    return [...specialSurahs, ...surahs];
   }
 }

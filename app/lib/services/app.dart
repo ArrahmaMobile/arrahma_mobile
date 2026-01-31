@@ -207,21 +207,22 @@ class AppService extends StoppableService {
   }
 
   static Future<bool> launch(String url) async {
-    if (await launcher.canLaunch(url))
-      return await launcher.launch(url,
-          forceSafariVC: false, forceWebView: false);
+    final uri = Uri.parse(url);
+    if (await launcher.canLaunchUrl(uri))
+      return await launcher.launchUrl(uri,
+          mode: launcher.LaunchMode.externalApplication);
     return false;
   }
 
   static Future<bool> isAppInstalled(String appPackageNameOrScheme) async {
     return AppUtils.isIOS
-        ? await launcher.canLaunch(appPackageNameOrScheme)
+        ? await launcher.canLaunchUrl(Uri.parse(appPackageNameOrScheme))
         : await AppLauncher.isAppInstalled(appPackageNameOrScheme);
   }
 
   static Future<bool> launchApp(String appPackageNameOrScheme) async {
     return AppUtils.isIOS
-        ? await launcher.launch(appPackageNameOrScheme)
+        ? await launcher.launchUrl(Uri.parse(appPackageNameOrScheme))
         : await AppLauncher.launchApp(appPackageNameOrScheme);
   }
 

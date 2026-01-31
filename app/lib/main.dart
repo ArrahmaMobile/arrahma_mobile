@@ -34,7 +34,7 @@ Future main() async {
         EnvironmentConfig(
           name: 'Dev-1',
           environmentType: EnvironmentType.DEV,
-          baseUrl: 'http://192.168.86.97:8888/api', //   86.68
+          baseUrl: 'http://192.168.86.185:8888/api', //   86.68
         ),
     ],
     theme: AppThemeUtils.getThemeVariants(),

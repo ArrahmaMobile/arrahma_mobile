@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../common/media_content_view.dart';
+import 'quran_surah_view.dart';
 
 class QuranCourseView extends StatefulWidget {
   const QuranCourseView({
@@ -34,8 +35,22 @@ class _QuranCourseViewState extends State<QuranCourseView> {
 
   List<Widget> _getTabs() {
     return widget.course.sections
-        .where((section) => section.content != null)
-        .map((section) => MediaContentView(content: section.content!))
+        .where((section) => section.hasContent)
+        .map((section) {
+          // Handle QuranCourseContent (surahs)
+          if (section.courseContent != null) {
+            return QuranSurahView(
+              content: section.courseContent!,
+              referrerTitle: widget.course.title,
+            );
+          }
+          // Handle MediaContent (link lists)
+          else if (section.mediaContent != null) {
+            return MediaContentView(content: section.mediaContent!);
+          }
+          // Fallback - shouldn't happen due to hasContent check
+          return const Center(child: Text('No content available'));
+        })
         .toList();
   }
 
@@ -81,7 +96,7 @@ class _QuranCourseViewState extends State<QuranCourseView> {
                   currentIndex: selectedTabIndex,
                   type: BottomNavigationBarType.fixed,
                   items: widget.course.sections
-                      .where((section) => section.content != null)
+                      .where((section) => section.hasContent)
                       .map((section) => BottomNavigationBarItem(
                             icon: Icon(_getIconForSection(section.label)),
                             label: section.label,

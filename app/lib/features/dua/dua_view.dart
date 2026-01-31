@@ -127,7 +127,7 @@ class _DuaViewState extends State<DuaView> {
           boxShadow: [
             isActive
                 ? BoxShadow(
-                    color: Color(0XFF2FB7B2).withOpacity(0.72),
+                    color: Color(0XFF2FB7B2).withValues(alpha: 0.72),
                     blurRadius: 4.0,
                     spreadRadius: 1.0,
                     offset: Offset(

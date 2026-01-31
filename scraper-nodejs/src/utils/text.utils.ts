@@ -36,3 +36,60 @@ export function extractCleanText(text: string | null | undefined): string {
   if (!text) return '';
   return cleanText(text);
 }
+
+/**
+ * Convert text to proper title case
+ * Examples:
+ * - "S T E A D Y P A C E D Courses" -> "Steadypaced Courses"
+ * - "STEADY- PACED Courses" -> "Steady-Paced Courses"
+ * - "Courses IN OTHER LANGUAGES" -> "Courses in Other Languages"
+ */
+export function fixSpacedText(text: string): string {
+  // Words that should be lowercase in title case (unless first word)
+  const smallWords = new Set([
+    'a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'into',
+    'nor', 'of', 'on', 'or', 'so', 'the', 'to', 'up', 'yet'
+  ]);
+
+  // First, remove spaces between single uppercase letters
+  // Pattern: single letters separated by spaces like "S T E A D Y"
+  let fixed = text.replace(/\b([A-Z])\s+(?=[A-Z]\s|[A-Z]\b)/g, '$1');
+
+  // Normalize spaces around hyphens (e.g., "STEADY- PACED" -> "STEADY-PACED")
+  fixed = fixed.replace(/\s*-\s*/g, '-');
+
+  // Normalize whitespace
+  fixed = fixed.replace(/\s+/g, ' ').trim();
+
+  // Split by spaces while preserving hyphenated words
+  const words = fixed.split(' ');
+
+  // Convert each word to title case
+  const result = words.map((word, index) => {
+    if (word.length === 0) return word;
+
+    // Handle hyphenated words (e.g., "STEADY-PACED" -> "Steady-Paced")
+    if (word.includes('-')) {
+      return word
+        .split('-')
+        .map(part => {
+          if (part.length === 0) return part;
+          return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+        })
+        .join('-');
+    }
+
+    // Convert to lowercase first
+    const lowerWord = word.toLowerCase();
+
+    // Check if this is a small word (but not the first word)
+    if (index > 0 && smallWords.has(lowerWord)) {
+      return lowerWord;
+    }
+
+    // Title case: capitalize first letter, lowercase the rest
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+
+  return result.join(' ');
+}

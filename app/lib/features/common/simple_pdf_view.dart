@@ -117,7 +117,7 @@ class _SimplePdfViewState extends State<SimplePdfView> {
                                 Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               padding: const EdgeInsets.symmetric(

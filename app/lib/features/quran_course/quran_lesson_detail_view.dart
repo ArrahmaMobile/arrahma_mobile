@@ -171,7 +171,7 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
   }
 
   static const GroupTypeIconMap = <ItemType, IconData>{
-    ItemType.Audio: FontAwesomeIcons.solidPlayCircle,
+    ItemType.Audio: FontAwesomeIcons.solidCirclePlay,
     ItemType.Pdf: FontAwesomeIcons.solidFilePdf,
     ItemType.Image: FontAwesomeIcons.solidImage,
     ItemType.Video: FontAwesomeIcons.solidFileVideo,

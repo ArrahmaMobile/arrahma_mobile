@@ -147,7 +147,8 @@ export interface CourseButton {
 export interface CourseSection {
   label: string; // Section label (e.g., "Tafseer", "Tajweed", "Tests")
   icon?: string | null; // Optional icon identifier
-  content?: QuranCourseContent | MediaContent | null; // Content can be either type
+  mediaContent?: MediaContent | null; // For simple link lists (Tafseer PDFs, Tests, etc.)
+  courseContent?: QuranCourseContent | null; // For full Quran course content with surahs
 }
 
 /** Complete Quran course - Generic V2 structure */

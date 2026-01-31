@@ -58,13 +58,12 @@ class _CourseItemState extends State<CourseItem> {
           else
             Image.asset(
               course.imageUrl,
-              width: _screenUtils.getWidth(68),
-              height: _screenUtils.getWidth(68),
+              width: _screenUtils.getWidth(80),
+              height: _screenUtils.getWidth(80),
+              fit: BoxFit.cover,
             ),
           Padding(
-            padding: isNetworkImage
-                ? EdgeInsets.zero
-                : const EdgeInsets.only(top: 8.0),
+            padding: EdgeInsets.zero,
             child: Text(
               course.title.titleCase,
               textAlign: TextAlign.center,

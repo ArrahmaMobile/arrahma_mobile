@@ -3,5 +3,5 @@ dist/
 *.log
 .DS_Store
 .env
-data/scraped_data.json
+data/
 .playwright-mcp/

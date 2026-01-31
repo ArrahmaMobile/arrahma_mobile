@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(10.0),
                     child: FloatingActionButton(
                       backgroundColor: Colors.brown.shade400,
-                      child: const FaIcon(FontAwesomeIcons.solidCommentAlt),
+                      child: const FaIcon(FontAwesomeIcons.solidMessage),
                       onPressed: () {
                         Utils.pushView(
                           context,
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
 
   List<StaticQuranCourse> staticCourses(AppData appData) => <StaticQuranCourse>[
         StaticQuranCourse(
-            imageUrl: 'https://arrahmag.org/images_n/202.png',
+            imageUrl: 'assets/images/dua-dhikr.jpg',
             title: 'Duas & Dhikr',
             onTap: () {
               Utils.pushView(
@@ -328,6 +328,9 @@ class _HomePageState extends State<HomePage> {
     } else if (item.data.contains('twitter') || item.data.contains('x.com')) {
       platform = 'Twitter';
       defaultImage = 'assets/images/social_media/twitter.png';
+    } else if (item.data.contains('tiktok')) {
+      platform = 'TikTok';
+      defaultImage = 'assets/images/social_media/tiktok.png';
     } else {
       platform = 'Website';
       defaultImage = 'assets/images/social_media/web.png';
@@ -343,6 +346,12 @@ class _HomePageState extends State<HomePage> {
         finalImageUrl = 'assets/images/social_media/facebook.png';
       } else if (iconType == 'microphone') {
         finalImageUrl = 'assets/images/social_media/mixlr.png';
+      } else if (iconType == 'instagram') {
+        finalImageUrl = 'assets/images/social_media/instagram.png';
+      } else if (iconType == 'twitter') {
+        finalImageUrl = 'assets/images/social_media/twitter.png';
+      } else if (iconType == 'tiktok') {
+        finalImageUrl = 'assets/images/social_media/tiktok.png';
       } else {
         finalImageUrl = defaultImage;
       }
@@ -382,17 +391,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {
-    return GridView.count(
-      crossAxisCount: 6,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      childAspectRatio: 1.5,
-      children: <Widget>[
-        ...socialItems
-            .map((socialMedia) =>
-                _buildSocialImageLink(socialMedia.item, socialMedia.imageUrl))
-            .toList(),
-      ],
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 16.0,
+          runSpacing: 12.0,
+          children: <Widget>[
+            ...socialItems
+                .map((socialMedia) => SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: _buildSocialImageLink(
+                          socialMedia.item, socialMedia.imageUrl),
+                    ))
+                .toList(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -404,12 +421,12 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(2.0),
           child: Badge(
             constraints: const BoxConstraints(maxWidth: 32),
-            content: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: const Text('LIVE'),
+            content: const Padding(
+              padding: EdgeInsets.all(2.0),
+              child: Text('LIVE'),
             ),
             offset: const Offset(0, -8),
-            enabled: label != null && label == 'YouTube'
+            enabled: label == 'YouTube'
                 ? status.isYoutubeLive
                 : label == 'Facebook'
                     ? status.isFacebookLive
@@ -419,12 +436,10 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         );
-        return label != null
-            ? Tooltip(
-                message: label,
-                child: child,
-              )
-            : child;
+        return Tooltip(
+          message: label,
+          child: child,
+        );
       },
     );
   }

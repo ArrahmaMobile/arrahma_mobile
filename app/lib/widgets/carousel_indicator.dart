@@ -32,7 +32,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
     return Column(
       children: [
         CarouselSlider(
-          items: widget?.items ?? [],
+          items: widget.items,
           options: CarouselOptions(
               autoPlayInterval:
                   widget.autoPlayInterval ?? const Duration(seconds: 4),
@@ -48,7 +48,7 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
         if (widget.showIndicator)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.items?.map(
+            children: widget.items.map(
                   (url) {
                     final index = widget.items.indexOf(url);
                     return Container(
@@ -61,11 +61,10 @@ class CarouselIndicatorState extends State<CarouselIndicator> {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: appTheme.theme!.textTheme.bodyMedium?.color
-                              ?.withOpacity(_current == index ? .9 : .4)),
+                              ?.withValues(alpha: _current == index ? .9 : .4)),
                     );
                   },
-                )?.toList() ??
-                [],
+                ).toList(),
           ),
       ],
     );

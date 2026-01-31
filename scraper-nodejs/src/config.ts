@@ -20,6 +20,6 @@ export const config = {
   /** Request timeout (ms) */
   requestTimeout: 30000,
 
-  /** Output file path */
+  /** Output file path - writes to API's data directory */
   outputPath: './data/scraped_data.json',
 } as const;

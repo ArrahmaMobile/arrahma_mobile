@@ -70,14 +70,14 @@ class _ContactUsViewState extends State<ContactUsView> {
               textAlign: TextAlign.center,
               text: TextSpan(
                 style: theme.textTheme.bodyMedium,
-                children: <TextSpan>[
-                  const TextSpan(
+                children: const <TextSpan>[
+                  TextSpan(
                       text:
                           'For information about our courses and general Inquiries, contact us on WhatsApp:'),
                   TextSpan(
                     text: '1-(732)-305-0744',
                     // recognizer: ,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xFF124570),
                     ),
                   ),
@@ -108,7 +108,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             ),
             const SizedBox(height: 15),
             const FaIcon(
-              FontAwesomeIcons.mailBulk,
+              FontAwesomeIcons.envelopesBulk,
               size: 32,
             ),
             const SizedBox(height: 10),

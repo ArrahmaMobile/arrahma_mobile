@@ -150,7 +150,7 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       child: Text(
-                        "Categories",
+                        'Categories',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -189,7 +189,7 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       child: Text(
-                        "Duas",
+                        'Duas',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

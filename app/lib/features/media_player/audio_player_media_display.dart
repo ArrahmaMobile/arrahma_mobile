@@ -1,5 +1,4 @@
 import 'package:arrahma_mobile_app/features/media_player/models/extended_media_item.dart';
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 

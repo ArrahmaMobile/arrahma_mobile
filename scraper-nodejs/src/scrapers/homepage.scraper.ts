@@ -13,7 +13,7 @@ import {
   BroadcastType,
 } from '../types/models';
 import { toAbsoluteUrl, normalizeUrl } from '../utils/url.utils';
-import { cleanText } from '../utils/text.utils';
+import { cleanText, fixSpacedText } from '../utils/text.utils';
 import { createItem } from '../utils/content-type.utils';
 import { CourseContentScraper } from './course-content.scraper';
 
@@ -418,6 +418,8 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
     let title = cleanText($link.text());
     // Remove Unicode/HTML entities for dropdown icons
     title = title.replace(/[\u25BE\u25B4\u25B6\u25C0▾▴▶◀►]/g, '').trim();
+    // Fix spaced text like "S T E A D Y P A C E D" -> "Steadypaced"
+    title = fixSpacedText(title);
 
     if (!title) return null;
 

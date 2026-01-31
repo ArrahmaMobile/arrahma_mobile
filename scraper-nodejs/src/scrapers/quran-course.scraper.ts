@@ -6,7 +6,7 @@
 import { BaseScraper } from '../core/scraper-base';
 import { QuranCourse, CourseButton, CourseSection as CourseSectionModel, Item, CourseButtonType } from '../types/models';
 import { toAbsoluteUrl, normalizeUrl } from '../utils/url.utils';
-import { cleanText } from '../utils/text.utils';
+import { cleanText, fixSpacedText } from '../utils/text.utils';
 import { createItem } from '../utils/content-type.utils';
 
 export interface HomepageSection {
@@ -25,7 +25,7 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
     }
 
     const sections: HomepageSection[] = [];
-    let currentSectionTitle = 'COURSES WE OFFER'; // Default for first section
+    let currentSectionTitle = 'Courses We Offer'; // Default for first section
     let currentCourses: QuranCourse[] = [];
 
     // Find all course container sections
@@ -33,17 +33,18 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
       const $container = $(containerEl);
 
       // Look for section title
-      const sectionTitle = cleanText($container.find('.section-title').first().text());
+      const rawSectionTitle = cleanText($container.find('.section-title').first().text());
 
       // If we found a new section title, save the previous section and start a new one
-      if (sectionTitle) {
+      if (rawSectionTitle) {
         if (currentCourses.length > 0) {
           sections.push({
             title: currentSectionTitle,
             courses: currentCourses,
           });
         }
-        currentSectionTitle = sectionTitle;
+        // Apply title case transformation
+        currentSectionTitle = fixSpacedText(rawSectionTitle);
         currentCourses = [];
       }
 
@@ -144,13 +145,14 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
           courseSections.push({
             label,
             icon: this.getIconForSection(label),
-            content: {
+            mediaContent: {
               items: items.map((item: Item) => ({
                 item,
                 imageUrl: null,
                 title: null,
               })),
             },
+            courseContent: null, // Will be populated later by linking to drawer content
           });
         });
 
