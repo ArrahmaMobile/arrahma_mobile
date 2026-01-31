@@ -12,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 
 import 'package:url_launcher/url_launcher.dart' as launcher;
 import 'app_launcher.dart';
+import 'content_registry.dart';
 import 'device_storage_service.dart';
 
 class AppService extends StoppableService {
@@ -39,6 +40,8 @@ class AppService extends StoppableService {
 
   String? _appDataHash;
   String? get appDataHash => _appDataHash;
+
+  final contentRegistry = ContentRegistry();
 
   // TODO(shah): Abstract into cached timer service
   Timer? _dataFetchTimer;
@@ -83,6 +86,11 @@ class AppService extends StoppableService {
       logger.verbose('First data fetch failed.');
     }
     _appData ??= deviceStorageService.getDefaultAppData();
+
+    // Build content registry for URL lookups
+    contentRegistry.buildFromAppData(_appData!);
+    logger.verbose('Content registry initialized: ${contentRegistry.stats}');
+
     return _appData!;
   }
 
@@ -116,6 +124,10 @@ class AppService extends StoppableService {
         RS.getReactiveFromRoot<AppData>().setState((data) => appDataInfo.value);
       _appData = appDataInfo.value;
       _appDataHash = appDataInfo.key;
+
+      // Build content registry for URL lookups
+      contentRegistry.buildFromAppData(_appData!);
+      logger.verbose('Content registry built: ${contentRegistry.stats}');
     }
     return appDataInfo?.value;
   }

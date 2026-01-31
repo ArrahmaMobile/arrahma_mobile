@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
     final screenUtils = ScreenUtils.getInstance(context)!;
 
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, banner.item),
+      onTap: () => Utils.openUrl(context, banner.item, appService: appService),
       child: ClipRect(
         child: Stack(
           fit: StackFit.expand,
@@ -303,7 +303,7 @@ class _HomePageState extends State<HomePage> {
           'buster': item.data
         });
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, item.copyWith(imageUrl: imageUrl)),
+      onTap: () => Utils.openUrl(context, item.copyWith(imageUrl: imageUrl), appService: appService),
       child: _buildImage(imageUriWithCacheBuster.toString()),
     );
   }
@@ -361,7 +361,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, item),
+      onTap: () => Utils.openUrl(context, item, appService: appService),
       child: _buildSocialMediaItem(platform, finalImageUrl),
     );
   }
@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePage> {
     return FittedBox(
       child: Card(
         child: InkWell(
-          onTap: () => Utils.openUrl(context, TitledItem.fromItem(title, link)),
+          onTap: () => Utils.openUrl(context, TitledItem.fromItem(title, link), appService: appService),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Center(

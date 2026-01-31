@@ -1,10 +1,13 @@
 import 'package:arrahma_mobile_app/features/common/basic_webview.dart';
+import 'package:arrahma_mobile_app/features/common/media_content_view.dart';
 import 'package:arrahma_mobile_app/features/common/simple_image_view.dart';
 import 'package:arrahma_mobile_app/features/common/simple_pdf_view.dart';
 import 'package:arrahma_mobile_app/features/common/themed_app_bar.dart';
 import 'package:arrahma_mobile_app/features/media_player/media_player_view.dart';
+import 'package:arrahma_mobile_app/features/quran_course/quran_surah_view.dart';
 import 'package:arrahma_mobile_app/features/tawk/models/visitor.dart';
 import 'package:arrahma_mobile_app/features/tawk/tawk.dart';
+import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +112,7 @@ class Utils {
   }
 
   static void openUrl(BuildContext context, Item item,
-      {bool useWebView = false}) {
+      {bool useWebView = false, AppService? appService}) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
     if (item.type == ItemType.Audio) {
@@ -147,10 +150,37 @@ class Utils {
       return;
     }
 
-    // Note: Legacy deep-linking to course sections has been removed
-    // with the new generic course model. Course sections now use MediaContent
-    // instead of QuranCourseContent, so we can't match by content ID anymore.
-    // For now, just open items in web view or external browser.
+    // Check if this URL points to content we already have loaded
+    if (appService != null && item.type == ItemType.WebPage) {
+      // Check for QuranCourseContent
+      final contentItem = appService.contentRegistry.findContentByUrl(item.data);
+      if (contentItem?.content != null) {
+        // Navigate to the course content directly
+        Utils.pushView(
+          context,
+          QuranSurahView(
+            content: contentItem!.content!,
+            referrerTitle: contentItem.title,
+          ),
+          title: contentItem.title,
+        );
+        return;
+      }
+
+      // Check for MediaContent
+      final mediaItem = appService.contentRegistry.findMediaByUrl(item.data);
+      if (mediaItem?.media != null) {
+        // Navigate to media content view
+        Utils.pushView(
+          context,
+          MediaContentView(content: mediaItem!.media!),
+          title: mediaItem.title,
+        );
+        return;
+      }
+    }
+
+    // Fallback: Open in web view or external browser
     if (useWebView)
       Utils.pushView(
         context,
