@@ -13,6 +13,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:inherited_state/inherited_state.dart';
 import 'package:share/share.dart';
 
 class Utils {
@@ -112,7 +113,7 @@ class Utils {
   }
 
   static void openUrl(BuildContext context, Item item,
-      {bool useWebView = false, AppService? appService}) {
+      {bool useWebView = false}) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
     if (item.type == ItemType.Audio) {
@@ -151,9 +152,11 @@ class Utils {
     }
 
     // Check if this URL points to content we already have loaded
-    if (appService != null && item.type == ItemType.WebPage) {
+    if (item.type == ItemType.WebPage) {
       // Check for QuranCourseContent
-      final contentItem = appService.contentRegistry.findContentByUrl(item.data);
+      final appService = SL.get<AppService>();
+      final contentItem =
+          appService?.contentRegistry.findContentByUrl(item.data);
       if (contentItem?.content != null) {
         // Navigate to the course content directly
         Utils.pushView(
@@ -168,7 +171,7 @@ class Utils {
       }
 
       // Check for MediaContent
-      final mediaItem = appService.contentRegistry.findMediaByUrl(item.data);
+      final mediaItem = appService?.contentRegistry.findMediaByUrl(item.data);
       if (mediaItem?.media != null) {
         // Navigate to media content view
         Utils.pushView(
