@@ -240,35 +240,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
-  connectivity:
+  connectivity_plus:
     dependency: transitive
     description:
-      name: connectivity
-      sha256: a8e91263cf3e25fb5cc95e19dfde4999e32a648ac3b9e8a558a28165731678f8
+      name: connectivity_plus
+      sha256: b5e72753cf63becce2c61fd04dfe0f1c430cc5278b53a1342dc5ad839eab29ec
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.6"
-  connectivity_for_web:
+    version: "6.1.5"
+  connectivity_plus_platform_interface:
     dependency: transitive
     description:
-      name: connectivity_for_web
-      sha256: "01a390c1d5adc2ed1fa1f52d120c07fe9fd01166a93f965a832fd6cfc0ea6482"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0+1"
-  connectivity_macos:
-    dependency: transitive
-    description:
-      name: connectivity_macos
-      sha256: "51ae08d5162eca9669b9d8951ed83ce19c5355a81149f94e4dee2740beb93628"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1+2"
-  connectivity_platform_interface:
-    dependency: transitive
-    description:
-      name: connectivity_platform_interface
-      sha256: "2d82e942df9d49f29a24bb07fb5ce085d4a53e47818c62364d2b6deb9e0d7a8e"
+      name: connectivity_plus_platform_interface
+      sha256: "42657c1715d48b167930d5f34d00222ac100475f73d10162ddf43e714932f204"
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
@@ -328,6 +312,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "79e0c23480ff85dc68de79e2cd6334add97e48f7f4865d17686dd6ea81a47e8c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.11"
   device_frame:
     dependency: transitive
     description:
@@ -336,22 +328,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  device_info:
-    dependency: transitive
-    description:
-      name: device_info
-      sha256: f4a8156cb7b7480d969cb734907d18b333c8f0bc0b1ad0b342cdcecf30d62c48
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
-  device_info_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_platform_interface
-      sha256: b148e0bf9640145d09a4f8dea96614076f889e7f7f8b5ecab1c7e5c2dbc73c1b
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   device_info_plus:
     dependency: transitive
     description:
@@ -456,9 +432,11 @@ packages:
   flutter_framework:
     dependency: "direct main"
     description:
-      path: "../../flutter_framework"
-      relative: true
-    source: path
+      path: "."
+      ref: null-safety
+      resolved-ref: "3dfff6eca59f4d6105a1fa98c2eacec2734b976f"
+      url: "git@github.com:SASID-PRO/flutter_framework.git"
+    source: git
     version: "0.0.1"
   flutter_launcher_icons:
     dependency: "direct main"
@@ -851,6 +829,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   octo_image:
     dependency: transitive
     description:
@@ -867,14 +853,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  package_info:
+  package_info_plus:
     dependency: transitive
     description:
-      name: package_info
-      sha256: "6c07d9d82c69e16afeeeeb6866fe43985a20b3b50df243091bfc4a4ad2b03b75"
+      name: package_info_plus
+      sha256: "16eee997588c60225bda0488b6dcfac69280a6b7a3cf02c741895dd370a02968"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "8.3.1"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      sha256: "202a487f08836a592a6bd4f901ac69b3a8f146af552bbd14407b6b41e1c3f086"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   path:
     dependency: transitive
     description:
