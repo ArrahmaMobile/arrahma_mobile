@@ -198,8 +198,15 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBannerWithText(HeadingBanner banner) {
     final screenUtils = ScreenUtils.getInstance(context)!;
 
+    // Create titled item with banner text and image for proper media player display
+    final bannerTitle = banner.heading ?? banner.title ?? 'Banner';
+    final itemWithMetadata = TitledItem.fromItem(
+      bannerTitle,
+      banner.item.copyWith(imageUrl: banner.imageUrl),
+    );
+
     return GestureDetector(
-      onTap: () => Utils.openUrl(context, banner.item),
+      onTap: () => Utils.openUrl(context, itemWithMetadata),
       child: ClipRect(
         child: Stack(
           fit: StackFit.expand,

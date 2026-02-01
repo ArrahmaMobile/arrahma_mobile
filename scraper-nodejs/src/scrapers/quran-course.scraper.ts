@@ -29,6 +29,10 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
     let currentSectionTitle = 'Courses We Offer'; // Default for first section
     let currentCourses: QuranCourse[] = [];
 
+    // Collection to track test URLs that need scraping
+    const testUrlsToScrape: Array<{ courseIndex: number, sectionIndex: number, url: string }> = [];
+    let courseGlobalIndex = 0;
+
     // Find all course container sections
     $('.col-12.col-md-9 .container-xxl').each((_: any, containerEl: any) => {
       const $container = $(containerEl);
@@ -143,30 +147,16 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
           });
         });
 
-        // Scrape test pages if any were found
-        if (testUrls.length > 0) {
-          for (const testUrl of testUrls) {
-            try {
-              const testScraper = new TestScraper(this.httpClient, testUrl);
-              const testContent = await testScraper.scrape();
-
-              if (testContent) {
-                // Create test section with full scraped content
-                courseSections.push({
-                  label: 'Tests',
-                  icon: this.getIconForSection('Tests'),
-                  mediaContent: testContent,
-                  courseContent: null,
-                });
-                // Remove from sectionMap since we've already processed it
-                sectionMap.delete('Tests');
-                break; // Only scrape first test page for now
-              }
-            } catch (error) {
-              console.error(`  ⚠️  Failed to scrape test page ${testUrl}:`, error);
-              // Keep the simple link if scraping fails (will be added below)
-            }
-          }
+        // Mark test URLs for later scraping (can't await inside .each())
+        if (testUrls.length > 0 && testUrls[0]) {
+          // Track this test URL for scraping after the loop
+          testUrlsToScrape.push({
+            courseIndex: courseGlobalIndex,
+            sectionIndex: courseSections.length,
+            url: testUrls[0], // Only scrape first test page per course
+          });
+          // Don't add to sectionMap yet - we'll handle it after scraping
+          sectionMap.delete('Tests');
         }
 
         // Convert remaining sections from map to sections array
@@ -194,6 +184,7 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
         };
 
         currentCourses.push(course);
+        courseGlobalIndex++;
       });
     });
 
@@ -203,6 +194,44 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
         title: currentSectionTitle,
         courses: currentCourses,
       });
+    }
+
+    // Now process test URLs asynchronously
+    if (testUrlsToScrape.length > 0) {
+      console.log(`  📝 Scraping ${testUrlsToScrape.length} test page(s)...`);
+
+      for (const testInfo of testUrlsToScrape) {
+        try {
+          const testScraper = new TestScraper(this.httpClient, testInfo.url);
+          const testContent = await testScraper.scrape();
+
+          if (testContent) {
+            // Find the course across all sections
+            let globalIndex = 0;
+            let found = false;
+
+            for (const section of sections) {
+              for (const course of section.courses) {
+                if (globalIndex === testInfo.courseIndex) {
+                  // Add test section to this course
+                  course.sections.splice(testInfo.sectionIndex, 0, {
+                    label: 'Tests',
+                    icon: this.getIconForSection('Tests'),
+                    mediaContent: testContent,
+                    courseContent: null,
+                  });
+                  found = true;
+                  break;
+                }
+                globalIndex++;
+              }
+              if (found) break;
+            }
+          }
+        } catch (error) {
+          console.error(`  ⚠️  Failed to scrape test page ${testInfo.url}:`, error);
+        }
+      }
     }
 
     const totalCourses = sections.reduce((sum, s) => sum + s.courses.length, 0);

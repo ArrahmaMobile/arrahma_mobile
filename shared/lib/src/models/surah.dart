@@ -55,6 +55,7 @@ class TitledItem extends Item {
     required super.data,
     required super.isDirectSource,
     required super.isExternal,
+    super.imageUrl,
   });
 
   factory TitledItem.fromItem(String title, Item item) {
@@ -64,6 +65,7 @@ class TitledItem extends Item {
       type: item.type,
       isDirectSource: item.isDirectSource,
       isExternal: item.isExternal,
+      imageUrl: item.imageUrl,
     );
   }
 
