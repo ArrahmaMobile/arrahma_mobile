@@ -8,6 +8,7 @@ import { QuranCourse, CourseButton, CourseSection as CourseSectionModel, Item, C
 import { toAbsoluteUrl, normalizeUrl } from '../utils/url.utils';
 import { cleanText, fixSpacedText } from '../utils/text.utils';
 import { createItem } from '../utils/content-type.utils';
+import { TestScraper } from './test.scraper';
 
 export interface HomepageSection {
   title: string;
@@ -104,6 +105,7 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
 
         // Group items by section type
         const sectionMap = new Map<string, Item[]>();
+        const testUrls: string[] = []; // Track test URLs for scraping
 
         linkSections.each((_: any, section: any) => {
           const $section = $(section);
@@ -131,6 +133,7 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
               sectionKey = 'Lectures';
             } else if (lowerText.includes('test')) {
               sectionKey = 'Tests';
+              testUrls.push(absoluteUrl); // Save test URL for scraping
             }
 
             if (!sectionMap.has(sectionKey)) {
@@ -140,7 +143,33 @@ export class QuranCourseScraper extends BaseScraper<HomepageSection[]> {
           });
         });
 
-        // Convert map to sections array
+        // Scrape test pages if any were found
+        if (testUrls.length > 0) {
+          for (const testUrl of testUrls) {
+            try {
+              const testScraper = new TestScraper(this.httpClient, testUrl);
+              const testContent = await testScraper.scrape();
+
+              if (testContent) {
+                // Create test section with full scraped content
+                courseSections.push({
+                  label: 'Tests',
+                  icon: this.getIconForSection('Tests'),
+                  mediaContent: testContent,
+                  courseContent: null,
+                });
+                // Remove from sectionMap since we've already processed it
+                sectionMap.delete('Tests');
+                break; // Only scrape first test page for now
+              }
+            } catch (error) {
+              console.error(`  ⚠️  Failed to scrape test page ${testUrl}:`, error);
+              // Keep the simple link if scraping fails (will be added below)
+            }
+          }
+        }
+
+        // Convert remaining sections from map to sections array
         sectionMap.forEach((items, label) => {
           courseSections.push({
             label,
