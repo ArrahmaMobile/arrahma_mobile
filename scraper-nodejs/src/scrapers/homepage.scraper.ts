@@ -15,7 +15,7 @@ import {
 import { toAbsoluteUrl, normalizeUrl } from '../utils/url.utils';
 import { cleanText, fixSpacedText } from '../utils/text.utils';
 import { createItem } from '../utils/content-type.utils';
-import { CourseContentScraper } from './course-content.scraper';
+import { UniversalCourseScraper } from './universal-scraper';
 
 export interface HomepageData {
   logoUrl: string;
@@ -457,31 +457,38 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
 
   /**
    * Populate content for drawer items that link to course pages
+   * Uses GENERIC scraper that auto-detects page structure
    */
   private async populateDrawerContent(items: DrawerItem[]): Promise<void> {
     for (const item of items) {
-      // Check if this is a course page (contains juz in the URL)
       if (!item.link) continue; // Skip if no link
       const url = item.link.data;
 
-      // Match patterns like:
-      // /quran2019_n/juz30.php, /tafseer2025/juz1.php, /tafseer2019/juz1.php
-      // /pashtu2025/juz1.php, /quran_english/juz5.php, etc.
-      const juzMatch = url.match(/\/([\w-]+)\/(juz\d+|surah\d+)\.php/i);
+      // Skip external links
+      if (item.link.isExternal) continue;
 
-      if (juzMatch && item.link && !item.link.isExternal) {
+      // Try to scrape any .php page that looks like a course page
+      // The UniversalCourseScraper will auto-detect if it's valid
+      const isPotentialCoursePage = url.match(/\.(php|html?)$/i) &&
+                                    !url.match(/\/(index|about|contact|donate|privacy)/i);
+
+      if (isPotentialCoursePage) {
         try {
-          // Always scrape from juz1.php for the course (or the actual URL if it's already juz1)
-          const contentUrl = url.replace(/\/(juz|surah)\d+\.php/i, '/juz1.php');
+          // Normalize URL: if it has juz/surah number, start from page 1
+          let contentUrl = url;
+          if (url.match(/\/(juz|surah)\d+\.php/i)) {
+            contentUrl = url.replace(/\/(juz|surah)\d+\.php/i, '/juz1.php');
+          }
 
           console.log(`  📖 Scraping content: ${item.title}`);
-          const scraper = new CourseContentScraper(this.httpClient, contentUrl);
+          const scraper = new UniversalCourseScraper(this.httpClient, contentUrl);
           const content = await scraper.scrape();
+
           if (content && content.surahs.length > 0) {
             item.content = content;
             console.log(`  ✓ Content loaded for ${item.title} (${content.surahs.length} surahs)`);
           } else {
-            console.warn(`  ⚠️  No content available for ${item.title} (may be under construction)`);
+            console.log(`  ⏭️  No course content for ${item.title}`);
           }
         } catch (error) {
           console.error(`  ❌ Failed to scrape content for ${item.title}:`, error);

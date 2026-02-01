@@ -14,14 +14,22 @@ class MediaContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (content.items?.length == 1 && content.items!.first.item != null)
-      return Utils.getItemView(
-        TitledItem.fromItem(
-          content.items!.first.title ??
-              '${EnumUtils.enumToString(content.items!.first.item!.type)} 1',
-          content.items!.first.item!,
-        ),
-      )!;
+    if (content.items?.length == 1 && content.items!.first.item != null) {
+      // Navigate to the single item directly
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Utils.openUrl(
+          context,
+          TitledItem.fromItem(
+            content.items!.first.title ??
+                '${EnumUtils.enumToString(content.items!.first.item!.type)} 1',
+            content.items!.first.item!,
+          ),
+          useWebView: true,
+        );
+      });
+      // Return a loading indicator while navigation happens
+      return const Center(child: CircularProgressIndicator());
+    }
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,

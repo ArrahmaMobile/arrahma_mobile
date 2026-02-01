@@ -190,47 +190,87 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
 
     // First, extract column headers to determine group names
     let groupNames: string[] = [];
-    const $headerRow = $('.col-12.col-md-7').first();
-    if ($headerRow.length > 0) {
-      const $headerCols = $headerRow.find('.col-3, .col-md-3').toArray();
-      groupNames = $headerCols.map((col) => {
-        const text = cleanText($(col).text());
-        // Use desktop text if available, otherwise use shortened text
-        return text || 'Item';
-      });
+
+    // Look for header rows by finding .row.border elements that have text-only columns (no links)
+    const $rows = $('.row.border').toArray();
+    for (const row of $rows) {
+      const $row = $(row);
+
+      // Try standard pattern: col-12 col-md-5 for title, col-12 col-md-7 for items
+      const $titleCol = $row.find('.col-12.col-md-5').first();
+      const $itemsContainer = $row.find('.col-12.col-md-7').first();
+
+      if ($titleCol.length > 0 && $itemsContainer.length > 0) {
+        // Check if title column is empty or nearly empty (header row indicator)
+        const titleText = cleanText($titleCol.text());
+
+        if (titleText.length === 0 || titleText.length < 3) {
+          // This looks like a header row - extract column headers
+          const $headerCols = $itemsContainer.find('.row > .col-3, .row > .col-md-3, .row > div[class*="col-"]').toArray();
+
+          // Verify these are text-only columns (no links)
+          const hasNoLinks = $headerCols.every((col: any) => $(col).find('a').length === 0);
+          const hasText = $headerCols.some((col: any) => cleanText($(col).text()).length > 0);
+
+          if (hasNoLinks && hasText && $headerCols.length > 0) {
+            groupNames = $headerCols.map((col: any) => cleanText($(col).text()) || 'Item');
+            console.log(`  Found ${groupNames.length} column headers: ${groupNames.join(', ')}`);
+            break;
+          }
+        }
+      }
+
+      // Try ATQ pattern: col-12 col-md-8 for title, col-md-2 for items
+      if (groupNames.length === 0) {
+        const $titleColAlt = $row.find('.col-12.col-md-8').first();
+        const $itemCols = $row.find('.col-6.col-md-2, .col-md-2').toArray()
+          .filter((col: any) => !$(col).is($titleColAlt));
+
+        // Check if this row has text-only columns (header row)
+        if ($itemCols.length > 0 && $itemCols.every((col: any) => $(col).find('a').length === 0)) {
+          const hasText = $itemCols.some((col: any) => cleanText($(col).text()).length > 0);
+          if (hasText) {
+            groupNames = $itemCols.map((col: any) => cleanText($(col).text()) || 'Item');
+            console.log(`  Found ${groupNames.length} column headers (ATQ pattern): ${groupNames.join(', ')}`);
+            break;
+          }
+        }
+      }
     }
 
     // If no headers found, use defaults
     if (groupNames.length === 0) {
       groupNames = ['Root words', 'Translation', 'Tafseer', 'Ref. Material'];
+      console.log(`  No headers found, using defaults: ${groupNames.join(', ')}`);
     }
 
-    // Find all containers that might have lesson rows (including my-4 for practice words)
-    const $containers = $('.container.my-3, .container.my-4').toArray();
+    // Collect all containers and standalone rows in document order
+    // We'll assign each element a sequence number as we encounter it
+    const allElements: Array<{ type: 'container' | 'row', element: any, order: number }> = [];
+    let orderCounter = 0;
 
-    // Also find standalone rows that are not in containers (for surah headers)
-    const $standaloneRows: any[] = [];
-    $('body > .row, .col-12.col-md-9 > .row').each((_: any, row: any) => {
-      const $row = $(row);
-      // Only include rows that are styled as headers (have background colors)
-      const style = $row.attr('style') || '';
-      if (style.includes('#0a2e4f') || style.includes('#ecece3')) {
-        $standaloneRows.push(row);
+    // First pass: collect all elements with their document order
+    // Use a single traversal of the document to maintain natural order
+    $('*').each((_: any, elem: any) => {
+      const $elem = $(elem);
+
+      // Check if this is a container we care about
+      if ($elem.hasClass('container') && ($elem.hasClass('my-3') || $elem.hasClass('my-4'))) {
+        allElements.push({ type: 'container', element: elem, order: orderCounter++ });
+      }
+      // Check if this is a standalone header row
+      else if ($elem.hasClass('row')) {
+        const style = $elem.attr('style') || '';
+        // Only include standalone rows with header styling
+        if ((style.includes('#0a2e4f') || style.includes('#ecece3')) &&
+            !$elem.closest('.container').hasClass('my-3')) {
+          allElements.push({ type: 'row', element: elem, order: orderCounter++ });
+        }
       }
     });
 
-    // Combine containers and standalone rows into a single list, maintaining document order
-    const allElements: Array<{ type: 'container' | 'row', element: any }> = [];
-
-    $containers.forEach(c => allElements.push({ type: 'container', element: c }));
-    $standaloneRows.forEach(r => allElements.push({ type: 'row', element: r }));
-
-    // Sort by position in document
-    allElements.sort((a, b) => {
-      const aIndex = $(a.element).index();
-      const bIndex = $(b.element).index();
-      return aIndex - bIndex;
-    });
+    // Elements are already in document order from the traversal above
+    // No sorting needed!
 
     for (const item of allElements) {
       if (item.type === 'row') {
@@ -359,34 +399,60 @@ export class CourseContentScraper extends BaseScraper<QuranCourseContent | null>
           continue;
         }
 
-        // Check if this is a lesson row (has col-12 col-md-5 for title)
-        const $titleCol = $row.find('.col-12.col-md-5').first();
+        // Check if this is a lesson row
+        // Support two patterns:
+        // 1. Standard pattern: col-12 col-md-5 for title, col-12 col-md-7 for items container
+        // 2. ATQ pattern: col-12 col-md-8 for title, col-6 col-md-2 directly as item columns
+        let $titleCol = $row.find('.col-12.col-md-5').first();
+        let $itemsContainer = $row.find('.col-12.col-md-7').first();
+        let $itemCols: any[] = [];
+
+        // Try standard pattern first
+        if ($titleCol.length > 0 && $itemsContainer.length > 0) {
+          // Standard pattern: items are in a container with nested columns
+          // Find the nested row first, then get all its column children
+          const $nestedRow = $itemsContainer.find('.row').first();
+          if ($nestedRow.length > 0) {
+            // Get all direct children that have a col- class
+            $itemCols = $nestedRow.children('[class*="col-"]').toArray();
+          }
+        } else {
+          // Try ATQ pattern: col-12 col-md-8 for title, col-md-2 directly as siblings
+          $titleCol = $row.find('.col-12.col-md-8').first();
+          if ($titleCol.length > 0) {
+            // Item columns are siblings with col-md-2 class
+            $itemCols = $row.find('.col-6.col-md-2, .col-md-2').toArray()
+              .filter((col: any) => !$(col).is($titleCol)); // Exclude title column
+          }
+        }
+
         const lessonTitle = cleanText($titleCol.text());
 
         if (lessonTitle && $row.hasClass('border')) {
-          const $itemsContainer = $row.find('.col-12.col-md-7').first();
           const itemGroups: ItemGroup[] = [];
 
-          if ($itemsContainer.length > 0) {
-            const $itemCols = $itemsContainer.find('.row > .col-3, .row > .col-md-3').toArray();
+          for (const col of $itemCols) {
+            const $col = $(col);
+            const items: Item[] = [];
 
-            for (const col of $itemCols) {
-              const $col = $(col);
-              const items: Item[] = [];
-
-              // Extract all links in this column
-              const links = $col.find('a').toArray();
-              for (const link of links) {
-                const $link = $(link);
-                const href = $link.attr('href');
-                if (href) {
-                  const absoluteUrl = toAbsoluteUrl(href, this.baseUrl);
-                  items.push(createItem(absoluteUrl));
-                }
+            // Extract all links in this column
+            const links = $col.find('a').toArray();
+            for (const link of links) {
+              const $link = $(link);
+              const href = $link.attr('href');
+              if (href) {
+                const absoluteUrl = toAbsoluteUrl(href, this.baseUrl);
+                items.push(createItem(absoluteUrl));
               }
-
-              itemGroups.push({ items });
             }
+
+            itemGroups.push({ items });
+          }
+
+          // Ensure we have the correct number of itemGroups to match the header groups
+          // Pad with empty groups if needed
+          while (itemGroups.length < groupNames.length) {
+            itemGroups.push({ items: [] });
           }
 
           const lesson: Lesson = {

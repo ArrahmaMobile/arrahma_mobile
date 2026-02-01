@@ -1,0 +1,706 @@
+{
+  "id": "tafseer2025",
+  "title": "tafseer2025",
+  "surahs": [
+    {
+      "name": "Introduction",
+      "arabicName": null,
+      "description": null,
+      "groups": [
+        {
+          "name": "Root words"
+        },
+        {
+          "name": "Translation"
+        },
+        {
+          "name": "Tafseer"
+        },
+        {
+          "name": "Ref. Material"
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Class Orientation (11/7/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": []
+            },
+            {
+              "items": []
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/nov7-25-class-orientation.mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Ilm ki ahmiat (11/14/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": []
+            },
+            {
+              "items": []
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/ilm_ki_ahmiat.mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Practice Words",
+      "arabicName": null,
+      "description": null,
+      "groups": [
+        {
+          "name": "Root words"
+        },
+        {
+          "name": "Translation"
+        },
+        {
+          "name": "Tafseer"
+        },
+        {
+          "name": "Ref. Material"
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Practice Word PDFs",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Pdf",
+                  "data": "https://www.arrahmah.org/practise-words/2019/juz1-part1.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Pdf",
+                  "data": "https://www.arrahmah.org/practise-words/2019/juz1-part2.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Surah Al-Fatiha الفاتحۃ",
+      "arabicName": null,
+      "description": null,
+      "groups": [
+        {
+          "name": "Root words R.w"
+        },
+        {
+          "name": "Translation Trans."
+        },
+        {
+          "name": "Tafseer Taf."
+        },
+        {
+          "name": "Ref. Material Ref."
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Surah Al-Fatiha ki Fazilat (11/14/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": []
+            },
+            {
+              "items": []
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_fazilat.mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Taooz and Basmalah (11/21/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": []
+            },
+            {
+              "items": []
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/taf2025/juz1/nov21-25-tawuz_basmala.mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/misc/ref/tawuz_basmallah.pdf",
+                  "imageUrl": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Lesson 1: Surah Al-Fatiha Ayah 1 (11/26/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": []
+            },
+            {
+              "items": []
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/taf2025/juz1/nov26-25-fatiha_1.mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 2: Surah Al-Fatiha Ayah 2-5 (12/5/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/2025/r1.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha2-5(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha2-5part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_2-5part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 3: Surah Al-Fatiha Ayah 5-6 (12/13/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r1.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_5-6(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_5-6part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_5-6part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Surah Al-Baqarah البقرة",
+      "arabicName": null,
+      "description": null,
+      "groups": [
+        {
+          "name": "Root words R.w"
+        },
+        {
+          "name": "Translation Trans."
+        },
+        {
+          "name": "Tafseer Taf."
+        },
+        {
+          "name": "Ref. Material Ref."
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Lesson 4: Surah Al-Baqarah Ayah 1-5 (12/19/25)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r2.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/fatiha_5-6(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_1-5part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_1-5part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 5: Surah Al-Baqarah Ayah 6-13 (1/2/26)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r3.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_6-13(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_6-13part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_6-13part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 6: Surah Al-Baqarah Ayah 14-20 (1/9/26)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r4-19.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_14-20(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_14-20part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_14-20part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 7: Surah Al-Baqarah Ayah 21-25 (1/16/26)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r6.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_21-25(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_21-25part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_21-25part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 8: Surah Al-Baqarah Ayah 26-30 (1/23/26)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r7.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_26-30(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_26-30part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_26-30part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        },
+        {
+          "title": "Lesson 8: Surah Al-Baqarah Ayah 31-39 (1/30/26)",
+          "lessonNum": null,
+          "ayahNum": null,
+          "uploadDate": null,
+          "itemGroups": [
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": false,
+                  "type": "Pdf",
+                  "data": "https://arrahmah.org/root_words/r8.pdf",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_31-39(wm).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": [
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_31-39part1(t).mp3",
+                  "imageUrl": null
+                },
+                {
+                  "isDirectSource": true,
+                  "isExternal": true,
+                  "type": "Audio",
+                  "data": "https://arrahmah-media.org/tafseer2025/juz1/baqarah_31-39part2(t).mp3",
+                  "imageUrl": null
+                }
+              ]
+            },
+            {
+              "items": []
+            },
+            {
+              "items": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

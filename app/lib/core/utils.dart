@@ -11,6 +11,8 @@ import 'package:arrahma_mobile_app/services/app.dart';
 import 'package:arrahma_shared/shared.dart' hide MediaItem;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart'
+    hide ServerConnectionStatus;
 import 'package:flutter_framework/flutter_framework.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:inherited_state/inherited_state.dart';
@@ -82,35 +84,6 @@ class Utils {
     return;
   }
 
-  static Widget? getItemView(Item item) {
-    final typeName = EnumUtils.enumToString(item.type);
-    final title = item is TitledItem ? item.title : typeName;
-    switch (item.type) {
-      case ItemType.Pdf:
-        return SimplePdfView(url: item.data);
-      case ItemType.Image:
-        return SimpleImageView(url: item.data);
-      case ItemType.Markdown:
-        return Markdown(data: item.data);
-      case ItemType.Audio:
-        return MediaPlayerView(
-          mediaItems: [
-            MediaItem(
-              title: title,
-              album: typeName,
-              id: item.data,
-            )
-          ],
-        );
-      case ItemType.WebPage:
-        return BasicWebView(
-          url: item.data,
-        );
-
-      default:
-        return null;
-    }
-  }
 
   static void openUrl(BuildContext context, Item item,
       {bool useWebView = false}) {
@@ -150,6 +123,14 @@ class Utils {
       );
       return;
     }
+    if (item.type == ItemType.Markdown) {
+      Utils.pushView(
+        context,
+        Markdown(data: item.data),
+        title: title,
+      );
+      return;
+    }
 
     // Check if this URL points to content we already have loaded
     if (item.type == ItemType.WebPage) {
@@ -158,6 +139,8 @@ class Utils {
       final contentItem =
           appService?.contentRegistry.findContentByUrl(item.data);
       if (contentItem?.content != null) {
+        logger
+            .verbose('Found content item: $contentItem for url: ${item.data}');
         // Navigate to the course content directly
         Utils.pushView(
           context,
@@ -173,6 +156,7 @@ class Utils {
       // Check for MediaContent
       final mediaItem = appService?.contentRegistry.findMediaByUrl(item.data);
       if (mediaItem?.media != null) {
+        logger.verbose('Found media item: $mediaItem for url: ${item.data}');
         // Navigate to media content view
         Utils.pushView(
           context,
