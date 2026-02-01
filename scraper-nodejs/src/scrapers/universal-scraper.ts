@@ -26,6 +26,12 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
         return null;
       }
 
+      // Check for tab-based navigation first
+      const $navTabs = $('.nav.nav-tabs, .nav-tabs');
+      if ($navTabs.length > 0) {
+        return await this.scrapeTabBasedPages($, $navTabs);
+      }
+
       // Check for multi-page selector
       const $selector = $('select[id*="select" i], select[onchange*="location"]');
       if ($selector.length > 0) {
@@ -66,9 +72,84 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
 
       const $page = await this.navigateTo(baseUrl + pages[i]);
       if ($page) {
+        // Validate that this page has the same selector structure
+        const $pageSelector = $page('select[id*="select" i], select[onchange*="location"]');
+        if ($pageSelector.length === 0) {
+          console.log(`    ⏭️  Skipping invalid page (no selector found)`);
+          continue;
+        }
+
         const data = this.scrapePage($page);
         if (data && data.surahs && data.surahs.length > 0) {
           allSurahs.push(...data.surahs);
+        }
+      }
+    }
+
+    return allSurahs.length > 0 ? this.finalize({ surahs: allSurahs }) : null;
+  }
+
+  private async scrapeTabBasedPages($: cheerio.CheerioAPI, $navTabs: cheerio.Cheerio<any>): Promise<QuranCourseContent | null> {
+    const allSurahs: Surah[] = [];
+    const tabs: Array<{ name: string; url: string; isDirectMedia: boolean }> = [];
+
+    // Extract tab links
+    $navTabs.find('.nav-item').each((_: any, item: any) => {
+      const $link = $(item).find('a').first();
+      const href = $link.attr('href');
+      const text = cleanText($link.text());
+
+      if (href && text) {
+        const isDirectMedia = !!href.match(/\.(mp3|mp4|pdf|ppsx)$/i);
+        tabs.push({ name: text, url: href, isDirectMedia });
+      }
+    });
+
+    if (tabs.length === 0) {
+      // No valid tabs found, scrape current page normally
+      const data = this.scrapePage($);
+      return data ? this.finalize(data) : null;
+    }
+
+    console.log(`  📑 Tab-based course: ${tabs.length} tabs`);
+    const baseUrl = this.url.substring(0, this.url.lastIndexOf('/') + 1);
+
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      console.log(`    📂 Tab ${i + 1}/${tabs.length}: ${tab.name}`);
+
+      // Resolve relative URLs
+      const tabUrl = tab.url.startsWith('http')
+        ? tab.url
+        : toAbsoluteUrl(tab.url, baseUrl);
+
+      if (tab.isDirectMedia) {
+        // Create a simple surah with one lesson containing the direct media link
+        const mediaItem = createItem(tabUrl);
+        allSurahs.push({
+          name: tab.name,
+          arabicName: null,
+          description: null,
+          groups: [{ name: 'Media' }],
+          lessons: [{
+            title: tab.name,
+            lessonNum: null,
+            ayahNum: null,
+            uploadDate: null,
+            itemGroups: [{ items: [mediaItem] }]
+          }]
+        });
+      } else {
+        const $tabPage = await this.navigateTo(tabUrl);
+        if ($tabPage) {
+          const data = this.scrapePage($tabPage);
+          if (data && data.surahs && data.surahs.length > 0) {
+            // Rename the surah to match the tab name
+            data.surahs.forEach((surah: Surah) => {
+              surah.name = tab.name;
+            });
+            allSurahs.push(...data.surahs);
+          }
         }
       }
     }
@@ -221,6 +302,18 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
         if (headers.length >= 2 && groupNames.length === 0) {
           groupNames = headers;
           console.log(`  Detected headers: ${groupNames.join(', ')}`);
+
+          // Update all surahs' groups if they were created before headers were detected
+          surahs.forEach(surah => {
+            if (surah.groups.length === 0) {
+              surah.groups = groupNames.map(n => ({ name: n }));
+            }
+          });
+
+          // Update current surah's groups if it exists and has empty groups
+          if (currentSurah && currentSurah.groups.length === 0) {
+            currentSurah.groups = groupNames.map(n => ({ name: n }));
+          }
         }
         return; // Skip to next row
       }
