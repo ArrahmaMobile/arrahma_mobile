@@ -11,6 +11,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ScrapedData } from '../types/models';
 import { ScraperScheduler } from '../services/scraper-scheduler';
+import { BroadcastChecker } from '../services/broadcast-checker';
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -43,6 +44,8 @@ class ArrahmahAPIServer {
   private readonly hashMetadataPath: string;
   private readonly port: number;
   private scheduler: ScraperScheduler;
+  private broadcastChecker: BroadcastChecker;
+  private broadcastCheckInterval: NodeJS.Timeout | null = null;
 
   constructor(port: number = 8888) {
     this.app = express();
@@ -58,6 +61,7 @@ class ArrahmahAPIServer {
         this.lastUpdateAttempt = new Date().toISOString();
       },
     });
+    this.broadcastChecker = new BroadcastChecker();
     this.setupMiddleware();
     this.setupRoutes();
   }
@@ -251,13 +255,8 @@ class ArrahmahAPIServer {
         serverStatus = 'Maintenance'; // No data available yet
       }
 
-      // For now, broadcast status is always false
-      // In the future, this could check actual broadcast platforms
-      const broadcastStatus: BroadcastStatus = {
-        isYoutubeLive: false,
-        isFacebookLive: false,
-        isMixlrLive: false,
-      };
+      // Get current broadcast status from broadcast checker
+      const broadcastStatus: BroadcastStatus = this.broadcastChecker.getCurrentStatus();
 
       const statusResponse: ServerStatus = {
         status: serverStatus,
@@ -361,6 +360,28 @@ class ArrahmahAPIServer {
   }
 
   /**
+   * Start periodic broadcast status checking
+   */
+  private async startBroadcastChecking(): Promise<void> {
+    // Initialize broadcast checker
+    await this.broadcastChecker.init();
+
+    // Perform initial check
+    await this.broadcastChecker.checkLiveStatus(this.cachedData);
+
+    // Start periodic checking every 30 seconds (like the Dart implementation)
+    this.broadcastCheckInterval = setInterval(async () => {
+      try {
+        await this.broadcastChecker.checkLiveStatus(this.cachedData);
+      } catch (error) {
+        console.error('Error in broadcast status check:', error);
+      }
+    }, 30000); // 30 seconds
+
+    console.log('🔴 Broadcast status checking started (every 30 seconds)');
+  }
+
+  /**
    * Start the server
    */
   public async start(): Promise<void> {
@@ -372,6 +393,9 @@ class ArrahmahAPIServer {
       if (!this.cachedData) {
         console.warn('\n⚠️  No data available on startup. Server will be in maintenance mode until first scrape completes.\n');
       }
+
+      // Start broadcast status checking
+      await this.startBroadcastChecking();
 
       // Start the scheduler
       await this.scheduler.start();
@@ -401,6 +425,10 @@ class ArrahmahAPIServer {
    */
   public stop(): void {
     this.scheduler.stop();
+    if (this.broadcastCheckInterval) {
+      clearInterval(this.broadcastCheckInterval);
+      this.broadcastCheckInterval = null;
+    }
     console.log('🛑 Server stopped');
   }
 }

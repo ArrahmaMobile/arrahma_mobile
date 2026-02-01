@@ -398,9 +398,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _socialMedia(BuildContext context, List<SocialMediaItem> socialItems) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        padding: EdgeInsets.only(
+          top: 12.0,
+          left: 16.0,
+          right: 16.0,
+          bottom: bottomPadding > 0 ? bottomPadding : 12.0,
+        ),
         child: Wrap(
           alignment: WrapAlignment.center,
           spacing: 16.0,
