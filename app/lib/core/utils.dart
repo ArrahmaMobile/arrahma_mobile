@@ -85,10 +85,65 @@ class Utils {
   }
 
 
+  /// Get the widget view for an item without navigation
+  /// Returns null if the item should be handled externally (e.g., Audio needs special handling)
+  static Widget? getItemView(Item item, {String? titleOverride}) {
+    final typeName = EnumUtils.enumToString(item.type);
+    final title = titleOverride ?? (item is TitledItem ? item.title : typeName);
+
+    if (item.type == ItemType.Audio) {
+      // Audio needs special handling with openAudio
+      return null;
+    }
+    if (item.type == ItemType.Pdf) {
+      return SimplePdfView(
+        url: item.data,
+        title: title,
+      );
+    }
+    if (item.type == ItemType.Image) {
+      return SimpleImageView(
+        url: item.data,
+        title: title,
+      );
+    }
+    if (item.type == ItemType.Markdown) {
+      return Markdown(data: item.data);
+    }
+
+    // Check if this URL points to content we already have loaded
+    if (item.type == ItemType.WebPage) {
+      // Check for QuranCourseContent
+      final appService = SL.get<AppService>();
+      final contentItem =
+          appService?.contentRegistry.findContentByUrl(item.data);
+      if (contentItem?.content != null) {
+        logger
+            .verbose('Found content item: $contentItem for url: ${item.data}');
+        return QuranSurahView(
+          content: contentItem!.content!,
+          referrerTitle: contentItem.title,
+        );
+      }
+
+      // Check for MediaContent
+      final mediaItem = appService?.contentRegistry.findMediaByUrl(item.data);
+      if (mediaItem?.media != null) {
+        logger.verbose('Found media item: $mediaItem for url: ${item.data}');
+        return MediaContentView(content: mediaItem!.media!);
+      }
+    }
+
+    // Fallback: Web view
+    return BasicWebView(url: item.data);
+  }
+
   static void openUrl(BuildContext context, Item item,
       {bool useWebView = false}) {
     final typeName = EnumUtils.enumToString(item.type);
     final title = item is TitledItem ? item.title : typeName;
+
+    // Handle audio separately (needs navigation context)
     if (item.type == ItemType.Audio) {
       openAudio(
           context,
@@ -103,79 +158,38 @@ class Utils {
           0);
       return;
     }
-    if (item.type == ItemType.Pdf) {
-      Utils.pushView(
-        context,
-        SimplePdfView(
-          url: item.data,
-          title: title,
-        ),
-      );
-      return;
-    }
-    if (item.type == ItemType.Image) {
-      Utils.pushView(
-        context,
-        SimpleImageView(
-          url: item.data,
-          title: title,
-        ),
-      );
-      return;
-    }
-    if (item.type == ItemType.Markdown) {
-      Utils.pushView(
-        context,
-        Markdown(data: item.data),
-        title: title,
-      );
-      return;
-    }
 
-    // Check if this URL points to content we already have loaded
-    if (item.type == ItemType.WebPage) {
-      // Check for QuranCourseContent
-      final appService = SL.get<AppService>();
-      final contentItem =
-          appService?.contentRegistry.findContentByUrl(item.data);
-      if (contentItem?.content != null) {
-        logger
-            .verbose('Found content item: $contentItem for url: ${item.data}');
-        // Navigate to the course content directly
-        Utils.pushView(
-          context,
-          QuranSurahView(
-            content: contentItem!.content!,
-            referrerTitle: contentItem.title,
-          ),
-          title: contentItem.title,
-        );
-        return;
+    // Get the view widget using shared logic
+    final view = getItemView(item, titleOverride: title);
+
+    if (view != null) {
+      // For Markdown, we need to wrap it in a title
+      if (item.type == ItemType.Markdown) {
+        Utils.pushView(context, view, title: title);
+      } else if (item.type == ItemType.WebPage) {
+        // For WebPage, check if it's a content item to get the right title
+        final appService = SL.get<AppService>();
+        final contentItem = appService?.contentRegistry.findContentByUrl(item.data);
+        final mediaItem = appService?.contentRegistry.findMediaByUrl(item.data);
+
+        if (contentItem?.content != null) {
+          Utils.pushView(context, view, title: contentItem!.title);
+        } else if (mediaItem?.media != null) {
+          Utils.pushView(context, view, title: mediaItem!.title);
+        } else if (useWebView) {
+          Utils.pushView(context, view, title: title);
+        } else {
+          // Open externally
+          Launch.url(item.data);
+        }
+      } else {
+        // For other types, push without separate title since it's in the view
+        Utils.pushView(context, view);
       }
-
-      // Check for MediaContent
-      final mediaItem = appService?.contentRegistry.findMediaByUrl(item.data);
-      if (mediaItem?.media != null) {
-        logger.verbose('Found media item: $mediaItem for url: ${item.data}');
-        // Navigate to media content view
-        Utils.pushView(
-          context,
-          MediaContentView(content: mediaItem!.media!),
-          title: mediaItem.title,
-        );
-        return;
-      }
-    }
-
-    // Fallback: Open in web view or external browser
-    if (useWebView)
-      Utils.pushView(
-        context,
-        BasicWebView(url: item.data),
-        title: title,
-      );
-    else
+    } else if (!useWebView && item.type != ItemType.Audio) {
+      // Fallback: open externally
       Launch.url(item.data);
+    }
   }
 
   static Widget shareActionButton(String title, List<String>? data,

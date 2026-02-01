@@ -71,18 +71,21 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
       console.log(`    📑 Page ${i + 1}/${pages.length}: ${pages[i]}`);
 
       const $page = await this.navigateTo(baseUrl + pages[i]);
-      if ($page) {
-        // Validate that this page has the same selector structure
-        const $pageSelector = $page('select[id*="select" i], select[onchange*="location"]');
-        if ($pageSelector.length === 0) {
-          console.log(`    ⏭️  Skipping invalid page (no selector found)`);
-          continue;
-        }
+      if (!$page) {
+        console.log(`    ❌ Page failed to load - aborting multi-page scraping`);
+        break; // Stop processing remaining pages
+      }
 
-        const data = this.scrapePage($page);
-        if (data && data.surahs && data.surahs.length > 0) {
-          allSurahs.push(...data.surahs);
-        }
+      // Validate that this page has the same selector structure
+      const $pageSelector = $page('select[id*="select" i], select[onchange*="location"]');
+      if ($pageSelector.length === 0) {
+        console.log(`    ❌ Invalid page (no selector found) - aborting multi-page scraping`);
+        break; // Stop processing remaining pages
+      }
+
+      const data = this.scrapePage($page);
+      if (data && data.surahs && data.surahs.length > 0) {
+        allSurahs.push(...data.surahs);
       }
     }
 

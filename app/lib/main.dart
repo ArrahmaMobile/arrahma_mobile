@@ -25,17 +25,17 @@ Future main() async {
     backgroundImageUrls: (_) => [],
     logoProvider: null,
     environments: [
-      EnvironmentConfig(
-        name: 'Staging',
-        environmentType: EnvironmentType.STAGING,
-        baseUrl: 'https://arrahmah.sasid.me/api',
-      ),
       if (kDebugMode)
         EnvironmentConfig(
           name: 'Dev-1',
           environmentType: EnvironmentType.DEV,
           baseUrl: 'http://192.168.86.185:8888/api', //   http://192.168.64.1/
         ),
+      EnvironmentConfig(
+        name: 'Staging',
+        environmentType: EnvironmentType.STAGING,
+        baseUrl: 'https://arrahmah.sasid.me/api',
+      ),
     ],
     theme: AppThemeUtils.getThemeVariants(),
   );

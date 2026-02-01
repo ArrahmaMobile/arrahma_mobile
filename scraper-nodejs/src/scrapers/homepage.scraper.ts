@@ -368,6 +368,9 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
   private async extractDrawerItems($: any): Promise<DrawerItem[]> {
     const drawerItems: DrawerItem[] = [];
 
+    // Items that the app handles itself (hardcoded in the app)
+    const appHandledItems = ['home', 'about us', 'about', 'contact us', 'contact', 'settings'];
+
     // Try different navigation selectors (prioritize new structure)
     const navSelectors = [
       '#navmenu > ul > li',           // New Bootstrap structure
@@ -398,7 +401,12 @@ export class HomepageScraper extends BaseScraper<HomepageData> {
       const $el = $(el);
       const item = this.extractDrawerItem($, $el);
       if (item) {
-        drawerItems.push(item);
+        // Filter out items that the app handles itself
+        if (!appHandledItems.includes(item.title.toLowerCase())) {
+          drawerItems.push(item);
+        } else {
+          console.log(`  ⏭️  Skipping app-handled item: ${item.title}`);
+        }
       }
     });
 

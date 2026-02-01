@@ -9,7 +9,7 @@ import { HomepageScraper } from './scrapers/homepage.scraper';
 import { AboutUsScraper } from './scrapers/about-us.scraper';
 import { QuranCourseScraper } from './scrapers/quran-course.scraper';
 import { DuaScraper } from './scrapers/dua.scraper';
-import { AppData, QuranCourseGroup, ScrapedData, QuranCourse, DrawerItem } from './types/models';
+import { AppData, QuranCourseGroup, ScrapedData } from './types/models';
 import { config } from './config';
 
 /**
@@ -67,9 +67,6 @@ class ArrahmahScraper {
         });
       }
 
-      // Link courses to their full content from drawer items
-      this.linkCoursesToContent([...topCourses, ...otherCourseGroups.flatMap(g => g.courses)], homepage.drawerItems);
-
       // Assemble app data
       const appData: AppData = {
         logoUrl: homepage.logoUrl,
@@ -92,56 +89,6 @@ class ArrahmahScraper {
       console.error('\n❌ Scraping failed:', error);
       throw error;
     }
-  }
-
-  /**
-   * Link courses to their full QuranCourseContent from drawer items
-   * Matches course titles to drawer item titles and copies the content
-   */
-  private linkCoursesToContent(courses: QuranCourse[], drawerItems: DrawerItem[]): void {
-    console.log('\n🔗 Linking courses to their full content...');
-
-    for (const course of courses) {
-      // Try to find a matching drawer item
-      const matchingDrawerItem = this.findDrawerItemByTitle(course.title, drawerItems);
-
-      if (matchingDrawerItem?.content) {
-        // Add a new section with the full course content
-        course.sections.push({
-          label: 'Tafseer',
-          icon: 'book',
-          mediaContent: null,
-          courseContent: matchingDrawerItem.content,
-        });
-        console.log(`  ✓ Linked "${course.title}" to full content (${matchingDrawerItem.content.surahs.length} surahs)`);
-      }
-    }
-  }
-
-  /**
-   * Recursively search for a drawer item by title
-   */
-  private findDrawerItemByTitle(title: string, items: DrawerItem[]): DrawerItem | null {
-    const normalizedTitle = title.toLowerCase().trim();
-
-    for (const item of items) {
-      const itemTitle = item.title.toLowerCase().trim();
-
-      // Check for exact match or similar match
-      if (itemTitle === normalizedTitle ||
-          itemTitle.includes(normalizedTitle) ||
-          normalizedTitle.includes(itemTitle)) {
-        return item;
-      }
-
-      // Search in children
-      if (item.children) {
-        const found = this.findDrawerItemByTitle(title, item.children);
-        if (found) return found;
-      }
-    }
-
-    return null;
   }
 
   /**

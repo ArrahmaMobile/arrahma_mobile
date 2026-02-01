@@ -6,7 +6,7 @@ export const config = {
   baseUrl: 'https://arrahmah.org',
 
   /** Rate limiting delay between requests (ms) */
-  requestDelay: 600,
+  requestDelay: 200,
 
   /** Maximum concurrent requests */
   maxConcurrentRequests: 5,
