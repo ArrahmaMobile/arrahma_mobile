@@ -78,7 +78,7 @@ export function isDirectSource(url: string): boolean {
 /**
  * Create an Item object from URL
  */
-export function createItem(url: string, imageUrl: string | null = null): Item {
+export function createItem(url: string, imageUrl: string | null = null, label: string | null = null): Item {
   const type = detectContentType(url);
   const isExternal = isExternalUrl(url);
   const isDirect = isDirectSource(url);
@@ -89,6 +89,7 @@ export function createItem(url: string, imageUrl: string | null = null): Item {
     type,
     data: url,
     imageUrl,
+    label,
   };
 }
 

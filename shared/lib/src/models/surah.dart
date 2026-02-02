@@ -56,6 +56,7 @@ class TitledItem extends Item {
     required super.isDirectSource,
     required super.isExternal,
     super.imageUrl,
+    super.label,
   });
 
   factory TitledItem.fromItem(String title, Item item) {
@@ -66,6 +67,7 @@ class TitledItem extends Item {
       isDirectSource: item.isDirectSource,
       isExternal: item.isExternal,
       imageUrl: item.imageUrl,
+      label: item.label,
     );
   }
 
@@ -80,12 +82,14 @@ class Item {
     required this.isDirectSource,
     this.isExternal,
     this.imageUrl,
+    this.label,
   });
   final bool isDirectSource;
   final bool? isExternal;
   final ItemType type;
   final String data;
   final String? imageUrl;
+  final String? label;
 
   Item copyWith({
     bool? isDirectSource,
@@ -93,6 +97,7 @@ class Item {
     ItemType? type,
     String? data,
     String? imageUrl,
+    String? label,
   }) {
     return Item(
       isDirectSource: isDirectSource ?? this.isDirectSource,
@@ -100,6 +105,7 @@ class Item {
       type: type ?? this.type,
       data: data ?? this.data,
       imageUrl: imageUrl ?? this.imageUrl,
+      label: label ?? this.label,
     );
   }
 }

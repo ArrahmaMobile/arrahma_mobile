@@ -29,6 +29,8 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   final _apiService = SL.get<ApiService>()!;
   late Future<PdfController> _pdfController;
   late Future<SavedFile> _filePathFuture;
+  String? _cachedPassword;
+  Uint8List? _pdfData;
 
   @override
   void initState() {
@@ -40,6 +42,8 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   void didUpdateWidget(covariant SimplePdfView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.url != widget.url) {
+      _cachedPassword = null;
+      _pdfData = null;
       _init();
     }
   }
@@ -48,12 +52,93 @@ class _SimplePdfViewState extends State<SimplePdfView> {
     _pdfController = _loadPdf();
   }
 
-  Future<PdfController> _loadPdf() async {
-    final result = _apiService.downloadFile(widget.url);
-    _filePathFuture = _saveToFile(result);
-    return PdfController(
-        document: PdfDocument.openData((await result).value!),
-        viewportFraction: 1);
+  Future<PdfController> _loadPdf({String? password}) async {
+    // Download the PDF data if not already cached
+    if (_pdfData == null) {
+      final result = await _apiService.downloadFile(widget.url);
+      _pdfData = result.value!;
+      _filePathFuture = _saveToFile(Future.value(result));
+    }
+
+    try {
+      final document = await PdfDocument.openData(
+        _pdfData!,
+        password: password,
+      );
+
+      // If successful with a password, cache it
+      if (password != null) {
+        _cachedPassword = password;
+      }
+
+      return PdfController(
+        document: document,
+        viewportFraction: 1,
+      );
+    } catch (e) {
+      // Check if this is a password-related error
+      if (_isPasswordError(e)) {
+        if (!mounted) rethrow;
+
+        // Show password dialog
+        final enteredPassword = await _showPasswordDialog();
+
+        if (enteredPassword != null && enteredPassword.isNotEmpty) {
+          // Retry with the entered password
+          return _loadPdf(password: enteredPassword);
+        } else {
+          // User cancelled or entered empty password
+          throw Exception('Password required to open this PDF');
+        }
+      }
+      rethrow;
+    }
+  }
+
+  bool _isPasswordError(dynamic error) {
+    final errorString = error.toString().toLowerCase();
+    return errorString.contains('password') ||
+           errorString.contains('encrypted') ||
+           errorString.contains('invalid format');
+  }
+
+  Future<String?> _showPasswordDialog() async {
+    final controller = TextEditingController();
+
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Password Required'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('This PDF is password-protected. Please enter the password to view it.'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              obscureText: true,
+              autofocus: true,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+              onSubmitted: (value) => Navigator.of(context).pop(value),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(null),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(controller.text),
+            child: const Text('Open'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<SavedFile> _saveToFile(
@@ -93,11 +178,18 @@ class _SimplePdfViewState extends State<SimplePdfView> {
           child: FutureBuilder<PdfController>(
             future: _pdfController,
             builder: (_, snapshot) => snapshot.hasError
-                ? const Center(
-                    child: Text(
-                        'Unable to load document. Please try again later or contact support.',
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        snapshot.error.toString().contains('Password required')
+                            ? 'Password required to open this PDF.\nPlease try again.'
+                            : 'Unable to load document. Please try again later or contact support.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontStyle: FontStyle.italic)))
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  )
                 : snapshot.data == null
                     ? const Center(child: CircularProgressIndicator())
                     : Stack(children: [

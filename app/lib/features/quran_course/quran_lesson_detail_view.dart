@@ -127,12 +127,27 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                         .asMap()
                         .entries
                         .map(
-                          (entry) => IconButton(
-                            icon: FaIcon(
-                              GroupTypeIconMap[entry.value.type],
-                            ),
-                            onPressed: () =>
-                                onTap(context, group, entry, items),
+                          (entry) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: FaIcon(
+                                  GroupTypeIconMap[entry.value.type],
+                                ),
+                                onPressed: () =>
+                                    onTap(context, group, entry, items),
+                              ),
+                              if (entry.value.label != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2.0),
+                                  child: Text(
+                                    entry.value.label!,
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         )
                         .toList())

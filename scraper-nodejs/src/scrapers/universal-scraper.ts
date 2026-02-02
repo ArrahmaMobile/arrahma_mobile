@@ -295,11 +295,16 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
         return; // Skip to next row
       }
 
-      // 2. Check if this is a column header row (text only, no links, short text)
+      // 2. Check if this is a column header row (text only or mostly text, short text)
       const allTextOnly = cols.every(c => c.links === 0);
       const hasShortText = cols.every(c => c.text.length < 50);
 
-      if (allTextOnly && hasShortText && cols.some(c => c.text.length > 0)) {
+      // Check for header row pattern: first column empty, rest have text
+      const firstColEmpty = cols.length > 1 && cols[0].text.length === 0;
+      const restHaveText = cols.length > 1 && cols.slice(1).every(c => c.text.length > 0 && c.text.length < 50);
+
+      if ((allTextOnly && hasShortText && cols.some(c => c.text.length > 0)) ||
+          (firstColEmpty && restHaveText)) {
         // This looks like a header row
         const headers = cols.filter(c => c.text.length > 0).map(c => c.text);
         if (headers.length >= 2 && groupNames.length === 0) {
@@ -365,12 +370,58 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
           const $col = $(col);
           const items: Item[] = [];
 
-          $col.find('a').each((_: any, link: any) => {
-            const href = $(link).attr('href');
+          // Extract links and their associated labels
+          const $links = $col.find('a');
+
+          if ($links.length === 1) {
+            // Single link: all column text (except link text) is the label
+            const $link = $links.first();
+            const href = $link.attr('href');
             if (href) {
-              items.push(createItem(toAbsoluteUrl(href, this.baseUrl)));
+              const colText = cleanText($col.text());
+              const linkText = cleanText($link.text());
+              const label = colText !== linkText ? colText.replace(linkText, '').trim() : null;
+              items.push(createItem(toAbsoluteUrl(href, this.baseUrl), null, label || null));
             }
-          });
+          } else if ($links.length > 1) {
+            // Multiple links: extract label for each by looking at text nodes after each link
+            $links.each((_: any, link: any) => {
+              const $link = $(link);
+              const href = $link.attr('href');
+              if (href) {
+                let label: string | null = null;
+
+                // Get text after this link (next sibling text or br + text)
+                let next = link.nextSibling;
+                const textParts: string[] = [];
+
+                // Collect text nodes until we hit another link or significant element
+                while (next) {
+                  if (next.nodeType === 3) { // Text node
+                    const text = cleanText(next.nodeValue || '');
+                    if (text) textParts.push(text);
+                  } else if (next.nodeType === 1) { // Element node
+                    const tagName = next.tagName?.toLowerCase();
+                    if (tagName === 'br') {
+                      // Skip br, continue
+                    } else if (tagName === 'a') {
+                      // Hit another link, stop
+                      break;
+                    } else {
+                      // Other element, get its text and stop
+                      const elemText = cleanText($(next).text());
+                      if (elemText) textParts.push(elemText);
+                      break;
+                    }
+                  }
+                  next = next.nextSibling;
+                }
+
+                label = textParts.join(' ').trim() || null;
+                items.push(createItem(toAbsoluteUrl(href, this.baseUrl), null, label));
+              }
+            });
+          }
 
           itemGroups.push({ items });
         }

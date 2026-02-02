@@ -27,6 +27,7 @@ export interface Item {
   type: ItemType;
   data: string; // The URL
   imageUrl: string | null;
+  label?: string | null; // Optional descriptive label (e.g., "1st 10 min", "Practice")
 }
 
 /** Quick link on homepage */
