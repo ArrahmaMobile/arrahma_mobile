@@ -127,27 +127,31 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
                         .asMap()
                         .entries
                         .map(
-                          (entry) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: FaIcon(
-                                  GroupTypeIconMap[entry.value.type],
+                          (entry) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: FaIcon(
+                                    GroupTypeIconMap[entry.value.type],
+                                  ),
+                                  onPressed: () =>
+                                      onTap(context, group, entry, items),
                                 ),
-                                onPressed: () =>
-                                    onTap(context, group, entry, items),
-                              ),
-                              if (entry.value.label != null)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.0),
-                                  child: Text(
-                                    entry.value.label!,
-                                    style: const TextStyle(
-                                      fontSize: 10,
+                                if (entry.value.label != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      entry.value.label!,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                         .toList())

@@ -28,7 +28,7 @@ class SimplePdfView extends StatefulWidget {
 class _SimplePdfViewState extends State<SimplePdfView> {
   final _apiService = SL.get<ApiService>()!;
   late Future<PdfController> _pdfController;
-  late Future<SavedFile> _filePathFuture;
+  Future<SavedFile>? _filePathFuture;
   Uint8List? _pdfData;
 
   @override
@@ -58,14 +58,41 @@ class _SimplePdfViewState extends State<SimplePdfView> {
       _filePathFuture = _saveToFile(Future.value(result));
     }
 
+    print('Loading PDF with password: ${password != null ? "YES" : "NO"}');
+
     try {
-      final documentFuture = PdfDocument.openData(
+      // Await the document opening to catch password errors
+      final document = await PdfDocument.openData(
         _pdfData!,
         password: password,
       );
 
+      // Check if document has pages - some password-protected PDFs return 0 pages
+      final pageCount = document.pagesCount;
+      print('PDF loaded successfully. Page count: $pageCount');
+
+      if (pageCount == 0 && password == null) {
+        // Likely password protected
+        if (!mounted) {
+          await document.close();
+          throw Exception('Password required to open this PDF');
+        }
+
+        // Show password dialog
+        final enteredPassword = await _showPasswordDialog();
+        await document.close();
+
+        if (enteredPassword != null && enteredPassword.isNotEmpty) {
+          // Retry with the entered password
+          return _loadPdf(password: enteredPassword);
+        } else {
+          // User cancelled or entered empty password
+          throw Exception('Password required to open this PDF');
+        }
+      }
+
       return PdfController(
-        document: documentFuture,
+        document: Future.value(document),
         viewportFraction: 1,
       );
     } catch (e) {
@@ -90,9 +117,16 @@ class _SimplePdfViewState extends State<SimplePdfView> {
 
   bool _isPasswordError(dynamic error) {
     final errorString = error.toString().toLowerCase();
+    // Log the error to help debug
+    print('PDF Error: $error');
+    print('Error type: ${error.runtimeType}');
+
     return errorString.contains('password') ||
         errorString.contains('encrypted') ||
-        errorString.contains('invalid format');
+        errorString.contains('invalid format') ||
+        errorString.contains('security') ||
+        errorString.contains('permission') ||
+        errorString.contains('protected');
   }
 
   Future<String?> _showPasswordDialog() async {
@@ -159,13 +193,14 @@ class _SimplePdfViewState extends State<SimplePdfView> {
           ThemedAppBar(
             title: widget.title!,
             actions: [
-              FutureBuilder<SavedFile>(
-                future: _filePathFuture,
-                builder: (_, s) => Utils.shareActionButton(
-                  widget.title!,
-                  s.data?.path != null ? [s.data!.path] : null,
-                ),
-              )
+              if (_filePathFuture != null)
+                FutureBuilder<SavedFile>(
+                  future: _filePathFuture,
+                  builder: (_, s) => Utils.shareActionButton(
+                    widget.title!,
+                    s.data?.path != null ? [s.data!.path] : null,
+                  ),
+                )
             ],
           ),
         Flexible(

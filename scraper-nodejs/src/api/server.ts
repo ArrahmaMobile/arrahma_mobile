@@ -376,7 +376,7 @@ class ArrahmahAPIServer {
       } catch (error) {
         console.error('Error in broadcast status check:', error);
       }
-    }, 30000); // 30 seconds
+    }, 10 * 60 * 1000); // 10 minutes
 
     console.log('🔴 Broadcast status checking started (every 30 seconds)');
   }
