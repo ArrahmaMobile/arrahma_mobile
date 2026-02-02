@@ -29,7 +29,6 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   final _apiService = SL.get<ApiService>()!;
   late Future<PdfController> _pdfController;
   late Future<SavedFile> _filePathFuture;
-  String? _cachedPassword;
   Uint8List? _pdfData;
 
   @override
@@ -42,7 +41,6 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   void didUpdateWidget(covariant SimplePdfView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.url != widget.url) {
-      _cachedPassword = null;
       _pdfData = null;
       _init();
     }
@@ -61,18 +59,13 @@ class _SimplePdfViewState extends State<SimplePdfView> {
     }
 
     try {
-      final document = await PdfDocument.openData(
+      final documentFuture = PdfDocument.openData(
         _pdfData!,
         password: password,
       );
 
-      // If successful with a password, cache it
-      if (password != null) {
-        _cachedPassword = password;
-      }
-
       return PdfController(
-        document: document,
+        document: documentFuture,
         viewportFraction: 1,
       );
     } catch (e) {
@@ -98,8 +91,8 @@ class _SimplePdfViewState extends State<SimplePdfView> {
   bool _isPasswordError(dynamic error) {
     final errorString = error.toString().toLowerCase();
     return errorString.contains('password') ||
-           errorString.contains('encrypted') ||
-           errorString.contains('invalid format');
+        errorString.contains('encrypted') ||
+        errorString.contains('invalid format');
   }
 
   Future<String?> _showPasswordDialog() async {
@@ -113,7 +106,8 @@ class _SimplePdfViewState extends State<SimplePdfView> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('This PDF is password-protected. Please enter the password to view it.'),
+            const Text(
+                'This PDF is password-protected. Please enter the password to view it.'),
             const SizedBox(height: 16),
             TextField(
               controller: controller,
