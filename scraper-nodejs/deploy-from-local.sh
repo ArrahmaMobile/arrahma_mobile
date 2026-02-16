@@ -377,8 +377,8 @@ if [ -n "$SSL_DOMAIN" ] && [ -n "$SSL_EMAIL" ]; then
         SHOULD_SETUP_SSL=true
         echo "SSL setup forced (SETUP_SSL=yes)"
     elif [ "$SETUP_SSL" = "auto" ]; then
-        # Check if certificate exists
-        SSL_STATUS=$(run_and_capture "[ -f /etc/letsencrypt/live/$SSL_DOMAIN/fullchain.pem ] && echo 'exists' || echo 'not_found'")
+        # Check if certificate exists (use sudo for proper permissions)
+        SSL_STATUS=$(run_and_capture "sudo [ -f /etc/letsencrypt/live/$SSL_DOMAIN/fullchain.pem ] && echo 'exists' || echo 'not_found'")
 
         if [ "$SSL_STATUS" = "not_found" ]; then
             SHOULD_SETUP_SSL=true
