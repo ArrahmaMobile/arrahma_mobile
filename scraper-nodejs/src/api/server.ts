@@ -38,12 +38,10 @@ class ArrahmahAPIServer {
   private cachedData: ScrapedData | null = null;
   private dataHash: string = '';
   private lastDataChangeTimestamp: string | null = null;
-  private lastFileModTime: number = 0; // Track file modification time
-  private lastFileCheckTime: number = 0; // Throttle file stat calls
   private readonly dataPath: string;
   private readonly hashMetadataPath: string;
   private readonly port: number;
-  private readonly fileCheckInterval: number = 5000; // Check file every 5 seconds max
+  private readonly reloadApiKey: string;
   private broadcastChecker: BroadcastChecker;
   private broadcastCheckInterval: NodeJS.Timeout | null = null;
 
@@ -52,6 +50,8 @@ class ArrahmahAPIServer {
     this.port = port;
     this.dataPath = path.join(__dirname, '../../data/scraped_data.json');
     this.hashMetadataPath = path.join(__dirname, '../../data/hash_metadata.json');
+    // Generate a simple API key for internal communication (or use env var)
+    this.reloadApiKey = process.env.RELOAD_API_KEY || crypto.randomBytes(32).toString('hex');
     // Scraper now runs as a separate PM2 process (arrahmah-scraper)
     // This API server only serves data and checks broadcast status
     this.broadcastChecker = new BroadcastChecker();
@@ -90,6 +90,9 @@ class ArrahmahAPIServer {
 
     // Data endpoint
     router.get('/data/:version?', this.getData.bind(this));
+
+    // Internal reload endpoint - called by scraper after completion
+    router.post('/internal/reload-data', this.reloadData.bind(this));
 
     // Mount router at /api
     this.app.use('/api', router);
@@ -142,31 +145,37 @@ class ArrahmahAPIServer {
     }
   }
 
+
   /**
-   * Check if data file has been modified and reload if needed
+   * POST /api/internal/reload-data
+   * Internal endpoint called by scraper to trigger data reload
    */
-  private async checkAndReloadData(): Promise<void> {
-    const now = Date.now();
-
-    // Throttle file checks to avoid excessive stat calls
-    if (now - this.lastFileCheckTime < this.fileCheckInterval) {
-      return;
-    }
-
-    this.lastFileCheckTime = now;
-
+  private async reloadData(req: Request, res: Response): Promise<void> {
     try {
-      const stats = await fs.stat(this.dataPath);
-      const modTime = stats.mtimeMs;
+      // Verify API key
+      const apiKey = req.headers['x-api-key'] || req.query.apiKey;
 
-      // Only reload if file has been modified since last load
-      if (modTime > this.lastFileModTime) {
-        console.log(`📥 Data file changed, reloading... (last: ${new Date(this.lastFileModTime).toISOString()}, new: ${new Date(modTime).toISOString()})`);
-        await this.loadData();
-        this.lastFileModTime = modTime;
+      if (apiKey !== this.reloadApiKey) {
+        console.warn('[reload] Unauthorized reload attempt');
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
       }
+
+      console.log('[reload] 📥 Reload request received from scraper');
+
+      // Reload data from disk
+      await this.loadData();
+
+      console.log('[reload] ✅ Data reloaded successfully');
+      res.json({
+        success: true,
+        message: 'Data reloaded',
+        hash: this.dataHash ? this.dataHash.substring(0, 12) + '...' : null,
+        lastUpdate: this.cachedData?.runMetadata?.lastUpdate || null,
+      });
     } catch (error) {
-      // File doesn't exist or error reading stats - ignore
+      console.error('[reload] Error reloading data:', error);
+      res.status(500).json({ error: 'Failed to reload data' });
     }
   }
 
@@ -186,10 +195,6 @@ class ArrahmahAPIServer {
         this.lastDataChangeTimestamp = null;
         return;
       }
-
-      // Get file modification time
-      const stats = await fs.stat(this.dataPath);
-      this.lastFileModTime = stats.mtimeMs;
 
       // Read file content
       const fileContent = await fs.readFile(this.dataPath, 'utf-8');
@@ -264,9 +269,6 @@ class ArrahmahAPIServer {
     try {
       const dataHashParam = req.query.dataHash as string | undefined;
 
-      // Check if data file changed and reload if needed
-      await this.checkAndReloadData();
-
       // Determine server status
       let serverStatus: 'Available' | 'Maintenance' | 'Unavailable' = 'Available';
       if (!this.cachedData) {
@@ -300,9 +302,6 @@ class ArrahmahAPIServer {
    */
   private async getData(req: Request, res: Response): Promise<void> {
     try {
-      // Check if data file changed and reload if needed
-      await this.checkAndReloadData();
-
       // Check if data is available
       if (!this.cachedData || !this.cachedData.appData) {
         console.warn('[data] No data available yet - server in maintenance mode');
@@ -386,10 +385,14 @@ class ArrahmahAPIServer {
         console.log(`📡 Status endpoint: http://localhost:${this.port}/api/status`);
         console.log(`❤️  Health check: http://localhost:${this.port}/health`);
         console.log(`${'='.repeat(60)}`);
-        console.log(`💾 Data cached in memory, auto-reloads on file change`);
+        console.log(`💾 Data cached in memory`);
+        console.log(`🔔 Reload endpoint: POST /api/internal/reload-data`);
+        console.log(`🔑 Reload API Key: ${this.reloadApiKey.substring(0, 16)}...`);
+        console.log(`${'='.repeat(60)}`);
         console.log(`🤖 Scraper: Managed by PM2 (cron: 0 */2 * * *)`);
         console.log(`   To trigger: pm2 restart arrahmah-scraper`);
         console.log(`   To check: pm2 logs arrahmah-scraper`);
+        console.log(`   Scraper notifies API on completion (push-based)`);
         console.log(`${'='.repeat(60)}\n`);
       });
     } catch (error) {

@@ -9,7 +9,8 @@ module.exports = {
       max_memory_restart: '500M',
       env: {
         NODE_ENV: 'production',
-        PORT: 8888
+        PORT: 8888,
+        RELOAD_API_KEY: process.env.RELOAD_API_KEY
       },
       error_file: './logs/api-err.log',
       out_file: './logs/api-out.log',
@@ -33,7 +34,9 @@ module.exports = {
       cron_restart: '0 */2 * * *', // Run every 2 hours
       max_memory_restart: '1G', // Allow more memory for scraping
       env: {
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        PORT: 8888, // Port where API server is listening
+        RELOAD_API_KEY: process.env.RELOAD_API_KEY
       },
       error_file: './logs/scraper-err.log',
       out_file: './logs/scraper-out.log',

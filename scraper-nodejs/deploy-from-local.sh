@@ -185,7 +185,7 @@ run_and_capture() {
 }
 
 # Step 0: Verify VM is accessible
-echo -e "${BLUE}Step 0/8: Verifying VM accessibility...${NC}"
+echo -e "${BLUE}Step 0/9: Verifying VM accessibility...${NC}"
 echo "------------------------------------------------------------"
 
 if run_on_vm "Checking VM connection" "echo 'VM is accessible'"; then
@@ -212,7 +212,7 @@ if [ -n "$SSL_DOMAIN" ]; then
 fi
 
 # Step 1: Git Pull
-echo -e "${BLUE}Step 1/8: Pulling latest code from git...${NC}"
+echo -e "${BLUE}Step 1/9: Pulling latest code from git...${NC}"
 echo "------------------------------------------------------------"
 
 GIT_COMMANDS="cd $REPO_PATH && \
@@ -231,7 +231,7 @@ else
 fi
 
 # Step 2: Install Dependencies
-echo -e "${BLUE}Step 2/8: Installing/updating dependencies...${NC}"
+echo -e "${BLUE}Step 2/9: Installing/updating dependencies...${NC}"
 echo "------------------------------------------------------------"
 
 if run_on_vm "Installing dependencies" "cd $REPO_PATH && npm install"; then
@@ -242,7 +242,7 @@ else
 fi
 
 # Step 3: Build TypeScript
-echo -e "${BLUE}Step 3/8: Building TypeScript project...${NC}"
+echo -e "${BLUE}Step 3/9: Building TypeScript project...${NC}"
 echo "------------------------------------------------------------"
 
 if run_on_vm "Building project" "cd $REPO_PATH && npm run build"; then
@@ -252,8 +252,34 @@ else
     exit 1
 fi
 
-# Step 4: Check PM2 Status
-echo -e "${BLUE}Step 4/8: Checking PM2 status...${NC}"
+# Step 4: Generate and save API key
+echo -e "${BLUE}Step 4/9: Generating API key for scraper-API communication...${NC}"
+echo "------------------------------------------------------------"
+
+# Generate a secure random API key (64 character hex string)
+GENERATE_KEY="cd $REPO_PATH && \
+    mkdir -p .deployment && \
+    if [ ! -f .deployment/reload_api_key ]; then \
+        openssl rand -hex 32 > .deployment/reload_api_key && \
+        echo 'Generated new API key'; \
+    else \
+        echo 'Using existing API key'; \
+    fi && \
+    cat .deployment/reload_api_key"
+
+API_KEY=$(run_and_capture "$GENERATE_KEY")
+
+if [ -n "$API_KEY" ]; then
+    echo "API Key: ${API_KEY:0:16}... (truncated for security)"
+else
+    echo -e "${RED}Failed to generate/retrieve API key${NC}"
+    exit 1
+fi
+
+echo ""
+
+# Step 5: Check PM2 Status
+echo -e "${BLUE}Step 5/9: Checking PM2 status...${NC}"
 echo "------------------------------------------------------------"
 
 PM2_STATUS=$(run_and_capture "pm2 list | grep -q '$PM2_APP_NAME' && echo 'exists' || echo 'not_found'")
@@ -264,20 +290,20 @@ if [ "$PM2_STATUS" = "exists" ]; then
 else
     echo -e "${YELLOW}⚠ PM2 app '$PM2_APP_NAME' not found${NC}"
     echo "Starting app with PM2 ecosystem file..."
-    run_on_vm "Starting PM2 app" "cd $REPO_PATH && pm2 start ecosystem.config.js && pm2 save"
+    run_on_vm "Starting PM2 app" "cd $REPO_PATH && RELOAD_API_KEY=\$(cat .deployment/reload_api_key) pm2 start ecosystem.config.js && pm2 save"
 fi
 
 echo ""
 
-# Step 5: Restart PM2 Processes
-echo -e "${BLUE}Step 5/8: Restarting PM2 processes...${NC}"
+# Step 6: Restart PM2 Processes
+echo -e "${BLUE}Step 6/9: Restarting PM2 processes...${NC}"
 echo "------------------------------------------------------------"
 
 # Restart API server (safe to kill)
 RESTART_API="cd $REPO_PATH && \
     pm2 stop $PM2_APP_NAME 2>/dev/null || true && \
     sleep 2 && \
-    pm2 start ecosystem.config.js --only $PM2_APP_NAME && \
+    RELOAD_API_KEY=\$(cat .deployment/reload_api_key) pm2 start ecosystem.config.js --only $PM2_APP_NAME && \
     pm2 save && \
     sleep 5"
 
@@ -291,7 +317,7 @@ fi
 # Start scraper process if not running (don't restart if currently scraping)
 START_SCRAPER="cd $REPO_PATH && \
     if ! pm2 list | grep -q 'arrahmah-scraper'; then \
-        pm2 start ecosystem.config.js --only arrahmah-scraper && pm2 save; \
+        RELOAD_API_KEY=\$(cat .deployment/reload_api_key) pm2 start ecosystem.config.js --only arrahmah-scraper && pm2 save; \
     else \
         echo 'Scraper already running, skipping restart'; \
     fi"
@@ -303,8 +329,8 @@ else
     echo ""
 fi
 
-# Step 6: Verify Server Status
-echo -e "${BLUE}Step 6/8: Verifying server status...${NC}"
+# Step 7: Verify Server Status
+echo -e "${BLUE}Step 7/9: Verifying server status...${NC}"
 echo "------------------------------------------------------------"
 
 echo "PM2 Status:"
@@ -316,8 +342,8 @@ run_and_capture "pm2 logs $PM2_APP_NAME --lines 20 --nostream --no-color" || tru
 
 echo ""
 
-# Step 7: Verify Endpoints
-echo -e "${BLUE}Step 7/8: Verifying API endpoints...${NC}"
+# Step 8: Verify Endpoints
+echo -e "${BLUE}Step 8/9: Verifying API endpoints...${NC}"
 echo "------------------------------------------------------------"
 
 # Wait for server to be fully ready
@@ -381,9 +407,9 @@ fi
 
 echo ""
 
-# Step 8: SSL/TLS Setup (if configured)
+# Step 9: SSL/TLS Setup (if configured)
 if [ -n "$SSL_DOMAIN" ] && [ -n "$SSL_EMAIL" ]; then
-    echo -e "${BLUE}Step 8: Setting up SSL/TLS...${NC}"
+    echo -e "${BLUE}Step 9: Setting up SSL/TLS...${NC}"
     echo "------------------------------------------------------------"
 
     # Check if SSL should be set up
