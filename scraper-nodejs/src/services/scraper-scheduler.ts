@@ -129,6 +129,10 @@ export class ScraperScheduler {
         console.log(`⏰ Time: ${new Date().toLocaleString()}`);
         console.log(`${'='.repeat(60)}\n`);
 
+        // IMPORTANT: Create a new scraper instance for each run to avoid stale cached data
+        // The old implementation reused the same scraper instance, causing HTTP cache to persist
+        this.scraper = new ArrahmahScraper();
+
         const startTime = Date.now();
         const appData = await this.scraper.scrape();
         await this.scraper.saveToFile(appData);
