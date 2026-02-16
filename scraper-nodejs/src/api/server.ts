@@ -11,10 +11,6 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ScrapedData } from '../types/models';
 import { BroadcastChecker } from '../services/broadcast-checker';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
-const execAsync = promisify(exec);
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -42,10 +38,12 @@ class ArrahmahAPIServer {
   private cachedData: ScrapedData | null = null;
   private dataHash: string = '';
   private lastDataChangeTimestamp: string | null = null;
-  private lastUpdateAttempt: string = new Date().toISOString();
+  private lastFileModTime: number = 0; // Track file modification time
+  private lastFileCheckTime: number = 0; // Throttle file stat calls
   private readonly dataPath: string;
   private readonly hashMetadataPath: string;
   private readonly port: number;
+  private readonly fileCheckInterval: number = 5000; // Check file every 5 seconds max
   private broadcastChecker: BroadcastChecker;
   private broadcastCheckInterval: NodeJS.Timeout | null = null;
 
@@ -92,12 +90,6 @@ class ArrahmahAPIServer {
 
     // Data endpoint
     router.get('/data/:version?', this.getData.bind(this));
-
-    // Scraper status endpoint
-    router.get('/scraper-status', this.getScraperStatus.bind(this));
-
-    // Manual scraper trigger endpoint (for admin use)
-    router.post('/trigger-scrape', this.triggerScrape.bind(this));
 
     // Mount router at /api
     this.app.use('/api', router);
@@ -151,7 +143,35 @@ class ArrahmahAPIServer {
   }
 
   /**
-   * Load scraped data from file
+   * Check if data file has been modified and reload if needed
+   */
+  private async checkAndReloadData(): Promise<void> {
+    const now = Date.now();
+
+    // Throttle file checks to avoid excessive stat calls
+    if (now - this.lastFileCheckTime < this.fileCheckInterval) {
+      return;
+    }
+
+    this.lastFileCheckTime = now;
+
+    try {
+      const stats = await fs.stat(this.dataPath);
+      const modTime = stats.mtimeMs;
+
+      // Only reload if file has been modified since last load
+      if (modTime > this.lastFileModTime) {
+        console.log(`📥 Data file changed, reloading... (last: ${new Date(this.lastFileModTime).toISOString()}, new: ${new Date(modTime).toISOString()})`);
+        await this.loadData();
+        this.lastFileModTime = modTime;
+      }
+    } catch (error) {
+      // File doesn't exist or error reading stats - ignore
+    }
+  }
+
+  /**
+   * Load scraped data from file into memory
    */
   private async loadData(): Promise<void> {
     try {
@@ -166,6 +186,10 @@ class ArrahmahAPIServer {
         this.lastDataChangeTimestamp = null;
         return;
       }
+
+      // Get file modification time
+      const stats = await fs.stat(this.dataPath);
+      this.lastFileModTime = stats.mtimeMs;
 
       // Read file content
       const fileContent = await fs.readFile(this.dataPath, 'utf-8');
@@ -240,8 +264,8 @@ class ArrahmahAPIServer {
     try {
       const dataHashParam = req.query.dataHash as string | undefined;
 
-      // Reload data to get latest
-      await this.loadData();
+      // Check if data file changed and reload if needed
+      await this.checkAndReloadData();
 
       // Determine server status
       let serverStatus: 'Available' | 'Maintenance' | 'Unavailable' = 'Available';
@@ -256,8 +280,8 @@ class ArrahmahAPIServer {
         status: serverStatus,
         isDataStale: dataHashParam !== undefined && this.dataHash !== dataHashParam,
         broadcastStatus,
-        lastScrapedOn: this.cachedData?.runMetadata?.lastUpdate || this.lastUpdateAttempt,
-        lastScrapeAttemptOn: this.lastUpdateAttempt,
+        lastScrapedOn: this.cachedData?.runMetadata?.lastUpdate || 'Never',
+        lastScrapeAttemptOn: this.cachedData?.runMetadata?.lastUpdate || 'Never',
         lastDataHash: this.dataHash || null,
         lastDataChangeOn: this.lastDataChangeTimestamp,
       };
@@ -276,8 +300,8 @@ class ArrahmahAPIServer {
    */
   private async getData(req: Request, res: Response): Promise<void> {
     try {
-      // Reload data to get latest
-      await this.loadData();
+      // Check if data file changed and reload if needed
+      await this.checkAndReloadData();
 
       // Check if data is available
       if (!this.cachedData || !this.cachedData.appData) {
@@ -315,60 +339,6 @@ class ArrahmahAPIServer {
     }
   }
 
-  /**
-   * GET /api/scraper-status
-   * Returns the current status of the standalone scraper process
-   */
-  private async getScraperStatus(_req: Request, res: Response): Promise<void> {
-    try {
-      // Get PM2 process info for the scraper
-      const { stdout } = await execAsync('pm2 jlist');
-      const processes = JSON.parse(stdout);
-      const scraperProcess = processes.find((p: any) => p.name === 'arrahmah-scraper');
-
-      if (!scraperProcess) {
-        res.json({
-          status: 'not_running',
-          message: 'Scraper process not found in PM2',
-        });
-        return;
-      }
-
-      res.json({
-        status: scraperProcess.pm2_env.status,
-        pid: scraperProcess.pid,
-        uptime: scraperProcess.pm2_env.pm_uptime,
-        restarts: scraperProcess.pm2_env.restart_time,
-        memory: Math.round(scraperProcess.monit.memory / 1024 / 1024) + 'MB',
-        cpu: scraperProcess.monit.cpu + '%',
-        nextRun: 'Every 2 hours (cron: 0 */2 * * *)',
-      });
-    } catch (error) {
-      console.error('Error in getScraperStatus:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-
-  /**
-   * POST /api/trigger-scrape
-   * Manually trigger a scraper run via PM2
-   */
-  private async triggerScrape(_req: Request, res: Response): Promise<void> {
-    try {
-      // Trigger scraper by restarting the PM2 process
-      execAsync('pm2 restart arrahmah-scraper').catch((err: Error) => {
-        console.error('Error triggering scraper:', err);
-      });
-
-      res.json({
-        message: 'Scraper run triggered successfully',
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error('Error in triggerScrape:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  }
 
   /**
    * Start periodic broadcast status checking
@@ -414,12 +384,12 @@ class ArrahmahAPIServer {
         console.log(`${'='.repeat(60)}`);
         console.log(`📊 Data endpoint: http://localhost:${this.port}/api/data`);
         console.log(`📡 Status endpoint: http://localhost:${this.port}/api/status`);
-        console.log(`🔧 Scraper status: http://localhost:${this.port}/api/scraper-status`);
-        console.log(`⚡ Trigger scrape: POST http://localhost:${this.port}/api/trigger-scrape`);
         console.log(`❤️  Health check: http://localhost:${this.port}/health`);
         console.log(`${'='.repeat(60)}`);
-        console.log(`📌 Note: Scraper runs as separate PM2 process (arrahmah-scraper)`);
-        console.log(`🕐 Automatic scraping: Every 2 hours (PM2 cron)`);
+        console.log(`💾 Data cached in memory, auto-reloads on file change`);
+        console.log(`🤖 Scraper: Managed by PM2 (cron: 0 */2 * * *)`);
+        console.log(`   To trigger: pm2 restart arrahmah-scraper`);
+        console.log(`   To check: pm2 logs arrahmah-scraper`);
         console.log(`${'='.repeat(60)}\n`);
       });
     } catch (error) {
