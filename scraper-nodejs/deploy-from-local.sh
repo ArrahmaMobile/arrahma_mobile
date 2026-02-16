@@ -269,22 +269,38 @@ fi
 
 echo ""
 
-# Step 5: Restart PM2 Server
-echo -e "${BLUE}Step 5/8: Restarting PM2 server...${NC}"
+# Step 5: Restart PM2 Processes
+echo -e "${BLUE}Step 5/8: Restarting PM2 processes...${NC}"
 echo "------------------------------------------------------------"
 
-RESTART_COMMANDS="cd $REPO_PATH && \
-    pm2 stop $PM2_APP_NAME && \
+# Restart API server (safe to kill)
+RESTART_API="cd $REPO_PATH && \
+    pm2 stop $PM2_APP_NAME 2>/dev/null || true && \
     sleep 2 && \
-    pm2 start ecosystem.config.js && \
+    pm2 start ecosystem.config.js --only $PM2_APP_NAME && \
     pm2 save && \
     sleep 5"
 
-if run_on_vm "Restarting server" "$RESTART_COMMANDS"; then
+if run_on_vm "Restarting API server" "$RESTART_API"; then
     echo ""
 else
-    echo -e "${RED}Failed to restart server${NC}"
+    echo -e "${RED}Failed to restart API server${NC}"
     exit 1
+fi
+
+# Start scraper process if not running (don't restart if currently scraping)
+START_SCRAPER="cd $REPO_PATH && \
+    if ! pm2 list | grep -q 'arrahmah-scraper'; then \
+        pm2 start ecosystem.config.js --only arrahmah-scraper && pm2 save; \
+    else \
+        echo 'Scraper already running, skipping restart'; \
+    fi"
+
+if run_on_vm "Starting scraper process" "$START_SCRAPER"; then
+    echo ""
+else
+    echo -e "${YELLOW}⚠ Warning: Failed to start scraper process${NC}"
+    echo ""
 fi
 
 # Step 6: Verify Server Status
