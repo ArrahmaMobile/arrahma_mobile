@@ -2,6 +2,87 @@
 
 This guide covers deploying the auto-scraper API to production with maximum reliability.
 
+## 🚀 Quick SSL/TLS Setup (Recommended for GCP VM)
+
+For the fastest and most secure setup with automatic certificate renewal, use our automated SSL setup script:
+
+### Prerequisites
+- Ubuntu/Debian-based GCP VM
+- Domain name pointing to your VM's external IP
+- Ports 80 and 443 open in firewall
+- SSH access to the VM
+
+### One-Command Setup
+
+```bash
+# On your GCP VM
+cd ~/arrahmah-scraper/scraper-nodejs
+./setup-ssl.sh your-domain.com your-email@example.com
+```
+
+Example:
+```bash
+./setup-ssl.sh api.arrahmah.org admin@arrahmah.org
+```
+
+This automated script will:
+- ✅ Install and configure Nginx as reverse proxy
+- ✅ Install certbot (Let's Encrypt client)
+- ✅ Obtain SSL/TLS certificate automatically
+- ✅ Configure automatic certificate renewal (every 60 days)
+- ✅ Set up post-renewal hook to reload Nginx with new certificates
+- ✅ Configure PM2 with ecosystem file for auto-restart
+- ✅ Enable PM2 to start on system boot
+- ✅ Verify all endpoints are working
+
+### What You Get
+
+After running the setup script:
+
+1. **Automatic Certificate Renewal**: Certificates renew automatically before expiration
+2. **Zero-Downtime Reloads**: Nginx reloads seamlessly when certificates update
+3. **Auto-Restart**: PM2 restarts the server if it crashes
+4. **Boot Persistence**: Server starts automatically on VM reboot
+5. **HTTPS Everywhere**: All traffic redirected from HTTP to HTTPS
+
+### Certificate Renewal Details
+
+- **Frequency**: Certbot checks for renewal twice daily
+- **Renewal Window**: Certificates renewed 30 days before expiration
+- **Post-Renewal Actions**:
+  1. Nginx configuration validated
+  2. Nginx reloaded with new certificates
+  3. HTTPS connectivity verified
+  4. Events logged to `/var/log/arrahmah-cert-renewal.log`
+
+### Monitoring Certificate Status
+
+```bash
+# Check certificate expiration
+sudo certbot certificates
+
+# View renewal log
+sudo cat /var/log/arrahmah-cert-renewal.log
+
+# Test renewal process (dry run)
+sudo certbot renew --dry-run
+
+# Force renewal (if needed)
+sudo certbot renew --force-renewal
+```
+
+### Files Created by Setup Script
+
+| File | Location | Purpose |
+|------|----------|---------|
+| Nginx Config | `/etc/nginx/sites-available/arrahmah-api` | Reverse proxy with SSL |
+| SSL Certificate | `/etc/letsencrypt/live/YOUR_DOMAIN/` | Let's Encrypt certificates |
+| Renewal Hook | `/etc/letsencrypt/renewal-hooks/post/arrahmah-reload.sh` | Auto-reload on renewal |
+| PM2 Ecosystem | `~/arrahmah-scraper/scraper-nodejs/ecosystem.config.js` | PM2 configuration |
+| Renewal Log | `/var/log/arrahmah-cert-renewal.log` | Certificate renewal events |
+
+---
+
 ## Pre-Deployment Checklist
 
 - [ ] All tests passing: `./test-api-setup.sh`
