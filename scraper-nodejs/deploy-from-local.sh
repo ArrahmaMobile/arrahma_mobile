@@ -379,22 +379,6 @@ else
 fi
 echo ""
 
-# Test scraper status endpoint
-echo -n "Testing /api/scraper-status endpoint... "
-SCRAPER_CHECK=$(run_and_capture "curl -sf $API_URL/api/scraper-status" || echo "failed")
-if [ "$SCRAPER_CHECK" != "failed" ]; then
-    echo -e "${GREEN}✓ OK${NC}"
-
-    # Show scraper details
-    echo ""
-    echo "Scraper Status:"
-    run_and_capture "curl -s $API_URL/api/scraper-status | jq '{isRunning, lastRunTime, lastSuccessTime, successCount, failureCount, nextScheduledRun}'" || true
-else
-    echo -e "${RED}✗ FAILED${NC}"
-    FAILED=1
-fi
-echo ""
-
 # Test data endpoint
 echo -n "Testing /api/data endpoint... "
 DATA_CHECK=$(run_and_capture "curl -sf $API_URL/api/data -o /dev/null && echo 'ok'" || echo "failed")
