@@ -10,8 +10,11 @@ import crypto from 'crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ScrapedData } from '../types/models';
-import { ScraperScheduler } from '../services/scraper-scheduler';
 import { BroadcastChecker } from '../services/broadcast-checker';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -43,7 +46,6 @@ class ArrahmahAPIServer {
   private readonly dataPath: string;
   private readonly hashMetadataPath: string;
   private readonly port: number;
-  private scheduler: ScraperScheduler;
   private broadcastChecker: BroadcastChecker;
   private broadcastCheckInterval: NodeJS.Timeout | null = null;
 
@@ -52,15 +54,8 @@ class ArrahmahAPIServer {
     this.port = port;
     this.dataPath = path.join(__dirname, '../../data/scraped_data.json');
     this.hashMetadataPath = path.join(__dirname, '../../data/hash_metadata.json');
-    this.scheduler = new ScraperScheduler({
-      runOnStart: false, // Don't run on start to avoid conflicts
-      maxRetries: 3,
-      retryDelay: 60000,
-      onScraperStart: () => {
-        // Update last attempt timestamp when scraper starts
-        this.lastUpdateAttempt = new Date().toISOString();
-      },
-    });
+    // Scraper now runs as a separate PM2 process (arrahmah-scraper)
+    // This API server only serves data and checks broadcast status
     this.broadcastChecker = new BroadcastChecker();
     this.setupMiddleware();
     this.setupRoutes();
@@ -121,7 +116,6 @@ class ArrahmahAPIServer {
         dataAvailable: this.cachedData !== null,
         dataHash: this.dataHash ? this.dataHash.substring(0, 12) + '...' : null,
         lastUpdate: this.cachedData?.runMetadata?.lastUpdate || null,
-        scheduler: this.scheduler.getStatus(),
       };
       res.json(health);
     });
@@ -323,14 +317,31 @@ class ArrahmahAPIServer {
 
   /**
    * GET /api/scraper-status
-   * Returns the current status of the scraper scheduler
+   * Returns the current status of the standalone scraper process
    */
   private async getScraperStatus(_req: Request, res: Response): Promise<void> {
     try {
-      const status = this.scheduler.getStatus();
+      // Get PM2 process info for the scraper
+      const { stdout } = await execAsync('pm2 jlist');
+      const processes = JSON.parse(stdout);
+      const scraperProcess = processes.find((p: any) => p.name === 'arrahmah-scraper');
+
+      if (!scraperProcess) {
+        res.json({
+          status: 'not_running',
+          message: 'Scraper process not found in PM2',
+        });
+        return;
+      }
+
       res.json({
-        ...status,
-        statusSummary: this.scheduler.getStatusSummary(),
+        status: scraperProcess.pm2_env.status,
+        pid: scraperProcess.pid,
+        uptime: scraperProcess.pm2_env.pm_uptime,
+        restarts: scraperProcess.pm2_env.restart_time,
+        memory: Math.round(scraperProcess.monit.memory / 1024 / 1024) + 'MB',
+        cpu: scraperProcess.monit.cpu + '%',
+        nextRun: 'Every 2 hours (cron: 0 */2 * * *)',
       });
     } catch (error) {
       console.error('Error in getScraperStatus:', error);
@@ -340,13 +351,13 @@ class ArrahmahAPIServer {
 
   /**
    * POST /api/trigger-scrape
-   * Manually trigger a scraper run
+   * Manually trigger a scraper run via PM2
    */
   private async triggerScrape(_req: Request, res: Response): Promise<void> {
     try {
-      // Trigger the scraper asynchronously
-      this.scheduler.triggerManualRun().catch(err => {
-        console.error('Error in manual scraper run:', err);
+      // Trigger scraper by restarting the PM2 process
+      execAsync('pm2 restart arrahmah-scraper').catch((err: Error) => {
+        console.error('Error triggering scraper:', err);
       });
 
       res.json({
@@ -397,9 +408,6 @@ class ArrahmahAPIServer {
       // Start broadcast status checking
       await this.startBroadcastChecking();
 
-      // Start the scheduler
-      await this.scheduler.start();
-
       this.app.listen(this.port, () => {
         console.log(`\n${'='.repeat(60)}`);
         console.log(`🚀 Arrahmah API Server Started`);
@@ -410,8 +418,8 @@ class ArrahmahAPIServer {
         console.log(`⚡ Trigger scrape: POST http://localhost:${this.port}/api/trigger-scrape`);
         console.log(`❤️  Health check: http://localhost:${this.port}/health`);
         console.log(`${'='.repeat(60)}`);
-        console.log(`🕐 Automatic scraping: Every 2 hours`);
-        console.log(`🔄 Auto-retry on failure: Yes (3 attempts)`);
+        console.log(`📌 Note: Scraper runs as separate PM2 process (arrahmah-scraper)`);
+        console.log(`🕐 Automatic scraping: Every 2 hours (PM2 cron)`);
         console.log(`${'='.repeat(60)}\n`);
       });
     } catch (error) {
@@ -421,10 +429,9 @@ class ArrahmahAPIServer {
   }
 
   /**
-   * Stop the server and scheduler
+   * Stop the server
    */
   public stop(): void {
-    this.scheduler.stop();
     if (this.broadcastCheckInterval) {
       clearInterval(this.broadcastCheckInterval);
       this.broadcastCheckInterval = null;
