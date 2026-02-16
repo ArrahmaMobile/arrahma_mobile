@@ -172,12 +172,13 @@ fi
 echo -e "${GREEN}✓ SSL certificate obtained${NC}"
 echo ""
 
-# Step 6: Install Renewal Hook
+# Step 6: Install Renewal Hook and Fix Renewal Config
 echo -e "${BLUE}Step 6/8: Setting up certificate renewal hook...${NC}"
 echo "------------------------------------------------------------"
 
 HOOK_DIR="/etc/letsencrypt/renewal-hooks/post"
 HOOK_FILE="$HOOK_DIR/arrahmah-reload.sh"
+RENEWAL_CONF="/etc/letsencrypt/renewal/${DOMAIN}.conf"
 
 # Create hook directory if it doesn't exist
 sudo mkdir -p "$HOOK_DIR"
@@ -187,6 +188,27 @@ sudo cp "$SCRIPT_DIR/certbot-renewal-hook.sh" "$HOOK_FILE"
 sudo chmod +x "$HOOK_FILE"
 
 echo -e "${GREEN}✓ Renewal hook installed at $HOOK_FILE${NC}"
+
+# Ensure renewal config uses nginx authenticator (not standalone)
+if [ -f "$RENEWAL_CONF" ]; then
+    echo "Verifying renewal configuration..."
+
+    # Check if using standalone (wrong)
+    if grep -q "authenticator = standalone" "$RENEWAL_CONF"; then
+        echo -e "${YELLOW}⚠ Fixing renewal config (changing standalone → nginx)${NC}"
+        sudo sed -i.backup 's/authenticator = standalone/authenticator = nginx/g' "$RENEWAL_CONF"
+        sudo sed -i 's/installer = None/installer = nginx/g' "$RENEWAL_CONF"
+
+        # Add installer if not present
+        if ! grep -q "installer = " "$RENEWAL_CONF"; then
+            sudo sed -i '/authenticator = nginx/a installer = nginx' "$RENEWAL_CONF"
+        fi
+
+        echo -e "${GREEN}✓ Renewal config fixed${NC}"
+    else
+        echo -e "${GREEN}✓ Renewal config already correct (using nginx)${NC}"
+    fi
+fi
 
 # Test renewal (dry run)
 echo "Testing certificate renewal (dry run)..."
