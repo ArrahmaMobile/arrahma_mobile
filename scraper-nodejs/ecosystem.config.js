@@ -31,7 +31,10 @@ module.exports = {
       instances: 1,
       autorestart: false, // Don't auto-restart, it's a one-time run
       watch: false,
-      cron_restart: '0 */2 * * *', // Run every 2 hours
+      // NOTE: Scheduling is handled by system crontab, NOT pm2 cron_restart.
+      // pm2 cron_restart only restarts running processes - since the scraper
+      // exits after completion, it stays stopped and cron_restart never fires.
+      // The deploy script sets up: 0 */2 * * * pm2 restart arrahmah-scraper
       max_memory_restart: '1G', // Allow more memory for scraping
       env: {
         NODE_ENV: 'production',

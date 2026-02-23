@@ -329,6 +329,21 @@ else
     echo ""
 fi
 
+# Set up system crontab for scraper (pm2 cron_restart doesn't work for stopped processes)
+SETUP_CRON="cd $REPO_PATH && \
+    CRON_CMD=\"0 */2 * * * cd $REPO_PATH && RELOAD_API_KEY=\$(cat .deployment/reload_api_key) pm2 restart arrahmah-scraper --update-env >> logs/scraper-cron.log 2>&1\" && \
+    (crontab -l 2>/dev/null | grep -v 'arrahmah-scraper' ; echo \"\$CRON_CMD\") | crontab - && \
+    echo 'Crontab entry:' && \
+    crontab -l | grep arrahmah-scraper"
+
+if run_on_vm "Setting up scraper crontab" "$SETUP_CRON"; then
+    echo -e "${GREEN}✓ Scraper cron schedule set (every 2 hours)${NC}"
+    echo ""
+else
+    echo -e "${YELLOW}⚠ Warning: Failed to set up scraper crontab${NC}"
+    echo ""
+fi
+
 # Step 7: Verify Server Status
 echo -e "${BLUE}Step 7/9: Verifying server status...${NC}"
 echo "------------------------------------------------------------"
