@@ -28,7 +28,7 @@ module.exports = {
     {
       name: 'arrahmah-scraper',
       script: 'dist/standalone-scraper.js',
-      instances: 1,
+      exec_mode: 'fork', // Must be fork, not cluster - this is a one-shot script, not a server
       autorestart: false, // Don't auto-restart, it's a one-time run
       watch: false,
       // NOTE: Scheduling is handled by system crontab, NOT pm2 cron_restart.
