@@ -584,6 +584,9 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
     $('*').each((_: any, elem: any) => {
       const $elem = $(elem);
 
+      // Skip elements inside navigation menus
+      if ($elem.closest('#nav, #container_nav, nav, [role="navigation"]').length > 0) return;
+
       // Look for media links
       const $links = $elem.find('> a[href]').filter((_: any, link: any) => {
         const href = $(link).attr('href') || '';
@@ -594,10 +597,17 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
         // Look for title in sibling or child elements
         let titleText = '';
 
-        // Try to find text in previous sibling
-        const $prevSibling = $elem.prev();
-        if ($prevSibling.length > 0 && $prevSibling.find('a').length === 0) {
-          titleText = cleanText($prevSibling.text());
+        // Try to find text in previous siblings (walk back up to 3 siblings)
+        let $prev = $elem.prev();
+        for (let step = 0; step < 3 && $prev.length > 0; step++) {
+          if ($prev.find('a').length === 0) {
+            const prevText = cleanText($prev.text());
+            if (prevText && prevText.length > 3) {
+              titleText = prevText;
+              break;
+            }
+          }
+          $prev = $prev.prev();
         }
 
         // If no title from sibling, try first child that has text but no link
@@ -632,14 +642,53 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
         });
 
         if (items.length > 0) {
+          const allItemGroups: ItemGroup[] = items.length > 1 ?
+            items.map(item => ({ items: [item] })) :
+            [{ items }];
+
+          // Check next siblings for additional media links (e.g., Urdu/English columns)
+          // Only group siblings with the same tag name and id (same visual row pattern)
+          const elemTag = (elem as any).tagName?.toLowerCase();
+          const elemId = $(elem).attr('id') || '';
+          let nextSibling = (elem as any).nextSibling;
+          const maxSiblings = 5;
+          let siblingCount = 0;
+          while (nextSibling && siblingCount < maxSiblings) {
+            if (nextSibling.nodeType === 1) { // Element node
+              siblingCount++;
+              const $next = $(nextSibling);
+              const nextTag = nextSibling.tagName?.toLowerCase();
+              const nextId = $next.attr('id') || '';
+              // Only group siblings with the same tag AND a matching non-empty id (e.g., both are div#fqayahb)
+              if (nextTag !== elemTag || !elemId || nextId !== elemId) break;
+              const $nextLinks = $next.find('> a[href]').filter((_: any, link: any) => {
+                const href = $(link).attr('href') || '';
+                return !!href.match(/\.(mp3|mp4|pdf|ppsx)$/i);
+              });
+              // Include if it has media links but no title text (part of same row)
+              const nextText = cleanText($next.clone().find('a').remove().end().text());
+              if ($nextLinks.length > 0 && nextText.length <= 3) {
+                $nextLinks.each((_: any, link: any) => {
+                  const href = $(link).attr('href');
+                  if (href) {
+                    allItemGroups.push({ items: [createItem(toAbsoluteUrl(href, this.baseUrl))] });
+                  }
+                });
+                // Mark this element's links as seen so they won't create duplicate lessons
+                seenTitles.add(cleanText($next.text()));
+              } else {
+                break; // Hit another title or non-media element
+              }
+            }
+            nextSibling = nextSibling.nextSibling;
+          }
+
           lessons.push({
             title: titleText,
             lessonNum: null,
             ayahNum: null,
             uploadDate: null,
-            itemGroups: items.length > 1 ?
-              items.map(item => ({ items: [item] })) :
-              [{ items }]
+            itemGroups: allItemGroups,
           });
         }
       }
@@ -659,6 +708,8 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
 
       $contentArea.each((_: any, row: any) => {
         const $row = $(row);
+        // Skip elements inside navigation menus
+        if ($row.closest('#nav, #container_nav, nav, [role="navigation"]').length > 0) return;
         const $link = $row.find('a[href]').filter((_: any, link: any) => {
           const href = $(link).attr('href') || '';
           return !!href.match(/\.(mp3|mp4|pdf|ppsx)$/i);
