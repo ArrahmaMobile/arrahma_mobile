@@ -565,6 +565,54 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
   private scrapeSimpleList($: cheerio.CheerioAPI): { surahs: Surah[] } | null {
     const lessons: Lesson[] = [];
     const seenTitles = new Set<string>();
+    let groupNames: string[] = [];
+
+    // Try to detect column headers (e.g., "Urdu", "English" on juz_translation page)
+    // Look for short text-only elements that appear before content
+    const $possibleHeaders = $('body').find('*').filter((_: any, elem: any) => {
+      const $el = $(elem);
+      // Skip nav elements
+      if ($el.closest('#nav, #container_nav, nav, [role="navigation"]').length > 0) return false;
+      // Must have text but no links
+      if ($el.find('a').length > 0) return false;
+      const text = cleanText($el.text());
+      // Short text (likely a header, not content)
+      return text.length > 0 && text.length <= 20;
+    });
+
+    // Group consecutive header-like elements with the same tag/id
+    const headerGroups: string[][] = [];
+    let currentGroup: string[] = [];
+    let lastTag = '';
+    let lastId = '';
+
+    $possibleHeaders.each((_: any, elem: any) => {
+      const $elem = $(elem);
+      const tag = elem.tagName?.toLowerCase();
+      const id = $elem.attr('id') || '';
+      const text = cleanText($elem.text());
+
+      if (tag === lastTag && id === lastId && id !== '') {
+        currentGroup.push(text);
+      } else {
+        if (currentGroup.length >= 2) {
+          headerGroups.push(currentGroup);
+        }
+        currentGroup = [text];
+        lastTag = tag;
+        lastId = id;
+      }
+    });
+
+    if (currentGroup.length >= 2) {
+      headerGroups.push(currentGroup);
+    }
+
+    // Use the first valid header group found (e.g., ["Urdu", "English"])
+    if (headerGroups.length > 0) {
+      groupNames = headerGroups[0];
+      console.log(`  Detected column headers: ${groupNames.join(', ')}`);
+    }
 
     // Common navigation/sidebar keywords to skip
     const navigationKeywords = [
@@ -741,12 +789,17 @@ export class UniversalCourseScraper extends BaseScraper<QuranCourseContent | nul
     if (lessons.length > 0) {
       console.log(`  ✓ Simple list: ${lessons.length} lessons`);
 
+      // Use detected group names, or default to 'Media' if none found
+      const groups = groupNames.length > 0
+        ? groupNames.map(name => ({ name }))
+        : [{ name: 'Media' }];
+
       return {
         surahs: [{
           name: 'Lessons',
           arabicName: null,
           description: null,
-          groups: [{ name: 'Media' }],
+          groups,
           lessons
         }]
       };

@@ -76,15 +76,15 @@ class _QuranLessonDetailViewState extends State<QuranLessonDetailView> {
           const SizedBox(
             height: 30,
           ),
-          ...widget.surah.groups
+          ...widget.lesson.itemGroups
               .asMap()
               .entries
               .map((itemEntry) => _buildQuranLessonDetail(
                     context,
-                    itemEntry.value!,
-                    itemEntry.key < widget.lesson.itemGroups.length
-                        ? widget.lesson.itemGroups[itemEntry.key].items
-                        : [],
+                    itemEntry.key < widget.surah.groups.length
+                        ? widget.surah.groups[itemEntry.key]!
+                        : widget.surah.groups.first!,
+                    itemEntry.value.items,
                   ))
               .toList()
         ],
