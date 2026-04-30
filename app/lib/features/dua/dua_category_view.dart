@@ -16,23 +16,19 @@ class DuaCategoryView extends StatefulWidget {
 }
 
 class _DuaCategoryViewState extends State<DuaCategoryView> {
-  final defaultCountInGrid = 9;
-
   String searchQuery = '';
 
   AppData? _appData;
 
-  late int countInGrid;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    countInGrid = defaultCountInGrid;
     final appData = context.on<AppData>();
     _appData = appData;
 
-    if (allCategories != null &&
-        filteredCategories.every((c) => c.imageUrl == null)) countInGrid = 0;
+    final countInGrid = allCategories == null
+        ? 0
+        : filteredCategories.where((c) => c.imageUrl != null).length;
 
     return Scaffold(
       appBar: AppBar(
@@ -92,11 +88,11 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          if (allCategories == null)
-                            return Center(
-                                child: Text('No dua categories found'));
-                          if (index >= filteredCategories.length) return null;
-                          final category = filteredCategories[index];
+                          final imageCategories = filteredCategories
+                              .where((c) => c.imageUrl != null)
+                              .toList();
+                          if (index >= imageCategories.length) return null;
+                          final category = imageCategories[index];
                           return InkWell(
                             onTap: () {
                               onCategoryTap(category);
@@ -135,17 +131,13 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                             ),
                           );
                         },
-                        childCount: allCategories != null
-                            ? filteredCategories.length > countInGrid
-                                ? countInGrid
-                                : filteredCategories.length
-                            : 0,
+                        childCount: countInGrid,
                       ),
                     ),
                   ),
                 if (searchQuery.isNotEmpty &&
                     filteredCategories.isNotEmpty &&
-                    filteredCategories.length > countInGrid)
+                    listCategories.isNotEmpty)
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -162,9 +154,8 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      if (index >= filteredCategories.length - countInGrid)
-                        return null;
-                      final category = filteredCategories[index + countInGrid];
+                      if (index >= listCategories.length) return null;
+                      final category = listCategories[index];
                       return _buildListTile(
                           category,
                           category.title.titleCase.isEmpty
@@ -176,11 +167,7 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
                               : category.titleUrdu.titleCase,
                           (index + countInGrid + 1).toString());
                     },
-                    childCount: allCategories != null
-                        ? filteredCategories.length > countInGrid
-                            ? filteredCategories.length - countInGrid
-                            : 0
-                        : 0,
+                    childCount: listCategories.length,
                   ),
                 ),
                 if (searchQuery.isNotEmpty && filteredDuas.isNotEmpty)
@@ -305,6 +292,10 @@ class _DuaCategoryViewState extends State<DuaCategoryView> {
         .where((c) => c != null)
         .map((c) => c!)
         .toList();
+  }
+
+  List<DuaCategory> get listCategories {
+    return filteredCategories.where((c) => c.imageUrl == null).toList();
   }
 
   List<DuaCategory> get filteredCategories {

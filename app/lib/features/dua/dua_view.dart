@@ -1,5 +1,6 @@
 import 'package:arrahma_shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_framework/flutter_framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recase/recase.dart';
 import 'package:share/share.dart';
@@ -48,6 +49,20 @@ class _DuaViewState extends State<DuaView> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              if (widget.category.imageUrl != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Image(
+                      image: ImageUtils.fromNetworkWithCached(
+                        widget.category.imageUrl!,
+                      ),
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               if (widget.category.title.isNotEmpty) const SizedBox(height: 16),
               if (widget.category.title.isNotEmpty)
                 SelectableText(
