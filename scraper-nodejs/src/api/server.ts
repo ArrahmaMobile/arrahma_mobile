@@ -91,6 +91,9 @@ class ArrahmahAPIServer {
     // Data endpoint
     router.get('/data/:version?', this.getData.bind(this));
 
+    // Duas endpoint
+    router.get('/duas', this.getDuas.bind(this));
+
     // Internal reload endpoint - called by scraper after completion
     router.post('/internal/reload-data', this.reloadData.bind(this));
 
@@ -340,6 +343,27 @@ class ArrahmahAPIServer {
 
 
   /**
+   * GET /api/duas
+   * Returns just the duaCategories array
+   */
+  private async getDuas(_req: Request, res: Response): Promise<void> {
+    try {
+      if (!this.cachedData || !this.cachedData.appData) {
+        res.status(503).json({
+          error: 'Service temporarily unavailable',
+          message: 'Data is being loaded. Please try again in a few moments.',
+        });
+        return;
+      }
+
+      res.json(this.cachedData.appData.duaCategories);
+    } catch (error) {
+      console.error('Error in getDuas:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  /**
    * Start periodic broadcast status checking
    */
   private async startBroadcastChecking(): Promise<void> {
@@ -382,6 +406,7 @@ class ArrahmahAPIServer {
         console.log(`🚀 Arrahmah API Server Started`);
         console.log(`${'='.repeat(60)}`);
         console.log(`📊 Data endpoint: http://localhost:${this.port}/api/data`);
+        console.log(`🤲 Duas endpoint: http://localhost:${this.port}/api/duas`);
         console.log(`📡 Status endpoint: http://localhost:${this.port}/api/status`);
         console.log(`❤️  Health check: http://localhost:${this.port}/health`);
         console.log(`${'='.repeat(60)}`);
