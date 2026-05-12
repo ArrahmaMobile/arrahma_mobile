@@ -5,7 +5,7 @@
 import { BaseScraper } from '../core/scraper-base';
 import { DuaCategory, Dua } from '../types/models';
 import { toAbsoluteUrl } from '../utils/url.utils';
-import { cleanText } from '../utils/text.utils';
+import { cleanText, cleanTextPreserveBreaks } from '../utils/text.utils';
 
 export class DuaScraper extends BaseScraper<DuaCategory[]> {
   private readonly duaPageUrl = 'duas/duas.php';
@@ -98,7 +98,11 @@ export class DuaScraper extends BaseScraper<DuaCategory[]> {
     // Extract header information
     const $header = $frame.find('.header');
     const title = cleanText($header.find('h1.category-title').text()) || '';
-    const titleUrdu = cleanText($header.find('p.category-title-urdu').text()) || '';
+    const titleUrdu = cleanText($header.find('p.category-title-urdu').text()) || undefined;
+
+    // Collect category-level notes from content blocks
+    const categoryNotes: string[] = [];
+    const categoryNotesUrdu: string[] = [];
 
     // Extract all dua content blocks
     const duas: Dua[] = [];
@@ -107,36 +111,83 @@ export class DuaScraper extends BaseScraper<DuaCategory[]> {
     $contentBlocks.each((index: number, el: any) => {
       const $content = $(el);
 
-      const duaTitle = cleanText($content.find('h2.dua-title').text()) || undefined;
-      const duaTitleUrdu = cleanText($content.find('p.dua-title-urdu').text()) || undefined;
-      const duaArabic = cleanText($content.find('p.dua-arabic').text()) || '';
-      const duaEnglish = cleanText($content.find('p.dua-english').text()) || undefined;
-      const duaUrdu = cleanText($content.find('p.dua-urdu').text()) || undefined;
+      // Extract notes (English and Urdu)
+      const noteText = cleanText($content.children('h2.dua-note').text());
+      const noteTextUrdu = cleanText($content.children('p.dua-note-urdu').text());
+      if (noteText) categoryNotes.push(noteText);
+      if (noteTextUrdu) categoryNotesUrdu.push(noteTextUrdu);
 
-      // Only add if there's Arabic text (required field)
-      if (duaArabic) {
-        const dua: Dua = {
-          id: `${index + 1}`,
-          title: duaTitle,
-          titleUrdu: duaTitleUrdu,
-          dua: duaArabic,
-          duaEnglish: duaEnglish,
-          duaUrdu: duaUrdu,
-          notes: undefined,
-        };
+      // Use direct children only to avoid picking up nested content block elements.
+      // Some pages have broken HTML where </div> is inside a comment, causing
+      // nesting in browsers (Cheerio handles it correctly but we stay safe).
+      const duaTitle = cleanText($content.children('h2.dua-title').text()) || undefined;
+      const duaTitleUrdu = cleanText($content.children('p.dua-title-urdu').text()) || undefined;
+      const arabic = cleanTextPreserveBreaks($content.children('p.dua-arabic')) || '';
 
-        duas.push(dua);
+      if (!arabic) return;
+
+      // Try direct child elements first for English/Urdu
+      let english = cleanTextPreserveBreaks($content.children('p.dua-english')) || '';
+      let urdu = cleanTextPreserveBreaks($content.children('p.dua-urdu')) || '';
+
+      // Some pages have English/Urdu inside HTML comments (<!--p class="dua-english">...-->).
+      // Extract from comment nodes when the real elements are missing.
+      if (!english || !urdu) {
+        $content.contents().each((_: number, node: any) => {
+          if (node.type === 'comment') {
+            const commentText: string = node.data || '';
+            if (!english) {
+              const engMatch = commentText.match(/class=["']dua-english["']>([\s\S]*?)<\/p>/);
+              if (engMatch) english = cleanText(engMatch[1]);
+            }
+            if (!urdu) {
+              const urduMatch = commentText.match(/class=["']dua-urdu["']>([\s\S]*?)<\/p>/);
+              if (urduMatch) urdu = cleanText(urduMatch[1]);
+            }
+          }
+        });
       }
+
+      const repeat = this.parseRepeat(arabic);
+      const cleanedArabic = this.cleanArabic(arabic);
+
+      const dua: Dua = {
+        id: index + 1,
+        title: duaTitle,
+        titleUrdu: duaTitleUrdu,
+        arabic: cleanedArabic,
+        english,
+        urdu,
+        ...(repeat ? { repeat } : {}),
+      };
+
+      duas.push(dua);
     });
 
     if (duas.length === 0) {
       return null;
     }
 
-    return {
-      title,
-      titleUrdu,
-      duas,
-    };
+    const notes = categoryNotes.length > 0 ? categoryNotes.join('\n') : undefined;
+    const notesUrdu = categoryNotesUrdu.length > 0 ? categoryNotesUrdu.join('\n') : undefined;
+
+    return { title, titleUrdu, notes, notesUrdu, duas };
+  }
+
+  private static readonly REPEAT_PATTERN = /\(\s*(\d+)\s*[xX×]\s*(?:OR\s+\d+\s*[xX×]\s*)?\)/;
+
+  private parseRepeat(text: string): number | undefined {
+    const match = text.match(DuaScraper.REPEAT_PATTERN);
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+    return undefined;
+  }
+
+  private cleanArabic(text: string): string {
+    return text
+      .replace(DuaScraper.REPEAT_PATTERN, '')
+      .replace(/^\s*\*?\s*\d+\s*[.)]\s*/gm, '')
+      .trim();
   }
 }

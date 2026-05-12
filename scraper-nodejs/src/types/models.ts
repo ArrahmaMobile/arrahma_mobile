@@ -167,24 +167,26 @@ export interface QuranCourseGroup {
   courses: QuranCourse[];
 }
 
-/** Dua (prayer) - matches Dart Dua model */
+/** Dua (supplication) */
 export interface Dua {
-  id: string;
+  id: number;
   title?: string | null;
   titleUrdu?: string | null;
-  dua: string; // Arabic text (required)
-  duaEnglish?: string | null;
-  duaUrdu?: string | null;
+  arabic: string;
+  english: string;
+  urdu: string;
+  repeat?: number;
   notes?: string | null;
 }
 
-/** Dua category - matches Dart DuaCategory model */
+/** Dua category */
 export interface DuaCategory {
   title: string;
-  titleUrdu: string; // Required in Dart, not optional
+  titleUrdu?: string | null;
   imageUrl?: string | null;
   notes?: string | null;
-  duas: Dua[]; // Required in Dart, not optional
+  notesUrdu?: string | null;
+  duas: Dua[];
   categories?: DuaCategory[] | null;
 }
 

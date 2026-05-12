@@ -3,12 +3,27 @@
  */
 
 /**
- * Clean text by normalizing whitespace and trimming
+ * Clean text by normalizing whitespace and trimming.
+ * Collapses all whitespace (including newlines) into single spaces.
  */
 export function cleanText(text: string): string {
   return text
-    .replace(/\s+/g, ' ') // Replace multiple whitespace with single space
-    .replace(/\n+/g, ' ') // Replace newlines with space
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Clean text while preserving intentional line breaks.
+ * Replaces <br> tags with newlines before extracting text,
+ * then normalizes runs of whitespace per line while keeping newlines.
+ */
+export function cleanTextPreserveBreaks($el: any): string {
+  const clone = $el.clone();
+  clone.find('br').replaceWith('\n');
+  return clone.text()
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n[ \t]*/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 

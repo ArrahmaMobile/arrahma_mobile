@@ -9,7 +9,7 @@ import cors from 'cors';
 import crypto from 'crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { ScrapedData } from '../types/models';
+import { ScrapedData, DuaCategory } from '../types/models';
 import { BroadcastChecker } from '../services/broadcast-checker';
 
 interface BroadcastStatus {
@@ -328,8 +328,11 @@ class ArrahmahAPIServer {
       const versionParam = req.query['api-version'] || req.headers['accept-version'];
       const version = versionParam ? parseInt(versionParam.toString(), 10) : null;
 
-      // Return just the appData part (unwrapped), matching the existing API structure
-      const responseData = this.cachedData.appData;
+      // Return appData with legacy dua field names for mobile app compatibility
+      const responseData = {
+        ...this.cachedData.appData,
+        duaCategories: this.toLegacyDuaCategories(this.cachedData.appData.duaCategories),
+      };
 
       console.log(`[data] Sending data - Version: ${version || 'latest'}, Hash: ${this.dataHash.substring(0, 12)}...`);
 
@@ -341,6 +344,25 @@ class ArrahmahAPIServer {
     }
   }
 
+
+  private toLegacyDuaCategories(categories: DuaCategory[]): any[] {
+    return categories.map(cat => ({
+      title: cat.title,
+      titleUrdu: cat.titleUrdu,
+      imageUrl: cat.imageUrl,
+      notes: [cat.notes, cat.notesUrdu].filter(Boolean).join('\n') || undefined,
+      categories: cat.categories ? this.toLegacyDuaCategories(cat.categories) : undefined,
+      duas: cat.duas.map(d => ({
+        id: String(d.id),
+        title: d.title,
+        titleUrdu: d.titleUrdu,
+        dua: d.arabic,
+        duaEnglish: d.english || undefined,
+        duaUrdu: d.urdu || undefined,
+        notes: d.notes,
+      })),
+    }));
+  }
 
   /**
    * GET /api/duas
