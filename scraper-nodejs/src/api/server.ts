@@ -347,8 +347,8 @@ class ArrahmahAPIServer {
 
   private toLegacyDuaCategories(categories: DuaCategory[]): any[] {
     return categories.map(cat => ({
-      title: cat.title,
-      titleUrdu: cat.titleUrdu,
+      title: cat.title || '',
+      titleUrdu: cat.titleUrdu || '',
       imageUrl: cat.imageUrl,
       notes: [cat.notes, cat.notesUrdu].filter(Boolean).join('\n') || undefined,
       categories: cat.categories ? this.toLegacyDuaCategories(cat.categories) : undefined,
