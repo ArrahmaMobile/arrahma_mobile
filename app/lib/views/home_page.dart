@@ -303,15 +303,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildImageLink(Item item, String imageUrl) {
-    final imageUri = Uri.parse(imageUrl);
-    final imageUriWithCacheBuster = imageUri.replace(
-        queryParameters: <String, String>{
-          ...imageUri.queryParameters,
-          'buster': item.data
-        });
+    final displayUrl = imageUrl.startsWith('http')
+        ? Uri.parse(imageUrl)
+            .replace(queryParameters: <String, String>{
+              ...Uri.parse(imageUrl).queryParameters,
+              'buster': item.data
+            })
+            .toString()
+        : imageUrl;
     return GestureDetector(
       onTap: () => Utils.openUrl(context, item.copyWith(imageUrl: imageUrl)),
-      child: _buildImage(imageUriWithCacheBuster.toString()),
+      child: _buildImage(displayUrl),
     );
   }
 

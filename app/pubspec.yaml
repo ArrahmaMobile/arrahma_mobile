@@ -37,10 +37,10 @@ dependencies:
   device_preview: ^1.2.0
   flutter_cache_manager: ^3.4.0
   flutter_framework:
-    git:
-      url: git@github.com:SASID-PRO/flutter_framework.git
-      ref: null-safety
-    # path: ../../flutter_framework
+    # git:
+    #   url: git@github.com:SASID-PRO/flutter_framework.git
+    #   ref: null-safety
+    path: ../../flutter_framework
   flutter_launcher_icons: ^0.13.1
   flutter_markdown: ^0.7.3+1
   fluttertoast: ^8.2.12

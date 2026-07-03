@@ -1,0 +1,17 @@
+node_modules
+dist
+*.log
+.DS_Store
+.env
+.env.*
+.deployment
+.playwright-mcp
+data
+logs
+*.md
+tests
+scripts
+.git
+.github
+.vscode
+.idea

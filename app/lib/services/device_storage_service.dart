@@ -212,7 +212,9 @@ class DeviceStorageService extends BaseDeviceStorageService {
   }
 
   Future<String?> loadAppDataHash() async {
-    return await storage.getWithKey(APP_DATA_HASH_KEY);
+    final hash = await storage.getWithKey<String>(APP_DATA_HASH_KEY);
+    print('[DeviceStorage] loadAppDataHash: $hash');
+    return hash;
   }
 
   Future<bool> saveAppDataHash(String appDataHash) async {

@@ -29,6 +29,7 @@ class AppService extends StoppableService {
   static const LAST_FETCH_DATE_KEY = 'LAST_FETCH_DATE';
   static const STATUS_CHECK_INTERVAL = Duration(minutes: 10);
   static const STATUS_CHECK_FAIL_INTERVAL = Duration(minutes: 1);
+  static const _ENV_FAILOVER_CODES = {524, 502, 503, 504, 520, 521, 522, 523};
 
   bool _firstDataFetchFailed = false;
   bool get firstDataFetchFailed => _firstDataFetchFailed;
@@ -67,6 +68,14 @@ class AppService extends StoppableService {
     _setupIntervalTimer(false);
     _appDataHash ??= await deviceStorageService.loadAppDataHash();
     _appData ??= await deviceStorageService.loadAppData();
+    print('[initApp] _isUpdated=$_isUpdated, '
+        'hash=${_appDataHash != null ? '${_appDataHash!.substring(0, 12)}...' : 'null'}, '
+        'appData=${_appData != null ? 'loaded' : 'null'}, '
+        'justUpdated=$justUpdated');
+
+    _lastEnv = apiService.environmentConfigCtrl!.state!;
+    apiService.environmentConfigCtrl!.stateListener
+        .addListener(_onEnvironmentUpdate);
 
     try {
       await statusCheckTimerHandler(init: true, force: false);
@@ -76,10 +85,6 @@ class AppService extends StoppableService {
         _setupIntervalTimer(true);
       }
     }
-
-    _lastEnv = apiService.environmentConfigCtrl!.state!;
-    apiService.environmentConfigCtrl!.stateListener
-        .addListener(_onEnvironmentUpdate);
 
     if (_appData == null) {
       _firstDataFetchFailed = true;
@@ -107,7 +112,7 @@ class AppService extends StoppableService {
     if (_lastEnv.baseUrl == apiService.environmentConfigCtrl!.state!.baseUrl)
       return;
     _lastEnv = apiService.environmentConfigCtrl!.state!;
-    statusCheckTimerHandler(init: false, force: true);
+    statusCheckTimerHandler(init: false, force: false);
   }
 
   Future<AppData?> dataFetchTimerHandler(
@@ -132,9 +137,35 @@ class AppService extends StoppableService {
     return appDataInfo?.value;
   }
 
+  bool _tryEnvironmentFailover(int? statusCode) {
+    if (!kDebugMode) return false;
+    if (statusCode == null || !_ENV_FAILOVER_CODES.contains(statusCode)) return false;
+
+    final envService = SL.get<EnvironmentService>()!;
+    final envs = envService.getEnvironments();
+    if (envs.length <= 1) return false;
+
+    final currentEnv = apiService.environmentConfigCtrl!.state!;
+    final currentIndex = envs.indexWhere((e) => e.name == currentEnv.name);
+    final nextEnv = envs[(currentIndex + 1) % envs.length];
+
+    print('[failover] Environment "${currentEnv.name}" returned $statusCode, '
+        'switching to "${nextEnv.name}"');
+    apiService.environmentConfigCtrl!.setState((_) => nextEnv);
+    deviceStorageService.saveEnvironmentName(nextEnv.name);
+    return true;
+  }
+
   Future<ServerStatus?> statusCheckTimerHandler(
-      {bool init = false, bool force = false}) async {
-    final status = await getStatus();
+      {bool init = false, bool force = false, bool allowFailover = true}) async {
+    ServerStatus? status;
+    try {
+      status = await getStatus();
+    } catch (err) {
+      if (allowFailover && err is ApiResponse && _tryEnvironmentFailover(err.statusCode)) {
+        return await statusCheckTimerHandler(init: init, force: false, allowFailover: false);
+      }
+    }
     if (status != null) {
       _broadcastStatusNotifier.value = status.broadcastStatus;
       final serverStatus =
@@ -142,16 +173,18 @@ class AppService extends StoppableService {
       connectivityService.updateServerStatus(serverStatus);
     }
     final isStale = status?.isDataStale ?? false;
-    if (isStale)
-      logger.verbose(
-          'Data with hash $_appDataHash is stale; ${status?.lastDataHash != null ? 'New hash: ${status!.lastDataHash}; ' : ''}fetching...');
+    final forceReasons = <String>[
+      if (force) 'force=true',
+      if (isStale) 'isStale(server hash=${status?.lastDataHash}, local hash=$_appDataHash)',
+      if (appDataHash == null) 'appDataHash==null',
+      if (appData == null) 'appData==null',
+      if (justUpdated) 'justUpdated(_isUpdated=$_isUpdated, _appData=${_appData != null ? "loaded" : "null"})',
+    ];
+    final shouldForce = forceReasons.isNotEmpty;
+    print('[statusCheck] shouldForce=$shouldForce, reasons=$forceReasons');
     await dataFetchTimerHandler(
         init: init,
-        force: force ||
-            isStale ||
-            appDataHash == null ||
-            appData == null ||
-            justUpdated);
+        force: shouldForce);
     return status;
   }
 
@@ -167,6 +200,8 @@ class AppService extends StoppableService {
     final lastFetchDate = DateTime.tryParse(
         await storageService.getWithKey<String>(LAST_FETCH_DATE_KEY) ?? '');
     final date = DateTime.now().toUtc();
+    print('[getData] force=$force, lastFetchDate=$lastFetchDate, '
+        'connected=${connectivityService.isConnected}');
     if (connectivityService.isConnected &&
         (force ||
             lastFetchDate ==
@@ -178,7 +213,7 @@ class AppService extends StoppableService {
         if (justUpdated) {
           logger.verbose('App was updated. Refetching data...');
         }
-        // Show toast or snackbar telling user that data is being fetched
+        print('[getData] Fetching data from API...');
         Fluttertoast.showToast(
           msg: 'New data is being fetched...',
           toastLength: Toast.LENGTH_SHORT,
@@ -192,6 +227,9 @@ class AppService extends StoppableService {
         final appDataResponse = await apiService.getWithResponse<AppData>(
             'data?api-version=2',
             timeout: const Duration(seconds: 60));
+        print('[getData] Response: success=${appDataResponse.isSuccess}, '
+            'hasData=${appDataResponse.data != null}, '
+            'etag=${appDataResponse.headers?['etag']}');
         if (appDataResponse.isSuccess && appDataResponse.data != null) {
           _firstDataFetchFailed = false;
           appData = appDataResponse.data!;
@@ -199,10 +237,12 @@ class AppService extends StoppableService {
 
           await storageService.setWithKey<String>(
               LAST_FETCH_DATE_KEY, date.toIso8601String());
+          logger.verbose('[getData] Saved new hash=$appDataHash');
           return KeyValuePair(appDataHash, appData);
         }
       } catch (err) {
         logger.error('Unable to get app data.', err);
+        if (err is ApiResponse) _tryEnvironmentFailover(err.statusCode);
       } finally {
         _dataLoadingNotifier.value = false;
       }
