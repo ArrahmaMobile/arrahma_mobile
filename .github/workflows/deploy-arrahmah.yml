@@ -13,7 +13,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: arrahamamobile/arrahma_mobile/arrahmah-api
+  IMAGE_NAME: d10100111001/arrahmah-api
   APP_NAME: arrahmah
   APP_PORT: 8888
 
