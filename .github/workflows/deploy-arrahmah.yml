@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Arrahmah
 
 on:
   push:
@@ -13,56 +13,41 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: d10100111001/arrahmah-api
   APP_NAME: arrahmah
   APP_PORT: 8888
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v4
 
-      - uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: docker/setup-buildx-action@v3
-
-      - uses: docker/build-push-action@v6
-        with:
-          context: ./scraper-nodejs
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to VPS
+      - name: Build and deploy on VPS
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: deploy
           key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
           script: |
-            cd /opt/platform/apps/${{ env.APP_NAME }}
+            set -e
+            APP_DIR="/opt/platform/apps/${{ env.APP_NAME }}"
+            BUILD_DIR="/tmp/arrahmah-build-${{ github.sha }}"
 
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            # Clone at the exact commit
+            rm -rf "$BUILD_DIR"
+            git clone --depth 1 --branch master https://github.com/${{ github.repository }}.git "$BUILD_DIR"
 
+            # Build Docker image
+            echo "Building arrahmah-api image..."
+            docker build -t arrahmah-api:latest "$BUILD_DIR/scraper-nodejs"
+            echo "Image built successfully"
+
+            # Deploy
+            cd "$APP_DIR"
             docker compose up -d --force-recreate --no-build
 
+            # Health check
             echo "Waiting for health check..."
             for i in $(seq 1 30); do
               if docker compose exec -T ${{ env.APP_NAME }} node -e \
@@ -78,4 +63,6 @@ jobs:
               sleep 2
             done
 
+            # Cleanup
+            rm -rf "$BUILD_DIR"
             docker image prune -f
