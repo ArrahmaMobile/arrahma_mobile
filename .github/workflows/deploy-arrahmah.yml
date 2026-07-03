@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'scraper-nodejs/**'
+      - '.github/workflows/deploy-arrahmah.yml'
       - '!scraper-nodejs/**/*.md'
 
 concurrency:
