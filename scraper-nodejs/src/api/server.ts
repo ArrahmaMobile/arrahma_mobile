@@ -118,6 +118,13 @@ class ArrahmahAPIServer {
       res.json(health);
     });
 
+    // A small public landing page gives shared links a useful social preview while
+    // keeping the JSON API under /api and the health endpoint unchanged.
+    this.app.use(express.static(path.join(__dirname, '../../public'), {
+      index: 'index.html',
+      maxAge: '1h',
+    }));
+
     // 404 handler
     this.app.use((_req: Request, res: Response) => {
       res.status(404).json({ error: 'Not found' });
