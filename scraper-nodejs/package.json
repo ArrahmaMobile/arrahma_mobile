@@ -10,6 +10,7 @@
     "scrape": "npm run build && npm start",
     "api": "npm run build && node dist/api/server.js",
     "api:dev": "ts-node src/api/server.ts",
+    "test": "npm run build && node --test test/*.test.js",
     "clean": "rm -rf dist"
   },
   "keywords": [

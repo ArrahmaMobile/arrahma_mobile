@@ -11,6 +11,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ScrapedData, DuaCategory } from '../types/models';
 import { BroadcastChecker } from '../services/broadcast-checker';
+import { createProductStatsHandler } from './product-stats';
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -100,6 +101,11 @@ class ArrahmahAPIServer {
     // Mount router at /api
     this.app.use('/api', router);
 
+    this.app.get('/_stats', createProductStatsHandler({
+      getData: () => this.cachedData,
+      getBroadcastStatus: () => this.broadcastChecker.getCurrentStatus(),
+    }));
+
     // Health check endpoint with detailed diagnostics
     this.app.get('/health', async (_req: Request, res: Response) => {
       const health = {
@@ -114,6 +120,7 @@ class ArrahmahAPIServer {
         dataAvailable: this.cachedData !== null,
         dataHash: this.dataHash ? this.dataHash.substring(0, 12) + '...' : null,
         lastUpdate: this.cachedData?.runMetadata?.lastUpdate || null,
+        links: { stats: 'https://arrahmah.sasid.me/_stats' },
       };
       res.json(health);
     });

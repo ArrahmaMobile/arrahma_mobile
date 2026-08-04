@@ -24,15 +24,23 @@ jobs:
 
       - name: Build and deploy on VPS
         uses: appleboy/ssh-action@v1
+        env:
+          PRODUCT_STATS_TOKEN: ${{ secrets.PRODUCT_STATS_TOKEN }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: deploy
           key: ${{ secrets.VPS_SSH_KEY }}
+          envs: PRODUCT_STATS_TOKEN
           script_stop: true
           script: |
             set -e
             APP_DIR="/opt/platform/apps/${{ env.APP_NAME }}"
             BUILD_DIR="/tmp/arrahmah-build-${{ github.sha }}"
+
+            if [ "${#PRODUCT_STATS_TOKEN}" -lt 24 ]; then
+              echo "PRODUCT_STATS_TOKEN must be configured as a GitHub Actions secret (minimum 24 characters)." >&2
+              exit 1
+            fi
 
             # Clone at the exact commit
             rm -rf "$BUILD_DIR"
@@ -42,6 +50,16 @@ jobs:
             echo "Building arrahmah-api image..."
             docker build -t arrahmah-api:latest "$BUILD_DIR/scraper-nodejs"
             echo "Image built successfully"
+
+            # Install the app-owned Compose contract and update only this secret.
+            install -m 0644 "$BUILD_DIR/scraper-nodejs/deploy/docker-compose.vps.yml" "$APP_DIR/docker-compose.yml"
+            TEMP_ENV=$(mktemp "$APP_DIR/.env.XXXXXX")
+            if [ -f "$APP_DIR/.env" ]; then
+              grep -v '^PRODUCT_STATS_TOKEN=' "$APP_DIR/.env" > "$TEMP_ENV" || true
+            fi
+            printf 'PRODUCT_STATS_TOKEN=%s\n' "$PRODUCT_STATS_TOKEN" >> "$TEMP_ENV"
+            chmod 600 "$TEMP_ENV"
+            mv "$TEMP_ENV" "$APP_DIR/.env"
 
             # Deploy
             cd "$APP_DIR"

@@ -30,6 +30,9 @@ npm run scrape
 # Build only
 npm run build
 
+# Build and run focused contract tests
+npm test
+
 # Run built version
 npm start
 ```
@@ -37,6 +40,19 @@ npm start
 ## Output
 
 Scraped data is saved to `data/scraped_data.json`
+
+## Product telemetry
+
+The production API exposes SASID Product Stats v1 at authenticated
+`GET /_stats`. Configure `PRODUCT_STATS_TOKEN` with the same strong bearer token
+used by Relay. The report derives current catalog, content-freshness, and
+broadcast-checker gauges from the loaded snapshot. User, signup, active-user,
+and online-user metrics are explicitly unavailable because this API does not
+receive application identity or interaction events.
+
+The `master` deployment workflow requires a `PRODUCT_STATS_TOKEN` GitHub
+Actions secret. It installs the app-owned VPS Compose file and preserves any
+unrelated live `.env` entries while rotating that token.
 
 ## Architecture
 

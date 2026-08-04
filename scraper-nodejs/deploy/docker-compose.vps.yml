@@ -1,0 +1,22 @@
+services:
+  arrahmah:
+    image: arrahmah-api:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 8888
+      PRODUCT_STATS_TOKEN: ${PRODUCT_STATS_TOKEN:?PRODUCT_STATS_TOKEN is required}
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8888/health').then(r=>{if(!r.ok)throw 1})"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - platform_frontend
+
+networks:
+  platform_frontend:
+    external: true
