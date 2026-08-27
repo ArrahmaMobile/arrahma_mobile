@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://health.sasid.ai/schemas/sasid-health.v1.schema.json",
+  "title": "SASID Application Health Report",
+  "description": "Portable health contract emitted by a single application.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "observedAt", "application", "status", "summary", "components"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "description", "environment", "owner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "environment": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "owner": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "kind": { "enum": ["application", "infrastructure", "domain"] },
+        "homepage": { "type": "string", "format": "uri" },
+        "repository": { "type": "string", "format": "uri" },
+        "version": { "type": "string", "maxLength": 100 },
+        "release": { "type": "string", "maxLength": 160 },
+        "commit": { "type": "string", "pattern": "^[a-fA-F0-9]{7,64}$" },
+        "region": { "type": "string", "maxLength": 100 },
+        "tags": {
+          "type": "array",
+          "maxItems": 20,
+          "items": { "type": "string", "minLength": 1, "maxLength": 50 },
+          "uniqueItems": true
+        },
+        "technologies": {
+          "type": "array",
+          "maxItems": 40,
+          "items": { "$ref": "#/$defs/technology" }
+        },
+        "deployment": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Provider-evidenced first and latest production deployment timestamps.",
+          "properties": {
+            "first": { "$ref": "#/$defs/deploymentTimestamp" },
+            "latest": { "$ref": "#/$defs/deploymentTimestamp" }
+          }
+        }
+      }
+    },
+    "status": {
+      "enum": ["operational", "degraded", "outage", "maintenance", "unknown"]
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "uptimeSeconds": { "type": "number", "minimum": 0 },
+    "responseTimeMs": { "type": "number", "minimum": 0 },
+    "components": {
+      "type": "array",
+      "maxItems": 100,
+      "items": { "$ref": "#/$defs/component" }
+    },
+    "incidents": {
+      "type": "array",
+      "maxItems": 100,
+      "items": { "$ref": "#/$defs/incident" }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dashboard": { "type": "string", "format": "uri" },
+        "runbook": { "type": "string", "format": "uri" },
+        "support": { "type": "string", "format": "uri" },
+        "stats": { "type": "string", "format": "uri" }
+      }
+    }
+  },
+  "$defs": {
+    "technology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "category", "sources", "confidence"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "category": {
+          "enum": [
+            "language",
+            "framework",
+            "runtime",
+            "database",
+            "hosting",
+            "dns",
+            "registrar",
+            "edge",
+            "build",
+            "service"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["configured", "caddy", "netlify", "spaceship", "vps", "detected"]
+          }
+        },
+        "confidence": { "enum": ["declared", "high", "medium", "low"] },
+        "evidence": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "deploymentTimestamp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["at", "sources", "confidence"],
+      "properties": {
+        "at": { "type": "string", "format": "date-time" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["configured", "caddy", "netlify", "spaceship", "vps", "detected"]
+          }
+        },
+        "confidence": { "enum": ["declared", "high", "medium", "low"] },
+        "evidence": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "type", "status", "required", "observedAt"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "status": {
+          "enum": ["operational", "degraded", "outage", "maintenance", "unknown"]
+        },
+        "required": { "type": "boolean" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "latencyMs": { "type": "number", "minimum": 0 },
+        "message": { "type": "string", "maxLength": 500 },
+        "lastSuccessAt": { "type": "string", "format": "date-time" },
+        "lastFailureAt": { "type": "string", "format": "date-time" },
+        "details": {
+          "type": "object",
+          "maxProperties": 30,
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        }
+      }
+    },
+    "incident": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "applicationId",
+        "title",
+        "status",
+        "severity",
+        "startedAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "applicationId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "componentId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "status": {
+          "enum": ["investigating", "identified", "monitoring", "resolved"]
+        },
+        "severity": { "enum": ["info", "warning", "critical"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "resolvedAt": { "type": "string", "format": "date-time" },
+        "message": { "type": "string", "maxLength": 500 }
+      }
+    }
+  }
+}

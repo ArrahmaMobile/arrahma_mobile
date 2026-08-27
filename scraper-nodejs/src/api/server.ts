@@ -12,6 +12,7 @@ import * as path from 'path';
 import { ScrapedData, DuaCategory } from '../types/models';
 import { BroadcastChecker } from '../services/broadcast-checker';
 import { createProductStatsHandler } from './product-stats';
+import { createHealthHandler, startUpstreamCanaryLoop } from './health/report';
 
 interface BroadcastStatus {
   isYoutubeLive: boolean;
@@ -106,7 +107,16 @@ class ArrahmahAPIServer {
       getBroadcastStatus: () => this.broadcastChecker.getCurrentStatus(),
     }));
 
-    // Health check endpoint with detailed diagnostics
+    // SASID Application Health Standard v1. The canonical readiness report.
+    this.app.get('/_health', createHealthHandler({
+      getData: () => this.cachedData,
+      getDataHash: () => this.dataHash,
+      getBroadcastDiagnostics: () => this.broadcastChecker.getDiagnostics(),
+    }));
+
+    // The legacy bespoke health check. Superseded by `/_health`, kept while
+    // Relay's hand-written probes still point at it and the mobile app's own
+    // status flow still reads `/api/status`.
     this.app.get('/health', async (_req: Request, res: Response) => {
       const health = {
         status: 'ok',
@@ -437,6 +447,10 @@ class ArrahmahAPIServer {
       // Start broadcast status checking
       await this.startBroadcastChecking();
 
+      // The upstream reachability verdict is refreshed on its own loop so
+      // `/_health` never makes an outbound request per caller.
+      startUpstreamCanaryLoop();
+
       this.app.listen(this.port, () => {
         console.log(`\n${'='.repeat(60)}`);
         console.log(`🚀 Arrahmah API Server Started`);
@@ -444,7 +458,8 @@ class ArrahmahAPIServer {
         console.log(`📊 Data endpoint: http://localhost:${this.port}/api/data`);
         console.log(`🤲 Duas endpoint: http://localhost:${this.port}/api/duas`);
         console.log(`📡 Status endpoint: http://localhost:${this.port}/api/status`);
-        console.log(`❤️  Health check: http://localhost:${this.port}/health`);
+        console.log(`❤️  Health report: http://localhost:${this.port}/_health`);
+        console.log(`❤️  Legacy health: http://localhost:${this.port}/health`);
         console.log(`${'='.repeat(60)}`);
         console.log(`💾 Data cached in memory`);
         console.log(`🔔 Reload endpoint: POST /api/internal/reload-data`);

@@ -27,6 +27,22 @@ interface LastVideoIds {
   mixlr: string | null;
 }
 
+/**
+ * What `/_health` needs to tell "no broadcast is live" apart from "the checker
+ * stopped working". Without this the two look identical from outside, which is
+ * how an optional integration rots unnoticed.
+ */
+export interface BroadcastDiagnostics {
+  /** Broadcast destinations published in the current snapshot. Zero means nothing to check. */
+  destinations: number;
+  platformsLive: number;
+  lastCheckAt: string | null;
+  lastSuccessAt: string | null;
+  lastFailureAt: string | null;
+  /** Unexpected failures on the most recent cycle. Facebook's routine blocking is excluded. */
+  lastCheckErrors: number;
+}
+
 export class BroadcastChecker {
   private readonly lastVideoIdsPath: string;
   private lastVideoIds: LastVideoIds = {
@@ -39,9 +55,25 @@ export class BroadcastChecker {
     isFacebookLive: false,
     isMixlrLive: false,
   };
+  private destinations = 0;
+  private lastCheckAt: string | null = null;
+  private lastSuccessAt: string | null = null;
+  private lastFailureAt: string | null = null;
+  private lastCheckErrors = 0;
+  private cycleErrors = 0;
 
   constructor() {
     this.lastVideoIdsPath = path.join(__dirname, '../../data/lastVideoIds.json');
+  }
+
+  /**
+   * Counts a check that failed for a reason worth reporting. Facebook answering
+   * 400 to an unauthenticated scrape is its normal behaviour, not a regression,
+   * and counting it would make this component permanently degraded — a state
+   * everyone learns to ignore.
+   */
+  private noteCheckFailure(): void {
+    this.cycleErrors += 1;
   }
 
   /**
@@ -166,6 +198,7 @@ export class BroadcastChecker {
       return liveMatch ? liveMatch[1] : null;
     } catch (error) {
       console.error('Error checking YouTube live status:', error instanceof Error ? error.message : error);
+      this.noteCheckFailure();
       return null;
     }
   }
@@ -201,11 +234,13 @@ export class BroadcastChecker {
     } catch (error) {
       // Facebook often blocks automated requests - this is expected
       // Only log on first occurrence or different errors
-      if (axios.isAxiosError(error) && error.response?.status === 400) {
-        // Silently handle expected Facebook blocking
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+      if (status === 400 || status === 403 || status === 404) {
+        // Expected Facebook blocking of unauthenticated requests. Not a failure.
         return null;
       }
       console.error('Error checking Facebook live status:', error instanceof Error ? error.message : error);
+      this.noteCheckFailure();
       return null;
     }
   }
@@ -232,6 +267,7 @@ export class BroadcastChecker {
       return isLive && broadcastIds.length > 0 ? broadcastIds[0] : null;
     } catch (error) {
       console.error('Error checking Mixlr live status:', error instanceof Error ? error.message : error);
+      this.noteCheckFailure();
       return null;
     }
   }
@@ -245,8 +281,15 @@ export class BroadcastChecker {
       return this.currentStatus;
     }
 
+    this.cycleErrors = 0;
+
     // Extract channel IDs from broadcast items
     const channels = this.extractChannelIds(scrapedData.appData.broadcastItems);
+    this.destinations = [
+      channels.youtubeChannelId,
+      channels.facebookChannelId,
+      channels.mixlrChannelId,
+    ].filter(Boolean).length;
 
     console.log('🔴 Checking live broadcast status...');
     if (channels.youtubeChannelId) {
@@ -296,6 +339,15 @@ export class BroadcastChecker {
       console.log('ℹ Broadcast status unchanged');
     }
 
+    const completedAt = new Date().toISOString();
+    this.lastCheckAt = completedAt;
+    this.lastCheckErrors = this.cycleErrors;
+    if (this.cycleErrors === 0) {
+      this.lastSuccessAt = completedAt;
+    } else {
+      this.lastFailureAt = completedAt;
+    }
+
     return this.currentStatus;
   }
 
@@ -304,5 +356,21 @@ export class BroadcastChecker {
    */
   getCurrentStatus(): BroadcastStatus {
     return this.currentStatus;
+  }
+
+  /** Evidence for `/_health`; performs no network I/O. */
+  getDiagnostics(): BroadcastDiagnostics {
+    return {
+      destinations: this.destinations,
+      platformsLive: [
+        this.currentStatus.isYoutubeLive,
+        this.currentStatus.isFacebookLive,
+        this.currentStatus.isMixlrLive,
+      ].filter(Boolean).length,
+      lastCheckAt: this.lastCheckAt,
+      lastSuccessAt: this.lastSuccessAt,
+      lastFailureAt: this.lastFailureAt,
+      lastCheckErrors: this.lastCheckErrors,
+    };
   }
 }

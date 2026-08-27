@@ -1,15 +1,25 @@
 services:
   arrahmah:
-    image: arrahmah-api:latest
+    # Pinned to an immutable `arrahmah-api:<sha>` tag by scripts/deploy-vps.sh so
+    # a rollback names an image that still describes the code it was built from.
+    # The default keeps a `latest`-style build working.
+    image: ${ARRAHMAH_IMAGE:-arrahmah-api:latest}
     restart: unless-stopped
     environment:
       NODE_ENV: production
       PORT: 8888
       PRODUCT_STATS_TOKEN: ${PRODUCT_STATS_TOKEN:?PRODUCT_STATS_TOKEN is required}
+      # Release identity for `/_health`. Absent values are simply omitted from
+      # the report rather than guessed at.
+      RELEASE_SHA: ${RELEASE_SHA:-}
+      RELEASE_AT: ${RELEASE_AT:-}
     volumes:
       - ./data:/app/data
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:8888/health').then(r=>{if(!r.ok)throw 1})"]
+      # The aggregate readiness report, not just a TCP connect: `/_health`
+      # answers 503 when a required component is down, which is what makes the
+      # container's health mean the same thing as the dashboard's.
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8888/_health').then(r=>{if(!r.ok)throw 1})"]
       interval: 30s
       timeout: 5s
       retries: 3

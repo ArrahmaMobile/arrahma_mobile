@@ -5,6 +5,7 @@
 
 import { ArrahmahScraper } from './index';
 import * as http from 'http';
+import { recordScrapeRun } from './services/scrape-journal';
 
 class StandaloneScraper {
   private scraper: ArrahmahScraper;
@@ -75,14 +76,17 @@ class StandaloneScraper {
     }
 
     this.isRunning = true;
+    // Recorded whatever the outcome: a run that fails silently is the failure
+    // mode `/_health` exists to surface.
+    const startedAt = new Date();
 
     try {
       console.log('\n' + '='.repeat(60));
       console.log('🔄 Standalone Scraper Run Started');
-      console.log(`⏰ Time: ${new Date().toLocaleString()}`);
+      console.log(`⏰ Time: ${startedAt.toISOString()}`);
       console.log('='.repeat(60) + '\n');
 
-      const startTime = Date.now();
+      const startTime = startedAt.getTime();
 
       // Create fresh scraper instance to clear HTTP cache
       this.scraper = new ArrahmahScraper();
@@ -97,6 +101,8 @@ class StandaloneScraper {
       console.log(`⏱️  Duration: ${duration}s`);
       console.log('='.repeat(60) + '\n');
 
+      await recordScrapeRun({ startedAt, finishedAt: new Date(), ok: true });
+
       // Notify API server to reload data
       console.log('📡 Notifying API server to reload data...');
       await this.notifyApiServer();
@@ -105,6 +111,7 @@ class StandaloneScraper {
       console.error('❌ Scraper Run Failed');
       console.error('Error:', error);
       console.error('='.repeat(60) + '\n');
+      await recordScrapeRun({ startedAt, finishedAt: new Date(), ok: false });
       throw error;
     } finally {
       this.isRunning = false;
