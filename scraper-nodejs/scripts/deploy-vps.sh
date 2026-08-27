@@ -19,7 +19,24 @@ task_sha="${1:-$(git -C "$task_root" rev-parse --short=12 HEAD)}"
 task_image="arrahmah-api:${task_sha}"
 task_released_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 task_tmp="$(mktemp -d "${TMPDIR:-/tmp}/arrahmah-deploy.XXXXXX")"
-trap 'rm -rf "$task_tmp"' EXIT
+
+# Remote staging paths are namespaced by app AND sha. They used to be a bare /tmp/image.tar.gz and
+# /tmp/docker-compose.yml — the same paths every app on this shared VPS used. Parallel releases
+# raced: one scp overwriting the archive another was about to `docker load`, and worse, one app's
+# compose file installed over another app's live docker-compose.yml.
+task_remote_image="/tmp/arrahmah-${task_sha}.image.tar.gz"
+task_remote_compose="/tmp/arrahmah-${task_sha}.compose.yml"
+task_remote_staged=0
+
+# Clean up on every exit, success or failure, so /tmp does not accumulate release archives.
+# Only ever remove files carrying this app's own release prefix — never a generic path.
+task_cleanup() {
+  rm -rf "$task_tmp"
+  if [ "$task_remote_staged" -eq 1 ]; then
+    ssh "$task_host" "rm -f '${task_remote_image}' '${task_remote_compose}'" >/dev/null 2>&1 || true
+  fi
+}
+trap task_cleanup EXIT
 
 # The tag has to describe the image contents, or a rollback lies about what it
 # is rolling back to.
@@ -40,7 +57,16 @@ docker buildx build \
 docker save "$task_image" | gzip -1 > "$task_tmp/image.tar.gz"
 cp "$task_root/deploy/docker-compose.vps.yml" "$task_tmp/docker-compose.yml"
 
-scp "$task_tmp/image.tar.gz" "$task_tmp/docker-compose.yml" "${task_host}:/tmp/"
+task_remote_staged=1
+scp "$task_tmp/image.tar.gz" "${task_host}:${task_remote_image}"
+scp "$task_tmp/docker-compose.yml" "${task_host}:${task_remote_compose}"
+
+# A truncated or interleaved transfer must fail HERE, not as a confusing gzip error half-way
+# through a deploy that has already taken a database backup or stopped a container.
+if ! ssh "$task_host" "gzip -t '${task_remote_image}'"; then
+  echo "FATAL: image archive did not survive the transfer to ${task_host}" >&2
+  exit 1
+fi
 
 ssh "$task_host" "bash -s -- '$task_sha' '$task_released_at'" <<'REMOTE'
 set -euo pipefail
@@ -64,9 +90,9 @@ else
   exit 1
 fi
 
-gzip -dc /tmp/image.tar.gz | docker load
-install -m 0644 /tmp/docker-compose.yml "$task_app/docker-compose.yml"
-rm -f /tmp/image.tar.gz /tmp/docker-compose.yml
+gzip -dc "/tmp/arrahmah-${task_sha}.image.tar.gz" | docker load
+install -m 0644 "/tmp/arrahmah-${task_sha}.compose.yml" "$task_app/docker-compose.yml"
+rm -f "/tmp/arrahmah-${task_sha}.image.tar.gz" "/tmp/arrahmah-${task_sha}.compose.yml"
 
 set_env() {
   if grep -q "^$1=" "$task_app/.env"; then
