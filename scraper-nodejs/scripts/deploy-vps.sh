@@ -75,6 +75,14 @@ set_env() {
     printf '%s=%s\n' "$1" "$2" >> "$task_app/.env"
   fi
 }
+
+# Record what we are replacing, so scripts/rollback-vps.sh has a target that
+# does not depend on anyone remembering the previous sha at 3am.
+task_outgoing="$(grep '^ARRAHMAH_IMAGE=' "$task_app/.env" | cut -d= -f2- || true)"
+if [ -n "$task_outgoing" ] && [ "$task_outgoing" != "arrahmah-api:${task_sha}" ]; then
+  set_env ARRAHMAH_PREVIOUS_IMAGE "$task_outgoing"
+fi
+
 set_env ARRAHMAH_IMAGE "arrahmah-api:${task_sha}"
 set_env RELEASE_SHA "${task_sha}"
 set_env RELEASE_AT "${task_released_at}"

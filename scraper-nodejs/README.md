@@ -60,8 +60,10 @@ the canonical readiness report and reports strictly more than they do.
 locally, ships the image over SSH, pins `ARRAHMAH_IMAGE` to an immutable
 `arrahmah-api:<sha>` tag, verifies the new image can assemble its own health
 report in a throwaway container, then waits on container health and the public
-URL. The GitHub Actions workflow does the same on the VPS and is the secondary
-path — it deploys nothing while the Actions budget is exhausted.
+URL. `scripts/rollback-vps.sh` puts the previous image back and asserts the
+public health report before declaring success. The GitHub Actions workflow does
+the same build on the VPS and is the secondary path — it deploys nothing while
+the Actions budget is exhausted.
 
 ## Product telemetry
 
