@@ -13,6 +13,8 @@
 # mounted volume, which every release reads as-is, so an image rollback is safe
 # on its own; restoring a snapshot is a separate, destructive decision.
 
+# SSH values expand locally after target validation; Node template strings expand in Node.
+# shellcheck disable=SC2029,SC2016
 set -euo pipefail
 
 task_host="${ARRAHMAH_DEPLOY_HOST:-deploy@152.53.192.214}"
@@ -38,6 +40,19 @@ echo "rollback: target = ${task_target:-recorded previous image}"
 
 ssh "$task_host" "bash -s -- '$task_target'" <<'REMOTE'
 set -euo pipefail
+umask 077
+exec 8>/opt/platform/.hackathon-rollout.lock
+flock -n -E 75 8 || exit 75
+python3 - <<'SASID_ADMISSION'
+import subprocess,sys
+try:
+ available=next(int(line.split()[1]) for line in open('/proc/meminfo') if line.startswith('MemAvailable:'))
+ result=subprocess.run(['docker','exec','platform-postgres-1','psql','-U','postgres','-d','postgres','-Atqc','select count(*) from pg_stat_activity;'],capture_output=True,text=True,check=True,timeout=15)
+ connections=int(result.stdout.strip())
+ if connections<0 or connections>=80 or available<1572864:raise ValueError()
+except Exception:
+ print('VPS release deferred: freshPG<80 and MemAvailable>=1.5GiB required',file=sys.stderr);sys.exit(75)
+SASID_ADMISSION
 
 task_target="${1:-}"
 task_app="/opt/platform/apps/arrahmah"
