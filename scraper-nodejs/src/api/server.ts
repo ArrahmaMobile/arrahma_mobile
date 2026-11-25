@@ -12,6 +12,8 @@ import * as path from 'path';
 import { ScrapedData, DuaCategory } from '../types/models';
 import { BroadcastChecker } from '../services/broadcast-checker';
 import { createProductStatsHandler } from './product-stats';
+import { readScrapeJournal } from '../services/scrape-journal';
+import { ageSeconds, SNAPSHOT_STALE_AFTER_SECONDS } from './health/contract';
 import { createHealthHandler, startUpstreamCanaryLoop } from './health/report';
 
 interface BroadcastStatus {
@@ -305,12 +307,17 @@ class ArrahmahAPIServer {
       // Get current broadcast status from broadcast checker
       const broadcastStatus: BroadcastStatus = this.broadcastChecker.getCurrentStatus();
 
+      const journal = await readScrapeJournal();
+      const lastScrapedOn = this.cachedData?.runMetadata?.lastUpdate;
+      const snapshotAge = ageSeconds(lastScrapedOn, Date.now());
       const statusResponse: ServerStatus = {
         status: serverStatus,
-        isDataStale: dataHashParam !== undefined && this.dataHash !== dataHashParam,
+        isDataStale: dataHashParam === undefined
+          ? snapshotAge === undefined || snapshotAge > SNAPSHOT_STALE_AFTER_SECONDS
+          : this.dataHash !== dataHashParam,
         broadcastStatus,
-        lastScrapedOn: this.cachedData?.runMetadata?.lastUpdate || 'Never',
-        lastScrapeAttemptOn: this.cachedData?.runMetadata?.lastUpdate || 'Never',
+        lastScrapedOn: lastScrapedOn || 'Never',
+        lastScrapeAttemptOn: journal?.lastRunStartedAt ?? lastScrapedOn ?? 'Never',
         lastDataHash: this.dataHash || null,
         lastDataChangeOn: this.lastDataChangeTimestamp,
       };

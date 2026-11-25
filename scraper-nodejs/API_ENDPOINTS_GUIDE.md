@@ -82,7 +82,7 @@ curl http://localhost:8888/api/status
 | Field | Type | Description |
 |-------|------|-------------|
 | `status` | string | Server status: "Available", "Maintenance", or "Unavailable" |
-| `isDataStale` | boolean | `true` if client's dataHash doesn't match server's |
+| `isDataStale` | boolean | `true` when the supplied client hash differs. Without a hash, `true` if the snapshot is missing or more than 12 hours old |
 | `broadcastStatus` | object | Live broadcast status for various platforms |
 | `lastScrapedOn` | string (ISO 8601) | When the data was last successfully scraped |
 | `lastScrapeAttemptOn` | string (ISO 8601) | When the last scrape attempt started |

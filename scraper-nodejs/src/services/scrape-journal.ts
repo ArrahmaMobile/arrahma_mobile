@@ -17,7 +17,7 @@ import * as path from 'path';
 
 export interface ScrapeJournal {
   lastRunStartedAt: string;
-  lastRunFinishedAt: string;
+  lastRunFinishedAt: string | null;
   lastRunOk: boolean;
   lastRunDurationMs: number;
   lastSuccessAt: string | null;
@@ -43,10 +43,11 @@ export async function readScrapeJournal(): Promise<ScrapeJournal | null> {
   try {
     const raw = await fs.readFile(journalPath(), 'utf-8');
     const parsed = JSON.parse(raw) as Partial<ScrapeJournal>;
-    if (typeof parsed?.lastRunFinishedAt !== 'string') return null;
+    const startedAt = parsed?.lastRunStartedAt ?? parsed?.lastRunFinishedAt;
+    if (typeof startedAt !== 'string') return null;
     return {
-      lastRunStartedAt: parsed.lastRunStartedAt ?? parsed.lastRunFinishedAt,
-      lastRunFinishedAt: parsed.lastRunFinishedAt,
+      lastRunStartedAt: startedAt,
+      lastRunFinishedAt: parsed.lastRunFinishedAt ?? null,
       lastRunOk: parsed.lastRunOk === true,
       lastRunDurationMs: Number(parsed.lastRunDurationMs) || 0,
       lastSuccessAt: parsed.lastSuccessAt ?? null,
@@ -85,15 +86,38 @@ export async function recordScrapeRun(
       consecutiveFailures: outcome.ok ? 0 : (previous?.consecutiveFailures ?? 0) + 1,
     };
 
-    const target = journalPath();
-    const temp = `${target}.tmp`;
-    await fs.mkdir(dataDirectory(), { recursive: true });
-    await fs.writeFile(temp, JSON.stringify(journal, null, 2), 'utf-8');
-    await fs.rename(temp, target);
+    await writeJournal(journal);
   } catch (error) {
     console.error(
       '[journal] Failed to record scrape run:',
       error instanceof Error ? error.message : error,
     );
   }
+}
+
+/** Record the start before scraping so a process abort still leaves evidence. */
+export async function recordScrapeStart(startedAt: Date): Promise<void> {
+  try {
+    const previous = await readScrapeJournal();
+    await writeJournal({
+      lastRunFinishedAt: null,
+      lastRunOk: false,
+      lastRunDurationMs: 0,
+      lastSuccessAt: null,
+      lastFailureAt: null,
+      consecutiveFailures: 0,
+      ...previous,
+      lastRunStartedAt: startedAt.toISOString(),
+    });
+  } catch (error) {
+    console.error('[journal] Failed to record scrape start:', error);
+  }
+}
+
+async function writeJournal(journal: ScrapeJournal): Promise<void> {
+  const target = journalPath();
+  const temp = `${target}.tmp`;
+  await fs.mkdir(dataDirectory(), { recursive: true });
+  await fs.writeFile(temp, JSON.stringify(journal, null, 2), 'utf-8');
+  await fs.rename(temp, target);
 }

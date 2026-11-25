@@ -7,6 +7,9 @@ import * as cheerio from 'cheerio';
 import { config } from '../config';
 import { toAbsoluteUrl } from '../utils/url.utils';
 
+// Parsed HTML retains an entire DOM. Keep only the most recently used pages.
+const MAX_CACHED_DOCUMENTS = 8;
+
 export class HttpClient {
   private axiosInstance: AxiosInstance;
   private documentCache: Map<string, cheerio.CheerioAPI>;
@@ -101,9 +104,12 @@ export class HttpClient {
     const absoluteUrl = toAbsoluteUrl(url);
 
     // Check cache first
-    if (this.documentCache.has(absoluteUrl)) {
+    const cached = this.documentCache.get(absoluteUrl);
+    if (cached) {
+      this.documentCache.delete(absoluteUrl);
+      this.documentCache.set(absoluteUrl, cached);
       console.log(`Using cached document: ${absoluteUrl}`);
-      return this.documentCache.get(absoluteUrl)!;
+      return cached;
     }
 
     try {
@@ -111,7 +117,12 @@ export class HttpClient {
       if (!html) return null;
 
       const $ = cheerio.load(html);
+      this.documentCache.delete(absoluteUrl);
       this.documentCache.set(absoluteUrl, $);
+      if (this.documentCache.size > MAX_CACHED_DOCUMENTS) {
+        const oldest = this.documentCache.keys().next();
+        if (!oldest.done) this.documentCache.delete(oldest.value);
+      }
       return $;
     } catch (error) {
       console.error(`Error navigating to ${url}:`, error);

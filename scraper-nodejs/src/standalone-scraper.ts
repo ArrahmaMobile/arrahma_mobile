@@ -5,7 +5,7 @@
 
 import { ArrahmahScraper } from './index';
 import * as http from 'http';
-import { recordScrapeRun } from './services/scrape-journal';
+import { recordScrapeRun, recordScrapeStart } from './services/scrape-journal';
 
 class StandaloneScraper {
   private scraper: ArrahmahScraper;
@@ -81,6 +81,7 @@ class StandaloneScraper {
     const startedAt = new Date();
 
     try {
+      await recordScrapeStart(startedAt);
       console.log('\n' + '='.repeat(60));
       console.log('🔄 Standalone Scraper Run Started');
       console.log(`⏰ Time: ${startedAt.toISOString()}`);

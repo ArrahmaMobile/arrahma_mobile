@@ -5,6 +5,8 @@ services:
     # The default keeps a `latest`-style build working.
     image: ${ARRAHMAH_IMAGE:-arrahmah-api:latest}
     restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1536m
     environment:
       NODE_ENV: production
       PORT: 8888
