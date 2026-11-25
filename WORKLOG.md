@@ -8,3 +8,4 @@
 |---|---|---|---|---|---|---|
 | 20:54:02 CST (-0600) | W-20261124-01 | Incident | PLANNED | Restore production scraping and verify status freshness | Public status · last scrape November 18 | — |
 | 20:54:02 CST (-0600) | W-20261124-01 | Incident | IN_PROGRESS | Check VPS logs and scheduler | Public status · HTTP 200 | — |
+| 20:59:54 CST (-0600) | W-20261124-01 | Incident | DONE | Deployed bounded parsed-page cache and truthful status. Production scrape completed in 135s, reloaded the snapshot, and peaked at 277 MiB against a 1 GiB limit. | Public status · 20:59:28 CST snapshot · health operational · bae04b5 · 20 tests passed | — |
